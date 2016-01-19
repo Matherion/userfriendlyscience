@@ -18,10 +18,10 @@ therapyMonitor <- function(dat = NULL,
 #                             "RBD", "ATD", "MBD"));
 #   validStatistics <- toupper(c("A-B", "B-A", "|A-B|", "PA-PB", "PB-PA",
 #                                "|PA-PB|", "AA-BB", "BB-AA", "|AA-BB|"));
-  
-  ### Convert design and statistic parameters to uppercase
-  design <- toupper(design);
-  statistic <- toupper(statistic);
+#   
+#   ### Convert design and statistic parameters to uppercase
+#   design <- toupper(design);
+#   statistic <- toupper(statistic);
   
   ### Create object for results and store input
   res <- list(input = as.list(environment()),
@@ -46,15 +46,15 @@ therapyMonitor <- function(dat = NULL,
   
   res$intermediate$rawLines <- nrow(dat);
 
-  ### Verify validity of design argument
-  if (!(design %in% validDesigns)) {
-    stop("The value of parameter 'design' is invalid!");
-  }
-  
-  ### Verify validity of statistic argument
-  if (!(statistic %in% validStatistics)) {
-    stop("The value of parameter 'statistic' is invalid!");
-  }
+#   ### Verify validity of design argument
+#   if (!(design %in% validDesigns)) {
+#     stop("The value of parameter 'design' is invalid!");
+#   }
+#   
+#   ### Verify validity of statistic argument
+#   if (!(statistic %in% validStatistics)) {
+#     stop("The value of parameter 'statistic' is invalid!");
+#   }
   
   ### Verify validity of limit argument
   if (is.null(limit)) {
