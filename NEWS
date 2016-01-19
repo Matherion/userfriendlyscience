@@ -1,0 +1,62 @@
+userfriendlyscience NEWS
+------------------------
+
+0.4-0 2015-
+  * processOpenSesameIAT was added, to process OpenSesame IAT datafiles
+
+0.3-0 2015-04-16
+  * Fixed powerHist to finally show frequencies with scaled normal curve
+    and density curve
+  * Fixed a bug in 'oneway'; post-hoc tests now working better
+  * The 'regr' function now also computes the confidence interval for R^2
+  * Renamed scaleReliability to scaleStructure and improved it to also provide
+    estimates assuming an ordinal level of measurement as well as hierarchical
+    omega in addition to total omega
+  * Improved the way p values are reported in rMatrix
+  * Improved dlvPlot to show both confidence intervals and standard errors
+
+0.2-2 2015-04-07
+  * Error in getData, that was introduced when it was changed to work better with getDat, corrected
+  * Way eta^2 is computed in oneway corrected
+  * A plot can now automatically be ordered when using meanDiff
+
+0.2-1 2015-03-23
+  * getDat added to automatically create a dataframe
+  * Minor additions to the conversion functions
+  * Added and implemented formatPvalue for cleaner p value formatting
+  * Exported the case insensitive %IN%
+
+0.2-0 2015-02-27
+  * New function associationMatrix() added, which takes a list of variables
+    and generates a table with confidence intervals of their effect sizes
+  * New functions freq(), oneway(), and regr() added, which behave similar
+    to SPSS functions to generate frequency tables, oneway anovas, and
+    do simple regression analyses
+  * New function samplingDistribution() added, which allows quick generation
+    of sampling distributions based on frequency information
+  * Added didacticPlot(), which builds plots that are useful for watching
+    what happens when doing null hypothesis significance tests
+  * Added dataShape() so that e1071 is no longer needed for Skewness and Kurtosis
+    in normalityAssessment()
+  * Added associationMatrix, which enables the creation of matrices with
+    effect sizes and their confidence intervals.
+
+0.1-2 2014-04-21
+  * testRetestReliability() added to conveniently call both testRetestAlpha()
+    and testRetestCES().
+  * testRetestAlpha() and testRetestCES() added to compute the test-retest
+    coefficient Alpha and the Coefficient of Equivalence and Stability (CES).
+  * filterBy() and useAll() added for users coming from SPSS
+  * convertToNumeric and massConvertToNumeric added to convert vectors to
+    numeric vectors.
+  * meanDiff.multi improved to generate a forest plot by default, with line at
+    zero to show 'significant' deviations more clearly
+  * dlvPlot improved to show better confidence intervals and take confidence level
+    into account
+  * getData() can now also read from .csv, .tsv, .xls, and .xlsx. If
+    ROpenOffice from http://omegahat.org is installed, .ods can be read,
+    too.
+  * Added is.odd() and is.even() to check whether numbers (or numbers in a vector) are odd or even.
+
+0.1.1 2014-04-17
+  * Initial Release

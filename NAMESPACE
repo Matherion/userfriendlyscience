@@ -1,0 +1,68 @@
+exportPattern("^[[:alpha:]]+");
+export("%IN%");
+
+S3method(print, dlvPlot);
+S3method(print, freq);
+S3method(print, meanConfInt);
+S3method(print, meanDiff);
+S3method(print, meanDiff.multi);
+S3method(print, normalityAssessment);
+S3method(print, oddsratio);
+S3method(print, powerHist);
+S3method(print, rMatrix);
+S3method(print, scaleDiagnosis);
+S3method(print, scaleStructure);
+S3method(print, sdConfInt);
+S3method(print, testRetestAlpha);
+S3method(print, testRetestCES);
+S3method(print, testRetestReliability);
+S3method(print, parallelSubscales);
+S3method(print, dataShape);
+S3method(print, didacticPlot);
+S3method(print, scatterMatrix);
+S3method(print, CramersV);
+S3method(print, confIntV);
+S3method(print, crossTab);
+S3method(print, associationMatrix);
+S3method(print, oneway);
+S3method(print, posthocTGH);
+S3method(print, scaleInspection);
+S3method(print, regr);
+
+importFrom('plyr', 'ddply');
+
+importFrom('psych', 'describe', 'alpha', 'omega', 'glb',
+           'fa', 'principal', 'polychoric', 'fisherz', 'fisherz2r');
+importFrom('pwr', 'pwr.t.test', 'pwr.r.test');
+importFrom('fBasics', 'adTest');
+importFrom('MBESS', 'ci.reliability', 'ci.pvaf');
+importFrom('SuppDists', 'pPearson', 'dPearson');
+### For 'omega' in the psych package - calls 'principal' in the psych package,
+### with default 'oblimin' rotation (default of 'omega', not of 'principal').
+importFrom('GPArotation', 'oblimin');
+
+importFrom('MASS', 'mvrnorm');
+importFrom('mosaic', 'do', 'resample');
+
+importFrom('foreign', 'read.spss');
+
+importFrom('knitr', 'knit');
+importFrom('xtable', 'xtable');
+
+importFrom('car', 'Anova', 'leveneTest');
+
+importFrom('SCRT', 'pvalue.systematic');
+
+importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes_string',
+           'geom_line', 'geom_point', 'geom_violin', 'geom_jitter', 'geom_dotplot',
+           'geom_pointrange', 'geom_errorbar', 'geom_histogram', 'geom_density',
+           'element_line', 'element_rect', 'element_text', 'element_blank',
+           'position_jitter', 'position_dodge', 'geom_smooth', 'geom_rug',
+           'stat_summary', 'labs', 'xlab', 'ylab', 'rel', 'theme_bw', 'scale_y_reverse',
+           'ggplot_build', 'ggsave');
+importFrom('GGally', 'ggpairs', 'getPlot', 'putPlot');
+importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.layout',
+           'textGrob', 'grid.rect', 'gpar', 'grid.draw');
+importFrom('gridExtra', 'arrangeGrob');
+
+importFrom('lavaan', 'sem');

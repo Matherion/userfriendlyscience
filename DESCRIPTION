@@ -1,0 +1,25 @@
+Package: userfriendlyscience
+Type: Package
+Title: Quantitative Analysis Made Accessible
+Version: 0.4-0
+Date: 2015-
+Author: Gjalt-Jorn Peters
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+License: GPL (>= 2)
+Description: Contains a number of functions that serve
+  two goals: first, make R more accessible to people migrating from
+  SPSS by adding a number of functions that behave roughly like their
+  SPSS equivalents; and second, make a number of slightly more
+  advanced functions more user friendly to relatively novice users.
+URL: http://userfriendlyscience.com
+Imports: plyr,
+         psych, pwr, fBasics, ltm, MBESS, SuppDists, GPArotation,
+         MASS, mosaic, 
+         foreign,
+         car,
+         SCRT,
+         knitr, xtable, 
+         GGally, grid, gridExtra,
+         lavaan
+Depends: ggplot2
+Suggests: XLConnect

@@ -1,0 +1,59 @@
+(version 0.4-0)
+(2015-
+processOpenSesameIAT was added, to process OpenSesame IAT datafiles
+didcaticPlot improved to deal with negative t values
+normalityAssessment improved to work with new powerHist function
+Added crossTab function for computing crosstabs, Cramer's V, and Chi square
+
+(version 0.3-0)
+(2015-04-16)
+Fixed powerHist to finally show frequencies with scaled normal curve and density curve
+Fixed a bug in 'oneway'; post-hoc tests now working better
+The 'regr' function now also computes the confidence interval for R^2
+Renamed scaleReliability to scaleStructure and improved it to also provide
+estimates assuming an ordinal level of measurement as well as hierarchical
+omega in addition to total omega
+Improved the way p values are reported in rMatrix
+Improved dlvPlot to show both confidence intervals and standard errors
+
+(version 0.2-2)
+(2015-04-07)
+
+Error in getData, that was introduced when it was changed to work better with getDat, corrected
+Way eta^2 is computed in oneway corrected
+A plot can now automatically be ordered when using meanDiff
+
+(version 0.2-1)
+(2015-03-23)
+
+getDat added to automatically create a dataframe
+Minor additions to the conversion functions
+Added and implemented formatPvalue for cleaner p value formatting
+Exported the case insensitive %IN%
+
+(version 0.2-0)
+(2015-02-27)
+
+Added regr() and oneway()
+Added samplingDistribution() and didacticPlot()
+Added dataShape() so that e1071 is no longer needed for Skewness and Kurtosis in normalityAssessment()
+Added associationMatrix()
+
+(version 0.1-2)
+
+(Mon Apr 21 21:56:57 2014)
+getData improved to read more filetypes
+Improved error message for getData and changed the way it's called when no dataframe is supplied
+Added functions for test-retest reliability
+Added functions for filtering datafile (for SPSS compatibility)
+Added is.odd() and is.even()
+convertToNumeric and massConvertToNumeric added to convert vectors to numeric vectors.
+testRetestReliability() added to conveniently call both testRetestAlpha() and testRetestCES().
+meanDiff.multi improved to generate a forest plot by default, with line at zero to show 'significant' deviations more clearly
+dlvPlot improved to show better confidence intervals and take confidence level into account
+rMatrrix now uses conf.level argument to construct confidence intervals
+
+(version 0.1-1)
+
+(Tue Apr 17 18:23:00 2014)
+Initial Release
