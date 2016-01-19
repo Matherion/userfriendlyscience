@@ -224,7 +224,7 @@ meanDiff.multi <- function(dat, y, x=NULL, var.equal = "yes",
           coord_flip();
       }
       res$plots.compiled[[x[xVar]]] <- res$plots.compiled[[x[xVar]]] +
-        geom_hline(color=zeroLineColor, size=zeroLineSize) +
+        geom_hline(yintercept=0, color=zeroLineColor, size=zeroLineSize) +
         geom_pointrange(size=1) + labs(x="interval variable",
                                          y="effect size g (unbiased estimate of Cohen's d)") +
         ggtitle(x[xVar]);;

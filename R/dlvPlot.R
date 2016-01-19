@@ -37,7 +37,7 @@ dlvTheme <- function(base_size = 14, base_family = "", ...) {
 dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                     jitter = "FALSE", binnedDots = TRUE, binwidth=NULL,
                     error="lines", dotsize="density", densityDotBaseSize=3,
-                    normalDotBaseSize=3, violinAlpha = .2, dotAlpha = .4,
+                    normalDotBaseSize=1, violinAlpha = .2, dotAlpha = .4,
                     lineAlpha = 1, connectingLineAlpha = 1,
                     meanDotSize=5, posDodge=0.2, errorType = "both") {
   ### This function constructs a dot-line-violin plot.
@@ -127,7 +127,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
         if (binnedDots) {
           tempBinwidth <- ifelse(is.null(binwidth), (res$yRange[2]-res$yRange[1])/30, binwidth);
           res$plot <- res$plot + geom_dotplot(alpha=dotAlpha, show.legend=FALSE,
-                                              binaxis="y", binwidth=tempBinwidth, size=normalDotBaseSize,
+                                              binaxis="y", binwidth=tempBinwidth, dotsize=normalDotBaseSize,
                                               stackdir="center", position=position_dodge(width=posDodge));
         }
         else if (dotsize=="density") {
@@ -135,7 +135,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                                             alpha=dotAlpha, show.legend=FALSE);
         }
         else {
-          res$plot <- res$plot + geom_point(alpha=dotAlpha, size=normalDotBaseSize);
+          res$plot <- res$plot + geom_point(alpha=dotAlpha, dotsize=normalDotBaseSize);
         }
       }
       if (error == "lines") {
@@ -223,7 +223,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
         if (binnedDots) {
           tempBinwidth <- ifelse(is.null(binwidth), (res$yRange[2]-res$yRange[1])/30, binwidth);
           res$plot <- res$plot + geom_dotplot(alpha=dotAlpha, show.legend=FALSE,
-                                              binaxis="y", binwidth=tempBinwidth, size=normalDotBaseSize,
+                                              binaxis="y", binwidth=tempBinwidth, dotsize=normalDotBaseSize,
                                               stackdir="center", position=position_dodge(width=posDodge)
                                               );
         }
@@ -232,7 +232,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                                             alpha=dotAlpha, show.legend=FALSE);
         }
         else {
-          res$plot <- res$plot + geom_point(alpha=dotAlpha, size=normalDotBaseSize);
+          res$plot <- res$plot + geom_point(alpha=dotAlpha, dotsize=normalDotBaseSize);
         }
       }
       if (error == "lines") {
@@ -318,7 +318,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
         if (binnedDots) {
           tempBinwidth <- ifelse(is.null(binwidth), (res$yRange[2]-res$yRange[1])/30, binwidth);
           res$plot <- res$plot + geom_dotplot(alpha=dotAlpha, show.legend=FALSE,
-                                              binaxis="y", binwidth=tempBinwidth, size=normalDotBaseSize,
+                                              binaxis="y", binwidth=tempBinwidth, dotsize=normalDotBaseSize,
                                               stackdir="center", position=position_dodge(width=posDodge));
         }
         else if (dotsize=="density") {
@@ -326,7 +326,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                                             alpha=dotAlpha, show.legend=FALSE);
         }
         else {
-          res$plot <- res$plot + geom_point(alpha=dotAlpha, size=normalDotBaseSize);
+          res$plot <- res$plot + geom_point(alpha=dotAlpha, dotsize=normalDotBaseSize);
         }
       }
       if (error == "lines") {
@@ -410,7 +410,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
           tempBinwidth <- ifelse(is.null(binwidth), (res$yRange[2]-res$yRange[1])/30, binwidth);
           res$plot <- res$plot + geom_dotplot(alpha=dotAlpha, show.legend=FALSE,
                                               aes_string(fill=z), binaxis="y",
-                                              binwidth=tempBinwidth, size=normalDotBaseSize,
+                                              binwidth=tempBinwidth, dotsize=normalDotBaseSize,
                                               stackdir="center", position=position_dodge(width=posDodge));
         }
         else if (dotsize=="density") {
@@ -418,7 +418,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                                             alpha=dotAlpha, show.legend=FALSE, position=position_dodge(width=posDodge));
         }
         else {
-          res$plot <- res$plot + geom_point(alpha=dotAlpha, size=normalDotBaseSize, position=position_dodge(width=posDodge));
+          res$plot <- res$plot + geom_point(alpha=dotAlpha, dotsize=normalDotBaseSize, position=position_dodge(width=posDodge));
         }
       }
       if (error == "lines") {
