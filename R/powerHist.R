@@ -13,7 +13,7 @@ powerHist <- function(vector,
                       xLabel = NULL,
                       yLabel = NULL, density=FALSE,
                       theme=dlvTheme(axis.title=element_text(colour = "black")),
-                      rug=TRUE, jitteredRug=TRUE) {
+                      rug=TRUE, jitteredRug=TRUE, rugSides="b") {
   varName <- deparse(substitute(vector));
   vector <- na.omit(vector);
   if (!is.numeric(vector)) {
@@ -78,10 +78,10 @@ powerHist <- function(vector,
   }
   if (rug) {
     if (jitteredRug) {
-      res$plot <- res$plot + geom_rug(color=distributionColor, side="b",
+      res$plot <- res$plot + geom_rug(color=distributionColor, sides=rugSides,
                                       aes(y=0), position="jitter");
     } else {
-      res$plot <- res$plot + geom_rug(color=distributionColor);
+      res$plot <- res$plot + geom_rug(color=distributionColor, sides=rugSides);
     }
   }
   if (!is.null(res$input$xLabel) && is.logical(res$input$xLabel) &&

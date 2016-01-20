@@ -1,0 +1,337 @@
+PackratFormat: 1.4
+PackratVersion: 0.4.6.1
+RVersion: 3.2.3
+Repos: CRAN=https://cran.rstudio.com/,
+    CRANextra=http://www.stats.ox.ac.uk/pub/RWin
+
+Package: BH
+Source: CRAN
+Version: 1.60.0-1
+
+Package: DBI
+Source: CRAN
+Version: 0.3.1
+
+Package: GGally
+Source: CRAN
+Version: 1.0.1
+Requires: ggplot2, gtable, plyr, reshape
+
+Package: GPArotation
+Source: CRAN
+Version: 2014.11-1
+
+Package: MASS
+Source: CRAN
+Version: 7.3-45
+Hash: 0650d5701aa7e369e77c9e2c8e1dc913
+
+Package: MBESS
+Source: CRAN
+Version: 3.3.3
+
+Package: MatrixModels
+Source: CRAN
+Version: 0.4-1
+
+Package: R6
+Source: CRAN
+Version: 2.1.1
+
+Package: RColorBrewer
+Source: CRAN
+Version: 1.1-2
+
+Package: Rcpp
+Source: CRAN
+Version: 0.12.3
+
+Package: RcppEigen
+Source: CRAN
+Version: 0.3.2.5.1
+Requires: Rcpp
+
+Package: SCRT
+Source: CRAN
+Version: 1.1.1
+
+Package: SparseM
+Source: CRAN
+Version: 1.7
+
+Package: SuppDists
+Source: CRAN
+Version: 1.1-9.1
+
+Package: XLConnect
+Source: CRAN
+Version: 0.2-11
+Requires: XLConnectJars, rJava
+
+Package: XLConnectJars
+Source: CRAN
+Version: 0.2-9
+Requires: rJava
+
+Package: assertthat
+Source: CRAN
+Version: 0.1
+
+Package: car
+Source: CRAN
+Version: 2.1-1
+Requires: pbkrtest, quantreg
+
+Package: colorspace
+Source: CRAN
+Version: 1.2-6
+
+Package: curl
+Source: CRAN
+Version: 0.9.4
+
+Package: dichromat
+Source: CRAN
+Version: 2.0-0
+
+Package: digest
+Source: CRAN
+Version: 0.6.9
+
+Package: dplyr
+Source: CRAN
+Version: 0.4.3
+Requires: BH, DBI, R6, Rcpp, assertthat, lazyeval, magrittr
+
+Package: evaluate
+Source: CRAN
+Version: 0.8
+Requires: stringr
+
+Package: expm
+Source: CRAN
+Version: 0.999-0
+
+Package: fBasics
+Source: CRAN
+Version: 3011.87
+Requires: gss, stabledist, timeDate, timeSeries
+
+Package: foreign
+Source: CRAN
+Version: 0.8-66
+Hash: 99a453ffeef7ff27060aed83cde5bae3
+
+Package: formatR
+Source: CRAN
+Version: 1.2.1
+
+Package: ggdendro
+Source: CRAN
+Version: 0.1-17
+Requires: ggplot2
+
+Package: ggplot2
+Source: CRAN
+Version: 2.0.0
+Requires: digest, gtable, plyr, reshape2, scales
+
+Package: gridExtra
+Source: CRAN
+Version: 2.0.0
+Requires: gtable
+
+Package: gss
+Source: CRAN
+Version: 2.1-5
+
+Package: gtable
+Source: CRAN
+Version: 0.1.2
+
+Package: highr
+Source: CRAN
+Version: 0.5.1
+
+Package: knitr
+Source: CRAN
+Version: 1.12
+Requires: digest, evaluate, formatR, highr, markdown, stringr, yaml
+
+Package: labeling
+Source: CRAN
+Version: 0.3
+
+Package: latticeExtra
+Source: CRAN
+Version: 0.6-26
+Requires: RColorBrewer
+
+Package: lavaan
+Source: CRAN
+Version: 0.5-20
+Requires: mnormt, pbivnorm, quadprog
+
+Package: lazyeval
+Source: CRAN
+Version: 0.1.10
+
+Package: lme4
+Source: CRAN
+Version: 1.1-10
+Requires: Rcpp, RcppEigen, minqa, nloptr
+
+Package: ltm
+Source: CRAN
+Version: 1.0-0
+Requires: msm, polycor
+
+Package: magrittr
+Source: CRAN
+Version: 1.5
+
+Package: markdown
+Source: CRAN
+Version: 0.7.7
+Requires: mime
+
+Package: mime
+Source: CRAN
+Version: 0.4
+
+Package: minqa
+Source: CRAN
+Version: 1.2.4
+Requires: Rcpp
+
+Package: mnormt
+Source: CRAN
+Version: 1.5-3
+
+Package: mosaic
+Source: CRAN
+Version: 0.13.0
+Requires: car, dplyr, ggdendro, ggplot2, gridExtra, latticeExtra,
+    lazyeval, mosaicData, readr, reshape2
+
+Package: mosaicData
+Source: CRAN
+Version: 0.13.0
+
+Package: msm
+Source: CRAN
+Version: 1.6
+Requires: expm, mvtnorm
+
+Package: munsell
+Source: CRAN
+Version: 0.4.2
+Requires: colorspace
+
+Package: mvtnorm
+Source: CRAN
+Version: 1.0-3
+
+Package: nloptr
+Source: CRAN
+Version: 1.0.4
+
+Package: packrat
+Source: CRAN
+Version: 0.4.6-1
+Hash: 29eacc43b096c5b1a82c8d54a49b030b
+
+Package: pbivnorm
+Source: CRAN
+Version: 0.6.0
+
+Package: pbkrtest
+Source: CRAN
+Version: 0.4-4
+Requires: lme4
+
+Package: plyr
+Source: CRAN
+Version: 1.8.3
+Requires: Rcpp
+
+Package: polycor
+Source: CRAN
+Version: 0.7-8
+Requires: mvtnorm, sfsmisc
+
+Package: psych
+Source: CRAN
+Version: 1.5.8
+Requires: mnormt
+
+Package: pwr
+Source: CRAN
+Version: 1.1-3
+
+Package: quadprog
+Source: CRAN
+Version: 1.5-5
+
+Package: quantreg
+Source: CRAN
+Version: 5.19
+Requires: MatrixModels, SparseM
+
+Package: rJava
+Source: CRAN
+Version: 0.9-8
+
+Package: readr
+Source: CRAN
+Version: 0.2.2
+Requires: BH, Rcpp, curl
+
+Package: reshape
+Source: CRAN
+Version: 0.8.5
+Requires: plyr
+
+Package: reshape2
+Source: CRAN
+Version: 1.4.1
+Requires: Rcpp, plyr, stringr
+
+Package: scales
+Source: CRAN
+Version: 0.3.0
+Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
+
+Package: sfsmisc
+Source: CRAN
+Version: 1.0-28
+
+Package: stabledist
+Source: CRAN
+Version: 0.7-0
+
+Package: stringi
+Source: CRAN
+Version: 1.0-1
+
+Package: stringr
+Source: CRAN
+Version: 1.0.0
+Requires: magrittr, stringi
+
+Package: timeDate
+Source: CRAN
+Version: 3012.100
+
+Package: timeSeries
+Source: CRAN
+Version: 3022.101.2
+Requires: timeDate
+
+Package: xtable
+Source: CRAN
+Version: 1.8-0
+
+Package: yaml
+Source: CRAN
+Version: 2.1.13

@@ -38,18 +38,18 @@ scatterMatrix <- function(dat, items=NULL, plotSize=180, sizeMultiplier = 1,
   ### First generate a normal scattermatrix with histograms
   ### on the diagonal
   res$intermediate$ggpairs.normal <-
-    ggpairs(res$intermediate$dat, diag=list(continuous="bar", discrete="bar"),
+    ggpairs(res$intermediate$dat, diag=list(continuous="barDiag", discrete="barDiag"),
             axisLabels=res$input$axisLabels);
 #  lower="blank",
   
   ### Then generate one with jittered points
   res$intermediate$ggpairs.jittered <-
-    ggpairs(res$intermediate$dat, params=c(position="jitter"),
-            diag=list(continuous="blank"),
-            upper=list(continuous="cor"),
-            lower=list(continuous="points"),
+    ggpairs(res$intermediate$dat,
+            diag=list(continuous="blankDiag"),
+            upper=list(continuous=GGally::wrap("cor")),
+            lower=list(continuous=GGally::wrap("points", position="jitter")),
             axisLabels=res$input$axisLabels);
-  
+
   ### Copy the the one with the jittered points
   res$intermediate$ggpairs.combined <- res$intermediate$ggpairs.jittered;
 

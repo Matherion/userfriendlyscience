@@ -19,7 +19,7 @@ sort.associationMatrix <- function(x, decreasing = TRUE, byColumn = 1, ...) {
     warning("The associationMatrix you provided contains ",
             length(unique(unlist(res$intermediate$sorting$esTypes))),
             " different effect size types (specifically ",
-            vectTxt(unique(unlist(res$intermediate$sorting$esTypes)), useQuote="'"),
+            vecTxt(unique(unlist(res$intermediate$sorting$esTypes)), useQuote="'"),
             ")! Sorting may be unreliable.");
   }
 

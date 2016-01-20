@@ -55,12 +55,12 @@ importFrom('SCRT', 'pvalue.systematic');
 
 importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes_string',
            'geom_line', 'geom_point', 'geom_violin', 'geom_jitter', 'geom_dotplot',
-           'geom_pointrange', 'geom_errorbar', 'geom_histogram', 'geom_density',
-           'element_line', 'element_rect', 'element_text', 'element_blank',
+           'geom_pointrange', 'geom_errorbar', 'geom_histogram', 'geom_density', 'geom_bar',
+           'element_line', 'element_rect', 'element_text', 'element_blank', 'scale_fill_brewer',
            'position_jitter', 'position_dodge', 'geom_smooth', 'geom_rug',
            'stat_summary', 'labs', 'xlab', 'ylab', 'rel', 'theme_bw', 'scale_y_reverse',
-           'ggplot_build', 'ggsave');
-importFrom('GGally', 'ggpairs', 'getPlot', 'putPlot');
+           'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'guides', 'guide_legend');
+importFrom('GGally', 'ggpairs', 'getPlot', 'putPlot', 'wrap');
 importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.layout',
            'textGrob', 'grid.rect', 'gpar', 'grid.draw');
 importFrom('gridExtra', 'arrangeGrob');
