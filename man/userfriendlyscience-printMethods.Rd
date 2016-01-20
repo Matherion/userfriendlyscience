@@ -29,6 +29,11 @@
 \alias{print.regr}
 \alias{print.processOpenSesameIAT}
 \alias{print.processOpenSesameIAT.log}
+\alias{print.descr}
+\alias{print.therapyMonitor}
+\alias{print.therapyMonitor.multi}
+\alias{print.regrPwrSim}
+\alias{print.asymmetricalScatterMatrix}
 \title{
 userfriendlyscience print methods
 }
@@ -74,7 +79,15 @@ colNames = x$colNames, ...)
 \method{print}{posthocTGH}(x, digits = x$input$digits, ...)
 \method{print}{scaleInspection}(x, show=x$show, ...)
 \method{print}{regr}(x, digits=x$input$digits,
-                     pvalueDigits=x$input$pvalueDigits, ...) 
+                     pvalueDigits=x$input$pvalueDigits, ...)
+\method{print}{processOpenSesameIAT}(x, ...)
+\method{print}{processOpenSesameIAT.log}(x, ...)
+\method{print}{descr}(x, digits = attr(x, 'digits'),
+                      row.names = FALSE, ...)
+\method{print}{therapyMonitor}(x, digits=2, printPlot = TRUE, ...)
+\method{print}{therapyMonitor.multi}(x, ...)
+\method{print}{regrPwrSim}(x, digits=x$input$digits, ...)
+\method{print}{asymmetricalScatterMatrix}(x, ...)
 }
 \arguments{
   \item{x}{
@@ -105,6 +118,9 @@ Whether an extra notification about the type of skewness and kurtosis returned b
 The number of digits to show for p-values; smaller p-values will be shown as
 <.001 or <.0001 etc.
 }
+  \item{printPlot}{
+Whether to also print the plot.
+}
   \item{na.print}{
 What to print for missing values, for example for a oneway anova table.
 }
@@ -112,6 +128,9 @@ What to print for missing values, for example for a oneway anova table.
 To override the 'show' argument, which is sometimes used to inhibit printing
 of extensive information with e.g. many plots, which is useful for some functions
 that, for example, primarily generate a PDF.
+}
+  \item{row.names}{
+  Whether to print rownames.
 }
   \item{...}{
 Addition arguments that are passed on to the print functions when it's called.

@@ -181,12 +181,12 @@ therapyMonitor.multi <- function(dat = NULL,
   
 }
 
-print.therapyMonitor.multi <- function(res, ...) {
+print.therapyMonitor.multi <- function(x, ...) {
   
-  if (!is.null(res$intermediate$notice)) {
-    cat0("\n\n", res$intermediate$notice, "\n");
+  if (!is.null(x$intermediate$notice)) {
+    cat0("\n\n", x$intermediate$notice, "\n");
   }
   
-  cat(res$output$results);
+  cat(x$output$results);
   
 }

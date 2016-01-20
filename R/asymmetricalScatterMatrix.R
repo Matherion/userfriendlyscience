@@ -153,6 +153,6 @@ asymmetricalScatterMatrix <- function(dat, x, y,
   
 }
 
-print.asymmetricalScatterMatrix <- function(res) {
-  grid.draw(res$output$scatterMatrix);
+print.asymmetricalScatterMatrix <- function(x, ...) {
+  grid.draw(x$output$scatterMatrix, ...);
 }

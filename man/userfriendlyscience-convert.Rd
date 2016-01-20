@@ -8,6 +8,20 @@
 \alias{convert.f.to.d}
 \alias{convert.chisq.to.p}
 \alias{convert.chisq.to.V}
+\alias{convert.d.to.logodds}
+\alias{convert.d.to.r}
+\alias{convert.etasq.to.cohensf}
+\alias{convert.f.to.etasq}
+\alias{convert.f.to.omegasq}
+\alias{convert.fisherz.to.r}
+\alias{convert.logodds.to.d}
+\alias{convert.logodds.to.r}
+\alias{convert.or.to.d}
+\alias{convert.or.to.r}
+\alias{convert.r.to.d}
+\alias{convert.r.to.fisherz}
+\alias{convert.r.to.p}
+\alias{convert.t.to.d}
 \title{
 convert functions
 }
@@ -16,17 +30,42 @@ These are a number of functions to convert statistics and effect size measures f
 }
 \usage{
 convert.r.to.t(r, n)
+convert.r.to.d(r)
+convert.r.to.p(r, n)
+convert.r.to.fisherz(r)
+
 convert.t.to.r(t, n)
-convert.b.to.t(b, se)
+convert.t.to.d(t, df=NULL, n1=NULL, n2=NULL, proportion=.5)
 convert.t.to.p(t, df)
+
 convert.f.to.p(f, df1, df2, lower.tail=FALSE)
 convert.f.to.d(f, df1, df2 = NULL, n1=NULL, n2=NULL, proportion=.5)
+
 convert.chisq.to.p(chisq, df, lower.tail=FALSE)
 convert.chisq.to.V(chisq, n, minDim)
+
+convert.d.to.logodds(d)
+convert.d.to.r(d, n1 = NULL, n2 = NULL)
+
+convert.etasq.to.cohensf(etasq)
+
+convert.f.to.etasq(f, df1, df2)
+convert.f.to.omegasq(f, df1, df2)
+
+convert.or.to.d(or)
+convert.or.to.r(or)
+
+convert.fisherz.to.r(z)
+
+convert.b.to.t(b, se)
+
+convert.logodds.to.d(logodds)
+convert.logodds.to.r(logodds)
+
 }
 \arguments{
-  \item{r, t, f, chisq}{
-  THe value of the relevant statistic
+  \item{r, t, f, chisq, d, etasq, z, or, logodds}{
+  The value of the relevant statistic or effect size.
 }
   \item{n, n1, n2}{
   The number of observations that the r or t value is based on, of the

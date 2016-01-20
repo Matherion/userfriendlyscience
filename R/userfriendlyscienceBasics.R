@@ -212,8 +212,9 @@ massConvertToNumeric <- function (dat, byFactorLabel = FALSE,
   return(dat);
 }
 
-vecTxt <- function(vector, delimiter = ", ", firstDelimiter = NULL, lastDelimiter = " & ",
-                   useQuote = "", firstElements = 0, lastElements = 1,
+vecTxt <- function(vector, delimiter = ", ", useQuote = "",
+                   firstDelimiter = NULL, lastDelimiter = " & ",
+                   firstElements = 0, lastElements = 1,
                    lastHasPrecedence = TRUE) {
 
   vector <- paste0(useQuote, vector, useQuote);

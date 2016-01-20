@@ -13,7 +13,7 @@ Description: Contains a number of functions that serve
   advanced functions more user friendly to relatively novice users.
 URL: http://userfriendlyscience.com
 Imports: plyr,
-         psych, pwr, fBasics, ltm, MBESS, SuppDists, GPArotation,
+         psych, pwr, fBasics, MBESS, SuppDists, GPArotation,
          MASS, mosaic, 
          foreign,
          car,

@@ -19,7 +19,7 @@ therapyMonitor(dat = NULL, design="AB", statistic="|A-B|",
                plotWidth=25, plotHeight=15)
 therapyMonitor.multi(dat = NULL,
                      variableColumn = NULL, conditionColumn = NULL,
-                     minLevels = 5,
+                     conditionMoment = NULL, minLevels = 5,
                      outputFiles = FALSE, outputFilePath = getwd(),
                      outputFormats = c('svg', 'png'), silent=FALSE,
                      ...)
@@ -32,13 +32,13 @@ therapyMonitor.multi(dat = NULL,
 }
   \item{design}{
   The design to use; see \code{\link{pvalue.systematic}} in the
-  \code{\link{SCRT}} package for more information. Note that currently,
+  \code{\link{SCRT-package}} for more information. Note that currently,
   this function always assumes an "AB" design; changing this only changes
   the way \code{\link{pvalue.systematic}} is called.
 }
   \item{statistic}{
   The statistic to use; see \code{\link{pvalue.systematic}} in the
-  \code{\link{SCRT}} package for more information. Note that currently,
+  \code{\link{SCRT-package}} for more information. Note that currently,
   this function always assumes the "|A-B|" statistic; changing this only
   changes the way \code{\link{pvalue.systematic}} is called.
 
@@ -109,6 +109,9 @@ therapyMonitor.multi(dat = NULL,
   \item{outputFilePath}{
   If \code{outputFiles} is TRUE, the path where to store the output files.
 }
+\item{silent}{
+  Whether to suppress messages about progress etc.
+}
   \item{...}{
   Additional arguments to \code{therapyMonitor.multi} are passed on to
   \code{therapyMonitor}.
@@ -117,7 +120,7 @@ therapyMonitor.multi(dat = NULL,
 \details{
 
 This function started as a wrapper to the \code{\link{pvalue.systematic}}
-function in the \code{\link{SCRT}} package, but it now also does some extra
+function in the \code{\link{SCRT-package}}, but it now also does some extra
 stuff.
 
 }

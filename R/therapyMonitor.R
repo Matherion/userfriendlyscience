@@ -544,7 +544,8 @@ therapyMonitor <- function(dat = NULL,
   
 }
 
-print.therapyMonitor <- function(res, digits=2, printPlot = TRUE, ...) {
+print.therapyMonitor <- function(x, digits=2, printPlot = TRUE, ...) {
+  res <- x;
   cat0(  "         Measured variable: ", res$intermediate$variableColumn,
        "\nCondition (phase) variable: ", res$intermediate$conditionColumn,
        "\n  Observations in raw data: ", res$intermediate$rawLines,

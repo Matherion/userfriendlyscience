@@ -31,7 +31,7 @@ freq <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
   
   if (length(unique(vector)) < 2) {
     stop("There are less than two unique elements in the vector you supplied: ",
-         vectTxt(unique(vector), useQuotes='"'), ".");
+         vecTxt(unique(vector), useQuote='"'), ".");
   }
   
   suppressWarnings(variance <- var(as.numeric(vector), na.rm=TRUE));

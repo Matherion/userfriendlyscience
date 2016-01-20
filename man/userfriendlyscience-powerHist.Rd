@@ -7,17 +7,24 @@ powerHist
 powerHist generates a histogram with a density curve and a normal density curve.
 }
 \usage{
-powerHist(vector, distributionColor = "#2222CC",
-          normalColor = "#00CC00", distributionLineSize = 2,
-          normalLineSize = 1, xLabel = NULL,
-          yLabel = NULL, density=FALSE)
+powerHist(vector, histColor = "#0000CC",
+          distributionColor = "#0000CC",
+          normalColor = "#00CC00", distributionLineSize = 1,
+          normalLineSize = 1, histAlpha = 0.25, xLabel = NULL,
+          yLabel = NULL, density=FALSE, theme = 
+          dlvTheme(axis.title = element_text(colour = "black")),
+          rug = TRUE, jitteredRug = TRUE, rugSides = "b" )
+          
 }
 \arguments{
   \item{vector}{
   A numeric vector.
 }
+  \item{histColor}{
+  The colour to use for the histogram.
+}
   \item{distributionColor}{
-  The colour to use for the distribution (the histogram and the density curve).
+  The colour to use for the density curve.
 }
   \item{normalColor}{
   The colour to use for the normal curve.
@@ -28,6 +35,9 @@ powerHist(vector, distributionColor = "#2222CC",
   \item{normalLineSize}{
   The line size to use for the normal curve.
 }
+\item{histAlpha}{
+  Alpha value ('opaqueness', as in, versus transparency) of the histogram.
+}
   \item{xLabel}{
   Label to use on x axis.
 }
@@ -36,6 +46,21 @@ powerHist(vector, distributionColor = "#2222CC",
 }
   \item{density}{
   This argument is not in use yet.
+}
+\item{theme}{
+  The theme to use.
+}
+\item{rug}{
+  Whether to add a rug (i.e. lines at the bottom that correspond to individual
+  datapoints.
+}
+\item{jitteredRug}{
+  Whether to jitter the rug (useful for variables with several datapoints
+  sharing the same value.
+}
+\item{rugSides}{
+  This is useful when the histogram will be rotated; for example, this can be
+  set to 'r' if the histogram is rotated 270 degrees.
 }
 }
 \value{

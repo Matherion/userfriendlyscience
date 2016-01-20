@@ -12,10 +12,10 @@ The dlvPlot function produces a dot-violin-line plot, and dlvTheme is the defaul
 dlvPlot(dat, x = NULL, y, z = NULL, conf.level = .95,
         jitter = "FALSE", binnedDots = TRUE, binwidth=NULL,
         error="lines", dotsize="density", densityDotBaseSize=3,
-        normalDotBaseSize=3, violinAlpha = .2, dotAlpha = .4,
+        normalDotBaseSize=1, violinAlpha = .2, dotAlpha = .4,
         lineAlpha = 1, connectingLineAlpha = 1,
         meanDotSize=5, posDodge=0.2, errorType = "both")
-dlvTheme(base_size = 14, base_family = "")
+dlvTheme(base_size = 14, base_family = "", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -80,7 +80,7 @@ dlvTheme(base_size = 14, base_family = "")
   (\code{errorType='both'}). In this last case, the standard error will be
   wider than the confidence interval.
 }
-  \item{base_size, base_family}{
+  \item{base_size, base_family, ...}{
   Passed on to the ggplot theme_grey() function.
 }
 }

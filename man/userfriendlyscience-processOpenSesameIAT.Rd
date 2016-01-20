@@ -24,7 +24,9 @@ processOpenSesameIAT(dataPath,
                      participantVarName = "subject",
                      taskVarName = "session",
                      openSesameVarNames = list(correct = "correct",
-                                               response_time = "response_time"))
+                                               response_time = "response_time"),
+                     roundOutput = 6,
+                     decimalSeparator = ".")
 }
 \arguments{
   \item{dataPath}{
@@ -45,28 +47,28 @@ processOpenSesameIAT(dataPath,
   \item{blocks.practiceTrials}{
   A vector containing the numbers of the practice trials.
 }
-  \item{responseTime.min}{
+\item{responseTime.min}{
   Minimum number of milliseconds of response time (all shorter times will
   be removed).
 }
-  \item{responseTime.max}{
+\item{responseTime.max}{
   Maximum number of milliseconds of response time (all longer times will
   be replaced with this number).
 }
-  \item{responseTime.penalty}{
+\item{responseTime.penalty}{
   Penalty in milliseconds to add to the response times for incorrect
   responses.
 }
-  \item{outputFile}{
+\item{outputFile}{
   If specified, the aggregated datafile is stored in this file.
 }
-  \item{wideOutputFile}{
+\item{wideOutputFile}{
   If specified, the wide version of the datafile will be stored in this file.
 }
-  \item{showLog}{
+\item{showLog}{
   Boolean; if TRUE, shows the log (is stored in the resulting object anyway).
 }
-  \item{filenameRegEx}{
+\item{filenameRegEx}{
   Regular expression describing the filenames. This has two purposes.
   First, only files matching this regular expression will be processed
   (note that you can set it to \code{NULL} to process all files). Second,
@@ -86,23 +88,32 @@ processOpenSesameIAT(dataPath,
   in their identifiers. Note that you have to include the variable names
   of each of these extractable patterns in \code{regExValues}!
 }
-  \item{regExValues}{
+\item{regExValues}{
   Here, the names of the variables extracted using the regular expression
   specified in \code{filenameRegEx} are provided. Must of course have the
   same length as the number of patterns specified in \code{filenameRegEx},
   and in the same order.
 }
-  \item{participantVarName, taskVarName}{
+\item{participantVarName, taskVarName}{
   Variable name of the variable identifying participants and tasks (usually
   extracted from the filename, so should be a value in regExValues). Tasks
   are usually different within-subject conditions.
-  }
-  \item{openSesameVarNames}{
+}
+\item{openSesameVarNames}{
   A list with the two elements 'correct' and 'response_time', which should
   be the variable names that OpenSesame used to write, for each trial, whether
   the response was correct or not ('correct') and what the response time
   was ('response_time');
-  }
+}
+\item{roundOutput}{
+  Number of digits to round the output to. This is useful for importing into
+  a program that doesn't quite get how storing numbers works, such as SPSS or
+  Excel; they sometimes don't manage to import numbers with many decimals.
+}
+\item{decimalSeparator}{
+  When working with e.g. Excel, it can be easier to just specify the decimal
+  separator rather than switch Excel's (and therefore Windows') locale.
+}
 }
 \details{
 

@@ -33,9 +33,12 @@ invertItem(item, range=NULL, ignorePreviousInversion = FALSE)
 is.odd(vector)
 is.even(vector)
 convertToNumeric(vector, byFactorLabel = FALSE)
-massConvertToNumeric(dat, byFactorLabel = FALSE, ignoreCharacter = TRUE)
-vecTxt(vector, delimiter = ", ", firstDelimiter = NULL, lastDelimiter = " & ",
-       firstElements = 0, lastElements = 1, lastHasPrecedence = TRUE)
+massConvertToNumeric(dat, byFactorLabel = FALSE,
+                     ignoreCharacter = TRUE,
+                     stringsAsFactors = FALSE)
+vecTxt(vector, delimiter = ", ", useQuote = "",
+      firstDelimiter = NULL, lastDelimiter = " & ",
+      firstElements = 0, lastElements = 1, lastHasPrecedence = TRUE)
 find \%IN\% table
 cat0(..., sep="")
 }
@@ -99,33 +102,43 @@ The number of times to repeat the string.
   \item{byFactorLabel}{
   If TRUE, convertToNumeric and massConvertToNumeric use the factor labels, interpreted as character vectors, to determine the numeric value, instead of the level's indices (which is what as.numeric() does).
 }
-  \item{ignoreCharacter}{
+\item{ignoreCharacter}{
   If TRUE, character vectors are ignored. If FALSE, character vectors are converted (or, an attempt is made :-)).
-  }
-  \item{find}{
+}
+\item{stringsAsFactors}{
+  If TRUE, strings (character vectors) in the dataframe will be converted to
+  factors (by as.data.frame, after the function called lapply).
+}
+\item{find}{
   The element(s) to look up in the vector or matrix.
-  }
-  \item{table}{
+}
+\item{table}{
   The vector or matrix in which to look up the element.
   }
-  \item{delimiter, firstDelimiter, lastDelimiter}{
+\item{delimiter, firstDelimiter, lastDelimiter}{
   The delimiters to use for respectively the middle, first
   \code{firstElements}, and last \code{lastElements} elements.
-  }
-  \item{firstElements, lastElements}{
+}
+\item{useQuote}{
+  This character string is pre- and appended to all elements; so use this to
+  quote all elements (\code{useQuote="'"}), doublequote all elements
+  (\code{useQuote='"'}), or anything else (e.g. \code{useQuote='|'}).
+  
+}
+\item{firstElements, lastElements}{
   The number of elements for which to use the first respective last delimiters
-  }
-  \item{lastHasPrecedence}{
+}
+\item{lastHasPrecedence}{
   If the vector is very short, it's possible that the sum of firstElements
   and lastElements is larger than the vector length. In that case, downwardly
   adjust the number of elements to separate with the first delimiter 
   (\code{TRUE}) or the number of elements to separate with the last
   delimiter (\code{FALSE})?
-  }
-  \item{sep}{
+}
+\item{sep}{
   The separator to pass to \code{\link{cat}}, of course, "" by default.
 }
-  \item{...}{
+\item{...}{
   Extra arguments are passed to whatever function is wrapped (e.g.
   \code{\link{cat}} for \code{cat0}).
 }

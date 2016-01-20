@@ -100,7 +100,7 @@ regrPwrSim <- function(n, predictors=NULL, cor = c(.3, .5),
         res$correctedPredictorRegressions[[currentPredictor]] <- list();
         res$correctedPredictorRegressions[[currentPredictor]]$formula <-
           paste(currentPredictor, "~",
-                paste0(predictNames[predictName != currentPredictor],
+                paste0(predictNames[predictNames != currentPredictor],
                        collapse=" + "));
         res$correctedPredictorRegressions[[currentPredictor]]$lm <-
           lm(formula(res$correctedPredictorRegressions[[currentPredictor]]$formula), dat);
@@ -116,7 +116,7 @@ regrPwrSim <- function(n, predictors=NULL, cor = c(.3, .5),
         res$correctedDependentRegressions[[currentPredictor]] <- list();
         res$correctedDependentRegressions[[currentPredictor]]$formula <-
           paste(dependName, "~",
-                paste0(predictNames[predictName != currentPredictor],
+                paste0(predictNames[predictNames != currentPredictor],
                        collapse=" + "));
         res$correctedDependentRegressions[[currentPredictor]]$lm <-
           lm(formula(res$correctedDependentRegressions[[currentPredictor]]$formula), dat);
@@ -128,7 +128,7 @@ regrPwrSim <- function(n, predictors=NULL, cor = c(.3, .5),
         ### Finally, correlate the corrected predictor with both the
         ### raw and the corrected dependent variable
         res$correctedCorrelations[[currentPredictor]]$cor.pred_raw_dep <-
-          cor(res$uniquePredictorPortion[[currentPredictor]], dat[[dependent]]);
+          cor(res$uniquePredictorPortion[[currentPredictor]], dat[[dependName]]);
         res$correctedCorrelations[[currentPredictor]]$cor.pred_cor_dep <-
           cor(res$uniquePredictorPortion[[currentPredictor]],
               res$uniqueDependentPortion[[currentPredictor]]);
@@ -215,7 +215,8 @@ regrPwrSim <- function(n, predictors=NULL, cor = c(.3, .5),
   
 }
 
-print.regrPwrSim <- function(res, digits=res$input$digits, ...) {
+print.regrPwrSim <- function(x, digits=x$input$digits, ...) {
+  res <- x;
   cat0("Ran ", res$input$samples, " regression analyses, each with a sample size of ",
        res$input$n, " and ", res$input$predictors, " predictors, with an average ",
       "correlation between predictors of ",

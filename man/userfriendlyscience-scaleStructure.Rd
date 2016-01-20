@@ -11,32 +11,32 @@ The scaleStructure function (which was originally called scaleReliability) compu
 scaleStructure(dat=NULL, items = 'all', digits = 2, ci = TRUE,
                interval.type="normal-theory", conf.level=.95,
                silent=FALSE, samples=1000, bootstrapSeed = NULL,
-               omega.psych = TRUE)
+               omega.psych = TRUE, poly = TRUE)
 scaleReliability(dat=NULL, items = 'all', digits = 2, ci = TRUE,
                  interval.type="normal-theory", conf.level=.95,
                  silent=FALSE, samples=1000, bootstrapSeed = NULL,
-                 omega.psych = TRUE)
+                 omega.psych = TRUE, poly = TRUE)
 }
 \arguments{
-  \item{dat}{
+\item{dat}{
   A dataframe containing the items in the scale. All variables in this
   dataframe will be used if items = 'all'. If \code{dat} is \code{NULL},
   a the \code{\link{getData}} function will be called to show the user
   a dialog to open a file.
 }
-  \item{items}{
+\item{items}{
   If not 'all', this should be a character vector with the names of the
   variables in the dataframe that represent items in the scale.
 }
-  \item{digits}{
+\item{digits}{
   Number of digits to use in the presentation of the results.
 }
-  \item{ci}{
+\item{ci}{
   Whether to compute confidence intervals as well. If true, the method
   specified in \code{interval.type} is used. When specifying a
   bootstrapping method, this can take quite a while!
 }
-  \item{interval.type}{
+\item{interval.type}{
   Method to use when computing confidence intervals. The list of methods
   is explained in \code{\link{ci.reliability}}. Note that when specifying
   a bootstrapping method, the method will be set to \code{normal-theory}
@@ -44,23 +44,23 @@ scaleReliability(dat=NULL, items = 'all', digits = 2, ci = TRUE,
   these are based on the polychoric correlation matrix, and raw data is
   required for bootstrapping.
 }
-  \item{conf.level}{
+\item{conf.level}{
   The confidence of the confidence intervals.
 }
-  \item{silent}{
+\item{silent}{
   If computing confidence intervals, the user is warned that it may take a
   while, unless \code{silent=TRUE}.
 }
-  \item{samples}{
+\item{samples}{
   The number of samples to compute for the bootstrapping of the confidence
   intervals.
 }
-  \item{bootstrapSeed}{
+\item{bootstrapSeed}{
   The seed to use for the bootstrapping - setting this seed makes it
   possible to replicate the exact same intervals, which is useful for
   publications.
 }
-  \item{omega.psych}{
+\item{omega.psych}{
   Whether to also compute the interval estimate for omega using the
   \code{\link{omega}} function in the \code{\link{psych}} package.
   The default point estimate and confidence interval for omega are based
@@ -70,7 +70,10 @@ scaleReliability(dat=NULL, items = 'all', digits = 2, ci = TRUE,
   bootstrapping), whereas the \code{\link{psych}} package point estimate was
   suggested in Revelle & Zinbarg (2008). The \code{\link{psych}} estimate
   usually (perhaps always) results in higher estimates for omega.
-  
+}
+\item{poly}{
+  Whether to compute ordinal measures (if the items have sufficiently
+  few categories).
 }
 }
 \details{
