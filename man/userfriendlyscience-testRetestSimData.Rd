@@ -37,6 +37,11 @@ This dataset contains the true scores of 250 participants on some variable, and 
 \details{
 This dataset was generated with the code in the reliabilityTest.r test script.
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 \examples{
 data(testRetestSimData);
 head(testRetestSimData);

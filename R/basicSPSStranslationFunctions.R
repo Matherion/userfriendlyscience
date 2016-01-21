@@ -112,26 +112,28 @@ getData <- function(filename=NULL,
     }
     else if ((extension == ".xls") || (extension == "xlsx")) {
       if (!is.element('XLConnect', installed.packages()[, 1])) {
-         stop("To load Excel (.xls or .xlsx) files, I need package 'XLConnect', ",
-              "which in turn requires Java. Please install it yourself if you wish to ",
-              "use this. You can install it using:\n\n",
-              "install.packages('XLConnect')\n\nOf course, you can always export from ",
-              "Excel to .csv (comma separated values) and load that file.");
+        stop("To load Excel (.xls or .xlsx) files, I need package 'XLConnect', ",
+             "which in turn requires Java. Please install it yourself if you wish to ",
+             "use this. You can install it using:\n\n",
+             "install.packages('XLConnect')\n\nOf course, you can always export from ",
+             "Excel to .csv (comma separated values) and load that file.");
       }
       else {
+        wb <- XLConnect::loadWorkbook(filename, ...);
+        dat <- XLConnect::readWorksheet(wb, sheet=1);
         if (requireNamespace('XLConnect')) {
           wb <- XLConnect::loadWorkbook(filename, ...);
           dat <- XLConnect::readWorksheet(wb, sheet=1);
-		} else {
-         stop("To load Excel (.xls or .xlsx) files, I need package 'XLConnect', ",
-              "which in turn requires Java. Please install it yourself if you wish to ",
-              "use this. You can install it using:\n\n",
-              "install.packages('XLConnect')\n\nOf course, you can always export from ",
-              "Excel to .csv (comma separated values) and load that file.");
-		}
-      }
-    }
-
+        } else {
+          stop("To load Excel (.xls or .xlsx) files, I need package 'XLConnect', ",
+               "which in turn requires Java. Please install it yourself if you wish to ",
+               "use this. You can install it using:\n\n",
+               "install.packages('XLConnect')\n\nOf course, you can always export from ",
+               "Excel to .csv (comma separated values) and load that file.");
+        }
+     }
+   }
+    
     ### Store the file where we got this dataframe
     attr(dat, "fileName") <- filename;
     ### Store the call

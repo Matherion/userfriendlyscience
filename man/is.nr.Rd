@@ -19,6 +19,11 @@ is.nr(x)
 \value{
 TRUE or FALSE.
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 \examples{
 is.nr(8);    ### Returns TRUE
 is.nr(NULL); ### Returns FALSE

@@ -71,6 +71,12 @@ An object, with the following elements:
   \item{dat}{The dataframe used to generate the plot.}
   \item{plot}{The histogram.}
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 
 powerHist(mtcars$mpg)

@@ -56,6 +56,12 @@ An object with the input and several output variables. Most notably:
   \item{describe}{Decriptive statistics about the items}
   \item{scatterMatrix}{A scattermatrix with histograms on the diagonal and correlation coefficients in the upper right half.}
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 ### Note: the 'not run' is simply because running takes a lot of time,
 ###       but these examples are all safe to run!

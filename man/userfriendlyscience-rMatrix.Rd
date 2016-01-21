@@ -74,6 +74,12 @@ An object with the input and several output variables. Most notably a number of 
   \item{p.raw}{Original p-values.}
   \item{p.adj}{p-values adjusted for multiple testing.}
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 
 rMatrix(mtcars, x=c('disp', 'hp', 'drat'))

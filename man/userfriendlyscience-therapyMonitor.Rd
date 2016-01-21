@@ -130,6 +130,11 @@ For therapyMonitor, an object with the input and several output variables,
 as well as a plot. For therapyMonitor.multi, an object containing several
 therapyMonitor objects, as well as collated output.
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 \examples{
 ### Explore and plot the weight of a chick in the ChickWeight dataset
 therapyMonitor(ChickWeight, variableColumn='weight',

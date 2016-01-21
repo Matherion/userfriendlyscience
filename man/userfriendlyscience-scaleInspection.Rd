@@ -133,6 +133,11 @@ makeScales returns the provided dataframe, now including the new scale variables
 meanConfInt and sdConfInt return an object, with in its 'output' list, the confidence interval for a mean or standard deviation.
 
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 
 \examples{
 

@@ -80,6 +80,11 @@ Schmidt, F. L., Le, H., & Ilies, R. (2003) Beyong Alpha: An Empirical Examinatio
 \note{
 This function uses equations 16 and 17 on page 212 of Schmidt, Le & Ilies (2003): in other words, this function assumes that one scale is administered twice. If you'd like the computation for two different but parellel scales/measures to be implemented, please contact me.
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 \examples{
 
 \dontrun{

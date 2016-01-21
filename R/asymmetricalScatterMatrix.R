@@ -1,14 +1,20 @@
-asymmetricalScatterMatrix <- function(dat, x, y,
-                                      scaleLimits = NULL,
-                                      powerHist=TRUE,
+asymmetricalScatterMatrix <- function(dat, cols, rows,
+#                                      scaleLimits = NULL,
+#                                      powerHist=TRUE,
                                       theme=dlvTheme(),
                                       txtHeight = 1,
-                                      histHeight = 5,
-                                      scatterWidth = 10,
-                                      scatterHeight = 10,
+                                      histHeight = 3,
+                                      scatterWidth = 6,
+                                      scatterHeight = 6,
                                       unit = 'cm',
-                                      dpi=300,
-                                      ...) {
+                                      dpi=200,
+                                      showCorrelations=c('top-left',
+                                                         'top-right',
+                                                         'bottom-left',
+                                                         'bottom-right'),
+                                      correlationSize = 15,
+                                      correlationColor = "#cadded",
+                                      pointSize = 1.5) {
   
   ### Generate object with 3 sub-objects to store input,
   ### intermediate results, and output
@@ -19,7 +25,7 @@ asymmetricalScatterMatrix <- function(dat, x, y,
   ### Extract dataframe and select only complete cases
   res$intermediate$dat <-
     dat <-
-    na.omit(dat[, c(x, y)]);
+    na.omit(dat[, c(cols, rows)]);
 
   ### Convert all variables to numeric vectors, if they weren't already
   res$intermediate$dat <-
@@ -28,9 +34,9 @@ asymmetricalScatterMatrix <- function(dat, x, y,
   
   res$intermediate$plots <- list();
   res$intermediate$plotList <- list();
-  for (currentRowVar in -1:length(y)) {
+  for (currentRowVar in -1:length(rows)) {
     res$intermediate$plots[[currentRowVar+2]] <- list();
-    for (currentColVar in -1:length(x)) {
+    for (currentColVar in -1:length(cols)) {
       
       if ((currentRowVar < 1) && (currentColVar < 1)) {
         ### Top-left corner, display nothing
@@ -40,17 +46,17 @@ asymmetricalScatterMatrix <- function(dat, x, y,
       } else if (currentRowVar == -1) {
         ### In the first row: show column variable name
         res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] <-
-          textGrob(x[currentColVar]);
+          textGrob(cols[currentColVar]);
         
       } else if (currentColVar == -1) {
         ### In the first column: show row variable name
         res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] <-
-          textGrob(y[currentRowVar], rot=90);
+          textGrob(rows[currentRowVar], rot=90);
         
       } else if (currentRowVar == 0) {
         ### In the second row: show column variable histogram
         res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] <-
-          powerHist(dat[[x[[currentColVar]]]], xLabel=FALSE,
+          powerHist(dat[[cols[[currentColVar]]]], xLabel=FALSE,
                     yLabel=FALSE, distributionLineSize=.5,
                     normalLineSize = .5)$plot +
           theme(axis.title=element_blank(),
@@ -60,7 +66,7 @@ asymmetricalScatterMatrix <- function(dat, x, y,
         
         ### In the second column: show row variable histogram
         res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] <-
-          powerHist(dat[[y[[currentRowVar]]]], xLabel=FALSE,
+          powerHist(dat[[rows[[currentRowVar]]]], xLabel=FALSE,
                     yLabel=FALSE, distributionLineSize=.5,
                     normalLineSize = .5)$plot +
           scale_y_reverse() + coord_flip() +
@@ -70,10 +76,10 @@ asymmetricalScatterMatrix <- function(dat, x, y,
       } else {
         ### We're beyond the second row or column; show scatterplot
         
-        ggplotDf <- data.frame(x = dat[, x[[currentColVar]] ],
-                               y = dat[, y[[currentRowVar]] ]);
+        ggplotDf <- data.frame(x = dat[, cols[[currentColVar]] ],
+                               y = dat[, rows[[currentRowVar]] ]);
 #         
-#         corLabel <- data.frame(x = min(dat[, x[[currentColVar]] ]),
+#         corLabel <- data.frame(x = min(dat[, cols[[currentColVar]] ]),
 #                                y = min(dat[, y[[currentRowVar]] ]),
 #                                label = noZero(round(cor(dat[[x[[currentColVar]]]],
 #                                                         dat[[y[[currentRowVar]]]]), 3)));
@@ -82,32 +88,53 @@ asymmetricalScatterMatrix <- function(dat, x, y,
         ### to get the dimensions, then we add the text, and then the scatterplot
         ### again so it overlays the text.
         
-        jitteredPointsLayer <- geom_point(aes(x=x, y=y), position='jitter');
+        jitteredPointsLayer <- geom_point(aes(x=x, y=y), position='jitter',
+                                          size=pointSize);
 
         res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] <-
           #ggplot(dat, aes_string(x=x[[currentColVar]], y=y[[currentRowVar]])) +
-          ggplot(data = ggplotDf, aes(x=x, y=y)) +
-          #jitteredPointsLayer +
-          geom_text(x = min(dat[, x[[currentColVar]] ]),
-                    y = min(dat[, y[[currentRowVar]] ]),
-                    label = noZero(round(cor(dat[[x[[currentColVar]]]],
-                                             dat[[y[[currentRowVar]]]]), 3)),
-                    size=20, color="#cadded", vjust=0, hjust=0) +
-          geom_text(x = min(dat[, x[[currentColVar]] ]),
-                    y = max(dat[, y[[currentRowVar]] ]),
-                    label = noZero(round(cor(dat[[x[[currentColVar]]]],
-                                             dat[[y[[currentRowVar]]]]), 3)),
-                    size=20, color="#cadded", vjust=1, hjust=0) +
-          geom_text(x = max(dat[, x[[currentColVar]] ]),
-                    y = min(dat[, y[[currentRowVar]] ]),
-                    label = noZero(round(cor(dat[[x[[currentColVar]]]],
-                                             dat[[y[[currentRowVar]]]]), 3)),
-                    size=20, color="#cadded", vjust=0, hjust=1) +
-          geom_text(x = max(dat[, x[[currentColVar]] ]),
-                    y = max(dat[, y[[currentRowVar]] ]),
-                    label = noZero(round(cor(dat[[x[[currentColVar]]]],
-                                             dat[[y[[currentRowVar]]]]), 3)),
-                    size=20, color="#cadded", vjust=1, hjust=1) +
+          ggplot(data = ggplotDf, aes(x=x, y=y));
+        # + jitteredPointsLayer +
+        
+        if ("bottom-left" %IN% showCorrelations) {
+          res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] <-
+            res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] +
+          geom_text(x = min(dat[, cols[[currentColVar]] ]),
+                    y = min(dat[, rows[[currentRowVar]] ]),
+                    label = noZero(round(cor(dat[[cols[[currentColVar]]]],
+                                             dat[[rows[[currentRowVar]]]]), 3)),
+                    size=correlationSize, color=correlationColor, vjust=0, hjust=0);
+        }
+        if ("top-left" %IN% showCorrelations) {
+          res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] <-
+            res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] +
+            geom_text(x = min(dat[, cols[[currentColVar]] ]),
+                    y = max(dat[, rows[[currentRowVar]] ]),
+                    label = noZero(round(cor(dat[[cols[[currentColVar]]]],
+                                             dat[[rows[[currentRowVar]]]]), 3)),
+                    size=correlationSize, color=correlationColor, vjust=1, hjust=0);
+        }
+        if ("bottom-right" %IN% showCorrelations) {
+          res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] <-
+            res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] +
+            geom_text(x = max(dat[, cols[[currentColVar]] ]),
+                    y = min(dat[, rows[[currentRowVar]] ]),
+                    label = noZero(round(cor(dat[[cols[[currentColVar]]]],
+                                             dat[[rows[[currentRowVar]]]]), 3)),
+                    size=correlationSize, color=correlationColor, vjust=0, hjust=1);
+        }
+        if ("top-right" %IN% showCorrelations) {
+          res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] <-
+            res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] +
+          geom_text(x = max(dat[, cols[[currentColVar]] ]),
+                    y = max(dat[, rows[[currentRowVar]] ]),
+                    label = noZero(round(cor(dat[[cols[[currentColVar]]]],
+                                             dat[[rows[[currentRowVar]]]]), 3)),
+                    size=correlationSize, color=correlationColor, vjust=1, hjust=1);
+        }
+        
+        res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] <-
+          res$intermediate$plots[[currentRowVar+2]][[currentColVar+2]] +
           jitteredPointsLayer +
           theme_bw() +
           theme(axis.title=element_blank(),
@@ -137,13 +164,13 @@ asymmetricalScatterMatrix <- function(dat, x, y,
   ### Create the final plot
   res$output$scatterMatrix <-
     do.call(arrangeGrob, c(res$intermediate$plotList,
-                           list(ncol=length(x) + 2,
-                                widths=unit(c(txtHeight, histHeight, rep.int(scatterWidth, length(x))), unit),
-                                heights=unit(c(txtHeight, histHeight, rep.int(scatterHeight, length(y))), unit))));
+                           list(ncol=length(cols) + 2,
+                                widths=unit(c(txtHeight, histHeight, rep.int(scatterWidth, length(cols))), unit),
+                                heights=unit(c(txtHeight, histHeight, rep.int(scatterHeight, length(rows))), unit))));
 
   ### Store the size of the plot
-  res$output$plotSize <- list(width = txtHeight + histHeight + scatterWidth * length(x),
-                              height = txtHeight + histHeight + scatterHeight * length(y),
+  res$output$plotSize <- list(width = txtHeight + histHeight + scatterWidth * length(cols),
+                              height = txtHeight + histHeight + scatterHeight * length(rows),
                               unit=unit,
                               res=dpi);
   
@@ -154,5 +181,7 @@ asymmetricalScatterMatrix <- function(dat, x, y,
 }
 
 print.asymmetricalScatterMatrix <- function(x, ...) {
+  grid.newpage();
   grid.draw(x$output$scatterMatrix, ...);
+  invisible();
 }

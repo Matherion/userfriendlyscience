@@ -187,6 +187,12 @@ is.odd and is.even return a logical vector.
 cat0 returns a string.
 
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 
 ### load a package

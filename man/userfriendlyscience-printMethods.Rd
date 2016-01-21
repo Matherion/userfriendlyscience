@@ -32,7 +32,6 @@
 \alias{print.descr}
 \alias{print.therapyMonitor}
 \alias{print.therapyMonitor.multi}
-\alias{print.regrPwrSim}
 \alias{print.asymmetricalScatterMatrix}
 \title{
 userfriendlyscience print methods
@@ -86,7 +85,6 @@ colNames = x$colNames, ...)
                       row.names = FALSE, ...)
 \method{print}{therapyMonitor}(x, digits=2, printPlot = TRUE, ...)
 \method{print}{therapyMonitor.multi}(x, ...)
-\method{print}{regrPwrSim}(x, digits=x$input$digits, ...)
 \method{print}{asymmetricalScatterMatrix}(x, ...)
 }
 \arguments{
@@ -139,6 +137,12 @@ Addition arguments that are passed on to the print functions when it's called.
 \value{
 These printing methods return nothing, but print stuff.
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 
 print.sdConfInt(sdConfInt(sd=4, n=20));

@@ -32,6 +32,12 @@ A list of three elements:
 \item{output}{List with two objects 'tukey' and 'games.howell', containing
 the outcomes for the respective post-hoc tests.}
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 ### Compute post-hoc statistics using the tukey method
 posthocTGH(y=ChickWeight$weight, x=ChickWeight$Diet, method="tukey");

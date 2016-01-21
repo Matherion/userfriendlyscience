@@ -28,6 +28,11 @@ invertItems(dat, items = NULL, ...)
 \value{
 The dataframe with the specified items inverted.
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 \seealso{
 \code{\link{invertItem}}
 }

@@ -1,4 +1,4 @@
-paginatedAsymmetricalScatterMatrix <- function(dat, x, y,
+paginatedAsymmetricalScatterMatrix <- function(dat, cols, rows,
                                                maxRows = 5,
                                                ...) {
   
@@ -11,18 +11,18 @@ paginatedAsymmetricalScatterMatrix <- function(dat, x, y,
   ### Extract dataframe and select only complete cases
   res$intermediate$dat <-
     dat <-
-    na.omit(dat[, c(x, y)]);
+    na.omit(dat[, c(cols, rows)]);
 
   ### Convert all variables to numeric vectors, if they weren't already
   res$intermediate$dat <-
     dat <-
     massConvertToNumeric(res$intermediate$dat);
   
-  if (length(y) > maxRows) {
+  if (length(rows) > maxRows) {
     
     res$intermediate$paginationVector <-
-      cut(1:length(y),
-          breaks = ceiling(length(y) / maxRows),
+      cut(1:length(rows),
+          breaks = ceiling(length(rows) / maxRows),
           labels=FALSE);
     
     res$output$scatterMatrices <- list();
@@ -31,14 +31,14 @@ paginatedAsymmetricalScatterMatrix <- function(dat, x, y,
       
       res$output$scatterMatrices[[currentPage]] <-
         asymmetricalScatterMatrix(dat,
-                                  x=x,
-                                  y=y[res$intermediate$paginationVector==currentPage],
+                                  cols=cols,
+                                  rows=rows[res$intermediate$paginationVector==currentPage],
                                   ...);
     }
     
   } else {
     res$output$scatterMatrices <-
-      list(asymmetricalScatterMatrix(dat, x=x, y=y, ...));
+      list(asymmetricalScatterMatrix(dat, cols=cols, rows=rows, ...));
   }
   
   ### Set class and return result

@@ -29,7 +29,6 @@ S3method(print, posthocTGH);
 S3method(print, scaleInspection);
 S3method(print, regr);
 S3method(print, asymmetricalScatterMatrix);
-S3method(print, regrPwrSim);
 S3method(print, therapyMonitor);
 S3method(print, therapyMonitor.multi);
 S3method(print, descr);
@@ -37,6 +36,20 @@ S3method(print, processOpenSesameIAT);
 S3method(print, processOpenSesameIAT.log);
 
 S3method(sort, associationMatrix)
+
+importFrom("grDevices", "dev.off", "png", "svg")
+importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
+           "chisq.test", "complete.cases", "confint", "cor",
+           "cor.test", "cov", "dchisq", "density", "df", "dnorm", "dt",
+           "formula", "ks.test", "lm", "lm.influence", "median",
+           "na.omit", "p.adjust", "pairwise.t.test", "pchisq", "pf",
+           "pnorm", "pt", "ptukey", "qchisq", "qnorm", "qt",
+           "quantile", "reshape", "sd", "shapiro.test", "t.test",
+           "terms", "var", "var.test")
+importFrom("utils", "capture.output", "chooseCRANmirror", "combn",
+           "head", "install.packages", "installed.packages",
+           "packageVersion", "read.csv", "read.delim", "tail",
+           "write.table")
 
 importFrom('plyr', 'ddply');
 

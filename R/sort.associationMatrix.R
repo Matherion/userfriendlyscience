@@ -1,5 +1,12 @@
 sort.associationMatrix <- function(x, decreasing = TRUE, byColumn = 1, ...) {
   
+  if (is.null(x$input$y)) {
+    stop("You can only sort asymmetrical associationMatrices, i.e., ",
+         "those where you explicitely specified row and column variables. ",
+         "for symmetrical association matrices, sorting would not make much ",
+         "sense.");
+  }
+  
   ### First generate a numeric table with effectsizes and one with their types
   res <- x;
   res$intermediate$sorting <- list();

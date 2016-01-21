@@ -26,6 +26,11 @@ The average of the Fisher's z values.
 \seealso{
 \code{\link{averagePearsonRs}}
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 \examples{
 averageFishersZs(c(1.1, 5.4), c(10, 30));
 }

@@ -83,6 +83,12 @@ analysis, and a correlation matrix.
 Nothing is returned; the file is printed to disk.
 
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 
 \dontrun{

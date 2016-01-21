@@ -27,7 +27,7 @@ exceptionalScores <- function(dat, items=NULL,
   namesToUse <- paste0(colnames(exceptionalScores), suffix);
   
   exceptionalScores <- apply(exceptionalScores, 2,
-                             exceptionalScore, prob = exception);
+                             exceptionalScore, prob = exception, both=both, silent=silent);
   
   colnames(exceptionalScores) <- namesToUse;
   

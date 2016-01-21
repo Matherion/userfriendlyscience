@@ -1,8 +1,7 @@
-descr <- descriptives <- function(x, digits=2, errorOnFactor = FALSE,
-                                  include=c("central", "spread",
-                                            "range", "shape", "size")) {
+descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
+                                  include=c("central tendency", "spread",
+                                            "range", "distribution shape", "sample size")) {
   varName <- deparse(substitute(x));
-  print(varName);
   if (is.factor(x)) {
     if (errorOnFactor) {
       stop("The first argument (called 'x' in this function, you passed '",
@@ -18,9 +17,13 @@ descr <- descriptives <- function(x, digits=2, errorOnFactor = FALSE,
   } else {
     nrNA <- sum(is.na(x));
     x <- na.omit(x);
+    mode <- modus(x);
+    if (length(mode) > 1) {
+      mode <- vecTxt(mode);
+    }
     res <- list("central tendency" = data.frame(mean = mean(x),
                                      median = median(x),
-                                     mode = modus(x)),
+                                     mode = mode),
                 spread = data.frame(var = var(x),
                                     sd = sd(x),
                                     iqr = median(x[x > median(x)]) -
@@ -57,4 +60,5 @@ print.descr <- function(x, digits = attr(x, 'digits'),
         "'normalityAssessment' to explore the distribution shape",
         "more in depth.)");
   }
+  invisible();
 }

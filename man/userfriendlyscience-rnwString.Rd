@@ -93,6 +93,12 @@ sanitizeLatexString returns the sanitized string.
 hasLaTeX checks pdfLatexPath to make sure pdflatex or pdflatex.exe exists.
 
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 
 ### sanitize a string

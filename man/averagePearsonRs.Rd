@@ -24,6 +24,11 @@ averagePearsonRs(rs, ns, FishersZ = TRUE)
   as of the writing of this document).
 }
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 \seealso{
 \code{\link{averageFishersZs}}, \code{\link{convert.r.to.fisherz}}
 }

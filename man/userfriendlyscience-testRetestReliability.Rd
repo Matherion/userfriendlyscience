@@ -70,6 +70,11 @@ An object with the input and several output variables. Most notably:
   \item{output$testRetestAlpha}{The value of the test-retest alpha coefficient.}
   \item{output$testRetestCES}{The value of the test-retest Coefficient of Equivalence and Stability.}
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 \examples{
 
 \dontrun{

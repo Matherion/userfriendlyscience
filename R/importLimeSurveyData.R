@@ -7,7 +7,8 @@ importLimeSurveyData <- function(datafile = NULL,
                                  limeSurveyRegEx.varLabels =
                                    "attributes\\(data\\)\\$variable.labels\\[\\d*\\] <- \".*\"",
                                  limeSurveyRegEx.toFactor =
-                                   "data\\[, \\d*\\] <- factor\\(data\\[, \\d*\\], levels=c\\(.*\\),labels=c\\(.*\\)\\)",
+                                   paste0("data\\[, \\d*\\] <- factor\\(data\\[, \\d*\\], ",
+                                          "levels=c\\(.*\\),labels=c\\(.*\\)\\)"),
                                  limeSurveyRegEx.varNameSanitizing =
                                    list(list(pattern = "#", replacement = "."),
                                         list(pattern = "\\$", replacement = ".")),

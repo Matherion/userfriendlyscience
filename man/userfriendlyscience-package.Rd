@@ -35,6 +35,7 @@ Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 \references{
 Peters, G.-J. Y. (2014). The alpha and the omega of scale reliability and validity: why and how to abandon Cronbach's alpha and the route towards more comprehensive assessment of scale quality. \emph{European Health Psychologist}, 16(2), 56-69.
 }
+
 \examples{
 ### Create simple dataset
 dat <- PlantGrowth[1:20,];

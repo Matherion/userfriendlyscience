@@ -115,6 +115,11 @@ Sijtsma, K. (2009). On the Use, the Misuse, and the Very Limited Usefulness of C
 
 Zinbarg, R. E., Revelle, W., Yovel, I., & Li, W. (2005). Cronbach's alpha, Revelle's beta and McDonald's omega H: Their relations with each other and two alternative conceptualizations of reliability. \emph{Psychometrika}, 70(1), 123-133. doi:10.1007/s11336-003-0974-7
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 \examples{
 
 \dontrun{

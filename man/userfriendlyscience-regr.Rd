@@ -47,6 +47,12 @@ confint objects.}
 \item{output}{List with two dataframes, one with the raw coefficients,
 and one with the scaled coefficients.}
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 ### Do a simple regression analysis
 regr(age ~ circumference, dat=Orange);

@@ -57,6 +57,12 @@ An object with the input and several output variables. Most notably:
 \references{
 Green, S. N. (2003). A Coefficient Alpha for Test-Retest Data. Psychological Methods, 8(1), 88-101. doi:10.1037/1082-989X.8.1.88
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 
 \dontrun{

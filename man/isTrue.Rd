@@ -23,6 +23,11 @@ What to return for NA values.
 \value{
 A logical vector.
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
 \examples{
 isTrue(c(TRUE, FALSE, NA));  
 isTrue(c(TRUE, FALSE, NA), na=TRUE);

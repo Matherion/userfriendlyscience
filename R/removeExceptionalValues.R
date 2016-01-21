@@ -1,5 +1,5 @@
 removeExceptionalValues <- function(dat, items=NULL, exception=.005,
-                                    silent=FALSE) {
+                                    silent=FALSE, stringsAsFactors=FALSE) {
   if (is.data.frame(dat)) {
     if (is.null(items)) {
       items <- names(dat);
@@ -13,7 +13,7 @@ removeExceptionalValues <- function(dat, items=NULL, exception=.005,
       } else {
         return(x);
       }
-    })));
+    }), stringsAsFactors=stringsAsFactors));
   } else {
     return(ifelse(exceptionalScore(dat, prob = exception), NA, dat));
   }

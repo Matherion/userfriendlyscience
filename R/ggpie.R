@@ -7,7 +7,6 @@ ggpie <- function (vector) {
   by = 'labels';  
   return(ggplot(dat, aes_string(x=factor(1), y=totals, fill=by)) +
            geom_bar(stat='identity', color='black') +
-           scale_fill_brewer() +
            guides(fill=guide_legend(override.aes=list(colour=NA))) + # removes black borders from legend
            coord_polar(theta='y') +
            theme(axis.ticks=element_blank(),

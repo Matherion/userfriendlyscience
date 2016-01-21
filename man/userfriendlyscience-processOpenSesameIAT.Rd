@@ -143,6 +143,12 @@ Mathot, S., Schreij, D., & Theeuwes, J. (2012). OpenSesame: An open-source, grap
 
 Kapoor, H. (2015). The creative side of the Dark Triad. \emph{Creativity Research Journal}, 27(1), 58-67. doi:10.1080/10400419.2014.961775.
 }
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+
 \examples{
 
 \dontrun{
