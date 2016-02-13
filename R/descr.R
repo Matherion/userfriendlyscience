@@ -51,7 +51,7 @@ print.descr <- function(x, digits = attr(x, 'digits'),
                         row.names = FALSE, ...) {
   cat("###### Descriptives for", attr(x, "varName"), "\n\n");
   for (current in names(x)) {
-    cat0("### Describing the ", current, ":\n");
+    cat0("Describing the ", current, ":\n");
     print(x[[current]], digits=digits, row.names=row.names, ...);
     cat("\n");
   }

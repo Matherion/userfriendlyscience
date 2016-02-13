@@ -13,7 +13,8 @@ powerHist(vector, histColor = "#0000CC",
           normalLineSize = 1, histAlpha = 0.25, xLabel = NULL,
           yLabel = NULL, density=FALSE, theme = 
           dlvTheme(axis.title = element_text(colour = "black")),
-          rug = TRUE, jitteredRug = TRUE, rugSides = "b" )
+          rug = TRUE, jitteredRug = TRUE, rugSides = "b",
+          rugAlpha = .2)
           
 }
 \arguments{
@@ -61,6 +62,10 @@ powerHist(vector, histColor = "#0000CC",
 \item{rugSides}{
   This is useful when the histogram will be rotated; for example, this can be
   set to 'r' if the histogram is rotated 270 degrees.
+}
+\item{rugAlpha}{
+  Alpha value to use for the rug. When there is a lot of overlap, this can help
+  get an idea of the number of datapoints at 'popular' values.
 }
 }
 \value{
