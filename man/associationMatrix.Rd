@@ -13,6 +13,7 @@ multiple testing.
 associationMatrix(dat=NULL, x=NULL, y=NULL, conf.level = .95,
                   correction = "fdr", bootstrapV=FALSE,
                   info=c("full", "ci", "es"),
+                  includeSampleSize = "depends",
                   bootstrapV.samples = 5000, digits = 2,
                   pValueDigits = digits + 1, colNames = FALSE,
                   type=c("R", "html", "latex"), file="",
@@ -56,6 +57,13 @@ associationMatrix(dat=NULL, x=NULL, y=NULL, conf.level = .95,
     multiple testing), or only the confidence intervals, or only the point
     estimate (and the corrected p-value). Must be on element of the vector
     c("full", "ci", "es").
+}
+  \item{includeSampleSize}{
+  Whether to include the sample size when the effect size point estimate and
+  p-value are shown. If this is "depends", it will depend on whether all
+  associations have the same sample size (and the sample size will only be
+  printed when they don't). If "always", the sample size will always be added.
+  If anything else, it will never be printed.
 }
   \item{bootstrapV.samples}{
   If using boostrapping for Cramer's V, the number of samples to generate.

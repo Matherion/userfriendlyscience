@@ -256,6 +256,7 @@ associationMatrixESDefaults <- list(dichotomous =
 associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
                               correction = "fdr", bootstrapV=FALSE,
                               info=c("full", "ci", "es"),
+                              includeSampleSize = "depends",
                               bootstrapV.samples = 5000, digits = 2,
                               pValueDigits=digits + 1, colNames = FALSE,
                               type=c("R", "html", "latex"), file="",
@@ -268,6 +269,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
               output = list());
   res$intermediate$statistics <- list();
   res$intermediate$effectSizes <- list();
+  res$intermediate$sampleSizes <- list();
   
   ### If no dataframe was specified, load it from an SPSS file
   if (is.null(dat)) {
@@ -390,6 +392,9 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   res$output$matrix$es <- matrix(nrow = length(x), ncol = length(y));
   rownames(res$output$matrix$es) <- rowNames;
   colnames(res$output$matrix$es) <- columnNames;
+  res$output$matrix$sampleSizes <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$matrix$sampleSizes) <- rowNames;
+  colnames(res$output$matrix$sampleSizes) <- columnNames;
   res$output$matrix$ci <- matrix(nrow = length(x), ncol = length(y));
   rownames(res$output$matrix$ci) <- rowNames;
   colnames(res$output$matrix$ci) <- columnNames;
@@ -404,6 +409,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
     ### contain the cells
     res$intermediate$statistics[[curXvar]] <- list();
     res$intermediate$effectSizes[[curXvar]] <- list();
+    res$intermediate$sampleSizes[[curXvar]] <- list();
     yCounter <- 1;
     for(curYvar in y) {
       ### If a symmetric table was requested, don't do
@@ -422,6 +428,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
                             [[measurementLevelsY[yCounter]]]);
         res$intermediate$effectSizes[[curXvar]][[curYvar]] <- 
           tmpFun(dat[,curXvar], dat[,curYvar], conf.level = conf.level);
+        res$intermediate$sampleSizes[[curXvar]][[curYvar]] <- nrow(na.omit(dat[,c(curXvar, curYvar)]));
       }
       yCounter <- yCounter + 1;
     }
@@ -456,6 +463,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   ### estimates and p-values corrected for multiple testing; one with
   ### confidence intervals; and one with two rows for each variable,
   ### combining the information).
+
   for(rowVar in 1:length(x)) {
     for(colVar in 1:length(y)) {
       ### If a symmetric table was requested, only fill the cells if we're
@@ -470,11 +478,20 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
           paste0(substr(res$intermediate$effectSizes[[rowVar]][[colVar]]$es.type, 1, 1), "=",
                  round(res$intermediate$effectSizes[[rowVar]][[colVar]]$es, digits), ", ",
                  formatPvalue(res$intermediate$statistics[[rowVar]][[colVar]]$p.adj, digits=pValueDigits, spaces=FALSE));
+        res$output$matrix$sampleSizes[rowVar, colVar] <-
+          res$intermediate$sampleSizes[[rowVar]][[colVar]];
         ### Convert x (row variable) to two row indices in combined matrix
         res$output$matrix$full[(rowVar*2)-1, colVar] <-
           res$output$matrix$ci[rowVar, colVar];
         res$output$matrix$full[(rowVar*2), colVar] <-
           res$output$matrix$es[rowVar, colVar];
+        if (((includeSampleSize == "depends") &&
+            (length(unique(unlist(res$intermediate$sampleSizes))) > 1)) ||
+            (includeSampleSize == "always")) {
+          res$output$matrix$full[(rowVar*2), colVar] <-
+            paste0(res$output$matrix$full[(rowVar*2), colVar],
+                   ", n=", res$output$matrix$sampleSizes[rowVar, colVar]);
+        }
       }
       else {
         res$output$matrix$es[rowVar, colVar] <- "";
