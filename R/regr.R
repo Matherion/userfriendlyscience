@@ -1,5 +1,6 @@
 regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
-                 pvalueDigits = 3, coefficients=c("raw", "scaled")) {
+                 pvalueDigits = 3, coefficients=c("raw", "scaled"),
+                 plot=FALSE) {
 
   ### Generate object to store input, intermediate outcomes, and results
   res <- list(input = as.list(environment()),
@@ -100,6 +101,17 @@ regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
       paste0(conf.level*100,"% CI, hi"),
       'estimate', 'se', 't', 'p');
   
+  if (plot) {
+    if (length(res$intermediate$variables_namesOnly) == 2) {
+      res$output$plot <- ggplot(res$intermediate$dat.raw,
+                                aes_string(y=res$intermediate$variables_namesOnly[1],
+                                        x=res$intermediate$variables_namesOnly[2])) +
+        geom_point() + geom_smooth(method='lm') + theme_bw();
+    } else {
+      warning("You requested a plot, but for now plots are only available for regression analyses with one predictor.");
+    }
+  }
+  
   ### Use Z = (b1 - b2) / sqrt(SE_b1^2 + SE_b2^2) to test whether
   ### the coefficients differ; add arguments such as
   ### compareCoefficients=FALSE, p.adjust="fdr" to enable user to
@@ -152,6 +164,9 @@ print.regr <- function(x, digits=x$input$digits,
                              digits=pvalueDigits,
                              includeP=FALSE);
     print(tmpDat, ...);
+  }
+  if (!is.null(x$output$plot)) {
+    print(x$output$plot);
   }
   invisible();
   

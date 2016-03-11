@@ -11,8 +11,9 @@ standardized coefficients. Note that this function is meant for teaching
 purposes, and therefore it's only for very basic regression analyses.
 }
 \usage{
-regr(formula, dat=NULL, conf.level=.95, digits=2,
-     pvalueDigits = 3, coefficients=c("raw", "scaled"))
+regr(formula, dat = NULL, conf.level = .95, digits = 2,
+     pvalueDigits = 3, coefficients = c("raw", "scaled"),
+     plot = FALSE)
 }
 \arguments{
   \item{formula}{
@@ -37,6 +38,11 @@ The number of digits to show for p-values; smaller p-values will be shown as
 Which coefficients to show; can be "raw" to only show the raw
 (unstandardized) coefficients; "scaled" to only show the scaled
 (standardized) coefficients), or c("raw", "scaled') to show both.
+}
+  \item{plot}{
+  For regression analyses with only one predictor (also sometimes confusingly
+  referred to as 'univariate' regression analyses), scatterplots with
+  regression lines and their standard errors can be produced.
 }
 }
 \value{
