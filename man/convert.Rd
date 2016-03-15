@@ -10,6 +10,8 @@
 \alias{convert.chisq.to.V}
 \alias{convert.d.to.logodds}
 \alias{convert.d.to.r}
+\alias{convert.d.to.t}
+\alias{convert.d.to.variance}
 \alias{convert.etasq.to.cohensf}
 \alias{convert.f.to.etasq}
 \alias{convert.f.to.omegasq}
@@ -46,6 +48,8 @@ convert.chisq.to.V(chisq, n, minDim)
 
 convert.d.to.logodds(d)
 convert.d.to.r(d, n1 = NULL, n2 = NULL)
+convert.d.to.t(d, n)
+convert.d.to.variance(d, n1, n2)
 
 convert.etasq.to.cohensf(etasq)
 

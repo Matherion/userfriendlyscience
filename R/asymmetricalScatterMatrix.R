@@ -2,6 +2,7 @@ asymmetricalScatterMatrix <- function(dat, cols, rows,
 #                                      scaleLimits = NULL,
 #                                      powerHist=TRUE,
                                       theme=dlvTheme(),
+                                      autoSize = TRUE,
                                       txtHeight = 1,
                                       histHeight = 3,
                                       scatterWidth = 6,
@@ -162,12 +163,20 @@ asymmetricalScatterMatrix <- function(dat, cols, rows,
   }
   
   ### Create the final plot
-  res$output$scatterMatrix <-
-    do.call(arrangeGrob, c(res$intermediate$plotList,
-                           list(ncol=length(cols) + 2,
-                                widths=unit(c(txtHeight, histHeight, rep.int(scatterWidth, length(cols))), unit),
-                                heights=unit(c(txtHeight, histHeight, rep.int(scatterHeight, length(rows))), unit))));
-
+  if (autoSize) {
+    res$output$scatterMatrix <-
+      do.call(arrangeGrob, c(res$intermediate$plotList,
+                             list(ncol=length(cols) + 2,
+                                  widths=c(txtHeight, histHeight, rep.int(scatterWidth, length(cols))),
+                                  heights=c(txtHeight, histHeight, rep.int(scatterHeight, length(rows))))));
+  } else {
+    res$output$scatterMatrix <-
+      do.call(arrangeGrob, c(res$intermediate$plotList,
+                             list(ncol=length(cols) + 2,
+                                  widths=unit(c(txtHeight, histHeight, rep.int(scatterWidth, length(cols))), unit),
+                                  heights=unit(c(txtHeight, histHeight, rep.int(scatterHeight, length(rows))), unit))));
+  }
+  
   ### Store the size of the plot
   res$output$plotSize <- list(width = txtHeight + histHeight + scatterWidth * length(cols),
                               height = txtHeight + histHeight + scatterHeight * length(rows),

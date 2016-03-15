@@ -34,6 +34,7 @@ S3method(print, therapyMonitor.multi);
 S3method(print, descr);
 S3method(print, processOpenSesameIAT);
 S3method(print, processOpenSesameIAT.log);
+S3method(print, fullFact);
 
 S3method(sort, associationMatrix)
 
@@ -54,7 +55,8 @@ importFrom("utils", "capture.output", "chooseCRANmirror", "combn",
 importFrom('plyr', 'ddply');
 
 importFrom('psych', 'describe', 'alpha', 'omega', 'glb',
-           'fa', 'principal', 'polychoric', 'fisherz', 'fisherz2r');
+           'fa', 'principal', 'polychoric', 'fisherz', 'fisherz2r',
+           'fa.parallel', 'vss');
 importFrom('pwr', 'pwr.t.test', 'pwr.r.test');
 importFrom('fBasics', 'adTest');
 importFrom('MBESS', 'ci.reliability', 'ci.pvaf');

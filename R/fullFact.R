@@ -1,6 +1,3 @@
-## This function provides a userfriendly interface to a number of advances factor
-## analysis functions in the \code{\link{psych}} package.
-
 fullFact <- function(dat = NULL, items=NULL, rotate='oblimin') {
 
   res <- list(input = as.list(environment()),

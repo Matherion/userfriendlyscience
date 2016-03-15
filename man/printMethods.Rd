@@ -33,6 +33,7 @@
 \alias{print.therapyMonitor}
 \alias{print.therapyMonitor.multi}
 \alias{print.asymmetricalScatterMatrix}
+\alias{print.fullFact}
 \title{
 userfriendlyscience print methods
 }
@@ -86,6 +87,7 @@ colNames = x$colNames, ...)
 \method{print}{therapyMonitor}(x, digits=2, printPlot = TRUE, ...)
 \method{print}{therapyMonitor.multi}(x, ...)
 \method{print}{asymmetricalScatterMatrix}(x, ...)
+\method{print}{fullFact}(x, ...)
 }
 \arguments{
   \item{x}{

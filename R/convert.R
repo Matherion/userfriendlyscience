@@ -67,6 +67,10 @@ convert.d.to.r <- function(d, n1 = NULL, n2 = NULL) {
   return(d / sqrt(d^2 + a));
 }
 
+convert.d.to.t <- function(d, n) {
+  return(sqrt(sqrt(n) * d));
+}
+
 convert.d.to.logodds <- function(d) {
   if (!is.numeric(d) || (length(d) > 1)) {
     stop("The 'd' argument is not a single numeric value!");

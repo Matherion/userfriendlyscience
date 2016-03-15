@@ -10,6 +10,7 @@ histograms showing the distribution of each variable.
 }
 \usage{
 asymmetricalScatterMatrix(dat, cols, rows, theme = dlvTheme(),
+                          autoSize = TRUE,
                           txtHeight = 1, histHeight = 3,
                           scatterWidth = 6, scatterHeight = 6, unit = "cm",
                           dpi = 200, showCorrelations=c('top-left',
@@ -31,6 +32,12 @@ asymmetricalScatterMatrix(dat, cols, rows, theme = dlvTheme(),
 }
   \item{theme}{
   Which ggplot theme to use.
+}
+  \item{autoSize}{
+  Whether to resize the plot depending on the viewport (i.e. device that is
+  being drawn to) or whether to use the four measurements specified below
+  (\code{txtHeight}, \code{histHeight}, \code{scatterWidth}, and \code{scatterHeight})
+  to size the plot.
 }
   \item{txtHeight, histHeight, scatterWidth, scatterHeight}{
   These numbers are used to determine the space used for displaying the
