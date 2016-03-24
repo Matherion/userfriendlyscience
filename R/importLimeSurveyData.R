@@ -19,15 +19,21 @@ importLimeSurveyData <- function(datafile = NULL,
                                  categoricalQuestions = NULL,
                                  massConvertToNumeric = TRUE,
                                  dataHasVarNames = TRUE,
-                                 encoding='UTF-8-BOM') {
+                                 encoding=NULL,
+                                 dataEncoding='UTF-8-BOM',
+                                 scriptEncoding='ASCII') {
   
   ### Load datafile
   if (dataHasVarNames) {
     data <- getData(datafile, quote = "'\"", na.strings=c("", "\"\""),
-                    stringsAsFactors=FALSE, encoding=encoding, header=TRUE);
+                    stringsAsFactors=FALSE, encoding=dataEncoding, header=TRUE);
   } else {
     data <- getData(datafile, quote = "'\"", na.strings=c("", "\"\""),
-                    stringsAsFactors=FALSE, encoding=encoding, header=FALSE);
+                    stringsAsFactors=FALSE, encoding=dataEncoding, header=FALSE);
+  }
+  
+  if (!null(encoding)) {
+    dataEncoding <- scriptEncoding <- encoding;
   }
   
   ### Load scriptfile
@@ -35,7 +41,10 @@ importLimeSurveyData <- function(datafile = NULL,
     if (!file.exists(scriptfile)) {
       stop("File specified as scriptfile ('", scriptfile, "') does not exist!");
     }
-    datascript <- readLines(scriptfile, encoding=encoding);
+    ### Use separate connection to make sure proper encoding is selected
+    con <- file(scriptfile, encoding=scriptEncoding)
+    datascript <- readLines(con);
+    close(con);
     varNamesScript <- datascript[grepl(limeSurveyRegEx.varNames,
                                        datascript)];
     varLabelsScript <- datascript[grepl(limeSurveyRegEx.varLabels,
