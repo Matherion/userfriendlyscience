@@ -32,7 +32,7 @@ importLimeSurveyData <- function(datafile = NULL,
                     stringsAsFactors=FALSE, encoding=dataEncoding, header=FALSE);
   }
   
-  if (!null(encoding)) {
+  if (!is.null(encoding)) {
     dataEncoding <- scriptEncoding <- encoding;
   }
   

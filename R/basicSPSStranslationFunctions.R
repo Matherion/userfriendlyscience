@@ -11,11 +11,12 @@ getData <- function(filename=NULL,
   filenameArgument <- filename;
   
   ### File formats that have been implemented
-  supportedFormats <- c(".sav", ".csv", ".tsv", ".rda", ".ods", ".xls", "xlsx");
+  supportedFormats <- c("sav", "csv", "tsv", "rda", "ods", "xls", "xlsx", "rdata");
   
   ### Set error message
   errorMessage <- sub("\\[defaultErrorMessage\\]",
-                      paste0("Specified file does not exist or does not have an extension identifying ",
+                      paste0("Specified file ('", filenameArgument,
+                             "') does not exist or does not have an extension identifying ",
                              "it as a readable filetype (valid extensions are: '",
                              paste(supportedFormats, collapse="', '"), "')."),
                       errorMessage);
@@ -51,19 +52,17 @@ getData <- function(filename=NULL,
     cat(filenameArgument, ";\n\n", sep="");
   }
   
-  extension <- tolower(substring(filename, nchar(filename) - 3));
+  extension <- tolower(gsub(".*\\.(.*)$", '\\1', filenameArgument));
 
   if (!file.exists(filename) |
         !(extension %in% supportedFormats)) {
     ### Show error if the file doesn't exist or has the wrong extension
     stop(errorMessage);
-  }
-  else {
-    if (extension == ".rda") {
+  } else {
+    if ((extension == "rda") || (extension == "rdata")) {
       dat <- load(filename);
       dat <- get(dat);
-    }
-    if (extension == ".sav") {
+    } else if (extension == "sav") {
       dat <- suppressWarnings(read.spss(filename, use.value.labels=use.value.labels,
                               to.data.frame=to.data.frame, ...));
       
@@ -86,14 +85,11 @@ getData <- function(filename=NULL,
 #          }
 #       });
       
-    }
-    else if (extension == ".csv") {
+    } else if (extension == "csv") {
       dat <- read.csv(filename, stringsAsFactors=stringsAsFactors, ...);
-    }
-    else if (extension == ".tsv") {
+    } else if (extension == "tsv") {
       dat <- read.delim(filename, stringsAsFactors=stringsAsFactors, ...);
-    }
-    else if (extension == ".ods") {
+    } else if (extension == "ods") {
       
       stop("Sorry, I currently do not know how to import OpenOffice files. If you do, ",
            "please contact me and I'll add this as well!\nOf course, you can always export from ",
@@ -110,7 +106,7 @@ getData <- function(filename=NULL,
 #       require('ROpenOffice');
 #       dat <- read.ods(filename, ...);
     }
-    else if ((extension == ".xls") || (extension == "xlsx")) {
+    else if ((extension == "xls") || (extension == "xlsx")) {
       if (!is.element('XLConnect', installed.packages()[, 1])) {
         stop("To load Excel (.xls or .xlsx) files, I need package 'XLConnect', ",
              "which in turn requires Java. Please install it yourself if you wish to ",

@@ -1,4 +1,4 @@
-CItoDiamondCoordinates <- function(values, otherAxisValue,
+diamondCoordinates <- function(values, otherAxisValue = 1,
                                    direction = 'horizontal',
                                    autoSize=NULL, fixedSize=.25) {
   if (length(values) < 1) {
@@ -24,6 +24,7 @@ CItoDiamondCoordinates <- function(values, otherAxisValue,
     xValues <- c(otherAxisValue, otherAxisValue - size, otherAxisValue, otherAxisValue + size, otherAxisValue);
     yValues <- c(min, mid, max, mid, min);
   }
+  
   return(data.frame(x=xValues, y=yValues));
   
 }

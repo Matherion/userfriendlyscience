@@ -247,6 +247,8 @@ normalityAssessment <- function(sampleVector, samples = 5000, digits=3,
                                    distributionLineSize=samplingDistLineSize,
                                    normalLineSize=normalLineSize);
   
+  res$qqPlot.sampleDist <- gg_qq(tempDat$sampleDist) + dlvTheme();;
+  
   ### Take 'samples' samples of sampleSize people and store the means
   ### (first generate an empty vector to store the means)
   res$samplingDistribution <- c();
@@ -281,7 +283,9 @@ normalityAssessment <- function(sampleVector, samples = 5000, digits=3,
                                      normalColor=normalColor,
                                      distributionLineSize=samplingDistLineSize,
                                      normalLineSize=normalLineSize);
-  
+
+  res$qqPlot.samplingDist <- gg_qq(tempDat$samplingDist);
+
   ### Shapiro Wilk test - if there are more than 5000
   ### datapoints, only use the first 5000 datapoints
   res$sw.sampleDist <- ifelseObj(res$sampleSize > 5000,
@@ -368,10 +372,16 @@ print.normalityAssessment <- function (x, ...) {
              " (D=", round(x$ks.samplingDist$statistic, x$digits), ")"));
 
   ### Plots
-  grid.newpage()
-  pushViewport(viewport(layout = grid.layout(nrow=1, ncol=2)));
-  suppressWarnings(print(x$plot.sampleDist$plot, vp=viewport(layout.pos.row = 1, layout.pos.col = 1)));
-  suppressWarnings(print(x$plot.samplingDist$plot, vp=viewport(layout.pos.row = 1, layout.pos.col = 2)));
+  grid.arrange(x$plot.sampleDist$plot,
+               x$plot.samplingDist$plot,
+               x$qqPlot.sampleDist,
+               x$qqPlot.samplingDist,
+               ncol=2);
+  
+#   grid.newpage()
+#   pushViewport(viewport(layout = grid.layout(nrow=1, ncol=2)));
+#   suppressWarnings(print(x$plot.sampleDist$plot, vp=viewport(layout.pos.row = 1, layout.pos.col = 1)));
+#   suppressWarnings(print(x$plot.samplingDist$plot, vp=viewport(layout.pos.row = 1, layout.pos.col = 2)));
 
   invisible(); 
 }
