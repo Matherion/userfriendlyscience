@@ -1,6 +1,7 @@
 descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
                                   include=c("central tendency", "spread",
-                                            "range", "distribution shape", "sample size")) {
+                                            "range", "distribution shape", "sample size"),
+                                  t=FALSE) {
   varName <- deparse(substitute(x));
   if (is.factor(x)) {
     if (errorOnFactor) {
@@ -35,24 +36,32 @@ descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
                                    max = max(x)),
                 "distribution shape" = data.frame(skewness = dataShape(x)$output$skewness,
                                    kurtosis = dataShape(x)$output$kurtosis,
-                                   dip = "TBA"),
+                                   dip = dip.test(x)$statistic[[1]]),
                 "sample size" = data.frame(total = length(x) + nrNA,
                                   "NA" = nrNA,
                                   valid = length(x)));
     attr(res, "varName") <- varName;
     attr(res, "digits") <- digits;
     attr(res, "include") <- include;
+    attr(res, "transpose") <- t;
     class(res) <- "descr";
     return(res);
   }
 }
 
 print.descr <- function(x, digits = attr(x, 'digits'),
+                        t = attr(x, 'transpose'),
                         row.names = FALSE, ...) {
   cat("###### Descriptives for", attr(x, "varName"), "\n\n");
   for (current in names(x)) {
     cat0("Describing the ", current, ":\n");
-    print(x[[current]], digits=digits, row.names=row.names, ...);
+    if (t) {
+      df <- t(x[[current]]);
+      colnames(df) <- '';
+      print(df, digits=digits, row.names=row.names, ...);
+    } else {
+      print(x[[current]], digits=digits, row.names=row.names, ...);
+    }
     cat("\n");
   }
   if ('shape' %in% names(x)) {

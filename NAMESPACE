@@ -77,6 +77,8 @@ importFrom('car', 'Anova', 'leveneTest');
 
 importFrom('SCRT', 'pvalue.systematic');
 
+importFrom('diptest', 'dip.test');
+
 importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes_string',
            'geom_line', 'geom_point', 'geom_violin', 'geom_jitter', 'geom_dotplot',
            'geom_pointrange', 'geom_errorbar', 'geom_histogram', 'geom_density', 'geom_bar',

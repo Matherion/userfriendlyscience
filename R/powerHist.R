@@ -13,7 +13,7 @@ powerHist <- function(vector,
                       xLabel = NULL,
                       yLabel = NULL, density=FALSE,
                       theme=dlvTheme(axis.title=element_text(colour = "black")),
-                      rug=TRUE, jitteredRug=TRUE, rugSides="b",
+                      rug=NULL, jitteredRug=TRUE, rugSides="b",
                       rugAlpha = .2) {
   varName <- deparse(substitute(vector));
   vector <- na.omit(vector);
@@ -23,7 +23,10 @@ powerHist <- function(vector,
            "but my attempt failed. The error I got is:\n", e);
       });
   }
+  
+  ### Create object to return, storing all input variables 
   res <- list(input = as.list(environment()), intermediate = list(), output = list());
+  
   res$input$sampleSize = length(vector);
   res$intermediate$normalX <- c(seq(min(res$input$vector), max(res$input$vector),
                      by=(max(res$input$vector) -
@@ -76,6 +79,13 @@ powerHist <- function(vector,
       geom_line(aes(x=normalX, y=density), color=distributionColor, size=distributionLineSize) +
       geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize) +
       theme;
+  }
+  if (is.null(rug)) {
+    if (nrow(res$dat) < 1000) {
+      rug <- TRUE;
+    } else {
+      rug <- FALSE;
+    }
   }
   if (rug) {
     if (jitteredRug) {

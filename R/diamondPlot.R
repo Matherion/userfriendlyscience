@@ -1,9 +1,12 @@
 diamondPlot <- function(data,
-                          ciCols=1:3, otherAxisCol=NULL,
-                          yValues=NULL, yLabels=NULL, ylab = NULL,
-                          autoSize=NULL, fixedSize=.15,
-                          xlab='Effect Size Estimate',
-                          theme=dlvTheme(), color='black', ...) {
+                        ciCols=1:3,
+                        colourCol=NULL,
+                        generateColours = NULL,
+                        otherAxisCol=NULL,
+                        yValues=NULL, yLabels=NULL, ylab = NULL,
+                        autoSize=NULL, fixedSize=.15,
+                        xlab='Effect Size Estimate',
+                        theme=dlvTheme(), color='black', ...) {
   
   if (!is.null(yValues)) {
     ### Check whether yValues specifies a column in 'data' or whether it's a vector
@@ -44,12 +47,14 @@ diamondPlot <- function(data,
   }
 
   if (is.null(otherAxisCol)) {
-    data$otherAxisCol <- yValues;
+    data$otherAxisCol <- as.numeric(yValues);
     otherAxisCol <- 'otherAxisCol';
   }
 
   return(ggplot() +
            gg_diamondLayer(data, ciCols = ciCols,
+                           colourCol = colourCol,
+                           generateColours = generateColours,
                            otherAxisCol = otherAxisCol,
                            autoSize=autoSize,
                            fixedSize = fixedSize,

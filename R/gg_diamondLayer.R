@@ -1,17 +1,38 @@
 gg_diamondLayer <- function(data,
-                               ciCols=1:3, otherAxisCol=1:nrow(data),
-                               autoSize=NULL, fixedSize=.15,
-                               ...) {
+                            ciCols=1:3,
+                            colourCol=NULL,
+                            generateColours = NULL,
+                            color="black",
+                            otherAxisCol=1:nrow(data),
+                            autoSize=NULL,
+                            fixedSize=.15,
+                            ...) {
   if (length(otherAxisCol) > 1) {
     data[, 'otherAxisValues'] <- otherAxisCol;
-    otherAxisCol <- otherAxisValues;
+    otherAxisCol <- 'otherAxisValues';
   }
-  return(apply(data, 1, function(x, aSize=autoSize,
+  
+  if (!is.null(colourCol) && !is.null(generateColours)) {
+    data[, ncol(data) + 1] <- colorRampPalette(generateColours)(nrow(data));
+    colourCol <- ncol(data);
+  }
+
+  return(apply(data, 1, function(x,
+                                 cCol=colourCol,
+                                 aSize=autoSize,
                                  fSize = fixedSize) {
-    return(geom_polygon(diamondCoordinates(unlist(x[ciCols]),
-                                               otherAxisValue=x[[otherAxisCol]],
-                                               autoSize = aSize,
-                                               fixedSize = fSize),
-                        mapping=aes(x=x, y=y), ...));
+    tmpDf <- data.frame(diamondCoordinates(as.numeric(unlist(x[ciCols])),
+                                           otherAxisValue=as.numeric(x[[otherAxisCol]]),
+                                           autoSize = aSize,
+                                           fixedSize = fSize));
+    if (is.null(cCol)) {
+      return(geom_polygon(tmpDf,
+                          mapping=aes(x=x, y=y), color=color, ...));
+    } else {
+      return(geom_polygon(tmpDf,
+                          mapping=aes(x=x, y=y),
+                          fill=x[[cCol]],
+                          color = x[[cCol]], ...));
+    }
   }));
 }

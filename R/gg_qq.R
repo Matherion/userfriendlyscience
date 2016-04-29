@@ -3,6 +3,7 @@
 ### which itself uses code from 'car:::qqPlot'.
 
 gg_qq <- function(x, distribution = "norm", ...,
+                  ci = TRUE,
                   line.estimate = NULL,
                   conf.level = 0.95,
                   xlab = "Theoretical quantiles",
@@ -34,8 +35,12 @@ gg_qq <- function(x, distribution = "norm", ...,
   p <- ggplot(df, aes(x=z, y=ord.x)) +
     geom_point() + 
     geom_abline(intercept = coef[1], slope = coef[2]) +
-    geom_ribbon(aes(ymin = lower, ymax = upper), alpha=0.2) +
     xlab(xlab) + ylab(ylab);
 
+  if (ci) {
+    p <- p +
+      geom_ribbon(aes(ymin = lower, ymax = upper), alpha=0.2);
+  }
+  
   return(p);
 }

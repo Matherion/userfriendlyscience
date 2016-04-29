@@ -19,7 +19,8 @@ samplingDistribution <- function(popValues = c(0, 1), popFrequencies = c(50, 50)
 }
 
 dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
-                      conf.level=.95) {
+                      conf.level=.95, plots=TRUE, xLabs = NULL,
+                      yLabs = NULL) {
   
   ### Note: this is adapted from the 'skewness' and 'kurtosis' functions
   ### in 'e1071' and the way they're computed in 'describe' in 'psych', and
@@ -27,8 +28,7 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
   ### http://www.tc3.edu/instruct/sbrown/stat/shape.htm, as well as of course
   ### on Joanes & Gill (1998)
   
-  res <- list(input = list(sampleVector = sampleVector, na.rm=na.rm,
-                           type=type, digits=digits),
+  res <- list(input = as.list(environment()),
               intermediate = list(), output = list());
   
   if (any(isNA <- is.na(sampleVector))) {
@@ -70,7 +70,7 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
   ### Sample skewness
   res$intermediate$g1 <- m3 / (m2 ^ (3/2));
 
-  ### Sample kurtosis
+  ### Sample (excess) kurtosis
   res$intermediate$g2 <- (m4 / (m2 ^ 2)) - 3;
   
   ###  Population skewness
@@ -141,6 +141,10 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
   res$intermediate$p.G1 <- 2*(1-pnorm(abs(res$intermediate$z.G1)));
   res$intermediate$p.G2 <- 2*(1-pnorm(abs(res$intermediate$z.G2)));
   
+  ### Hartigans' Dip Test
+  res$output$D.dip.test <- dip.test(sampleVector)$statistic[[1]];
+  res$output$p.dip.test <- dip.test(sampleVector)$p[[1]];
+  
   ### Store requested estimates in output object
   if (type == 1) {
     res$output$skewness <- res$intermediate$g1;
@@ -158,6 +162,57 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
     res$output$type <- "b";
   }
   
+  if (plots) {
+    res$intermediate$histogram <- powerHist(sampleVector)$plot;
+    res$intermediate$qq <- gg_qq(sampleVector, ci=FALSE);
+    res$intermediate$boxplot <- ggBoxplot(sampleVector);
+    if (!is.null(xLabs)) {
+      if (is.na(xLabs)) {
+        res$intermediate$histogram <-
+          res$intermediate$histogram +
+          theme(axis.title.x = element_blank());
+        res$intermediate$qq <-
+          res$intermediate$qq +
+          theme(axis.title.x = element_blank());
+        res$intermediate$boxplot <-
+          res$intermediate$boxplot +
+          theme(axis.title.x = element_blank());
+      } else {
+        res$intermediate$histogram <-
+          res$intermediate$histogram + xlab(xLabs);
+        res$intermediate$qq <-
+          res$intermediate$qq + xlab(xLabs);
+        res$intermediate$boxplot <-
+          res$intermediate$boxplot + xlab(xLabs);
+      }
+    }
+
+    if (!is.null(yLabs)) {
+      if (is.na(yLabs)) {
+        res$intermediate$histogram <-
+          res$intermediate$histogram +
+          theme(axis.title.y = element_blank());
+        res$intermediate$qq <-
+          res$intermediate$qq +
+          theme(axis.title.y = element_blank());
+        res$intermediate$boxplot <-
+          res$intermediate$boxplot +
+          theme(axis.title.y = element_blank());
+      } else {
+        res$intermediate$histogram <-
+          res$intermediate$histogram + ylab(yLabs);
+        res$intermediate$qq <-
+          res$intermediate$qq + ylab(yLabs);
+        res$intermediate$boxplot <-
+          res$intermediate$boxplot + ylab(yLabs);
+      }
+    }
+    
+    res$output$plot <- arrangeGrob(res$intermediate$histogram,
+                                   res$intermediate$qq,
+                                   res$intermediate$boxplot, ncol=3);
+  }
+  
   ### Return results object
   class(res) <- "dataShape";
   return(res);
@@ -170,12 +225,12 @@ print.dataShape <- function(x, digits=x$input$digits, extraNotification=TRUE, ..
                                  ", confidence interval = [",
                                  paste0(format(x$intermediate$ci.G1, digits=digits), collapse=", "),
                                  "], z = ", format(x$intermediate$z.G1, digits=digits),
-                                 ", p = ", format(x$intermediate$p.G1, digits=digits), ")");
+                                 ", ", formatPvalue(x$intermediate$p.G1, digits=digits), ")");
     kurtosis.inference <- paste0("  (se = ", format(x$intermediate$se.G2, digits=digits),
                                  ", confidence interval = [",
                                  paste0(format(x$intermediate$ci.G2, digits=digits), collapse=", "),
                                  "], z = ", format(x$intermediate$z.G2, digits=digits),
-                                 ", p = ", format(x$intermediate$p.G2, digits=digits), ")");
+                                 ", ", formatPvalue(x$intermediate$p.G2, digits=digits), ")");
   }
   else {
     skewness.inference <- kurtosis.inference <- "";
@@ -186,6 +241,14 @@ print.dataShape <- function(x, digits=x$input$digits, extraNotification=TRUE, ..
   cat(paste0("Kurtosis (", x$output$type, "2): ",
              round(x$output$kurtosis, digits=digits),
              kurtosis.inference, "\n"));
+  cat(paste0("Hartigans' Dip Test: ",
+             round(x$output$D.dip.test, digits=digits), ", ",
+             formatPvalue(x$output$p.dip.test), "\n"));
+  
+  if (x$input$plots) {
+    grid.draw(x$output$plot);
+  }  
+  
   if (extraNotification && x$output$type == "g") {
     cat("\nNote: g1 and g2 are biased estimates of the population skewness and kurtosis.",
         "For unbiased estimates, use 'type=2' or 'type=3'.");

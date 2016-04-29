@@ -12,15 +12,7 @@ getData <- function(filename=NULL,
   
   ### File formats that have been implemented
   supportedFormats <- c("sav", "csv", "tsv", "rda", "ods", "xls", "xlsx", "rdata");
-  
-  ### Set error message
-  errorMessage <- sub("\\[defaultErrorMessage\\]",
-                      paste0("Specified file ('", filenameArgument,
-                             "') does not exist or does not have an extension identifying ",
-                             "it as a readable filetype (valid extensions are: '",
-                             paste(supportedFormats, collapse="', '"), "')."),
-                      errorMessage);
-  
+
   if (is.null(filename)) {
     ### If no filename is specified, request one from the user
     cat("You did not specify a file to open. Therefore, please select the",
@@ -54,8 +46,20 @@ getData <- function(filename=NULL,
   
   extension <- tolower(gsub(".*\\.(.*)$", '\\1', filenameArgument));
 
-  if (!file.exists(filename) |
-        !(extension %in% supportedFormats)) {
+  ### Set error message
+  errorMessage <- sub("\\[defaultErrorMessage\\]",
+                      paste0("Specified file ('", filenameArgument,
+                             "') does not have an extension identifying ",
+                             "it as a readable filetype (identified extension is '",
+                             extension, "', valid extensions are: '",
+                             paste(supportedFormats, collapse="', '"), "')."),
+                      errorMessage);
+  
+  if (!file.exists(filename)) {
+    stop("Specified file ('", filenameArgument,
+         "') does not exist. Note that R is case sensitive, so make sure ",
+         "your capitalisation is correct!")
+  } else if (!(extension %in% supportedFormats)) {
     ### Show error if the file doesn't exist or has the wrong extension
     stop(errorMessage);
   } else {

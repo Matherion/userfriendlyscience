@@ -1,3 +1,7 @@
+vecTxtQ <- function(vector, useQuote = "'", ...) {
+  return(vecTxt(vector, useQuote = useQuote, ...));
+}
+  
 vecTxt <- function(vector, delimiter = ", ", useQuote = "",
                    firstDelimiter = NULL, lastDelimiter = " & ",
                    firstElements = 0, lastElements = 1,
