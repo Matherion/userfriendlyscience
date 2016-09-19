@@ -1,6 +1,6 @@
 ### Credits:
 ### http://mathematicalcoffee.blogspot.nl/2014/06/ggpie-pie-graphs-in-ggplot2.html
-ggpie <- function (vector) {
+ggPie <- function (vector) {
   dat <- data.frame(table(vector));
   names(dat) <- c('labels', 'totals');
   totals = 'totals';

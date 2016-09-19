@@ -15,8 +15,8 @@ noZero <- function (str) {
 }
 
 ### Function to format Pearson r
-formatR <- function (r, digits) {
-  return(noZero(round(r, digits)));
+formatR <- function (r, digits = 2) {
+  return(noZero(round(r, digits = digits)));
 }
 
 ### The regular ifelse cannot return objects

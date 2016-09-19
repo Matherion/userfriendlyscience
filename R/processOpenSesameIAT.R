@@ -49,6 +49,7 @@ processOpenSesameIAT <- function(dataPath,
                                  blocks.incongruent = c(4, 5),
                                  blocks.realTrials = c(3, 5),
                                  blocks.practiceTrials = c(2, 4),
+                                 congruentLarger = TRUE,
                                  responseTime.min = 400,
                                  responseTime.max = 2500,
                                  responseTime.penalty = 600,
@@ -61,8 +62,16 @@ processOpenSesameIAT <- function(dataPath,
                                  taskVarName = "session",
                                  openSesameVarNames = list(correct = "correct",
                                                            response_time = "response_time"),
+                                 stimulusSelectionVarName = NULL,
+                                 stimulusSelectionValues = NULL,
                                  roundOutput = 6,
-                                 decimalSeparator = ".") {  
+                                 decimalSeparator = ".",
+                                 inputDecimalSeparator = ".",
+                                 inputfileSelectionColumns = NULL,
+                                 inputfileSelectionValues = NULL) {
+  
+  ### Use inputfileSelectionColumns and the allowed values in those columns in 
+  ### inputfileSelectionValues to select only those rows.
   
   if (!is.null(participantVarName) && !is.null(regExValues) &&
         !(participantVarName %in% regExValues)) {
@@ -99,6 +108,8 @@ processOpenSesameIAT <- function(dataPath,
   
   ### Store object with each participants' dataframe
   res$dat.raw <- list();
+  ### And cleanly imported version
+  res$dat.asImported <- list();
   
   ### Create a vector with the number of the block
   ### for each trial
@@ -157,19 +168,24 @@ processOpenSesameIAT <- function(dataPath,
   
   ### Store filenames in a character vector.
   res$inputFiles.all <- list.files(dataPath);
-  
+
   ### Check whether a regular expression was specified to select
   ### filenames and information about each participant/sessions
   if (!is.null(filenameRegEx)) {
     ### Select filenames matching regular expression
     res$inputFiles <- grep(filenameRegEx, res$inputFiles.all, value=TRUE);
+
     ### Start log by indicating number of valid files
     logText <- addToLog(logText,
-                        paste0("Read folder '", dataPath, "'. Out of ",
+                        paste0("Read directory '", dataPath, "'. Out of ",
                                length(res$inputFiles.all), " files, ",
                                length(res$inputFiles), " matched regular expression '",
                                filenameRegEx, "' and will be processed.\n"),
                         showLog=showLog);
+    
+    if (!length(res$inputFiles)) {
+      stop("No valid files found!");
+    }
   }
   else {
     ### Process all files
@@ -269,8 +285,9 @@ processOpenSesameIAT <- function(dataPath,
       
         ### Parse participants' datafile
         res$dat.raw[[currentParticipant]] <-
+          res$dat.asImported[[currentParticipant]] <-
           read.csv(text=res$file.clean[[currentParticipant]],
-                   header = TRUE);
+                   header = TRUE, dec=inputDecimalSeparator);
    
         ### Add vector with block numbers for each trial
         res$dat.raw[[currentParticipant]]$blockNumber <- res$blocks.vector;
@@ -329,6 +346,31 @@ processOpenSesameIAT <- function(dataPath,
           res$dat.raw[[currentParticipant]]$rt_lowEnough,
           res$dat.raw[[currentParticipant]][[openSesameVarNames$response_time]],
           res$responseTime.max);
+
+        
+        ### If we need to select a subset of stimuli, eliminate those not
+        ### satisfying the criteria
+        if (!is.null(stimulusSelectionVarName) && !is.null(stimulusSelectionValues)) {
+          res$dat.raw[[currentParticipant]] <-
+            res$dat.raw[[currentParticipant]][
+              trim(res$dat.raw[[currentParticipant]][, stimulusSelectionVarName]) %IN%
+                trim(stimulusSelectionValues), ];
+          
+          currentBlocks.sizes <- table(res$dat.raw[[currentParticipant]]$blockNumber);
+          
+          logText <- addToLog(logText,
+                              paste0("    Removed ",
+                                     nrow(res$dat.asImported[[currentParticipant]]) -
+                                       nrow(res$dat.raw[[currentParticipant]]),
+                                     " trials for this participant because '",
+                                     stimulusSelectionVarName, "' was not one of ",
+                                     vecTxtQ(stimulusSelectionValues), ".\n    Remaining ",
+                                     "block sizes: ", vecTxt(currentBlocks.sizes), ".\n"),
+                              showLog=showLog);
+
+        } else {
+          currentBlocks.sizes <- blocks.sizes;
+        }
         
         ### Compute the mean response times per block,
         ### but only for correct responses, and based
@@ -349,7 +391,7 @@ processOpenSesameIAT <- function(dataPath,
                              res$dat.raw[[currentParticipant]]$rt_valid &
                              (res$dat.raw[[currentParticipant]]$correct.corrected == 1)
                              , ],
-                         FUN = "mean", na.rm=TRUE)$response_time_clipped) < length(blocks.sizes)) {
+                         FUN = "mean", na.rm=TRUE)$response_time_clipped) < length(currentBlocks.sizes)) {
           ### In this case, one or more blocks has zero correct responses.
           ### That means the participant has to be excluded.
           logText <- addToLog(logText,
@@ -366,7 +408,7 @@ processOpenSesameIAT <- function(dataPath,
                             res$dat.raw[[currentParticipant]]$rt_valid &
                             (res$dat.raw[[currentParticipant]]$correct.corrected == 1)
                           , ],
-                          FUN = "mean", na.rm=TRUE)$response_time_clipped, blocks.sizes);
+                          FUN = "mean", na.rm=TRUE)$response_time_clipped, currentBlocks.sizes);
   
           ### Replace the response times for incorrect
           ### answers with the mean response time for that
@@ -464,6 +506,12 @@ processOpenSesameIAT <- function(dataPath,
              res$dat[currentParticipant, 'mean_incongruent_practice']) /
              res$dat[currentParticipant, 'sd_practice'];
           
+          if (!congruentLarger) {
+            res$dat[currentParticipant, 'd600_all'] <- -1 * res$dat[currentParticipant, 'd600_all'];
+            res$dat[currentParticipant, 'd600_real'] <- -1 * res$dat[currentParticipant, 'd600_real'];
+            res$dat[currentParticipant, 'd600_practice'] <- -1 * res$dat[currentParticipant, 'd600_practice'];
+          }
+          
           ### Store number of trials that had response times
           ### below or above the acceptable bandwidth, as well
           ### as in between, for each block
@@ -513,7 +561,7 @@ processOpenSesameIAT <- function(dataPath,
             round(roundedWideDat[, numericVars], roundOutput);
         }
         ### Store wide datafile
-        write.table(roundedWideDat, wideOutputFile, sep="\t", dec=decimalSeparator);
+        write.table(roundedWideDat, wideOutputFile, sep="\t", dec=decimalSeparator, row.names=FALSE);
         logText <- addToLog(logText,
                             paste0("Saved wide datafile to ", outputFile, "\n"),
                             showLog=showLog);
@@ -555,7 +603,7 @@ processOpenSesameIAT <- function(dataPath,
     }
     
     ### Store aggregated datafile
-    write.table(roundedDat, outputFile, sep="\t", dec=decimalSeparator);
+    write.table(roundedDat, outputFile, sep="\t", dec=decimalSeparator, row.names=FALSE);
     logText <- addToLog(logText,
                         paste0("Saved aggregated datafile to ", outputFile, "\n"),
                         showLog=showLog);

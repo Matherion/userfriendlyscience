@@ -11,7 +11,7 @@ descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
     } else {
       return(freq(x));
     }
-  } else if (!is.vector(x, mode="numeric")) {
+  } else if (!is.numeric(x)) {
     stop("The first argument (called 'x' in this function, you passed '",
          varName, "') is not a numeric vector (it has class '",
          class(x), "').");

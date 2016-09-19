@@ -20,7 +20,7 @@ importLimeSurveyData <- function(datafile = NULL,
                                  massConvertToNumeric = TRUE,
                                  dataHasVarNames = TRUE,
                                  encoding=NULL,
-                                 dataEncoding='UTF-8-BOM',
+                                 dataEncoding='unknown', #'UTF-8',
                                  scriptEncoding='ASCII') {
   
   ### Load datafile
@@ -98,5 +98,6 @@ importLimeSurveyData <- function(datafile = NULL,
                           names(data));
     }
   }
+
   return(data);
 }

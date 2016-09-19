@@ -1,4 +1,4 @@
-gg_diamondLayer <- function(data,
+ggDiamondLayer <- function(data,
                             ciCols=1:3,
                             colourCol=NULL,
                             generateColours = NULL,

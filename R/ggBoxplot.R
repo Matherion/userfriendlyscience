@@ -1,7 +1,11 @@
 ggBoxplot <- function(dat, y = NULL, x = NULL,
                       theme = theme_bw(), ...) {
   if (is.null(x) && is.null(y)) {
-    if (is.vector(dat, mode="numeric")) {
+    if (is.numeric(dat)) {
+      if (length(dat) < 5) {
+        stop("If both arguments 'x' and 'y' are NULL, the first argument, 'dat, ",
+             "should be a vector of values, but it's only ", length(dat),
+             " elements long, which isn't enough to generate a boxplot.");      }
       varname <- deparse(substitute(dat));
       tmpDf <- data.frame(dat);
       names(tmpDf) <- varname;

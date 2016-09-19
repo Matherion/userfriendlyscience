@@ -32,10 +32,11 @@ freq <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
     stop("The first argument is not a vector! Did you make a typing error? Remember that R is case sensitive!");
   }
   
-  if (length(unique(vector)) < 2) {
-    stop("There are less than two unique elements in the vector you supplied: ",
-         vecTxtQ(unique(vector)), ".");
-  }
+#   if (length(unique(vector)) < 2) {
+#     warning("There are less than two unique elements in the vector you supplied! The only element that occurs is ",
+#          vecTxtQ(unique(vector)), ", and it occurs ", sum(vector == unique(vector)), " times (there are ",
+#          ifelse(sum(is.na(vector)) == 0, "no", sum(is.na(vector))), " missing values).");
+#   }
   
   if (is.numeric(vector)) {
     res <- paste0("The vector you supplied ('", varName, "') is numeric, not a ",
@@ -66,11 +67,13 @@ freq <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
                                              length(res$intermediate$vector.valid);
   ### Compute cumulative percentages
   res$intermediate$frequencies.prop.cum <- res$intermediate$frequencies.prop.valid;
-  for (currentPropIndex in
-         2:length(res$intermediate$frequencies.prop.valid)) {
-    res$intermediate$frequencies.prop.cum[currentPropIndex] <-
-      res$intermediate$frequencies.prop.cum[currentPropIndex - 1] +
-      res$intermediate$frequencies.prop.cum[currentPropIndex];
+  if (length(res$intermediate$frequencies.prop.valid) > 1) {
+    for (currentPropIndex in
+           2:length(res$intermediate$frequencies.prop.valid)) {
+      res$intermediate$frequencies.prop.cum[currentPropIndex] <-
+        res$intermediate$frequencies.prop.cum[currentPropIndex - 1] +
+        res$intermediate$frequencies.prop.cum[currentPropIndex];
+    }
   }
 
   ### Now we integrate this in a dataframe to show the users. First

@@ -52,14 +52,14 @@ importFrom("utils", "capture.output", "chooseCRANmirror", "combn",
            "packageVersion", "read.csv", "read.delim", "tail",
            "write.table")
 
-importFrom('plyr', 'ddply');
+importFrom('plyr', 'ddply', 'raply');
 
 importFrom('psych', 'describe', 'alpha', 'omega', 'glb',
            'fa', 'principal', 'polychoric', 'fisherz', 'fisherz2r',
-           'fa.parallel', 'vss');
+           'fa.parallel', 'vss', 'r.con', 'rescale');
 importFrom('pwr', 'pwr.t.test', 'pwr.r.test');
 importFrom('fBasics', 'adTest');
-importFrom('MBESS', 'ci.reliability', 'ci.pvaf');
+importFrom('MBESS', 'ci.reliability', 'ci.pvaf', 'conf.limits.ncf');
 importFrom('SuppDists', 'pPearson', 'dPearson');
 ### For 'omega' in the psych package - calls 'principal' in the psych package,
 ### with default 'oblimin' rotation (default of 'omega', not of 'principal').
@@ -78,6 +78,8 @@ importFrom('car', 'Anova', 'leveneTest');
 importFrom('SCRT', 'pvalue.systematic');
 
 importFrom('diptest', 'dip.test');
+
+importFrom('rio', 'import', 'export');
 
 importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes_string',
            'geom_line', 'geom_point', 'geom_violin', 'geom_jitter', 'geom_dotplot',

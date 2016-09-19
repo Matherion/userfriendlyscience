@@ -14,7 +14,7 @@ diamondPlot <- function(data,
       ### Probably index in dataframe
       if (is.character(yValues) && (yValues %in% names(data))) {
         yValues <- data[, yValues];
-      } else if (yValues < ncol(data)) {
+      } else if (yValues <= ncol(data)) {
         ### Consider it an index
         yValues <- data[, yValues]
       }
@@ -33,13 +33,15 @@ diamondPlot <- function(data,
       ### Probably index in dataframe
       if (is.character(yLabels) && (yLabels %in% names(data))) {
         yLabels <- data[, yLabels];
-      } else if (yLabels < ncol(data)) {
+      } else if (yLabels <= ncol(data)) {
         ### Consider it an index
-        yLabels <- data[, yLabels]
+        yLabels <- data[, yLabels];
       }
       ### Otherwise, we don't consider it an index (but as a vector of length one),
       ### so we keep it as is, just like when it /is/ a vector (of length > one)
     }
+  } else if (class(yValues) == 'character') {
+    yLabels <- yValues;
   } else if (!is.null(rownames(data))) {
     yLabels <- rownames(data);
   } else {
@@ -47,18 +49,19 @@ diamondPlot <- function(data,
   }
 
   if (is.null(otherAxisCol)) {
-    data$otherAxisCol <- as.numeric(yValues);
+    data$otherAxisCol <- as.numeric(factor(yValues));
     otherAxisCol <- 'otherAxisCol';
   }
 
   return(ggplot() +
-           gg_diamondLayer(data, ciCols = ciCols,
+           ggDiamondLayer(data, ciCols = ciCols,
                            colourCol = colourCol,
                            generateColours = generateColours,
                            otherAxisCol = otherAxisCol,
                            autoSize=autoSize,
                            fixedSize = fixedSize,
                            color=color,...) +
-           scale_y_continuous(breaks=yValues, labels=yLabels) +
+           scale_y_continuous(breaks=data$otherAxisCol, labels=yLabels) +
+#           scale_y_continuous(breaks=yValues, labels=yLabels) +
            theme + ylab(ylab) + xlab(xlab));
 }

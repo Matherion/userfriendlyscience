@@ -152,9 +152,9 @@ computeEffectSize_etasq <- function(var1, var2, conf.level=.95) {
   
   res$object.aov <- aov(dependent ~ factor);
   
-  df_num <- summary(res$object)[[1]][1,1];
-  df_den <- summary(res$object)[[1]][2,1];
-  f_val <- summary(res$object)[[1]][1,4];
+  df_num <- summary(res$object.aov)[[1]][1,1];
+  df_den <- summary(res$object.aov)[[1]][2,1];
+  f_val <- summary(res$object.aov)[[1]][1,4];
   
   ### This is suggested by the page at
   ### http://yatani.jp/HCIstats/ANOVA#RCodeOneWay
@@ -180,7 +180,20 @@ computeEffectSize_etasq <- function(var1, var2, conf.level=.95) {
               res$object$Upper.Limit.Proportion.of.Variance.Accounted.for);
   
   return(res);
-}  
+}
+
+
+### Function for omega squared (etasq)
+computeEffectSize_omegasq <- function(var1, var2, conf.level=.95) {
+  
+  res$object <- confIntOmegaSq(var1, var2, conf.level=conf.level);
+  
+  res$es <- res$object$output$es;
+  res$es.type <- "omegasq";
+  res$ci <- res$object$output$ci;
+  
+  return(res);
+}
 
 ### Function for Cramers V effect size (v)
 computeEffectSize_v <- function(var1, var2, conf.level=.95,

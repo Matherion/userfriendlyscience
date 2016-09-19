@@ -1,5 +1,7 @@
 oneway <- function(y, x, posthoc=NULL, means=FALSE, fullDescribe=FALSE,
                    levene=FALSE, plot=FALSE, digits=2,
+                   omegasq = TRUE,
+                   etasq = TRUE,
                    pvalueDigits=3, t=FALSE, conf.level=.95) {
   
   res <- list(input = as.list(environment()));
@@ -73,6 +75,9 @@ oneway <- function(y, x, posthoc=NULL, means=FALSE, fullDescribe=FALSE,
   res$intermediate$etasq <- computeEffectSize_etasq(var1=x, var2=y,
                                                     conf.level=conf.level);
   
+  res$intermediate$confIntOmegaSq <- confIntOmegaSq(var1=x, var2=y,
+                                                    conf.level=conf.level);
+  
   res$output <- list(etasq = res$intermediate$Anova$`Sum Sq`[2] /
                        sum(res$intermediate$Anova$`Sum Sq`[2:3]),
                      etasq.ci = res$intermediate$etasq$ci);
@@ -114,11 +119,22 @@ print.oneway <- function(x, digits=x$input$digits,
              " and x=", x$input$x.name, " (groups: ",
              paste0(levels(x$input$x), collapse=", "),
              ")\n\n"));
+  
+  if (x$input$omegasq) {
+    print(x$intermediate$confIntOmegaSq, digits=digits);
+    cat('\n');
+  }
+  
+  if (x$input$etasq) {
+    cat(paste0("Eta Squared: ", round(x$input$conf.level * 100),
+               "% CI = [", formatR(x$output$etasq.ci[1], digits=digits),
+               "; ", formatR(x$output$etasq.ci[2], digits=digits),
+               "], point estimate = ", formatR(x$output$etasq, digits=digits), "\n"));
+  }
 
-  cat(paste0("Eta Squared: ", round(x$input$conf.level * 100),
-             "% CI = [", round(x$output$etasq.ci[1], digits),
-             "; ", round(x$output$etasq.ci[2], digits),
-             "], point estimate = ", round(x$output$etasq, digits), "\n\n"));
+  if (x$input$omegasq | x$input$etasq) {
+    cat('\n');
+  }
   
   x$output$dat[, 1:4] <- round(x$output$dat[, 1:4], digits);
 

@@ -20,6 +20,7 @@ Imports: grDevices, stats, utils,
          SCRT,
          knitr, xtable, 
          GGally, grid, gridExtra,
-         lavaan
+         lavaan,
+         rio
 Depends: ggplot2
 Suggests: XLConnect

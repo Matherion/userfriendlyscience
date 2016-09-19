@@ -48,8 +48,12 @@ convert.t.to.d <- function(t, df=NULL, n1=NULL, n2=NULL, proportion=.5) {
     return(NA);
   }
   
-  d <- t * sqrt(((groupSize1 + groupSize2) / (groupSize1 * groupSize2)) *
-                ((groupSize1 + groupSize2) / (groupSize1 + groupSize2 - 2)));
+  ### Updated to reflect http://journal.frontiersin.org/article/10.3389/fpsyg.2013.00863/full
+#   multiplier <- sqrt(((groupSize1 + groupSize2) / (groupSize1 * groupSize2)) *
+#                        ((groupSize1 + groupSize2) / (groupSize1 + groupSize2 - 2)));
+  multiplier <- sqrt((1 / groupSize1) + (1 / groupSize2));
+  
+  d <- t * multiplier;
   
   return(d);
 }
@@ -67,8 +71,33 @@ convert.d.to.r <- function(d, n1 = NULL, n2 = NULL) {
   return(d / sqrt(d^2 + a));
 }
 
-convert.d.to.t <- function(d, n) {
-  return(sqrt(sqrt(n) * d));
+convert.d.to.t <- function(d, df=NULL, n1=NULL, n2=NULL, proportion=.5) {
+  ### Obsolete; not basing computation on
+  ### reversal of formula used in e.g.
+  ### http://journal.frontiersin.org/article/10.3389/fpsyg.2013.00863/full
+#   return(ifelse(d < 0,
+#                 -1 * sqrt(sqrt(n) * abs(d)),
+#                 sqrt(sqrt(n) * abs(d))));
+
+  if (is.null(df) && !is.null(n1) && !is.null(n2)) {
+    groupSize1 <- n1;
+    groupSize2 <- n2;
+  }
+  else if (!is.null(df) && is.null(n1) && is.null(n2)) {
+    groupSize1 <-      proportion  * (df + 2);
+    groupSize2 <- (1 - proportion) * (df + 2);
+  }
+  else {
+    warning("Specify either df (and ideally proportion) or n1 and n2! Returning NA.");
+    return(NA);
+  }
+  
+  multiplier <- sqrt((1 / groupSize1) + (1 / groupSize2));
+  
+  t <- d / multiplier;
+  
+  return(t);
+  
 }
 
 convert.d.to.logodds <- function(d) {
@@ -104,6 +133,14 @@ convert.or.to.d <- function(or) {
 
 convert.or.to.r <- function(or) {
   return(convert.d.to.r(convert.logodds.to.d(log(or))));
+}
+
+###########################################################################
+### Converting from: Proportions (percentages)
+###########################################################################
+
+convert.percentage.to.se <- function(p, n) {
+  return(sqrt((p * (1-p)) / n));
 }
 
 ###########################################################################
@@ -192,4 +229,46 @@ convert.b.to.t <- function(b, se) {
 
 convert.fisherz.to.r <- function(z) {
   return((exp(2 * z) - 1) / (exp(2*z)+1));
+}
+
+#########################################################################
+### Converting from: Noncentrality parameter of the F distribution
+#########################################################################
+
+### Using formula 16 in Beyond The F Test, Steiger's 2004 paper
+
+convert.ncf.to.omegasq <- function(ncf, N) {
+  return(ncf / (ncf + N));
+}
+
+###########################################################################
+### Converting from: Means and standard deviations
+###########################################################################
+
+convert.means.to.d <- function(means, sds, ns = NULL, var.equal=NULL) {
+  if (is.null(ns)) {
+    var <- mean(sds);
+  } else {
+    if (is.null(var.equal)) {
+      ### Try to establish equality ourselves
+      if (max(sds) < (3 * min(sds))) {
+        ### Consider then equal
+        var.equal <- TRUE;
+      } else {
+        ### Consider them different
+        var.equal <- FALSE;
+      }
+    }
+    if (var.equal) {
+      ss1 <- sds[1]^2 * (ns[1] - 1);
+      ss2 <- sds[2]^2 * (ns[2] - 1);
+      var <- (ss1 + ss2) / (ns[1] + ns[2] - 2);
+    } else {
+      ### Take variance of smallest group
+      var <- sds[ns == min(ns)] ^ 2;
+    }
+  }
+  ### Compute difference between means and divide
+  ### by standard deviation
+  return((means[2] - means[1]) / sqrt(var));
 }

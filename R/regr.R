@@ -1,6 +1,7 @@
 regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
                  pvalueDigits = 3, coefficients=c("raw", "scaled"),
-                 plot=FALSE) {
+                 plot=FALSE, ci.method = c("widest", "r.con", "olkinfinn"),
+                 ci.method.note = FALSE) {
 
   ### Generate object to store input, intermediate outcomes, and results
   res <- list(input = as.list(environment()),
@@ -65,12 +66,31 @@ regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
   res$intermediate$rsq.se <- sqrt((4*rsq*(1-rsq)^2*(n-k-1)^2)/
                                   ((n^2-1)*(3+n)));
   res$intermediate$rsq.t.crit <- qt(p=1-(1-conf.level)/2, df=n-k-1);
-  res$output$rsq.ci <- c(res$intermediate$rsq -
-                           res$intermediate$rsq.t.crit *
-                           res$intermediate$rsq.se,
-                         res$intermediate$rsq +
-                           res$intermediate$rsq.t.crit *
-                           res$intermediate$rsq.se);
+  res$output$rsq.ci.olkinfinn <- c(res$intermediate$rsq -
+                                   res$intermediate$rsq.t.crit *
+                                   res$intermediate$rsq.se,
+                                 res$intermediate$rsq +
+                                   res$intermediate$rsq.t.crit *
+                                   res$intermediate$rsq.se);
+  
+  res$output$rsq.ci.olkinfinn <- ifelse(res$output$rsq.ci.olkinfinn < 0,
+                                        0, res$output$rsq.ci.olkinfinn);
+
+  res$output$rsq.ci.r.con <- r.con(sqrt(rsq), n);
+  res$output$rsq.ci.r.con <- ifelse(res$output$rsq.ci.r.con < 0,
+                                    0, res$output$rsq.ci.r.con) ^ 2;
+
+  if ("widest" %IN% ci.method) {
+    res$output$rsq.ci <- ifelse(range(res$output$rsq.ci.r.con) > 
+                                range(res$output$rsq.ci.olkinfinn),
+                                res$output$rsq.ci.r.con,
+                                res$output$rsq.ci.olkinfinn);
+  } else if ("r.con" %IN% ci.method) {
+    res$output$rsq.ci <- res$output$rsq.ci.r.con;
+  } else {
+    res$output$rsq.ci <- res$output$rsq.ci.olkinfinn;
+  }
+  
   
   ### Run confint on lm object
   res$intermediate$confint.raw <-
@@ -134,7 +154,8 @@ print.regr <- function(x, digits=x$input$digits,
              "] (point estimate = ",
              round(x$intermediate$summary.raw$r.squared, digits),
              ", adjusted = ",
-             round(x$intermediate$summary.raw$adj.r.squared, digits), ")\n",
+             round(x$intermediate$summary.raw$adj.r.squared, digits), ")",
+             ifelse(x$input$ci.method.note, "*\n", "\n"),
              "  Test for significance: F[",
              x$intermediate$summary.raw$fstatistic[2], ", ",
              x$intermediate$summary.raw$fstatistic[3], "] = ",
@@ -165,6 +186,45 @@ print.regr <- function(x, digits=x$input$digits,
                              includeP=FALSE);
     print(tmpDat, ...);
   }
+  
+  ciMsg <- "\n* Note that the confidence interval for R^2 is based on ";
+  if (x$input$ci.method[1] == 'r.con') {
+    ciMsg <- paste0(ciMsg,
+                    "the confidence interval for the Pearson Correlation of ",
+                    "the multiple correlation using r.con from the 'psych' ",
+                    "package because that was specified using the 'ci.method' ",
+                    "argument.");
+  } else if (x$input$ci.method[1] == 'olkinfinn') {
+    ciMsg <- paste0(ciMsg,
+                    "the formula reported by Olkin and Finn (1995) in their Correlation ",
+                    "Redux paper, because this was specified using the 'ci.method' ",
+                    "argument. This may not work well for very low values. Set the ",
+                    "argument to 'widest' to also compute the confidence interval ",
+                    "of the multiple correlation using the r.con function from ",
+                    "the 'psych' package and selecting the widest interval.");
+  } else if (identical(x$output$rsq.ci, x$output$rsq.ci.r.con)) {
+    ciMsg <- paste0(ciMsg,
+                    "the confidence interval for the Pearson Correlation of ",
+                    "the multiple correlation using r.con from the 'psych' ",
+                    "package because that was the widest interval, which ",
+                    "should be used because the 'ci.method' was set to 'widest'.");
+  } else if (identical(x$output$rsq.ci, x$output$rsq.ci.olkinfinn)) {
+    ciMsg <- paste0(ciMsg,
+                    "the formula reported by Olkin and Finn (1995) in their Correlation ",
+                    "Redux paper, because this was the widest interval, which ",
+                    "should be used because the 'ci.method' was set to 'widest'.");
+  } else {
+    ciMsg <- paste0(ciMsg,
+                    " -- I don't know actually, something appears to have gone wrong. ",
+                    "The 'ci.method' argument was set to ", vecTxtQ(x$input$ci.method),
+                    ".");
+  }
+  
+  if (x$input$ci.method.note) {
+    cat("\n");
+    cat(strwrap(ciMsg), sep="\n");
+  }
+  
   if (!is.null(x$output$plot)) {
     print(x$output$plot);
   }

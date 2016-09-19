@@ -2,7 +2,7 @@
 ### taken from the gist at https://gist.github.com/rentrop/d39a8406ad8af2a1066c,
 ### which itself uses code from 'car:::qqPlot'.
 
-gg_qq <- function(x, distribution = "norm", ...,
+ggqq <- function(x, distribution = "norm", ...,
                   ci = TRUE,
                   line.estimate = NULL,
                   conf.level = 0.95,

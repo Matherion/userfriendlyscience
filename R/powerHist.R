@@ -1,6 +1,7 @@
 ### Note: this is necessary to prevent Rcmd CHECK from throwing a note;
 ### otherwise it think these variable weren't defined yet.
-utils::globalVariables(c('distribution', '..density..', 'normalX', 'normalY'));
+utils::globalVariables(c('distribution', '..density..',
+                         '..scaled', 'normalX', 'normalY'));
 
 ### Make a 'better' histogram using ggplot
 powerHist <- function(vector,
@@ -12,35 +13,50 @@ powerHist <- function(vector,
                       histAlpha = .25,
                       xLabel = NULL,
                       yLabel = NULL, density=FALSE,
+                      normalCurve = TRUE,
+                      breaks = 30,
                       theme=dlvTheme(axis.title=element_text(colour = "black")),
                       rug=NULL, jitteredRug=TRUE, rugSides="b",
-                      rugAlpha = .2) {
+                      rugAlpha = .2,
+                      returnPlotOnly = FALSE) {
   varName <- deparse(substitute(vector));
   vector <- na.omit(vector);
   if (!is.numeric(vector)) {
     tryCatch(vector <- as.numeric(vector), error = function(e) {
       stop("The vector you supplied is not numeric; I tried to convert it, ",
            "but my attempt failed. The error I got is:\n", e);
-      });
+    });
   }
   
   ### Create object to return, storing all input variables 
   res <- list(input = as.list(environment()), intermediate = list(), output = list());
   
   res$input$sampleSize = length(vector);
-  res$intermediate$normalX <- c(seq(min(res$input$vector), max(res$input$vector),
-                     by=(max(res$input$vector) -
-                         min(res$input$vector)) /
-                         (res$input$sampleSize-1)));
-  res$intermediate$normalY <- dnorm(res$intermediate$normalX,
-                                    mean=mean(res$input$vector),
-                                    sd=sd(res$input$vector));
   res$intermediate$distribution <- res$input$vector;
-  res$dat <- data.frame(normalX = res$intermediate$normalX,
-                        normalY = res$intermediate$normalY,
-                        distribution = res$intermediate$distribution);
+
+  ### Compute binwidth and scaling factor for density lines
   res$intermediate$tempBinWidth <- (max(res$input$vector) -
-                                    min(res$input$vector)) / 30;
+                                    min(res$input$vector)) / breaks;
+  scalingFactor <- max(table(cut(vector, breaks=breaks)));
+
+  if (normalCurve) {
+    res$intermediate$normalX <- c(seq(min(res$input$vector), max(res$input$vector),
+                                      by=(max(res$input$vector) -
+                                            min(res$input$vector)) /
+                                        (res$input$sampleSize-1)));
+    res$intermediate$normalY <- dnorm(res$intermediate$normalX,
+                                      mean=mean(res$input$vector),
+                                      sd=sd(res$input$vector));
+    res$intermediate$normalY <- (1 / max(res$intermediate$normalY)) *
+      scalingFactor *
+      res$intermediate$normalY;
+    res$dat <- data.frame(normalX = res$intermediate$normalX,
+                          normalY = res$intermediate$normalY,
+                          distribution = res$intermediate$distribution);
+  } else {
+    res$dat <- data.frame(distribution = res$intermediate$distribution);
+  }
+  
   ### Generate labels if these weren't specified
   if (is.null(xLabel)) {
     xLabel <- paste0('Value of ', varName);
@@ -55,31 +71,32 @@ powerHist <- function(vector,
       ylab(yLabel) +
       geom_histogram(aes(y=..density..), color=NA, fill=histColor,
                      alpha=histAlpha, binwidth=res$intermediate$tempBinWidth) +
-      geom_density(color=distributionColor, size=distributionLineSize) +
-      geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize) +
-      theme;
+      geom_density(color=distributionColor, size=distributionLineSize);
+    if (normalCurve) {
+      res$plot <- res$plot +
+        geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize);
+    }
+    res$plot <- res$plot + theme;
   }
   else {
-    ### Get approximate maximum frequency in histogram and multiply
-    ### normal curve and density curve
-    res$dat$density <- density(vector, n=length(vector),
-                               from=min(vector),
-                               to=max(vector),
-                               adjust=.8)$y;
-    lineScaling <- max(summary(cut(vector, breaks=30))) / max(res$dat$density);
-    res$dat$density <- lineScaling * res$dat$density;
-    res$dat$normalY <- lineScaling * res$dat$normalY;
 
+    
     ### Plot distribution
     res$plot <- ggplot(data=res$dat, aes(x=distribution)) + 
       xlab(xLabel) +
       ylab(yLabel) +
       geom_histogram(color=NA, fill=histColor,
                      alpha=histAlpha, binwidth=res$intermediate$tempBinWidth) +
-      geom_line(aes(x=normalX, y=density), color=distributionColor, size=distributionLineSize) +
-      geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize) +
-      theme;
+      geom_line(aes_q(y=bquote(..scaled.. * .(scalingFactor))),
+                stat = 'density',
+                color=distributionColor, size=distributionLineSize);
+    if (normalCurve) {
+      res$plot <- res$plot +
+        geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize);
+    }
+    res$plot <- res$plot + theme;
   }
+  
   if (is.null(rug)) {
     if (nrow(res$dat) < 1000) {
       rug <- TRUE;
@@ -87,6 +104,7 @@ powerHist <- function(vector,
       rug <- FALSE;
     }
   }
+  
   if (rug) {
     if (jitteredRug) {
       res$plot <- res$plot + geom_rug(color=distributionColor, sides=rugSides,
@@ -97,17 +115,23 @@ powerHist <- function(vector,
                                       alpha=rugAlpha);
     }
   }
+  
   if (!is.null(res$input$xLabel) && is.logical(res$input$xLabel) &&
-        !(res$input$xLabel)) {
+      !(res$input$xLabel)) {
     res$plot <- res$plot + theme(axis.title.x = element_blank());
   }
   if (!is.null(res$input$yLabel) && is.logical(res$input$yLabel) &&
-        !(res$input$yLabel)) {
+      !(res$input$yLabel)) {
     res$plot <- res$plot + theme(axis.title.y = element_blank());
   }
-  ### Set class and return result
-  class(res) <- "powerHist";
-  return(res);
+  
+  if (returnPlotOnly) {
+    return(res$plot)
+  } else {
+    ### Set class and return result
+    class(res) <- "powerHist";
+    return(res);
+  }
 }
 
 print.powerHist <- function(x, ...) {
