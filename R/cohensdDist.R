@@ -1,27 +1,29 @@
 dCohensd <- function(x, df, populationD = 0) {
-  if (populationD != 0) {
-    cat0("Noncentrality parameters not implemented yet, sorry!\n");
-  }
-  return(dt(convert.d.to.t(x, df + 2), df));
+  ### Return density for given Cohen's d
+  return(dt(convert.d.to.t(x, df + 2), df,
+            ncp=convert.d.to.t(populationD, df + 2)));
 }
 
 pCohensd <- function(q, df, populationD = 0, lower.tail=TRUE) {
-  if (populationD != 0) {
-    cat0("Noncentrality parameters not implemented yet, sorry!\n");
-  }
-  return(pt(convert.d.to.t(q, df + 2), df, lower.tail=lower.tail));
+  ### Return p-value for given Cohen's d
+  return(pt(convert.d.to.t(q, df + 2), df,
+            ncp=convert.d.to.t(populationD, df + 2),
+            lower.tail=lower.tail));
 }
 
 qCohensd <- function(q, df, populationD = 0, lower.tail=TRUE) {
-  if (populationD != 0) {
-    cat0("Noncentrality parameters not implemented yet, sorry!\n");
-  }
-  return(convert.t.to.d(qt(q, df, lower.tail=lower.tail), df + 2));
+  ### Return Cohen's d for given p-value
+  return(convert.t.to.d(qt(q, df,
+                           ncp=convert.d.to.t(populationD, df + 2),
+                           lower.tail=lower.tail), df + 2));
 }
 
 rCohensd <- function(n, df, populationD = 0) {
   if (populationD != 0) {
     cat0("Noncentrality parameters not implemented yet, sorry!\n");
   }
-  return(convert.t.to.d(rt(n, df), df=df));
+  ### Return random Cohen's d value(s)
+  return(convert.t.to.d(rt(n, df),
+                        ncp=convert.d.to.t(populationD, df + 2),
+                        df=df));
 }

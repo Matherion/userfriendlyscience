@@ -415,6 +415,27 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   rownames(res$output$matrix$full) <- rep("", 2*length(rowNames));
   rownames(res$output$matrix$full)[seq(1, (2*length(rowNames)) - 1, by=2)] <- rowNames;
   colnames(res$output$matrix$full) <- columnNames;
+
+  ### Raw results
+  res$output$raw <- list();
+  res$output$raw$es <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$es) <- rowNames;
+  colnames(res$output$raw$es) <- columnNames;
+  res$output$raw$esType <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$esType) <- rowNames;
+  colnames(res$output$raw$esType) <- columnNames;
+  res$output$raw$ci.lo <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$ci.lo) <- rowNames;
+  colnames(res$output$raw$ci.lo) <- columnNames;
+  res$output$raw$ci.hi <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$ci.hi) <- rowNames;
+  colnames(res$output$raw$ci.hi) <- columnNames;
+  res$output$raw$n <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$n) <- rowNames;
+  colnames(res$output$raw$n) <- columnNames;
+  res$output$raw$p <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$p) <- rowNames;
+  colnames(res$output$raw$p) <- columnNames;
   
   xCounter <- 1;
   for(curXvar in x) {
@@ -476,23 +497,44 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   ### estimates and p-values corrected for multiple testing; one with
   ### confidence intervals; and one with two rows for each variable,
   ### combining the information).
-
+  
   for(rowVar in 1:length(x)) {
     for(colVar in 1:length(y)) {
       ### If a symmetric table was requested, only fill the cells if we're
       ### in the lower left half.
       if (!symmetric | (colVar < rowVar)) {
         ### Extract and set confidence interval and then es estimate & p value
+        
+        ### Confidence intervals
         res$output$matrix$ci[rowVar, colVar] <- paste0(
           substr(res$intermediate$effectSizes[[rowVar]][[colVar]]$es.type, 1, 1), "=[",
                round(res$intermediate$effectSizes[[rowVar]][[colVar]]$ci[1], digits), "; ",
                round(res$intermediate$effectSizes[[rowVar]][[colVar]]$ci[2], digits), "]");
+        res$output$raw$ci.lo[rowVar, colVar] <-
+          res$intermediate$effectSizes[[rowVar]][[colVar]]$ci[1];
+        res$output$raw$ci.hi[rowVar, colVar] <-
+          res$intermediate$effectSizes[[rowVar]][[colVar]]$ci[2];
+        
+        ### Effect size
         res$output$matrix$es[rowVar, colVar] <-
           paste0(substr(res$intermediate$effectSizes[[rowVar]][[colVar]]$es.type, 1, 1), "=",
                  round(res$intermediate$effectSizes[[rowVar]][[colVar]]$es, digits), ", ",
                  formatPvalue(res$intermediate$statistics[[rowVar]][[colVar]]$p.adj, digits=pValueDigits, spaces=FALSE));
+        res$output$raw$es[rowVar, colVar] <-
+          res$intermediate$effectSizes[[rowVar]][[colVar]]$es;
+        res$output$raw$esType[rowVar, colVar] <-
+          res$intermediate$effectSizes[[rowVar]][[colVar]]$es.type;
+        
+        ### P values
+        res$output$raw$p[rowVar, colVar] <-
+          res$intermediate$statistics[[rowVar]][[colVar]]$p.adj;
+        
+        ### Sample sizes
         res$output$matrix$sampleSizes[rowVar, colVar] <-
           res$intermediate$sampleSizes[[rowVar]][[colVar]];
+        res$output$raw$n[rowVar, colVar] <-
+          res$intermediate$sampleSizes[[rowVar]][[colVar]];
+        
         ### Convert x (row variable) to two row indices in combined matrix
         res$output$matrix$full[(rowVar*2)-1, colVar] <-
           res$output$matrix$ci[rowVar, colVar];

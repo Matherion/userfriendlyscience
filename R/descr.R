@@ -1,7 +1,7 @@
 descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
                                   include=c("central tendency", "spread",
                                             "range", "distribution shape", "sample size"),
-                                  t=FALSE) {
+                                  t=FALSE, conf.level=.95) {
   varName <- deparse(substitute(x));
   if (is.factor(x)) {
     if (errorOnFactor) {
@@ -19,12 +19,14 @@ descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
     nrNA <- sum(is.na(x));
     x <- na.omit(x);
     mode <- modus(x);
+    meanCi <- formatCI(meanConfInt(x, conf.level=conf.level)$output$ci);
     if (length(mode) > 1) {
       mode <- vecTxt(mode);
     }
     res <- list("central tendency" = data.frame(mean = mean(x),
                                      median = median(x),
-                                     mode = mode),
+                                     mode = mode,
+                                     `meanCI` = meanCi),
                 spread = data.frame(var = var(x),
                                     sd = sd(x),
                                     iqr = median(x[x > median(x)]) -
@@ -40,6 +42,7 @@ descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
                 "sample size" = data.frame(total = length(x) + nrNA,
                                   "NA" = nrNA,
                                   valid = length(x)));
+    names(res[['central tendency']])[4] <- paste0(conf.level * 100, '% CI mean');
     attr(res, "varName") <- varName;
     attr(res, "digits") <- digits;
     attr(res, "include") <- include;
@@ -53,7 +56,7 @@ print.descr <- function(x, digits = attr(x, 'digits'),
                         t = attr(x, 'transpose'),
                         row.names = FALSE, ...) {
   cat("###### Descriptives for", attr(x, "varName"), "\n\n");
-  for (current in names(x)) {
+  for (current in attr(x, "include")) {
     cat0("Describing the ", current, ":\n");
     if (t) {
       df <- t(x[[current]]);
@@ -70,4 +73,9 @@ print.descr <- function(x, digits = attr(x, 'digits'),
         "more in depth.)");
   }
   invisible();
+}
+
+### Function to smoothly pander descriptives from userfriendlyscience
+pander.descr <- function(x, ...) {
+  pander(cat0(unlist(lapply(x, pander, ...)), sep="\n"));
 }

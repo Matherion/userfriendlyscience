@@ -1,4 +1,5 @@
-meanSDtoDiamondPlot <- function(dat = NULL, means = 1, sds = 2, ns = 3, labels = 4, conf.level=.95) {
+meanSDtoDiamondPlot <- function(dat = NULL, means = 1, sds = 2, ns = 3,
+                                labels = 4, conf.level=.95) {
 
   if (!is.null(dat)) {
     if (!is.null(labels)) {

@@ -1,6 +1,6 @@
 dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
-                      conf.level=.95, plots=TRUE, xLabs = NULL,
-                      yLabs = NULL) {
+                      conf.level=.95, plots=TRUE, xLabs = NA,
+                      yLabs = NA, qqCI=TRUE, labelOutliers = TRUE) {
   
   ### Note: this is adapted from the 'skewness' and 'kurtosis' functions
   ### in 'e1071' and the way they're computed in 'describe' in 'psych', and
@@ -144,8 +144,8 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
   
   if (plots) {
     res$intermediate$histogram <- powerHist(sampleVector)$plot;
-    res$intermediate$qq <- ggqq(sampleVector, ci=FALSE);
-    res$intermediate$boxplot <- ggBoxplot(sampleVector);
+    res$intermediate$qq <- ggqq(sampleVector, ci=qqCI);
+    res$intermediate$boxplot <- ggBoxplot(sampleVector, labelOutliers=labelOutliers);
     if (!is.null(xLabs)) {
       if (is.na(xLabs)) {
         res$intermediate$histogram <-
@@ -159,11 +159,11 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
           theme(axis.title.x = element_blank());
       } else {
         res$intermediate$histogram <-
-          res$intermediate$histogram + xlab(xLabs);
+          res$intermediate$histogram + xlab(xLabs$hist);
         res$intermediate$qq <-
-          res$intermediate$qq + xlab(xLabs);
+          res$intermediate$qq + xlab(xLabs$qq);
         res$intermediate$boxplot <-
-          res$intermediate$boxplot + xlab(xLabs);
+          res$intermediate$boxplot + xlab(xLabs$box);
       }
     }
 
@@ -180,11 +180,11 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
           theme(axis.title.y = element_blank());
       } else {
         res$intermediate$histogram <-
-          res$intermediate$histogram + ylab(yLabs);
+          res$intermediate$histogram + ylab(yLabs$hist);
         res$intermediate$qq <-
-          res$intermediate$qq + ylab(yLabs);
+          res$intermediate$qq + ylab(yLabs$qq);
         res$intermediate$boxplot <-
-          res$intermediate$boxplot + ylab(yLabs);
+          res$intermediate$boxplot + ylab(yLabs$box);
       }
     }
     

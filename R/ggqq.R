@@ -7,7 +7,8 @@ ggqq <- function(x, distribution = "norm", ...,
                   line.estimate = NULL,
                   conf.level = 0.95,
                   xlab = "Theoretical quantiles",
-                  ylab = "Observed quantiles"){
+                  ylab = "Observed quantiles",
+                  theme = theme_bw()){
   
   q.function <- eval(parse(text = paste0("q", distribution)));
   d.function <- eval(parse(text = paste0("d", distribution)));
@@ -35,7 +36,7 @@ ggqq <- function(x, distribution = "norm", ...,
   p <- ggplot(df, aes(x=z, y=ord.x)) +
     geom_point() + 
     geom_abline(intercept = coef[1], slope = coef[2]) +
-    xlab(xlab) + ylab(ylab);
+    xlab(xlab) + ylab(ylab) + theme;
 
   if (ci) {
     p <- p +

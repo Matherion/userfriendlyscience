@@ -1,5 +1,6 @@
 getData <- function(filename=NULL, file=NULL,
                     errorMessage = "[defaultErrorMessage]",
+                    applyRioLabels= TRUE,
                     use.value.labels=FALSE,
                     to.data.frame=TRUE,
                     stringsAsFactors=FALSE, ...) {
@@ -76,6 +77,15 @@ getData <- function(filename=NULL, file=NULL,
     dat <- read.delim(filename, stringsAsFactors=stringsAsFactors, ...);
   } else {
     dat <- import(filename, encoding=encoding, fread=FALSE);
+    if (applyRioLabels) {
+      dat[] <- lapply(dat, function(x) {
+        if (is.null(attr(x, 'labels'))) {
+          return(x);
+        } else {
+          return(factor(x, levels=attr(x, 'labels'), labels=names(attr(x, 'labels'))));
+        }
+      });
+    }
   }
 
 #   } else if (!(extension %in% supportedFormats)) {

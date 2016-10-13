@@ -3,7 +3,7 @@ note <- sprintf("R package version %s", meta$Version)
 
 bibentry(bibtype = "Manual",
          title = "{userfriendlyscience}: Quantitative analysis made accessible",
-         author = c(person("Gjalt-JOrn", "Peters")),
+         author = c(person("Gjalt-Jorn", "Peters")),
          year = year,
          note = note,
          url = "http://CRAN.R-project.org/package=userfriendlyscience")

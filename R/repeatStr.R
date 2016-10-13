@@ -1,5 +1,12 @@
 ### repeat a string a given number of times
-repeatStr <- function (str = " ", n = 1) {
+repeatStr <- repStr <- function (n = 1, str = " ") {
+  if (is.character(n) && is.numeric(str)) {
+    ### The input was switched.
+    tmp <- n;
+    n <- str;
+    str <- tmp;
+    rm(tmp);
+  }
   if (n < 1) {
     return("");
   }

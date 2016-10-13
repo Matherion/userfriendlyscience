@@ -15,7 +15,7 @@ scaleStructure <- scaleReliability <- function (dat=NULL, items = 'all', digits 
     dat <- getData(errorMessage=paste0("No dataframe specified, and no valid datafile selected in ",
                                        "the dialog I then showed to allow selection of a dataset.",
                                        "Original error:\n\n[defaultErrorMessage]"),
-                   use.value.labels=FALSE);
+                   use.value.labels=FALSE, applyRioLabels = FALSE);
     res$input$dat.name <- paste0("SPSS file imported from ", attr(dat, "filename"));
   }
   else {
@@ -111,16 +111,35 @@ scaleStructure <- scaleReliability <- function (dat=NULL, items = 'all', digits 
     ### If sufficiently low, also provide ordinal estimates
     if (poly && res$intermediate$maxLevels < 9 && res$intermediate$maxRange < 9) {
       ### Compute polychoric correlation matrix
-      res$intermediate$polychoric <-
+      res$intermediate$polychor <-
         suppressWarnings(polychoric(res$input$dat)$rho);
       
-      if (!any(is.na(res$intermediate$polychoric))) {
+      if (!any(is.na(res$intermediate$polychor))) {
+        res$intermediate$omega.ordinal <-
+          ci.reliability(S=res$intermediate$polychor,
+                       N = res$input$n.observations,
+                       type="omega",
+                       interval.type='none');
+        res$intermediate$omega.ordinal.hierarchical <-
+          ci.reliability(S=res$intermediate$polychor,
+                         N = res$input$n.observations,
+                         type="hierarchical",
+                         interval.type='none');
+        res$intermediate$alpha.ordinal <-
+          ci.reliability(S=res$intermediate$polychor,
+                         N = res$input$n.observations,
+                         type="alpha",
+                         interval.type='none');
+        ################################################################
+        ### 2016-10-10: replaced psych estimate with MBESS function
+        ### to ensure consistency with confidence intervals
+        ################################################################
         ### Ordinal omega
-        suppressWarnings(res$intermediate$omega.ordinal <-
-                           omega(res$input$dat, poly=TRUE, plot=FALSE));
+        # suppressWarnings(res$intermediate$omega.ordinal <-
+        #                    omega(res$input$dat, poly=TRUE, plot=FALSE));
         ### Ordinal alpha
-        res$intermediate$alpha.ordinal <- alpha(res$intermediate$polychoric,
-                                                check.keys=FALSE);
+        # res$intermediate$alpha.ordinal <- alpha(res$intermediate$polychoric,
+        #                                         check.keys=FALSE);
       }
     }
     
@@ -255,14 +274,14 @@ print.scaleStructure <- function (x, digits=x$input$digits, ...) {
       if (!is.null(x$intermediate$omega.ordinal)) {
         cat(paste0("\nEstimates assuming ordinal level:\n",
                    "\n     Ordinal Omega (total): ",
-                   round(x$intermediate$omega.ordinal$omega.tot, digits=digits),
+                   round(x$intermediate$omega.ordinal$est, digits=digits),
                    "\n Ordinal Omega (hierarch.): ",
-                   round(x$intermediate$omega.ordinal$omega_h, digits=digits)));
-        if (x$input$omega.psych) {
-          cat(paste0("\nOrd. Omega (psych package): ", round(x$intermediate$omega.ordinal$omega.tot, digits=digits)));
-        }
+                   round(x$intermediate$omega.ordinal.hierarchical$est, digits=digits)));
+        # if (x$input$omega.psych) {
+        #   cat(paste0("\nOrd. Omega (psych package): ", round(x$intermediate$omega.ordinal$omega.tot, digits=digits)));
+        # }
         cat(paste0("\n  Ordinal Cronbach's alpha: ",
-                   round(x$intermediate$alpha.ordinal$total$raw_alpha, digits=digits), "\n"));
+                   round(x$intermediate$alpha.ordinal$est, digits=digits), "\n"));
         if (x$input$ci & !is.null(x$output$alpha.ordinal.ci)) {
           ### If confidence intervals were computed AND obtained, print them
           cat(paste0("Confidence intervals:\n     Ordinal Omega (total): [",

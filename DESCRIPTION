@@ -19,8 +19,9 @@ Imports: grDevices, stats, utils,
          car,
          SCRT,
          knitr, xtable, 
-         GGally, grid, gridExtra,
+         GGally, grid, gridExtra, ggrepel,
          lavaan,
-         rio
+         rio,
+         diptest
 Depends: ggplot2
 Suggests: XLConnect

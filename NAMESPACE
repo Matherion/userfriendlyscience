@@ -92,5 +92,6 @@ importFrom('GGally', 'ggpairs', 'getPlot', 'putPlot', 'wrap');
 importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.layout',
            'textGrob', 'grid.rect', 'gpar', 'grid.draw');
 importFrom('gridExtra', 'arrangeGrob');
+importFrom('ggrepel', 'geom_text_repel');
 
 importFrom('lavaan', 'sem');

@@ -5,14 +5,16 @@ randomizationSampleSizes <- function(nVars,
                                      nClusters = 1,
                                      rMean = 0,
                                      samples = 1000,
-                                     progressBar = progress_text(style=3, title =
-                                                                   paste0("### Running simulations for ", nClusters,
-                                                                          "clusters of confounders, with a mean intracluster ",
-                                                                          "correlation of ", rMean, "."))) {
+                                     progressBar = progress_text(style=3),
+                                     pbLabel = paste0("Running simulations for ", nClusters,
+                                              " clusters of confounders, with a mean intracluster ",
+                                              "correlation of ", rMean, ".\n")) {
   
   res <- list(input = as.list(environment()),
               intermediate = list(),
               output = list());
+  
+  cat0(pbLabel);
   
   simulatedCohensDs <-
     raply(.n = samples,

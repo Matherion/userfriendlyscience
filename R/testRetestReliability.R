@@ -20,7 +20,7 @@ testRetestReliability <- function(dat = NULL, moments = NULL,
     dat <- getData(errorMessage=paste0("No dataframe specified, and no valid datafile selected in ",
                                        "the dialog I then showed to allow selection of a dataset.",
                                        "Original error:\n\n[defaultErrorMessage]"),
-                   use.value.labels=FALSE);
+                   use.value.labels=FALSE, applyRioLabels = FALSE);
   }
 
   if (!is.null(dat)) {
