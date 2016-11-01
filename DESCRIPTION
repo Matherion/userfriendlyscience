@@ -21,6 +21,7 @@ Imports: grDevices, stats, utils,
          knitr, xtable, 
          GGally, grid, gridExtra, ggrepel,
          lavaan,
-         rio
+         rio,
+         diptest
 Depends: ggplot2
 Suggests: XLConnect

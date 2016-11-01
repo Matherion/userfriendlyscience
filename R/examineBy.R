@@ -49,7 +49,6 @@ print.examineBy <- function(x, ...) {
 
 }
 
-
 pander.examineBy <- function(x, headerPrefix = "",
                              headerStyle = "**",
                              secondaryHeaderPrefix = "",

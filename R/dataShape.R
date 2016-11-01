@@ -152,7 +152,6 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
   }
   
   if (plots) {
-
     res$intermediate$histogram <-
       powerHist(res$intermediate$sampleVector)$plot;
     res$intermediate$qq <-
@@ -256,7 +255,6 @@ print.dataShape <- function(x, digits=x$input$digits, extraNotification=TRUE, ..
         "samples from a normal distribution than G1 and G2, which are used by SPSS and SAS ('type=2').");
   }
 }
-
 
 pander.dataShape <- function(x, digits=x$input$digits, extraNotification=TRUE, ...) {
   if (x$output$type == "G") {
