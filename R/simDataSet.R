@@ -112,17 +112,17 @@ simDataSet <- function(n, varNames,
   if (is.list(ranges)) {
     if (is.null(names(ranges))) {
       for (currentRescaling in 1:length(ranges)) {
-        df[, currentRescaling] <- rescale(df[, currentRescaling], range=ranges[[currentRescaling]]);
+        df[, currentRescaling] <- scales::rescale(df[, currentRescaling], to=ranges[[currentRescaling]]);
       }
     } else {
       for (currentRescaling in names(ranges)) {
-        df[, currentRescaling] <- rescale(df[, currentRescaling], range=ranges[[currentRescaling]]);
+        df[, currentRescaling] <- scales::rescale(df[, currentRescaling], to=ranges[[currentRescaling]]);
       }
     }
   } else if (length(range) == 2) {
     df[, setdiff(varNames, factors)] <-
       lapply(df[, setdiff(varNames, factors)],
-             rescale, range=ranges);
+             scale::rescale, range=ranges);
   } else {
     cat("\nInvalid input for 'range' argument (neither a list nor a vector of length 2), ignoring it!\n");
   }

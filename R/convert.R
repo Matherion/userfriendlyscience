@@ -75,10 +75,10 @@ convert.d.to.t <- function(d, df=NULL, n1=NULL, n2=NULL, proportion=.5) {
   ### Obsolete; not basing computation on
   ### reversal of formula used in e.g.
   ### http://journal.frontiersin.org/article/10.3389/fpsyg.2013.00863/full
-#   return(ifelse(d < 0,
-#                 -1 * sqrt(sqrt(n) * abs(d)),
-#                 sqrt(sqrt(n) * abs(d))));
-
+  #   return(ifelse(d < 0,
+  #                 -1 * sqrt(sqrt(n) * abs(d)),
+  #                 sqrt(sqrt(n) * abs(d))));
+  
   if (is.null(df) && !is.null(n1) && !is.null(n2)) {
     groupSize1 <- n1;
     groupSize2 <- n2;
@@ -213,6 +213,38 @@ convert.f.to.omegasq <- function(f, df1, df2) {
 
 convert.etasq.to.cohensf <- function(etasq) {
   return(sqrt(etasq / (1-etasq)));
+}
+
+###########################################################################
+### Converting from: Cohen's f^2
+###########################################################################
+
+### Equation 16 in Steiger's (2004) 'Beyond the F Test' paper
+
+convert.cohensf.to.omegasq <- function(cohensf) {
+  return(cohensf^2 / (1 + cohensf^2));
+}
+
+convert.cohensfsq.to.omegasq <- function(cohensfsq) {
+  return(cohensfsq / (1 + cohensfsq));
+}
+
+###########################################################################
+### Converting from: Omega^2
+###########################################################################
+
+convert.omegasq.to.f <- function(omegasq, df1, df2) {
+  return( (omegasq * ((df2 + 1) / df1) + 1) / (1 - omegasq) );
+}
+
+### Equation 15 in Steiger's (2004) 'Beyond the F Test' paper
+
+convert.omegasq.to.cohensfsq <- function(omegasq) {
+  return(omegasq / (1 - omegasq));
+}
+
+convert.omegasq.to.cohensf <- function(omegasq) {
+  return(sqrt(omegasq / (1 - omegasq)));
 }
 
 ###########################################################################

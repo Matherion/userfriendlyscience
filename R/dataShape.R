@@ -1,6 +1,7 @@
 dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
-                      conf.level=.95, plots=TRUE, xLabs = NULL,
-                      yLabs = NULL) {
+                      conf.level=.95, plots=TRUE, xLabs = NA,
+                      yLabs = NA, qqCI=TRUE, labelOutliers = TRUE,
+                      sampleSizeOverride = NULL) {
   
   ### Note: this is adapted from the 'skewness' and 'kurtosis' functions
   ### in 'e1071' and the way they're computed in 'describe' in 'psych', and
@@ -18,6 +19,8 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
     else {
       return(NA);
     }
+  } else {
+    res$intermediate$sampleVector <- sampleVector;
   }
   
   if (!(type %in% (1:3))) {
@@ -76,7 +79,13 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
   ### kurtosis, we do so under the assumption that they come from a
   ### normal distribution. Plus, no idea how to compute the variance
   ### otherwise :-)
-  ### These formula's come from the Joanes & Gill (1998) article.
+  
+  ### These formulas come from the Joanes & Gill (1998) article.
+  
+  ### Note that we use the 'overridden sample size' if one was specified.
+  ### We do this because when this function is used 
+  if (is.numeric(sampleSizeOverride)) n <- sampleSizeOverride;
+  
   res$intermediate$var.g1 <- ( 6 * (n-2) ) /
                              ( (n+1) * (n+3) );
   res$intermediate$var.g2 <- ( 24*n * (n-2) * (n-3) ) /
@@ -143,9 +152,13 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
   }
   
   if (plots) {
-    res$intermediate$histogram <- powerHist(sampleVector)$plot;
-    res$intermediate$qq <- ggqq(sampleVector, ci=FALSE);
-    res$intermediate$boxplot <- ggBoxplot(sampleVector);
+
+    res$intermediate$histogram <-
+      powerHist(res$intermediate$sampleVector)$plot;
+    res$intermediate$qq <-
+      ggqq(res$intermediate$sampleVector, ci=qqCI);
+    res$intermediate$boxplot <-
+      ggBoxplot(res$intermediate$sampleVector, labelOutliers=labelOutliers);
     if (!is.null(xLabs)) {
       if (is.na(xLabs)) {
         res$intermediate$histogram <-
@@ -159,11 +172,11 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
           theme(axis.title.x = element_blank());
       } else {
         res$intermediate$histogram <-
-          res$intermediate$histogram + xlab(xLabs);
+          res$intermediate$histogram + xlab(xLabs$hist);
         res$intermediate$qq <-
-          res$intermediate$qq + xlab(xLabs);
+          res$intermediate$qq + xlab(xLabs$qq);
         res$intermediate$boxplot <-
-          res$intermediate$boxplot + xlab(xLabs);
+          res$intermediate$boxplot + xlab(xLabs$box);
       }
     }
 
@@ -180,11 +193,11 @@ dataShape <- function(sampleVector, na.rm=TRUE, type=2, digits=2,
           theme(axis.title.y = element_blank());
       } else {
         res$intermediate$histogram <-
-          res$intermediate$histogram + ylab(yLabs);
+          res$intermediate$histogram + ylab(yLabs$hist);
         res$intermediate$qq <-
-          res$intermediate$qq + ylab(yLabs);
+          res$intermediate$qq + ylab(yLabs$qq);
         res$intermediate$boxplot <-
-          res$intermediate$boxplot + ylab(yLabs);
+          res$intermediate$boxplot + ylab(yLabs$box);
       }
     }
     
@@ -242,4 +255,53 @@ print.dataShape <- function(x, digits=x$input$digits, extraNotification=TRUE, ..
     cat("\nNote: b1 and b2 are estimates for skewness and kurtosis that have smaller mean-squared error in small",
         "samples from a normal distribution than G1 and G2, which are used by SPSS and SAS ('type=2').");
   }
+}
+
+
+pander.dataShape <- function(x, digits=x$input$digits, extraNotification=TRUE, ...) {
+  if (x$output$type == "G") {
+    skewness.inference <- paste0("  (se = ", format(x$intermediate$se.G1, digits=digits),
+                                 ", confidence interval = [",
+                                 paste0(format(x$intermediate$ci.G1, digits=digits), collapse=", "),
+                                 "], z = ", format(x$intermediate$z.G1, digits=digits),
+                                 ", ", formatPvalue(x$intermediate$p.G1, digits=digits), ")");
+    kurtosis.inference <- paste0("  (se = ", format(x$intermediate$se.G2, digits=digits),
+                                 ", confidence interval = [",
+                                 paste0(format(x$intermediate$ci.G2, digits=digits), collapse=", "),
+                                 "], z = ", format(x$intermediate$z.G2, digits=digits),
+                                 ", ", formatPvalue(x$intermediate$p.G2, digits=digits), ")");
+  }
+  else {
+    skewness.inference <- kurtosis.inference <- "";
+  }
+  cat(paste0("Skewness (", x$output$type, "1): ",
+             round(x$output$skewness, digits=digits),
+             skewness.inference, "  \n"));
+  cat(paste0("Kurtosis (", x$output$type, "2): ",
+             round(x$output$kurtosis, digits=digits),
+             kurtosis.inference, "  \n"));
+  cat(paste0("Hartigans' Dip Test: ",
+             round(x$output$D.dip.test, digits=digits), ", ",
+             formatPvalue(x$output$p.dip.test), "\n"));
+  
+  if (extraNotification && x$output$type == "g") {
+    cat("\nNote: g1 and g2 are biased estimates of the population skewness and kurtosis.",
+        "For unbiased estimates, use 'type=2' or 'type=3'.\n");
+  }
+  else if (extraNotification && x$output$type == "G") {
+    cat("\nNote: G1 and G2 are the estimates for skewness and kurtosis used by SPSS and SAS,",
+        "and corrected for the bias present in g1 and g2 ('type=1'). Note that b1 and b2 ('type=3')",
+        "may perform better in small samples from a normal distribution.\n");
+  }
+  else if (extraNotification && x$output$type == "b") {
+    cat("\nNote: b1 and b2 are estimates for skewness and kurtosis that have smaller mean-squared error in small",
+        "samples from a normal distribution than G1 and G2, which are used by SPSS and SAS ('type=2').\n");
+  }
+  
+  cat("\n");
+  
+  if (x$input$plots) {
+    grid.draw(x$output$plot);
+  }  
+  
 }

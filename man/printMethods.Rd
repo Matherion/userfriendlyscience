@@ -34,6 +34,13 @@
 \alias{print.therapyMonitor.multi}
 \alias{print.asymmetricalScatterMatrix}
 \alias{print.fullFact}
+\alias{print.confIntOmegaSq}
+\alias{print.examine}
+\alias{print.examineBy}
+\alias{print.frequencies}
+\alias{print.power.htest.usf}
+\alias{print.randomizationSampleSizes}
+\alias{print.regrInfluential}
 \title{
 userfriendlyscience print methods
 }
@@ -88,6 +95,13 @@ colNames = x$colNames, ...)
 \method{print}{therapyMonitor.multi}(x, ...)
 \method{print}{asymmetricalScatterMatrix}(x, ...)
 \method{print}{fullFact}(x, ...)
+\method{print}{confIntOmegaSq}(x, ...)
+\method{print}{examine}(x, ...)
+\method{print}{examineBy}(x, ...)
+\method{print}{frequencies}(x, ...)
+\method{print}{power.htest.usf}(x, ...)
+\method{print}{randomizationSampleSizes}(x, ...)
+\method{print}{regrInfluential}(x, ...)
 }
 \arguments{
   \item{x}{

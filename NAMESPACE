@@ -38,29 +38,35 @@ S3method(print, fullFact);
 
 S3method(sort, associationMatrix)
 
-importFrom("grDevices", "dev.off", "png", "svg")
+importFrom("grDevices", "dev.off", "png", "svg", "rgb", "colorRamp")
 importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
            "chisq.test", "complete.cases", "confint", "cor",
-           "cor.test", "cov", "dchisq", "density", "df", "dnorm", "dt",
+           "cor.test", "cov", "dchisq", "density",
            "formula", "ks.test", "lm", "lm.influence", "median",
-           "na.omit", "p.adjust", "pairwise.t.test", "pchisq", "pf",
-           "pnorm", "pt", "ptukey", "qchisq", "qnorm", "qt",
+           "na.omit", "p.adjust", "pairwise.t.test", "pchisq",
+           "qnorm", "dnorm", "pnorm", "rnorm",
+           "dbeta", "pbeta", "qbeta", "rbeta",
+           "pt", "rt", "qt", "dt",
+           "df", "qf", "rf", "pf",
+           "ptukey", "qchisq",
            "quantile", "reshape", "sd", "shapiro.test", "t.test",
-           "terms", "var", "var.test")
+           "terms", "var", "var.test", "runif",
+           "ppoints", "IQR", "oneway.test",
+           "influence.measures")
 importFrom("utils", "capture.output", "chooseCRANmirror", "combn",
            "head", "install.packages", "installed.packages",
            "packageVersion", "read.csv", "read.delim", "tail",
-           "write.table")
+           "write.table", "write.csv", "as.roman")
 
-importFrom('plyr', 'ddply', 'raply');
+importFrom('plyr', 'ddply', 'raply', 'dlply', '`.`', 'progress_text');
 
 importFrom('psych', 'describe', 'alpha', 'omega', 'glb',
            'fa', 'principal', 'polychoric', 'fisherz', 'fisherz2r',
-           'fa.parallel', 'vss', 'r.con', 'rescale');
-importFrom('pwr', 'pwr.t.test', 'pwr.r.test');
+           'fa.parallel', 'vss', 'r.con', 'rescale', 'describeBy');
+importFrom('pwr', 'pwr.t.test', 'pwr.r.test', 'pwr.anova.test');
 importFrom('fBasics', 'adTest');
 importFrom('MBESS', 'ci.reliability', 'ci.pvaf', 'conf.limits.ncf');
-importFrom('SuppDists', 'pPearson', 'dPearson');
+importFrom('SuppDists', 'pPearson', 'dPearson', "qPearson");
 ### For 'omega' in the psych package - calls 'principal' in the psych package,
 ### with default 'oblimin' rotation (default of 'omega', not of 'principal').
 importFrom('GPArotation', 'oblimin');
@@ -70,8 +76,12 @@ importFrom('mosaic', 'do', 'resample');
 
 importFrom('foreign', 'read.spss');
 
-importFrom('knitr', 'knit');
+importFrom('knitr', 'knit', 'knit_hooks', 'opts_knit');
+importFrom('pander', 'pander');
+
 importFrom('xtable', 'xtable');
+
+importFrom('XML', 'htmlParse', 'xpathSApply', 'xmlValue');
 
 importFrom('car', 'Anova', 'leveneTest');
 
@@ -87,10 +97,13 @@ importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes
            'element_line', 'element_rect', 'element_text', 'element_blank', 'scale_fill_brewer',
            'position_jitter', 'position_dodge', 'geom_smooth', 'geom_rug',
            'stat_summary', 'labs', 'xlab', 'ylab', 'rel', 'theme_bw', 'scale_y_reverse',
-           'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'guides', 'guide_legend');
+           'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'guides', 'guide_legend',
+           'geom_polygon', 'geom_boxplot', 'geom_polygon', 'geom_abline', 'aes_q',
+           'qplot', "scale_colour_gradient");
 importFrom('GGally', 'ggpairs', 'getPlot', 'putPlot', 'wrap');
 importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.layout',
            'textGrob', 'grid.rect', 'gpar', 'grid.draw');
-importFrom('gridExtra', 'arrangeGrob');
+importFrom('gridExtra', 'arrangeGrob', 'grid.arrange');
+importFrom('ggrepel', 'geom_text_repel')
 
 importFrom('lavaan', 'sem');

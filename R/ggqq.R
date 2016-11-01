@@ -3,17 +3,19 @@
 ### which itself uses code from 'car:::qqPlot'.
 
 ggqq <- function(x, distribution = "norm", ...,
-                  ci = TRUE,
-                  line.estimate = NULL,
-                  conf.level = 0.95,
-                  xlab = "Theoretical quantiles",
-                  ylab = "Observed quantiles"){
+                 ci = TRUE,
+                 line.estimate = NULL,
+                 conf.level = 0.95,
+                 sampleSizeOverride = NULL,
+                 xlab = "Theoretical quantiles",
+                 ylab = "Observed quantiles",
+                 theme = theme_bw()){
   
   q.function <- eval(parse(text = paste0("q", distribution)));
   d.function <- eval(parse(text = paste0("d", distribution)));
   x <- na.omit(x);
   ord <- order(x);
-  n <- length(x);
+  n <- ifelse(is.null(sampleSizeOverride), length(x), sampleSizeOverride);
   P <- ppoints(length(x));
   df <- data.frame(ord.x = x[ord], z = q.function(P, ...));
   
@@ -32,14 +34,14 @@ ggqq <- function(x, distribution = "norm", ...,
   df$upper <- fit.value + zz * SE;
   df$lower <- fit.value - zz * SE;
 
-  p <- ggplot(df, aes(x=z, y=ord.x)) +
+  p <- ggplot(df, aes_string(x='z', y='ord.x')) +
     geom_point() + 
     geom_abline(intercept = coef[1], slope = coef[2]) +
-    xlab(xlab) + ylab(ylab);
+    xlab(xlab) + ylab(ylab) + theme;
 
   if (ci) {
     p <- p +
-      geom_ribbon(aes(ymin = lower, ymax = upper), alpha=0.2);
+      geom_ribbon(aes_string(ymin = 'lower', ymax = 'upper'), alpha=0.2);
   }
   
   return(p);

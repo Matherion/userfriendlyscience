@@ -66,11 +66,12 @@ dat.time1 <- dat[1:reliabilityExample$nrOfItems];
 
 ### Check variables again to verify extraction
 names(dat.time1);
+names(dat.time1);
 
 ### Order reliabilities for the administration at time1
 ### (remove 'ci=FALSE' or set it to true to compute confidence
 ###  intervals, as well)
-scaleReliability(dat.time1, ci=FALSE);
+scaleStructure(dat.time1, ci=FALSE);
 
 ### Order more comprehensive scale diagnostics
 scaleDiags <- scaleDiagnosis(dat.time1);
@@ -88,7 +89,7 @@ cov(reliabilityExample$dat[, 2:ncol(reliabilityExample$dat)]);
 
 ### Compute reliability estimates for each measurement moment
 for (currentMoment in 0:(reliabilityExample$nrOfMoments-1)) {
-  print(scaleReliability(reliabilityExample$dat,
+  print(scaleStructure(reliabilityExample$dat,
                          paste0("t", currentMoment, "_item", 1:reliabilityExample$nrOfItems),
                          ci=FALSE));
 }
@@ -131,11 +132,11 @@ print(testRetestReliability(reliabilityExample$dat[, itemSelection]));
 
 ### For comparison, the single administration reliability measures:
 itemSelection <- c(start_time1:(end_time1-5));
-print(scaleReliability(reliabilityExample$dat[, itemSelection], ci=FALSE));
+print(scaleStructure(reliabilityExample$dat[, itemSelection], ci=FALSE));
 
 ### And for time 2:
 itemSelection <- c(start_time2:(end_time2-5));
-print(scaleReliability(reliabilityExample$dat[, itemSelection], ci=FALSE));
+print(scaleStructure(reliabilityExample$dat[, itemSelection], ci=FALSE));
 
 ### Uncomment these line to store the data, respectively as .csv or as an R dataframe object.
 ### Don't forget to change the paths!

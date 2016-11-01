@@ -1,7 +1,6 @@
 diamondPlot <- function(data,
                         ciCols=1:3,
-                        colourCol=NULL,
-                        generateColours = NULL,
+                        colorCol=NULL,
                         otherAxisCol=NULL,
                         yValues=NULL, yLabels=NULL, ylab = NULL,
                         autoSize=NULL, fixedSize=.15,
@@ -55,12 +54,11 @@ diamondPlot <- function(data,
 
   return(ggplot() +
            ggDiamondLayer(data, ciCols = ciCols,
-                           colourCol = colourCol,
-                           generateColours = generateColours,
+                           colorCol = colorCol,
                            otherAxisCol = otherAxisCol,
                            autoSize=autoSize,
                            fixedSize = fixedSize,
-                           color=color,...) +
+                           color=color, ...) +
            scale_y_continuous(breaks=data$otherAxisCol, labels=yLabels) +
 #           scale_y_continuous(breaks=yValues, labels=yLabels) +
            theme + ylab(ylab) + xlab(xlab));

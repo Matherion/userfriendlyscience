@@ -22,8 +22,8 @@
 ###########################################################
 ###########################################################
 
-freq <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
-                 plot=FALSE, plotTheme = theme_bw()) {
+freq <- frequencies <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
+                                plot=FALSE, plotTheme = theme_bw()) {
   
   ### Store variable name
   varName <- gsub(".*\\$(.*)", "\\1", deparse(substitute(vector)));
@@ -47,6 +47,13 @@ freq <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
   res <- list(input = as.list(environment()),
               intermediate = list(),
               output = list());
+  
+  if (!(is.factor(vector) | is.numeric(vector) | is.character(vector))) {
+    stop("Please provide a single vector in argument 'vector' ",
+         "(you supplied an object of class '", class(vector),
+         "'). Use 'frequencies' ",
+         "to obtain multiple frequencies in one go.");
+  }
   
   ### Store input data
   res$input$vector <- factor(vector);  
@@ -118,10 +125,11 @@ freq <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
   }
   
   if (plot) {
-    tmpDf <- data.frame(as.factor(res$intermediate$vector.valid));
-    colnames(tmpDf) <- varName;
-    res$barChart <- ggplot(tmpDf, aes_string(x=varName)) +
-      geom_bar();
+    res$barChart <- ggBarChart(as.factor(res$intermediate$vector.valid),
+                               plotTheme=plotTheme) +
+      xlab(varName);
+      # ggplot(tmpDf, aes_string(x=varName)) +
+      # geom_bar() + plotTheme;
 #              scale_x_discrete(breaks=levels(res$intermediate$vector.valid),
 #                               labels=levels(res$intermediate$vector.valid),
 #                               drop=TRUE);
@@ -176,4 +184,9 @@ print.freq <- function(x, digits=x$input$digits, nsmall=x$input$nsmall,
     print(x$barChart);
   }
   invisible();
+}
+
+### Function to smoothly pander frequencies from userfriendlyscience
+pander.freq <- function(x, ...) {
+  pander(x$dat, missing="");
 }

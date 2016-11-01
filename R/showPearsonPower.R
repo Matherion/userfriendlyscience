@@ -37,16 +37,16 @@ showPearsonPower <- function(n = 100, rho=.3, rNull = 0,
 
   power = lowerTailPower + upperTailPower;
 
-  return(ggplot(dat, aes(x = pearsonR)) +
+  return(ggplot(dat, aes_string(x = 'pearsonR')) +
            
-           geom_ribbon(aes(ymin=0, ymax=rNull), color=rNullColor, fill=rNullFill, alpha=rNullAlpha) +
-           geom_line(aes(y=rNull), color=rNullColor, size=rNullLineSize) +
+           geom_ribbon(aes_string(ymin=0, ymax='rNull'), color=rNullColor, fill=rNullFill, alpha=rNullAlpha) +
+           geom_line(aes_string(y='rNull'), color=rNullColor, size=rNullLineSize) +
            
-           geom_ribbon(aes(ymin=0, ymax=rho), color=rhoColor, fill=rhoFill, alpha=rhoAlpha) +
-           geom_line(aes(y=rho), color=rhoColor, size=rhoLineSize) +
+           geom_ribbon(aes_string(ymin=0, ymax='rho'), color=rhoColor, fill=rhoFill, alpha=rhoAlpha) +
+           geom_line(aes_string(y='rho'), color=rhoColor, size=rhoLineSize) +
            
-           geom_ribbon(aes(ymin=0, ymax=type2error), color=type2Color, fill=type2Fill, alpha=type2Alpha) +
-           geom_line(aes(y=type2error), color=rhoColor, size=type2LineSize) +
+           geom_ribbon(aes_string(ymin=0, ymax='type2error'), color=type2Color, fill=type2Fill, alpha=type2Alpha) +
+           geom_line(aes_string(y='type2error'), color=rhoColor, size=type2LineSize) +
 
            geom_vline(xintercept = criticalR.lo) +
            geom_vline(xintercept = criticalR.hi) +

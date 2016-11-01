@@ -54,15 +54,6 @@ meanDiff <- function(x, y=NULL, paired = FALSE, r.prepost = NULL,
     ### flexibility, as it becomes possible to just provide
     ### vectors, rather than columns in a dataframe.
     ############################################################
-    ### Split variable names into dataset and column name
-    #depVarData <- unlist(strsplit(as.character(x[2]), "\\$"))[1];
-    #depVar <- unlist(strsplit(as.character(x[2]), "\\$"))[2];
-    #groupingVarData <- unlist(strsplit(as.character(x[3]), "\\$"))[1];
-    #groupingVar <- unlist(strsplit(as.character(x[3]), "\\$"))[2];
-    ### Create temporary dataframe to select relevant datapoints
-    #temp <- data.frame(dv = get(depVarData)[[depVar]], group = get(groupingVarData)[[groupingVar]]);
-    #temp$group <- as.factor(temp$group);
-    ############################################################
     ### Get data from vectors or dataframe columns
     depVar <- as.character(x[2]);
     groupingVar <- as.character(x[3]);
@@ -76,7 +67,8 @@ meanDiff <- function(x, y=NULL, paired = FALSE, r.prepost = NULL,
     if (length(levels(temp[['group']])) != 2) {
       stop(paste0("Error: if no y vector is specified, the x parameter must be a formula of the form y ~ x, where x is dichotomous. However, x has more than two levels: x (", groupingVar,") has ", length(levels(temp[['group']])), " levels."));
     }
-    varNames <- c(paste(x[2],"(dependent variable)"), paste(x[3],"(grouping variable)"));
+    varNames <- c(paste(extractVarName(x[2]),"(dependent variable)"),
+                  paste(extractVarName(x[3]),"(grouping variable)"));
     ### Get values for one level and for the other level and store in x and y
     x <- temp[['dv']][temp[['group']] == levels(temp[['group']])[1]];
     y <- temp[['dv']][temp[['group']] == levels(temp[['group']])[2]];
@@ -88,7 +80,8 @@ meanDiff <- function(x, y=NULL, paired = FALSE, r.prepost = NULL,
     ### one of the two is a dichotomous vector indicating group
     ### membership.
     if (is.numeric(x) & is.numeric(y)) {
-      varNames <- c(deparse(substitute(x)), deparse(substitute(y)));
+      varNames <- c(extractVarName(deparse(substitute(x))),
+                    extractVarName(deparse(substitute(y))));
       groupNames <- varNames;
     }
     else if (is.numeric(x) & is.factor(y) & (length(levels(y))==2)) {
@@ -97,8 +90,8 @@ meanDiff <- function(x, y=NULL, paired = FALSE, r.prepost = NULL,
       temp <- data.frame(dv = x,
                          group = y);
       temp$group <- as.factor(temp$group);
-      varNames <- c(paste(deparse(substitute(x)), "(dependent variable)"),
-                    paste(deparse(substitute(y)), "(grouping variable)"));
+      varNames <- c(paste(extractVarName(deparse(substitute(x))), "(dependent variable)"),
+                    paste(extractVarName(deparse(substitute(y))), "(grouping variable)"));
       x <- temp[['dv']][temp[['group']] == levels(temp[['group']])[1]];
       y <- temp[['dv']][temp[['group']] == levels(temp[['group']])[2]];
       groupNames <- c(as.character(levels(temp[['group']])[1]),
@@ -110,8 +103,8 @@ meanDiff <- function(x, y=NULL, paired = FALSE, r.prepost = NULL,
       temp <- data.frame(dv = y,
                          group = x);
       temp$group <- as.factor(temp$group);
-      varNames <- c(paste(deparse(substitute(y)), "(dependent variable)"),
-                    paste(deparse(substitute(x)), "(grouping variable)"));
+      varNames <- c(paste(extractVarName(deparse(substitute(y))), "(dependent variable)"),
+                    paste(extractVarName(deparse(substitute(x))), "(grouping variable)"));
       x <- temp[['dv']][temp[['group']] == levels(temp[['group']])[1]];
       y <- temp[['dv']][temp[['group']] == levels(temp[['group']])[2]];
       groupNames <- c(as.character(levels(temp[['group']])[1]),
@@ -357,6 +350,58 @@ print.meanDiff <- function (x, digits=x$digits, powerDigits=x$digits + 2, ...) {
   
   if (!is.null(x$dlvPlot)) {
     print(x$dlvPlot);
+  }
+  
+  invisible();
+}
+
+
+pander.meanDiff <- function (x, digits=x$digits, powerDigits=x$digits + 2, ...) {
+  powerInfo <- paste0('Achieved power for d=', round(x$meanDiff.d, digits),
+                      ': ', round(x$power$power, powerDigits), ' (for small: ',
+                      round(x$power.small$power, powerDigits), '; medium: ',
+                      round(x$power.medium$power, powerDigits), '; large: ',
+                      round(x$power.large$power, powerDigits), ')');
+  if (regexpr("Matched pairs", x$type) > -1) {
+    variableInfo <- paste0(x$variables[1], " (mean = ", round(x$mean[1], digits), ", sd = ", round(x$sd[1], digits), ", n = ", x$n, ")  \n",
+                           x$variables[2], " (mean = ", round(x$mean[2], digits), ", sd = ", round(x$sd[2], digits), ", n = ", x$n, ")");
+    varianceInfo <- paste0("**", x$type, "**  \n(standard deviation of the difference: ", round(sqrt(x$variance), digits), ")");
+  }
+  else if (regexpr("Independent samples", x$type) > -1) {
+    variableInfo <- paste0(x$variables[2],
+                           " & ", x$variables[1],
+                           "  \nMean 1 (", x$groups[1], ") = ", round(x$mean[1], digits), ", sd = ", round(x$sd[1], digits), ", n = ", x$n[1],
+                           "  \nMean 2 (", x$groups[2], ") = ", round(x$mean[2], digits), ", sd = ", round(x$sd[2], digits), ", n = ", x$n[2]);
+    if (regexpr("unequal variances", x$type) > -1) {
+      varianceInfo <- paste0("**", x$type, "**  \n(standard deviation used of largest sample, ", round(sqrt(x$variance), digits), ")");
+    }
+    else if (regexpr("equal variances", x$type) > -1) {
+      varianceInfo <- paste0("**", x$type, "**  \n(pooled standard deviation used, ", round(sqrt(x$variance), digits), ")");
+    }
+  }
+  
+  
+  if (!is.null(x$dlvPlot)) {
+    print(x$dlvPlot);
+  }
+  
+  cat(paste0("\n\n**Input variables:**  \n",
+             variableInfo,
+             "\n\n", varianceInfo,
+             "\n\n**", round(x$ci.confidence * 100, digits), "% confidence intervals:**",
+             "  \nAbsolute mean difference: [", round(x$meanDiff.ci.lower, digits), ", ", round(x$meanDiff.ci.upper, digits), "]",
+             " (Absolute mean difference: ", round(x$meanDiff, digits), ")",
+             "  \nCohen's d for difference: [", round(x$meanDiff.d.ci.lower, digits), ", ", round(x$meanDiff.d.ci.upper, digits), "]",
+             " (Cohen's d point estimate: ", round(x$meanDiff.d, digits), ")",
+             "  \nHedges g for difference:  [", round(x$meanDiff.g.ci.lower, digits), ", ", round(x$meanDiff.g.ci.upper, digits), "]",
+             " (Hedges g point estimate:  ", round(x$meanDiff.g, digits), ")",
+             "\n\n",
+             powerInfo,
+             "\n\n*(secondary information (NHST): t[", round(x$df, digits), "] = ", round(x$t, digits), ", ", formatPvalue(x$p, digits=digits+1), ")*\n"));
+  if (regexpr("unequal variances", x$type) > -1) {
+    cat(paste0("\n\nNOTE: because the t-test is based on unequal variances, the ",
+               "NHST p-value may be inconsistent with the confidence interval! ",
+               "Use parameter 'var.equal = TRUE' to force equal variances.\n\n"));
   }
   
   invisible();

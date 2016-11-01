@@ -50,3 +50,15 @@ print.crossTab <- function(x, digits=x$input$digits,
       round(x$output$chisq$statistic, digits), ", ",
       formatPvalue(x$output$chisq$p.value, pValueDigits), sep="");
 }
+
+pander.crossTab <- function(x, digits=x$input$digits,
+                           pValueDigits=x$input$pValueDigits, ...) {
+  cat("\n");
+  pander(x$intermediate$table);
+  cat("\n");
+  print(x$intermediate$confIntV, digits=digits);
+  cat("  \nChi-square[", x$output$chisq$parameter, "] = ",
+      round(x$output$chisq$statistic, digits), ", ",
+      formatPvalue(x$output$chisq$p.value, pValueDigits), sep="");
+}
+

@@ -31,5 +31,5 @@ meanConfInt <- function(vector=NULL, mean=NULL, sd=NULL, n=NULL, se=NULL, conf.l
 }
 
 print.meanConfInt <- function(x, digits=2, ...) {
-  print(x$output$ci, digits=digits, ...);
+  print(round(x$output$ci, digits=digits), ...);
 }

@@ -2,7 +2,7 @@
 ### (i.e. see the comments by Nick Horton and thelatemail)
 
 ### Function to compute Cramer's V
-cramersV <- function(x, y = NULL, digits=4) {
+cramersV <- function(x, y = NULL, digits=2) {
   
   res <- list(input = list(x=x, y=y, digits=digits),
               intermediate = list(),
@@ -63,7 +63,7 @@ print.CramersV <- function(x, digits=x$input$digits, ...) {
 }
 
 confIntV <- function(x, y = NULL, conf.level=.95,
-                     samples = 500, digits=4,
+                     samples = 500, digits=2,
                      method=c('bootstrap', 'fisher'),
                      storeBootstrappingData = FALSE) {
   
@@ -94,14 +94,14 @@ confIntV <- function(x, y = NULL, conf.level=.95,
       
       res$intermediate$dat <- data.frame(x=res$input$x, y=res$input$y);
       
-#       bootstrapFull <-
-#         do(samples) * with(resample(res$intermediate$dat), cramersV(x, y));
        bootstrapFull <-
-         do(samples) * function(dat=resample(res$intermediate$dat)) {
-           x <- dat$x;
-           y <- dat$y;
-           return(cramersV(x, y));
-         };
+         do(samples) * with(resample(res$intermediate$dat), cramersV(x, y));
+       # bootstrapFull <-
+       #   do(samples) * function(dat=resample(res$intermediate$dat)) {
+       #     x <- dat$x;
+       #     y <- dat$y;
+       #     return(cramersV(x, y));
+       #   };
 
       res$intermediate$bootstrapVs <-
       unlist(lapply(bootstrapFull$output,
@@ -149,16 +149,18 @@ confIntV <- function(x, y = NULL, conf.level=.95,
 print.confIntV <- function(x, digits=x$input$digits, ...) {
   cat(paste0("Cram\u00E9r's V ", 100*x$input$conf.level,
              "% confidence interval (point estimate = ",
-             signif(x$intermediate$cramersV$output$cramersV, digits=digits),
-             "):\n"));
+             formatR(x$intermediate$cramersV$output$cramersV, digits=digits),
+             "):  \n"));
   if (!is.null(x$input$y) && "bootstrap" %in% x$input$method) {
-    cat(paste0("Bootstrapped: [",
-               paste0(signif(x$output$confIntV.bootstrap, digits=digits),
-                      collapse=", "), "]\n"));
+    cat(paste0("Bootstrapped: ",
+               formatCI(x$output$confIntV.bootstrap, digits=digits,
+                        noZero=TRUE),
+               "  \n"));
   }
   if ("fisher" %in% x$input$method) {
-    cat(paste0("Using Fisher's z: [",
-               paste0(signif(x$output$confIntV.fisher, digits=digits),
-                      collapse=", "), "]\n"));
+    cat(paste0("Using Fisher's z: ",
+               formatCI(x$output$confIntV.fisher, digits=digits,
+                        noZero=TRUE),
+               "\n"));
   }
 }

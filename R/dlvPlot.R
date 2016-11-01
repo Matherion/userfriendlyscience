@@ -28,7 +28,6 @@ dlvTheme <- function(base_size = 14, base_family = "", ...) {
       panel.grid.major  = element_line(colour = "grey90", size = 0.2),
       panel.grid.minor  = element_line(colour = "grey98", size = 0.5),
       strip.background  = element_rect(fill = "grey80", colour = "grey50"),
-      strip.background  = element_rect(fill = "grey80", colour = "grey50"),
       panel.margin      = unit(c(.5), "cm"),
       ...
     )

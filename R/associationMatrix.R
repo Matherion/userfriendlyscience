@@ -7,7 +7,8 @@
 ### of measurement levels of the two variables.
 
 ### Function for the t-test
-computeStatistic_t <- function(var1, var2, conf.level=.95) {
+computeStatistic_t <- function(var1, var2, conf.level=.95,
+                               var.equal='test', ...) {
   if (nlevels(as.factor(var1)) == 2) {
     dichotomous <- factor(var1);
     interval <- var2;
@@ -21,7 +22,7 @@ computeStatistic_t <- function(var1, var2, conf.level=.95) {
   }
   res <- list();
   res$object <- meanDiff(interval ~ dichotomous, conf.level = conf.level,
-                         envir=environment());
+                         envir=environment(), var.equal=var.equal);
   res$statistic <- res$object$t;
   res$statistic.type <- "t";
   res$parameter <- res$object$df;
@@ -30,7 +31,8 @@ computeStatistic_t <- function(var1, var2, conf.level=.95) {
 }
 
 ### Function for the Pearson correlation (r)
-computeStatistic_r <- function(var1, var2, conf.level=.95) {
+computeStatistic_r <- function(var1, var2, conf.level=.95,
+                               ...) {
   res <- list();
   res$object <- cor.test(var1, var2, use="complete.obs");
   res$statistic <- res$object$statistic;
@@ -41,7 +43,8 @@ computeStatistic_r <- function(var1, var2, conf.level=.95) {
 }
 
 ### Function for Anova (f)
-computeStatistic_f <- function(var1, var2, conf.level=.95) {
+computeStatistic_f <- function(var1, var2, conf.level=.95,
+                               ...) {
   
   if (is.factor(var1) & is.numeric(var2)) {
     factor <- var1;
@@ -78,7 +81,8 @@ computeStatistic_f <- function(var1, var2, conf.level=.95) {
 }
 
 ### Function for chi-square (chisq)
-computeStatistic_chisq <- function(var1, var2, conf.level=.95) {
+computeStatistic_chisq <- function(var1, var2, conf.level=.95,
+                                   ...) {
   res <- list();
   res$object <- chisq.test(var1, var2, correct=FALSE);
   res$statistic <- res$object$statistic;
@@ -89,12 +93,13 @@ computeStatistic_chisq <- function(var1, var2, conf.level=.95) {
 }
 
 ### Effect size Cohens d
-computeEffectSize_d <- function(var1, var2, conf.level=.95) {
-  if (nlevels(as.factor(var1)) == 2) {
+computeEffectSize_d <- function(var1, var2, conf.level=.95,
+                                var.equal="test", ...) {
+  if (length(unique(var1)) == 2) {
     dichotomous <- factor(var1);
     interval <- var2;
   }
-  else if (nlevels(as.factor(var2)) == 2) {
+  else if (length(unique(var2)) == 2) {
     dichotomous <- factor(var2);
     interval <- var1;
   }
@@ -103,7 +108,7 @@ computeEffectSize_d <- function(var1, var2, conf.level=.95) {
   }
   res <- list();
   res$object <- meanDiff(interval ~ dichotomous, conf.level = conf.level,
-                         envir=environment());
+                         var.equal=var.equal, envir=environment());
   res$es <- res$object$meanDiff.g;
   res$es.type <- "g";
   res$ci <- c(res$object$meanDiff.g.ci.lower,
@@ -112,7 +117,8 @@ computeEffectSize_d <- function(var1, var2, conf.level=.95) {
 }
 
 ### Effect size Pearson's r
-computeEffectSize_r <- function(var1, var2, conf.level=.95) {
+computeEffectSize_r <- function(var1, var2, conf.level=.95,
+                                ...) {
   res <- list();
   res$object <- cor.test(var1, var2, use="complete.obs");
   res$es <- res$object$estimate;
@@ -122,7 +128,8 @@ computeEffectSize_r <- function(var1, var2, conf.level=.95) {
 }
 
 ### Function for eta squared (etasq)
-computeEffectSize_etasq <- function(var1, var2, conf.level=.95) {
+computeEffectSize_etasq <- function(var1, var2, conf.level=.95,
+                                    ...) {
   
   if (is.factor(var1) & is.numeric(var2)) {
     factor <- var1;
@@ -184,7 +191,8 @@ computeEffectSize_etasq <- function(var1, var2, conf.level=.95) {
 
 
 ### Function for omega squared (etasq)
-computeEffectSize_omegasq <- function(var1, var2, conf.level=.95) {
+computeEffectSize_omegasq <- function(var1, var2, conf.level=.95,
+                                      ...) {
   
   res$object <- confIntOmegaSq(var1, var2, conf.level=conf.level);
   
@@ -197,7 +205,8 @@ computeEffectSize_omegasq <- function(var1, var2, conf.level=.95) {
 
 ### Function for Cramers V effect size (v)
 computeEffectSize_v <- function(var1, var2, conf.level=.95,
-                                     bootstrap=FALSE, samples=5000) {
+                                bootstrap=FALSE, samples=5000,
+                                ...) {
   res <- list();
   if (bootstrap) {
     res$object <- confIntV(var1, var2,
@@ -274,7 +283,8 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
                               pValueDigits=digits + 1, colNames = FALSE,
                               type=c("R", "html", "latex"), file="",
                               statistic = associationMatrixStatDefaults,
-                              effectSize = associationMatrixESDefaults) {
+                              effectSize = associationMatrixESDefaults,
+                              var.equal = "test") {
   
   ### Make object to store results
   res <- list(input = as.list(environment()),
@@ -415,6 +425,27 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   rownames(res$output$matrix$full) <- rep("", 2*length(rowNames));
   rownames(res$output$matrix$full)[seq(1, (2*length(rowNames)) - 1, by=2)] <- rowNames;
   colnames(res$output$matrix$full) <- columnNames;
+
+  ### Raw results
+  res$output$raw <- list();
+  res$output$raw$es <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$es) <- rowNames;
+  colnames(res$output$raw$es) <- columnNames;
+  res$output$raw$esType <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$esType) <- rowNames;
+  colnames(res$output$raw$esType) <- columnNames;
+  res$output$raw$ci.lo <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$ci.lo) <- rowNames;
+  colnames(res$output$raw$ci.lo) <- columnNames;
+  res$output$raw$ci.hi <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$ci.hi) <- rowNames;
+  colnames(res$output$raw$ci.hi) <- columnNames;
+  res$output$raw$n <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$n) <- rowNames;
+  colnames(res$output$raw$n) <- columnNames;
+  res$output$raw$p <- matrix(nrow = length(x), ncol = length(y));
+  rownames(res$output$raw$p) <- rowNames;
+  colnames(res$output$raw$p) <- columnNames;
   
   xCounter <- 1;
   for(curXvar in x) {
@@ -440,7 +471,8 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
         tmpFun <- match.fun(effectSize[[measurementLevelsX[xCounter]]]
                             [[measurementLevelsY[yCounter]]]);
         res$intermediate$effectSizes[[curXvar]][[curYvar]] <- 
-          tmpFun(dat[,curXvar], dat[,curYvar], conf.level = conf.level);
+          tmpFun(dat[,curXvar], dat[,curYvar], conf.level = conf.level,
+                 var.equal = var.equal);
         res$intermediate$sampleSizes[[curXvar]][[curYvar]] <- nrow(na.omit(dat[,c(curXvar, curYvar)]));
       }
       yCounter <- yCounter + 1;
@@ -476,23 +508,44 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   ### estimates and p-values corrected for multiple testing; one with
   ### confidence intervals; and one with two rows for each variable,
   ### combining the information).
-
+  
   for(rowVar in 1:length(x)) {
     for(colVar in 1:length(y)) {
       ### If a symmetric table was requested, only fill the cells if we're
       ### in the lower left half.
       if (!symmetric | (colVar < rowVar)) {
         ### Extract and set confidence interval and then es estimate & p value
+        
+        ### Confidence intervals
         res$output$matrix$ci[rowVar, colVar] <- paste0(
           substr(res$intermediate$effectSizes[[rowVar]][[colVar]]$es.type, 1, 1), "=[",
                round(res$intermediate$effectSizes[[rowVar]][[colVar]]$ci[1], digits), "; ",
                round(res$intermediate$effectSizes[[rowVar]][[colVar]]$ci[2], digits), "]");
+        res$output$raw$ci.lo[rowVar, colVar] <-
+          res$intermediate$effectSizes[[rowVar]][[colVar]]$ci[1];
+        res$output$raw$ci.hi[rowVar, colVar] <-
+          res$intermediate$effectSizes[[rowVar]][[colVar]]$ci[2];
+        
+        ### Effect size
         res$output$matrix$es[rowVar, colVar] <-
           paste0(substr(res$intermediate$effectSizes[[rowVar]][[colVar]]$es.type, 1, 1), "=",
                  round(res$intermediate$effectSizes[[rowVar]][[colVar]]$es, digits), ", ",
                  formatPvalue(res$intermediate$statistics[[rowVar]][[colVar]]$p.adj, digits=pValueDigits, spaces=FALSE));
+        res$output$raw$es[rowVar, colVar] <-
+          res$intermediate$effectSizes[[rowVar]][[colVar]]$es;
+        res$output$raw$esType[rowVar, colVar] <-
+          res$intermediate$effectSizes[[rowVar]][[colVar]]$es.type;
+        
+        ### P values
+        res$output$raw$p[rowVar, colVar] <-
+          res$intermediate$statistics[[rowVar]][[colVar]]$p.adj;
+        
+        ### Sample sizes
         res$output$matrix$sampleSizes[rowVar, colVar] <-
           res$intermediate$sampleSizes[[rowVar]][[colVar]];
+        res$output$raw$n[rowVar, colVar] <-
+          res$intermediate$sampleSizes[[rowVar]][[colVar]];
+        
         ### Convert x (row variable) to two row indices in combined matrix
         res$output$matrix$full[(rowVar*2)-1, colVar] <-
           res$output$matrix$ci[rowVar, colVar];
@@ -554,5 +607,15 @@ print.associationMatrix <- function (x, type = x$input$type,
           file=file);
   }
     
+  invisible();
+}
+
+pander.associationMatrix <- function (x,
+                                     info = x$input$info, 
+                                     file = x$input$file, ...) {
+  
+  ### Extract matrix to print (es, ci, or full)
+  pander(x$output$matrix[[info[1]]],
+         missing="");
   invisible();
 }

@@ -15,7 +15,7 @@ setFigCapNumbering <- function(figure_counter_str = "Figure %s: ",
     fig.cap <- knitr:::.img.cap(options);
     
     # Style and additional options that should be included in the img tag
-    style=c("display: block",
+    style<-c("display: block",
             sprintf("margin: %s;",
                     switch(options$fig.align, 
                            left = 'auto auto auto 0', 
@@ -33,7 +33,7 @@ setFigCapNumbering <- function(figure_counter_str = "Figure %s: ",
       for(out_name in on){
         dimName <- substr(out_name, 5, nchar(out_name));
         if (grepl("[0-9]+(em|px|%|pt|pc|in|cm|mm)", out_name))
-          style=append(inlineStyle, paste0(dimName, ": ", options[[out_name]]))
+          style=append(style, paste0(dimName, ": ", options[[out_name]]))
         else if (length(options$out.width) > 0)
           addon_args = paste0(addon_args, dimName, "='", options[[out_name]], "'");
       }

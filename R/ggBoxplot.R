@@ -1,4 +1,6 @@
 ggBoxplot <- function(dat, y = NULL, x = NULL,
+                      labelOutliers = TRUE,
+                      outlierColor = 'red',
                       theme = theme_bw(), ...) {
   if (is.null(x) && is.null(y)) {
     if (is.numeric(dat)) {
@@ -7,17 +9,34 @@ ggBoxplot <- function(dat, y = NULL, x = NULL,
              "should be a vector of values, but it's only ", length(dat),
              " elements long, which isn't enough to generate a boxplot.");      }
       varname <- deparse(substitute(dat));
+      ### Take variable only in case a variable in a dataframe was specified
+      varname <- extractVarName(varname);
       tmpDf <- data.frame(dat);
       names(tmpDf) <- varname;
-      return(ggplot(tmpDf, aes_string(y=varname)) +
-               geom_boxplot(aes(x=factor(varname))) +
-               xlab("") + theme_bw() +
-               theme(axis.text.x = element_blank(),
-                     axis.ticks.x = element_blank()));
+      tmpDf$outlier <- ifelse(iqrOutlier(tmpDf[, varname]),
+                              1:nrow(tmpDf),
+                              as.numeric(NA));
+      resPlot <- ggplot(tmpDf, aes_string(y=varname)) +
+        geom_boxplot(aes(x=factor(varname))) +
+        xlab("") + theme_bw() +
+        theme(axis.text.x = element_blank(),
+              axis.ticks.x = element_blank());
+      if (labelOutliers) {
+        resPlot <- resPlot +
+        geom_text_repel(aes_string(x='1', label = 'outlier'), na.rm = TRUE,
+                        color = outlierColor);
+      }
+      return(resPlot);
     } else {
       stop("If both arguments 'x' and 'y' are NULL, the first argument, 'dat, ",
            "should be a vector, but instead, it has class '", class(dat),
            "'.");
+    }
+  } else {
+    
+    if (is.null(y)) {
+      stop("Argument 'y' should be a text string specifying a variable in the ",
+           "dataframe specified by 'dat'; instead, no 'y' is specified.");
     }
     
     if (!(y %in% names(dat))) {
@@ -28,10 +47,22 @@ ggBoxplot <- function(dat, y = NULL, x = NULL,
     }
     
     if (is.null(x)) {
-      return(ggplot(dat, aes_string(y=y)) + geom_boxplot(aes(x=factor(y))) +
+      
+      dat$outlier <- ifelse(iqrOutlier(dat[, y]),
+                            1:nrow(dat),
+                            as.numeric(NA));
+      
+      resPlot <- ggplot(dat, aes_string(y=y)) + geom_boxplot(aes(x=factor(y))) +
                xlab("") + theme +
                theme(axis.text.x = element_blank(),
-                     axis.ticks.x = element_blank()));
+                     axis.ticks.x = element_blank());
+      if (labelOutliers) {
+        resPlot <- resPlot +
+          geom_text_repel(aes(x=1, label = outlier), na.rm = TRUE,
+                          color = outlierColor);
+      }
+      return(resPlot);
+      
     } else {
       if (!(x %in% names(dat))) {
         stop("Argument 'x' should be a text string specifying a variable in the ",
@@ -41,7 +72,30 @@ ggBoxplot <- function(dat, y = NULL, x = NULL,
       } else if (!is.factor(dat[, x])) {
         dat[, x] <- factor(dat[, x]);
       }
-      return(ggplot(dat, aes_string(y=y, x=x)) + geom_boxplot() + theme);
+      
+      ### Based on JasonAizkalns' answer at
+      ### http://stackoverflow.com/questions/33524669/labeling-outliers-of-boxplots-in-r
+
+      dat <-
+        ddply(dat, x,
+              function(datF) {
+                datF$outlier <- iqrOutlier(datF[, y]);
+                return(datF);
+              });
+      dat$outlier <- ifelse(dat$outlier,
+                            1:nrow(dat),
+                            as.numeric(NA));
+
+      resPlot <- ggplot(dat, aes_string(y=y, x=x)) +
+        geom_boxplot() +
+        theme;
+      if (labelOutliers) {
+        resPlot <- resPlot +
+          geom_text_repel(aes(label = outlier), na.rm = TRUE,
+                          color=outlierColor);
+      }
+      return(resPlot);
+
     }
   }
 }

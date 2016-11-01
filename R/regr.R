@@ -1,7 +1,7 @@
 regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
                  pvalueDigits = 3, coefficients=c("raw", "scaled"),
                  plot=FALSE, ci.method = c("widest", "r.con", "olkinfinn"),
-                 ci.method.note = FALSE) {
+                 ci.method.note = FALSE, env=parent.frame()) {
 
   ### Generate object to store input, intermediate outcomes, and results
   res <- list(input = as.list(environment()),
@@ -28,7 +28,7 @@ regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
     res$intermediate$dat.raw <- list();
     for (varToGet in 1:length(res$intermediate$variables)) {
       res$intermediate$dat.raw[[res$intermediate$variables_namesOnly[varToGet]]] <-
-        eval(parse(text=res$intermediate$variables[varToGet]), envir=parent.env(environment()));
+        eval(parse(text=res$intermediate$variables[varToGet]), envir=env);
     }
     ### Convert the list to a dataframe
     res$intermediate$dat.raw <- data.frame(res$intermediate$dat.raw);
@@ -40,23 +40,24 @@ regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
              res$intermediate$variables_namesOnly[currentVariableIndex],
              res$intermediate$formula.as.character, fixed=TRUE);  
     }
-    
+
   } else {
     ### Store variables in a dataframe
     res$intermediate$dat.raw <- dat[, res$intermediate$variableNames];
     res$intermediate$variables_namesOnly <- res$intermediate$variableNames;
   }
 
-  res$intermediate$formula <- formula(res$intermediate$formula.as.character);
+  res$intermediate$formula <- formula(res$intermediate$formula.as.character,
+                                      env = environment());
   
   ### Standardize variables
   res$intermediate$dat.scaled <- as.data.frame(scale(res$intermediate$dat.raw));
-  
+
   ### Run and store lm objects
   res$intermediate$lm.raw <-
-    lm(res$intermediate$formula, res$intermediate$dat.raw);
+    lm(formula=res$intermediate$formula, data=res$intermediate$dat.raw);
   res$intermediate$lm.scaled <-
-    lm(res$intermediate$formula, res$intermediate$dat.scaled);
+    lm(formula=res$intermediate$formula, data=res$intermediate$dat.scaled);
   
   ### R^2 confidence interval based on formula at
   ### http://www.danielsoper.com/statcalc3/calc.aspx?id=28
@@ -230,4 +231,40 @@ print.regr <- function(x, digits=x$input$digits,
   }
   invisible();
   
+}
+
+### Function to smoothly pander output from regr function in userfriendlyscience
+pander.regr <- function (x, digits = x$input$digits, pvalueDigits = x$input$pvalueDigits, ...) {
+  pandoc.p(paste0("#### Regression analysis for formula: ", x$intermediate$formula.as.character));
+  pandoc.p("##### Significance test of the entire model (all predictors together):");
+  pandoc.p(paste0("Multiple R-squared: [", round(x$output$rsq.ci[1], 
+                                                 digits), ", ", round(x$output$rsq.ci[2], digits), 
+                  "] (point estimate = ", round(x$intermediate$summary.raw$r.squared, 
+                                                digits), ", adjusted = ", round(x$intermediate$summary.raw$adj.r.squared, 
+                                                                                digits), ")"))
+  pandoc.p(paste0("Test for significance: F[", x$intermediate$summary.raw$fstatistic[2], 
+                  ", ", x$intermediate$summary.raw$fstatistic[3], "] = ", 
+                  round(x$intermediate$summary.raw$fstatistic[1], digits), 
+                  ", ", formatPvalue(pf(x$intermediate$summary.raw$fstatistic[1], 
+                                        x$intermediate$summary.raw$fstatistic[2], x$intermediate$summary.raw$fstatistic[3], 
+                                        lower.tail = FALSE), digits = pvalueDigits), "\n"));
+  
+  if ("raw" %in% x$input$coefficients) {
+    pandoc.p("##### Raw regression coefficients (unstandardized beta values, called 'B' in SPSS):");
+    tmpDat <- round(x$output$coef.raw[, 1:5], digits);
+    tmpDat[[1]] <- paste0("[", tmpDat[[1]], "; ", tmpDat[[2]], "]");
+    tmpDat[[2]] <- NULL;
+    names(tmpDat)[1] <- paste0(x$input$conf.level * 100, "% conf. int.");
+    tmpDat$p <- formatPvalue(x$output$coef.raw$p, digits = pvalueDigits, includeP = FALSE);
+    pander(tmpDat, ..., missing="");
+  }
+  if ("scaled" %in% x$input$coefficients) {
+    pandoc.p("##### Scaled regression coefficients (standardized beta values, called 'Beta' in SPSS):");
+    tmpDat <- round(x$output$coef.scaled[, 1:5], digits);
+    tmpDat[[1]] <- paste0("[", tmpDat[[1]], "; ", tmpDat[[2]], "]");
+    tmpDat[[2]] <- NULL;
+    names(tmpDat)[1] <- paste0(x$input$conf.level * 100, "% conf. int.");
+    tmpDat$p <- formatPvalue(x$output$coef.scaled$p, digits = pvalueDigits, includeP = FALSE);
+    pander(tmpDat, ..., missing="");
+  }
 }

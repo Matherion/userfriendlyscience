@@ -10,7 +10,7 @@ regrInfluential <- function(formula, data) {
     data.frame(na.omit(data[, res$intermediate$variableNames]));
   ### Compute outcomes of influence measures
   res$intermediate$influence.measures <-
-    influence.measures(lm(formula, dat=res$intermediate$dat));
+    influence.measures(lm(formula, data=res$intermediate$dat));
   ### Add to dataframe
   res$intermediate$dat <- data.frame(res$intermediate$dat,
                                      res$intermediate$influence.measures$infmat,
