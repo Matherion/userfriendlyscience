@@ -3,13 +3,14 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                              conf.level=.95,
                              showData = TRUE, dataAlpha = .1,
                              dataColor = "#444444",
+                             diamondColors = NULL,
                              ...) {
 
   res <- list();
   res$intermediate <- list();
   
   if (is.null(items)) items <- names(dat);
-  if(is.null(labels)) labels <- items;
+  if (is.null(labels)) labels <- items;
   
   res$intermediate$dat <- data.frame(t(sapply(dat[, items], function(x) {
     x <- na.omit(x);
@@ -33,9 +34,10 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
     ### reflect the order of the variables on the Y axis regardless of whether they're
     ### reorganised
     sortedByMean <- 1:length(labels);
-  }  
+  }
+
   plot <- diamondPlot(res$intermediate$dat, ciCols=c('lo', 'mean', 'hi'),
-                      yLabels = labels, ...); 
+                      yLabels = labels, colorCol=diamondColors, ...); 
 
   if (showData) {
 
@@ -44,7 +46,7 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                                        each=nrow(dat))));
     
     plot$layers <- c(geom_jitter(data=rawData,
-                                 mapping=aes(x=value, y=labels),
+                                 mapping=aes_string(x='value', y='labels'),
                                  size = 2.5,
                                  color = dataColor,
                                  alpha = dataAlpha,

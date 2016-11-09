@@ -9,6 +9,7 @@
 \alias{computeEffectSize_v}
 \alias{associationMatrixESDefaults}
 \alias{associationMatrixStatDefaults}
+\alias{computeEffectSize_omegasq}
 \title{
 associationMatrix Helper Functions
 }
@@ -16,16 +17,17 @@ associationMatrix Helper Functions
 These objects contain a number of settings and functions for associationMatrix.
 }
 \usage{
-computeStatistic_t(var1, var2, conf.level=.95)
-computeStatistic_r(var1, var2, conf.level=.95)
-computeStatistic_f(var1, var2, conf.level=.95)
-computeStatistic_chisq(var1, var2, conf.level=.95)
+computeStatistic_t(var1, var2, conf.level=.95, var.equal='test', ...)
+computeStatistic_r(var1, var2, conf.level=.95, ...)
+computeStatistic_f(var1, var2, conf.level=.95, ...)
+computeStatistic_chisq(var1, var2, conf.level=.95, ...)
 
-computeEffectSize_d(var1, var2, conf.level=.95)
-computeEffectSize_r(var1, var2, conf.level=.95)
-computeEffectSize_etasq(var1, var2, conf.level=.95)
+computeEffectSize_d(var1, var2, conf.level=.95, var.equal='test', ...)
+computeEffectSize_r(var1, var2, conf.level=.95, ...)
+computeEffectSize_etasq(var1, var2, conf.level=.95, ...)
+computeEffectSize_omegasq(var1, var2, conf.level=.95, ...)
 computeEffectSize_v(var1, var2, conf.level=.95,
-                         bootstrap=FALSE, samples=5000)
+                         bootstrap=FALSE, samples=5000, ...)
 }
 \arguments{
   \item{var1}{
@@ -45,6 +47,12 @@ computeEffectSize_v(var1, var2, conf.level=.95,
   If bootstrapping, the number of samples to generate (of course, more
   samples means more accuracy and longer processing time).
 }
+  \item{var.equal}{
+  Whether to test for equal variances ('test'), assume equality ('yes'), or assume unequality ('no'). See \code{\link{meanDiff}} for more information.
+  }
+  \item{\dots}{
+  Any additonal arguments are sometimes used to specify exactly how statistics and effect sizes should be computed.
+  }
 }
 \value{
 
@@ -70,6 +78,14 @@ computeEffectSize_v(var1, var2, conf.level=.95,
   And in addition, it often contains (among other things, sometimes):
   \item{object}{The object from which the effect size is extracted}
   
+}
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+\seealso{
+\code{\link{meanDiff}}, \code{\link{associationMatrix}}
 }
 \examples{
 

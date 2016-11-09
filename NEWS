@@ -1,6 +1,24 @@
 userfriendlyscience NEWS
 ------------------------
 
+0.5-1 2016-11-09
+  * Minor tweaks to work with newest version of ggplot2
+  * No longer exporting all functions using regex but explicitly naming them now
+  
+0.5-0 2016-11-07
+  * Power function for Omega Squared was added
+  * diamondPlot functions were added
+  * Pander methods for some functions were added
+  * Some functions to make R more accessible for SPSS users were added (e.g. regr, oneway, examine)
+  * Confidence intervals implemented in Tukey and Games-Howell posthoc tests\
+  * Simple interfaces for generating ggplot scatterplots, Q-Q plots, boxplots, barcharts and pie charts were added
+  * showPearsonPower, a function to show the power of a Pearson correlation was added
+  * Cohen's d and Omega Squared distributions were added by converting to and from t and F
+  * A function to detect rare words was added
+  * Functions to automate figure and table captions in R Markdown/knitr were added
+  * therapyMonitor was added, a function to aid n-of-1 analyses for therapists
+  * prevalencePower was added, a function for power analyses for prevalence studies
+
 0.4-0 2015-
   * processOpenSesameIAT was added, to process OpenSesame IAT datafiles
 

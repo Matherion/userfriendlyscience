@@ -122,7 +122,7 @@ simDataSet <- function(n, varNames,
   } else if (length(range) == 2) {
     df[, setdiff(varNames, factors)] <-
       lapply(df[, setdiff(varNames, factors)],
-             scale::rescale, range=ranges);
+             scales::rescale, range=ranges);
   } else {
     cat("\nInvalid input for 'range' argument (neither a list nor a vector of length 2), ignoring it!\n");
   }

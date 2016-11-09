@@ -9,8 +9,11 @@ one convenient interface that is similar to the oneway anova command in
 SPSS.
 }
 \usage{
-oneway(y, x, posthoc=NULL, means=FALSE, fullDescribe=FALSE, levene=FALSE,
-       plot=FALSE, digits=2, pvalueDigits=3, t=FALSE, conf.level=.95)
+oneway(y, x, posthoc=NULL, means=FALSE, 
+       fullDescribe=FALSE, levene=FALSE,
+       plot=FALSE, digits=2, omegasq = TRUE,
+       etasq = TRUE, corrections = FALSE,
+       pvalueDigits=3, t=FALSE, conf.level=.95)
 }
 \arguments{
   \item{y}{
@@ -43,6 +46,15 @@ groups determined by the x variable.
   \item{digits}{
 The number of digits to show in the output.
 }
+  \item{omegasq}{
+  Whether to show the omega squared effect size.
+}
+  \item{etasq}{
+  Whether to show the eta squared effect size (this is biased and generally advised against; omega squared is less biased).
+}
+  \item{corrections}{
+  Whether to show the corrections for unequal variances (Welch and Brown-Forsythe).
+}
   \item{pvalueDigits}{
 The number of digits to show for p-values; smaller p-values will be shown as
 <.001 or <.0001 etc.
@@ -68,6 +80,19 @@ A list of three elements:
 Anova (from the car package) objects.}
 \item{output}{List with etasq, the effect size, and dat, a dataframe with
 the Oneway Anova results.}
+}
+\note{
+By my knowledge the Brown-Forsythe correction was not yet available in R. I took this from the original paper (directed there by Field, 2014). Note that this is the corrected \emph{F} value, not the Brown-Forsythe test for normality!
+}
+\references{
+Brown, M., & Forsythe, A. (1974). \emph{The small sample behavior of some statistics which test the equality of several means.} Technometrics, 16(1), 129-132. https://doi.org/10.2307/1267501
+Field, A. (2014) \emph{Discovering statistics using SPSS} (4th ed.). London: Sage.
+Steiger, J. H. (2004). \emph{Beyond the F test: Effect size confidence intervals and tests of close fit in the analysis of variance and contrast analysis}. Psychological methods, 9(2), 164-82. doi:10.1037/1082-989X.9.2.164
+}
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \examples{
 ### Do a oneway Anova

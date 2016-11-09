@@ -11,10 +11,10 @@ powerHist(vector, histColor = "#0000CC",
           distributionColor = "#0000CC",
           normalColor = "#00CC00", distributionLineSize = 1,
           normalLineSize = 1, histAlpha = 0.25, xLabel = NULL,
-          yLabel = NULL, density=FALSE, theme = 
-          dlvTheme(axis.title = element_text(colour = "black")),
-          rug = TRUE, jitteredRug = TRUE, rugSides = "b",
-          rugAlpha = .2)
+          yLabel = NULL, normalCurve = TRUE, breaks = 30,
+          theme = dlvTheme(),
+          rug = NULL, jitteredRug = TRUE, rugSides = "b",
+          rugAlpha = .2, returnPlotOnly = FALSE)
           
 }
 \arguments{
@@ -45,9 +45,13 @@ powerHist(vector, histColor = "#0000CC",
   \item{yLabel}{
   Label to use on y axis.
 }
-  \item{density}{
-  This argument is not in use yet.
-}
+  \item{normalCurve}{
+  Whether to display the normal curve.
+  }
+  \item{breaks}{
+  The number of breaks to use (this is equal to the number of bins minus one,
+  or in other words, to the number of bars minus one).
+  }
 \item{theme}{
   The theme to use.
 }
@@ -66,6 +70,11 @@ powerHist(vector, histColor = "#0000CC",
 \item{rugAlpha}{
   Alpha value to use for the rug. When there is a lot of overlap, this can help
   get an idea of the number of datapoints at 'popular' values.
+}
+\item{returnPlotOnly}{
+  Whether to return the usual \code{powerHist} object that also contains
+  all settings and intermediate objects, or whether to only return the
+  \code{\link{ggplot}} plot.
 }
 }
 \value{

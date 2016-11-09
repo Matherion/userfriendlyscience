@@ -18,7 +18,8 @@ associationMatrix(dat=NULL, x=NULL, y=NULL, conf.level = .95,
                   pValueDigits = digits + 1, colNames = FALSE,
                   type=c("R", "html", "latex"), file="",
                   statistic = associationMatrixStatDefaults,
-                  effectSize = associationMatrixESDefaults)
+                  effectSize = associationMatrixESDefaults,
+                  var.equal = 'test')
 }
 \arguments{
   \item{dat}{
@@ -100,6 +101,9 @@ associationMatrix(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   associationMatrixESDefaults, works for everyday use. Again, see the
   'Notes' section below if you want to customize.
 }
+  \item{var.equal}{
+  Whether to test for equal variances ('test'), assume equality ('yes'), or assume unequality ('no'). See \code{\link{meanDiff}} for more information.
+  }
 }
 \value{
 
@@ -145,6 +149,11 @@ associationMatrix(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   without parentheses in the R prompt) to learn how this object should
   look, if you want to write your own functions.
 
+}
+\author{
+Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \examples{
 

@@ -6,12 +6,11 @@ detectRareWords <- function(textFile = NULL, wordFrequencyFile = "Dutch",
                             output = c('file', 'show', 'return'),
                             outputFile = NULL,
                             wordCol = 'Word',
-                            FreqCol = 'FREQlemma',
+                            freqCol = 'FREQlemma',
                             textToWordsFunction = 'textToWords',
                             encoding="ASCII",
                             xPathSelector = '/text()',
-                            silent=FALSE,
-                            ...) {
+                            silent=FALSE) {
   
   if (wordFrequencyFile %IN% c('Dutch', 'Polish')) {
     if (tolower(wordFrequencyFile) == 'dutch') {
@@ -39,31 +38,39 @@ detectRareWords <- function(textFile = NULL, wordFrequencyFile = "Dutch",
     textFile <- file.choose();
   }
   
-  textFileName <- textFile;
+  if (file.exists(textFile)) {
+    
+    textFileName <- textFile;
+    
+    extension <- tolower(gsub(".*\\.(.*)$", '\\1', textFile));
+    
+    if (extension == 'html') {
+      ### Parse HTML to locate text content
+      xData <- htmlParse(textFile, encoding=encoding);
+      textFile <- xpathSApply(xData, xPathSelector, xmlValue);;
+      
+    } else {
+      ### In other cases, assume .txt file
   
-  extension <- tolower(gsub(".*\\.(.*)$", '\\1', textFile));
-  
-  if (extension == 'html') {
-    ### Parse HTML to locate text content
-    xData <- htmlParse(textFile, encoding=encoding);
-    textFile <- xpathSApply(xData, xPathSelector, xmlValue);;
+      ### Use separate connection to make sure proper encoding is selected
+      con <- file(textFile, encoding=encoding);
+      textFile <- readLines(con);
+      close(con);
+    }
     
   } else {
-    ### In other cases, assume .txt file
-
-    ### Use separate connection to make sure proper encoding is selected
-    con <- file(textFile, encoding=encoding);
-    textFile <- readLines(con);
-    close(con);
+    if (!is.character(textFile)) {
+      stop("In argument 'textFile', specify either a filename ",
+           "containing the text to process, or a character vector.");
+    }
   }
-  
   ### Get & store function to convert text to words
   textToWordsFn <- match.fun(textToWordsFunction);
   
   ### Remove punctuation, split into words, and remove duplicates
   words <- unique(tolower(textToWordsFn(textFile)));
   
-  frequencies <- wf[match(words, tolower(wf[, wordCol])), FreqCol];
+  frequencies <- wf[match(words, tolower(wf[, wordCol])), freqCol];
   
   dat <- data.frame(words, frequencies);
   
@@ -78,9 +85,7 @@ detectRareWords <- function(textFile = NULL, wordFrequencyFile = "Dutch",
     if (is.null(outputFile)) {
       outputFile <- tolower(gsub("(.*)\\..*$", '\\1 [text analysis].txt', textFileName));
     }
-    
-    print(outputFile);
-  
+
     outputExtension <- tolower(gsub(".*\\.(.*)$", '\\1', outputFile));
     if (outputExtension == 'csv') {
       write.csv(dat, outputFile);
@@ -96,17 +101,20 @@ detectRareWords <- function(textFile = NULL, wordFrequencyFile = "Dutch",
   }
   
   if ('show' %IN% output) {
-    cat0("\nOutput here\n");
+    cat("\n");
+    print(dat);
+    cat("\n");
   }
   
   if ('return' %IN% output) {
     invisible(dat);
+  } else {
+    invisible(NULL);
   }
 
 }
 
-textToWords <- function(characterVector,
-                        language = 'Dutch') {
+textToWords <- function(characterVector) {
   
   ### Remove punctuation marks
   characterVector <- gsub('[[:punct:]]', '', characterVector);

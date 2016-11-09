@@ -14,24 +14,36 @@ Basic SPSS translation functions
 Basic functons to make working with R easier for SPSS users: getData and getDat provide an easy way to load SPSS datafiles, and exportToSPSS to write to a datafile and syntax file that SPSS can import; filterBy and useAll allow easy temporary filtering of rows from the dataframe; mediaan and modus compute the median and mode of ordinal or numeric data.
 }
 \usage{
-getData(filename=NULL, errorMessage = "[defaultErrorMessage]",
-        use.value.labels=FALSE, to.data.frame=TRUE, stringsAsFactors=FALSE, ...)
-getDat(dfName="dat", backup=TRUE, ...)
-exportToSPSS(dat, datafile, codefile, fileEncoding = "UTF-8",
-             newLinesInString = " |n| ")
-filterBy(dat, expression, replaceOriginalDataframe = TRUE, envir = parent.frame())
+getData(filename = NULL, file = NULL, errorMessage =
+        "[defaultErrorMessage]", applyRioLabels = TRUE,
+        use.value.labels = FALSE, to.data.frame = TRUE,
+        stringsAsFactors = FALSE, ...)
+        
+getDat(..., dfName = "dat", backup = TRUE)
+
+exportToSPSS(dat, savfile = NULL, datafile = NULL, codefile = NULL,
+             fileEncoding = "UTF-8", newLinesInString = " |n| ")
+             
+filterBy(dat, expression, replaceOriginalDataframe = TRUE,
+         envir = parent.frame())
+         
 useAll(dat, replaceFilteredDataframe = TRUE)
+
 mediaan(vector)
+
 modus(vector)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{filename}{
-  It is possible to specify a path and filename to load here. If not specified, the default R file selection dialogue is shown
+  \item{filename, file}{
+  It is possible to specify a path and filename to load here. If not specified, the default R file selection dialogue is shown. \code{file} is still available for backward compatibility but will eventually be phased out.
 }
   \item{errorMessage}{
   The error message that is shown if the file does not exist or does not have the right extension; "[defaultErrorMessage]" is replaced with
   a default error message (and can be included in longer messages).
+}
+  \item{applyRioLabels}{
+  Whether to apply the labels supplied by Rio. This will make variables that has value labels into factors.
 }
   \item{use.value.labels}{
   Only useful when reading from SPSS files: whether to read variables with value labels as factors (TRUE) or numeric vectors (FALSE).
@@ -60,6 +72,9 @@ modus(vector)
 }
 \item{codefile}{
   The name of the code file, the SPSS syntax file that can be used to import the data file.
+}
+\item{savfile}{
+  The name of the SPSS format .sav file (alternative for writing a datafile and a codefile).
 }
 \item{fileEncoding}{
   The encoding to use to write the files.

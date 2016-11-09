@@ -51,7 +51,7 @@ scaleDiagnosisToPDF(scaleDiagnosisObject,
   pages with matrices that have this number of columns or more are rotated.
 }
   \item{pboxWidthMultiplier}{
-  Passed on to \code{\link{print.rMatrix}}.
+  Passed on to (unexported method) \code{print.rMatrix}.
 }
   \item{scatterPlotBaseSize}{
   Basic size of scatterplots in centimeters. If this number, multiplied by
@@ -66,7 +66,7 @@ scaleDiagnosisToPDF(scaleDiagnosisObject,
 }
   \item{pval}{
   Whether to print p-values using the p-value formatting.
-  Passed on to \code{\link{print.rMatrix}}.
+  Passed on to (unexported method) \code{print.rMatrix}.
 }
 }
 \details{

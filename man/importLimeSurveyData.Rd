@@ -31,7 +31,9 @@ importLimeSurveyData(datafile = NULL,
   categoricalQuestions = NULL,
   massConvertToNumeric = TRUE,
   dataHasVarNames = TRUE,
-  encoding = "UTF-8-BOM")
+  encoding = "NULL",
+  dataEncoding = "unknown",
+  scriptEncoding = "ASCII")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -81,8 +83,10 @@ importLimeSurveyData(datafile = NULL,
   Whether the variable names are included as header (first line) in the comma
   separated values file (data file).
 }
-  \item{encoding}{
-  The encoding of the files.
+  \item{encoding, dataEncoding, scriptEncoding}{
+  The encoding of the files; \code{encoding} overrides \code{dataEncoding}
+  and \code{scriptEncoding}, and so can be used to specify the same encoding
+  for both.
 }
 }
 \details{

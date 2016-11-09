@@ -94,14 +94,14 @@ confIntV <- function(x, y = NULL, conf.level=.95,
       
       res$intermediate$dat <- data.frame(x=res$input$x, y=res$input$y);
       
-       bootstrapFull <-
-         do(samples) * with(resample(res$intermediate$dat), cramersV(x, y));
        # bootstrapFull <-
-       #   do(samples) * function(dat=resample(res$intermediate$dat)) {
-       #     x <- dat$x;
-       #     y <- dat$y;
-       #     return(cramersV(x, y));
-       #   };
+       #   do(samples) * with(resample(res$intermediate$dat), cramersV(x, y));
+       bootstrapFull <-
+         do(samples) * function(dat=resample(res$intermediate$dat)) {
+           x <- dat$x;
+           y <- dat$y;
+           return(cramersV(x, y));
+         };
 
       res$intermediate$bootstrapVs <-
       unlist(lapply(bootstrapFull$output,
@@ -116,7 +116,7 @@ confIntV <- function(x, y = NULL, conf.level=.95,
     }
     
   }
-
+  
   ### Store point estimate
   res$intermediate$cramersV <- cramersV(x=x, y=y);
   

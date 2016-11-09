@@ -1,14 +1,19 @@
 \name{freq}
 \alias{freq}
+\alias{frequencies}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Freq
+Freq and frequencies
 }
 \description{
 Function to show frequencies in a manner similar to what SPSS' "FREQUENCIES" command does.
 }
 \usage{
-freq(vector, digits = 1, nsmall=1, transposed=FALSE, round=1, plot=FALSE)
+freq(vector, digits = 1, nsmall=1, transposed=FALSE,
+     round=1, plot=FALSE, plotTheme = theme_bw())
+frequencies(..., digits = 1, nsmall = 1,
+            transposed = FALSE, round = 1,
+            plot = FALSE, plotTheme = theme_bw())
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -30,11 +35,19 @@ freq(vector, digits = 1, nsmall=1, transposed=FALSE, round=1, plot=FALSE)
   \item{plot}{
   If true, a histogram is shown of the variable.
   }
+  \item{plotTheme}{
+  The ggplot2 theme to use.
+  }
+  \item{\dots}{
+  The variables of which to provide frequencies
+  }
 }
 \value{
 
 An object with several elements, the most notable of which is:
   \item{dat}{A dataframe with the frequencies}
+
+For \code{frequencies}, these objects are in a list of their own.
 
 }
 \examples{
@@ -49,6 +62,9 @@ factorWithMissings[10] <- factorWithMissings[20] <- NA;
 ### Show frequencies
 freq(ourFactor);
 freq(factorWithMissings);
+
+### ... Or for all of them at one
+frequencies(ourFactor, factorWithMissings);
 
 }
 \keyword{ univar }

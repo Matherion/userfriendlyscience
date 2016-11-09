@@ -1,17 +1,14 @@
-\name{ggpie}
-\alias{ggpie}
-%- Also NEED an '\alias' for EACH other topic documented here.
+\name{ggPie}
+\alias{ggPie}
 \title{
-ggpie
+A ggplot pie chart
 }
 \description{
-This function, very strongly based on the Mathematical Coffee post at http://mathematicalcoffee.blogspot.nl/2014/06/ggpie-pie-graphs-in-ggplot2.html,
-creates a pie chart (note that these are generally quite strongly advised against).
+THis function creates a pie chart. Note that these are generally quite strongly advised against, as people are not good at interpreting relative frequencies on the basis of pie charts.
 }
 \usage{
-ggpie(vector)
+ggPie(vector)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{vector}{
   The vector (best to pass a factor).
@@ -20,12 +17,15 @@ ggpie(vector)
 \value{
 A ggplot pie chart.
 }
+\note{
+This function is very strongly based on the Mathematical Coffee post at http://mathematicalcoffee.blogspot.com/2014/06/ggpie-pie-graphs-in-ggplot2.html.
+}
 \author{
-Gjalt-Jorn Peters
+Amy Chan; implemented in this package (and tweaked a bit) by Gjalt-Jorn Peters.
 
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \examples{
-ggpie(mtcars$cyl);
+ggPie(mtcars$cyl);
 }
-\keyword{ univariate }
+\keyword{ hplot }

@@ -6,6 +6,7 @@
 \alias{formatPvalue}
 \alias{formatR}
 \alias{repeatStr}
+\alias{repStr}
 \alias{ifelseObj}
 \alias{invertItem}
 \alias{is.odd}
@@ -13,8 +14,10 @@
 \alias{convertToNumeric}
 \alias{massConvertToNumeric}
 \alias{vecTxt}
+\alias{vecTxtQ}
 \alias{\%IN\%}
 \alias{cat0}
+\alias{addToLog}
 \title{
 userfriendlyscience basics
 }
@@ -27,7 +30,8 @@ trim(str)
 noZero(str)
 formatPvalue(values, digits = 3, spaces=TRUE, includeP = TRUE)
 formatR(r, digits)
-repeatStr(str = " ", n = 1)
+repStr(n = 1, str = " ")
+repeatStr(n = 1, str = " ")
 ifelseObj(condition, ifTrue, ifFalse)
 invertItem(item, range=NULL, ignorePreviousInversion = FALSE)
 is.odd(vector)
@@ -39,8 +43,10 @@ massConvertToNumeric(dat, byFactorLabel = FALSE,
 vecTxt(vector, delimiter = ", ", useQuote = "",
       firstDelimiter = NULL, lastDelimiter = " & ",
       firstElements = 0, lastElements = 1, lastHasPrecedence = TRUE)
+vecTxtQ(vector, useQuote = "'", ...)
 find \%IN\% table
 cat0(..., sep="")
+addToLog(fullLog, ..., showLog = FALSE);
 }
 \arguments{
   \item{packageName}{
@@ -123,6 +129,8 @@ The number of times to repeat the string.
   This character string is pre- and appended to all elements; so use this to
   quote all elements (\code{useQuote="'"}), doublequote all elements
   (\code{useQuote='"'}), or anything else (e.g. \code{useQuote='|'}).
+  The only difference between \code{vecTxt} and \code{vecTxtQ} is
+  that the latter by default quotes the elements.
   
 }
 \item{firstElements, lastElements}{
@@ -138,9 +146,17 @@ The number of times to repeat the string.
 \item{sep}{
   The separator to pass to \code{\link{cat}}, of course, "" by default.
 }
+\item{fullLog}{
+  The full log - the character vector(s) provided are appended to this character vector.
+}
+\item{showLog}{
+  Whether to \code{\link{cat}} the log.
+}
 \item{...}{
   Extra arguments are passed to whatever function is wrapped (e.g.
-  \code{\link{cat}} for \code{cat0}).
+  \code{\link{cat}} for \code{cat0}). For addToLog, the dots are used to
+  provide character vectors that are concatenated using \code{\link{paste0}}
+  and (potentially shown and) added to the log.
 }
 }
 \details{
@@ -157,7 +173,7 @@ the requested number of digits are shown as e.g. p<.001.
 
 The formatR function format a Pearson correlation for pretty printing (using noZero).
 
-The repeatStr function repeats a string a given number of times.
+The repeatStr (or repStr) function repeats a string a given number of times.
 
 The ifelseObj function just evaluates a condition, returning one object if it's true, and another if it's false.
 
@@ -170,6 +186,7 @@ The infix function \%IN\% is a case-insensitive version of \code{\link{\%in\%}}.
 The cat0 function is to cat what paste0 is to paste; it simply makes 
 concatenating many strings without a separator easier.
 
+The addToLog function adds a character vector to a log.
 }
 \value{
 safeRequire returns nothing.
@@ -185,6 +202,8 @@ is.odd and is.even return a logical vector.
 \%IN\% returns a logical vector of the same length as its first argument.
 
 cat0 returns a string.
+
+addToLog returns a string.
 
 }
 \author{

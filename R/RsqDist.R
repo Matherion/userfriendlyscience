@@ -13,13 +13,15 @@ pRsq <- function(q, nPredictors, sampleSize, populationRsq = 0, lower.tail=TRUE)
     cat0("Noncentrality parameters not implemented yet, sorry!\n");
   }
   ### Return p-value for given R squared
-  return(1 - pbeta(q, (nPredictors-1)/2, (sampleSize - nPredictors) / 2));
+  pValue <- pbeta(q, (nPredictors-1)/2, (sampleSize - nPredictors) / 2);
+  return(ifelse(lower.tail, pValue, 1-pValue));
 }
 
 qRsq <- function(p, nPredictors, sampleSize, populationRsq = 0, lower.tail=TRUE) {
   if (populationRsq != 0) {
     cat0("Noncentrality parameters not implemented yet, sorry!\n");
   }
+  p <- ifelse(lower.tail, p, 1-p);
   ### Return R squared for given p-value
   return(qbeta(1-p, (nPredictors-1)/2, (sampleSize - nPredictors) / 2));
 }

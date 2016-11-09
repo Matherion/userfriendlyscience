@@ -24,13 +24,60 @@
 \alias{convert.r.to.fisherz}
 \alias{convert.r.to.p}
 \alias{convert.t.to.d}
+\alias{convert.cohensf.to.omegasq}
+\alias{convert.cohensfsq.to.omegasq}
+\alias{convert.means.to.d}
+\alias{convert.ncf.to.omegasq}
+\alias{convert.omegasq.to.cohensf}
+\alias{convert.omegasq.to.cohensfsq}
+\alias{convert.omegasq.to.f}
+\alias{convert.percentage.to.se}
 \title{
-convert functions
+conversion functions
 }
 \description{
 These are a number of functions to convert statistics and effect size measures from/to each other.
 }
 \usage{
+convert.b.to.t(b, se)
+
+convert.chisq.to.p(chisq, df, lower.tail=FALSE)
+convert.chisq.to.V(chisq, n, minDim)
+
+convert.cohensf.to.omegasq(cohensf)
+
+convert.cohensfsq.to.omegasq(cohensfsq)
+
+convert.d.to.logodds(d)
+convert.d.to.r(d, n1 = NULL, n2 = NULL)
+convert.d.to.t(d, df = NULL, n1 = NULL, n2 = NULL, proportion = 0.5)
+convert.d.to.variance(d, n1, n2)
+
+convert.etasq.to.cohensf(etasq)
+
+convert.f.to.etasq(f, df1, df2)
+convert.f.to.omegasq(f, df1, df2)
+convert.f.to.p(f, df1, df2, lower.tail=FALSE)
+convert.f.to.d(f, df1, df2 = NULL, n1=NULL, n2=NULL, proportion=.5)
+
+convert.fisherz.to.r(z)
+
+convert.logodds.to.d(logodds)
+convert.logodds.to.r(logodds)
+
+convert.means.to.d(means, sds, ns = NULL, var.equal = NULL)
+
+convert.ncf.to.omegasq(ncf, N)
+
+convert.omegasq.to.cohensf(omegasq)
+convert.omegasq.to.cohensfsq(omegasq)
+convert.omegasq.to.f(omegasq, df1, df2)
+
+convert.or.to.d(or)
+convert.or.to.r(or)
+
+convert.percentage.to.se(p, n)
+
 convert.r.to.t(r, n)
 convert.r.to.d(r)
 convert.r.to.p(r, n)
@@ -40,55 +87,32 @@ convert.t.to.r(t, n)
 convert.t.to.d(t, df=NULL, n1=NULL, n2=NULL, proportion=.5)
 convert.t.to.p(t, df)
 
-convert.f.to.p(f, df1, df2, lower.tail=FALSE)
-convert.f.to.d(f, df1, df2 = NULL, n1=NULL, n2=NULL, proportion=.5)
-
-convert.chisq.to.p(chisq, df, lower.tail=FALSE)
-convert.chisq.to.V(chisq, n, minDim)
-
-convert.d.to.logodds(d)
-convert.d.to.r(d, n1 = NULL, n2 = NULL)
-convert.d.to.t(d, n)
-convert.d.to.variance(d, n1, n2)
-
-convert.etasq.to.cohensf(etasq)
-
-convert.f.to.etasq(f, df1, df2)
-convert.f.to.omegasq(f, df1, df2)
-
-convert.or.to.d(or)
-convert.or.to.r(or)
-
-convert.fisherz.to.r(z)
-
-convert.b.to.t(b, se)
-
-convert.logodds.to.d(logodds)
-convert.logodds.to.r(logodds)
-
 }
 \arguments{
-  \item{r, t, f, chisq, d, etasq, z, or, logodds}{
+  \item{chisq, cohensf, cohensfsq, d, etasq, f, logodds, means, omegasq, or, p, r, t, z}{
   The value of the relevant statistic or effect size.
 }
-  \item{n, n1, n2}{
-  The number of observations that the r or t value is based on, of the
-  number of observations in each of the two groups for an anova.
+  \item{ncf}{
+  The value of a noncentrality parameter of the F distribution.
+  }
+  \item{n, n1, n2, N, ns}{
+  The number of observations that the r or t value is based on, or the
+  number of observations in each of the two groups for an anova, or the total number of participants when specifying a noncentrality parameter.
 }
   \item{df, df1, df2}{
   The degrees of freedrom for that statistic (for F, the first one is the numerator (i.e. the effect), and the second one the denominator (i.e. the error term).
 }
   \item{proportion}{
-  The proportion of participants in each of the two groups in an anova. This
-  is used to compute the sample size in each group if the group sizes for an
-  anova are unknown. Thus, if you only provide df1 and df2 when converting
+  The proportion of participants in each of the two groups in a t-test or anova. This
+  is used to compute the sample size in each group if the group sizes are unknown.
+  Thus, if you only provide df1 and df2 when converting
   an F value to a Cohen's d value, equal group sizes are assumed.
   }
   \item{b}{
   The value of a regression coefficient.
 }
-  \item{se}{
-  The standard error of the relevant statistic (e.g. of a regression coefficient).
+  \item{se, sds}{
+  The standard error of standard errors of the relevant statistic (e.g. of a regression coefficient) or variables.
 }
   \item{minDim}{
   The smallest of the number of columns and the number of rows of the crosstable
@@ -97,11 +121,19 @@ convert.logodds.to.r(logodds)
   \item{lower.tail}{
   For the F and chisquare distributions, whether to get the probability of the lower or upper tail.
 }
+  \item{var.equal}{
+  Whether to compute the value of \emph{t} or Cohen's \emph{d} assuming equal variances ('yes'), unequal variances ('no'), or whether to test for the difference ('test').
+}
 }
 \value{
 
 The converted value as a numeric value.
 
+}
+\author{
+Gjalt-Jorn Peters and Peter Verboon
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \examples{
 

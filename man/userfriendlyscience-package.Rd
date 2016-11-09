@@ -1,7 +1,6 @@
 \name{userfriendlyscience-package}
 \alias{userfriendlyscience-package}
 \alias{userfriendlyscience}
-\alias{addToLog}
 \docType{package}
 \title{
 Userfriendlyscience
@@ -17,14 +16,20 @@ This package contains a number of functions that serve
 \tabular{ll}{
 Package: \tab userfriendlyscience\cr
 Type: \tab Package\cr
-Version: \tab 0.4-0\cr
-Date: \tab 2015-\cr
+Version: \tab 0.5-0\cr
+Date: \tab November 2016\cr
 License: \tab GPL (>= 2)\cr
 }
 The package contains a variety of functions designed to make life easier. These functions are geared towards researchers in psychology.
+
+The package implements many solutions provided by people all over the world, most from Stack Exchange (both from Cross Validated and Stack Overflow). I credit these authors in the help pages of those functions and in the Author(s) section of this page. If you wrote a function included here, and you want me to take it out, feel free to contact me of course (also, see \url{http://meta.stackoverflow.com/questions/319171/i-would-like-to-use-a-function-written-by-a-stack-overflow-member-in-an-r-packag}).
 }
 \author{
-Gjalt-Jorn Peters
+Author: Gjalt-Jorn Peters (Open University of the Netherlands, Greater Good, and Maastricht University).
+
+Contributors: Peter Verboon (\code{\link{convert.omegasq.to.cohensf}}, Open University of the Netherlands), Amy Chan (\code{\link{ggPie}}), Jeff Baggett (\code{\link{posthocTGH}}, University of Wisconsin - La Crosse).
+
+A number of functions in this package use code fragments that were used without explicit communicating with the author (because I've been unable to find contact details of the authors, or because I haven't gotten around to contacing them yet). The authors of these fragments are John Fox (\code{\link{car}} code in \code{\link{ggqq}}), Floo0 (\code{\link{ggqq}}), Jason Aizkalns (\code{\link{ggBoxplot}}).
 
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }

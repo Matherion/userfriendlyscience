@@ -11,9 +11,9 @@ pCohensd <- pd <- function(q, df, populationD = 0, lower.tail=TRUE) {
             lower.tail=lower.tail));
 }
 
-qCohensd <- qd <- function(q, df, populationD = 0, lower.tail=TRUE) {
+qCohensd <- qd <- function(p, df, populationD = 0, lower.tail=TRUE) {
   ### Return Cohen's d for given p-value
-  return(convert.t.to.d(qt(q, df,
+  return(convert.t.to.d(qt(p, df,
                            ncp=convert.d.to.t(populationD, df + 2),
                            lower.tail=lower.tail), df + 2));
 }
@@ -25,16 +25,18 @@ rCohensd <- rd <- function(n, df, populationD = 0) {
                         df=df));
 }
 
-pdInterval <- function(ds, n) {
-  return(pd(max(ds), n - 2) - pd(min(ds), n - 2));
+pdInterval <- function(ds, n, populationD = 0) {
+  return(pd(max(ds), n - 2, populationD=populationD) -
+           pd(min(ds), n - 2, populationD=populationD));
 }
 
-pdExtreme <- function(d, n) {
-  return(2 * pd(-1 * abs(d), n - 2));
+pdExtreme <- function(d, n, populationD = 0) {
+  return(2 * pd(d, n - 2, populationD=populationD,
+                lower.tail = (d <= populationD)));
 }
 
-pdMild <- function(d, n) {
-  return(1 - pdExtreme(d, n));
+pdMild <- function(d, n, populationD = 0) {
+  return(1 - pdExtreme(d, n, populationD=populationD));
 }
 
 # ggplot(data.frame(x = seq(-3, 3, by=.1),

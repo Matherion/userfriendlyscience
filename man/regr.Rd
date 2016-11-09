@@ -11,9 +11,11 @@ standardized coefficients. Note that this function is meant for teaching
 purposes, and therefore it's only for very basic regression analyses.
 }
 \usage{
-regr(formula, dat = NULL, conf.level = .95, digits = 2,
-     pvalueDigits = 3, coefficients = c("raw", "scaled"),
-     plot = FALSE)
+regr(formula, dat = NULL, conf.level = .95,
+     digits = 2, pvalueDigits = 3,
+     coefficients = c("raw", "scaled"), plot = FALSE,
+     ci.method = c("widest", "r.con", "olkinfinn"),
+     ci.method.note = FALSE, env = parent.frame())
 }
 \arguments{
   \item{formula}{
@@ -44,6 +46,12 @@ Which coefficients to show; can be "raw" to only show the raw
   referred to as 'univariate' regression analyses), scatterplots with
   regression lines and their standard errors can be produced.
 }
+  \item{ci.method, ci.method.note}{
+  Which method to use for the confidence interval around R squared, and whether to display a note about this choice.
+}
+  \item{env}{
+  The enviroment where to evaluate the formula.
+  }
 }
 \value{
 A list of three elements:

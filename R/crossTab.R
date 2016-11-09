@@ -20,9 +20,22 @@ crossTab <- function(x, y=NULL, conf.level=.95,
       stop("The length of arguments 'x' and 'y' is not the same; are you ",
            "sure they're both vectors of equal length?");
     }
+    
     res$intermediate$table <- table(x, y);
     res$intermediate$n <- sum(res$intermediate$table);
     res$intermediate$varNames <- c(deparse(substitute(x)), deparse(substitute(y)));
+    res$intermediate$validForBoth <- complete.cases(cbind(x, y));
+
+    if (length(unique(x[res$intermediate$validForBoth])) < 2) {
+      stop("The variable specified as 'x' ('", res$intermediate$varNames[1],
+           "') has less than two unique ",
+           "values!");
+    }
+    if (length(unique(y[res$intermediate$validForBoth])) < 2) {
+      stop("The variable specified as 'y' ('", res$intermediate$varNames[2],
+           "') has less than two unique ",
+           "values!");
+    }
     res$intermediate$confIntV <- confIntV(x, y, conf.level=conf.level, ...);
   }
   

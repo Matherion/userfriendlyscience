@@ -45,14 +45,16 @@ regrInfluential <- function(formula, data) {
   return(res)
 }
 
-print.regrInfluential <- function(res, ...) {
-  print(res$output$dat.diagnostics);
-  print(res$output$plot);
-  cat("\nRegression analyses, repeated without influential cases:\n\n");
-  for (currentRegr in sort(1:length(res$output$regrObjects), decreasing=TRUE)) {
-    cat("\n-- Omitting all cases marked as influential by",
-        currentRegr,
-        "criteria:\n\n");
-    print(res$output$regrObjects[[currentRegr]]);
+print.regrInfluential <- function(x, ...) {
+  print(x$output$dat.diagnostics);
+  print(x$output$plot);
+  cat("\nRegression analyses, repeated without influential cases:\n");
+  for (currentRegr in sort(1:length(x$output$regrObjects), decreasing=TRUE)) {
+    if (!is.null(x$output$regrObjects[[currentRegr]])) {
+      cat("\n-- Omitting all cases marked as influential by",
+          currentRegr,
+          "criteria:\n\n");
+      print(x$output$regrObjects[[currentRegr]]);
+    }
   }
 }

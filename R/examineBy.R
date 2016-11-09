@@ -26,7 +26,7 @@ examineBy <- function(..., by=NULL, stem=TRUE, plots=TRUE,
   dat <- as.data.frame(dat);
   names(dat) <- extractVarName(varNames);
 
-  res <- dlply(dat, .(by), examine,
+  res <- dlply(dat, as.quoted(~by), examine,
                stem=stem, plots=plots,
                extremeValues=extremeValues,
                descr.include=descr.include,

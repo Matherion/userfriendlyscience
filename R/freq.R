@@ -22,8 +22,8 @@
 ###########################################################
 ###########################################################
 
-freq <- frequencies <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
-                                plot=FALSE, plotTheme = theme_bw()) {
+freq <- frequency <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
+                              plot=FALSE, plotTheme = theme_bw()) {
   
   ### Store variable name
   varName <- gsub(".*\\$(.*)", "\\1", deparse(substitute(vector)));

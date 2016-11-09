@@ -34,9 +34,9 @@
 ### and displays it depending on a boolean
 addToLog <- function(fullLog, ..., showLog = FALSE) {
   if (showLog) {
-    cat(paste0(...))
+    cat(paste0(..., collapse="\n"))
   }
-  return(paste0(fullLog, ...));
+  return(paste0(fullLog, "\n", paste0(..., collapse="\n")));
 }
 
 ###########################################################

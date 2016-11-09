@@ -12,7 +12,12 @@ setFigCapNumbering <- function(figure_counter_str = "Figure %s: ",
                     paste(x, collapse = "."));
     
     # Some stuff from the default definition
-    fig.cap <- knitr:::.img.cap(options);
+    ### 2016-11-02: not accepted by RMD CHECK --as-cran,
+    ### because .img.cap isn't exported by knitr. So hoping
+    ### these default options are perhaps already passed in
+    ### the options argument.
+    #fig.cap <- knitr:::.img.cap(options);
+    fig.cap <- options$fig.cap;
     
     # Style and additional options that should be included in the img tag
     style<-c("display: block",

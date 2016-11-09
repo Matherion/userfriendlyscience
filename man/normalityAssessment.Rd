@@ -13,7 +13,7 @@ samplingDistribution is a convenient wrapper for normalityAssessment that makes 
 dataShape computes the skewness and kurtosis.
 }
 \usage{
-normalityAssessment(sampleVector, samples = 5000, digits=3,
+normalityAssessment(sampleVector, samples = 10000, digits=2,
                     samplingDistColor = "#2222CC",
                     normalColor = "#00CC00",
                     samplingDistLineSize = 2,
@@ -21,12 +21,18 @@ normalityAssessment(sampleVector, samples = 5000, digits=3,
                     xLabel.sampleDist = NULL,
                     yLabel.sampleDist = NULL,
                     xLabel.samplingDist = NULL,
-                    yLabel.samplingDist = NULL)
+                    yLabel.samplingDist = NULL,
+                    sampleSizeOverride = TRUE)
 samplingDistribution(popValues = c(0, 1),
                      popFrequencies = c(50, 50),
-                     sampleSize = NULL, sampleFromPop = FALSE, ...)
-dataShape(sampleVector, na.rm=TRUE, type=2, digits=2,
-          conf.level=.95)
+                     sampleSize = NULL,
+                     sampleFromPop = FALSE, ...)
+dataShape(sampleVector, na.rm = TRUE, type = 2,
+          digits = 2, conf.level = 0.95,
+          plots = TRUE, xLabs = NA,
+          yLabs = NA, qqCI = TRUE,
+          labelOutliers = TRUE,
+          sampleSizeOverride = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -63,6 +69,9 @@ dataShape(sampleVector, na.rm=TRUE, type=2, digits=2,
   \item{yLabel.samplingDist}{
   Label of y axis of the sampling distribution.
 }
+  \item{xLabs, yLabs}{
+  The axis labels for the three plots (should be vectors of three elements; the first specifies the X or Y axis label for the rightmost plot (the histogram), the second for the middle plot (the QQ plot), and the third for the rightmost plot (the box plot).
+  }
   \item{popValues}{
   The possible values (levels) of the relevant variable. For example, for a dichotomous variable, this can be "c(1:2)" (or "c(1, 2)"). Note that samplingDistribution is for manually specifying the frequency distribution (or proportions); if you have a vector with 'raw' data, just call normalityAssessment directly.
 }
@@ -81,11 +90,26 @@ dataShape(sampleVector, na.rm=TRUE, type=2, digits=2,
   \item{conf.level}{
   Confidence of confidence intervals.
 }
+  \item{plots}{
+  Whether to display plots.
+  }
+    \item{qqCI}{
+  Whether to show the confidence interval for the QQ plot.
+  }
+  \item{labelOutliers}{
+  Whether to label outliers with their row number in the box plot.
+  }
   \item{sampleFromPop}{
   If true, the sample vector is created by sampling from the population information specified;
   if false, rep() is used to generate the sample vector. Note that is proportions are
   supplied in popFrequencies, sampling from the population is necessary!
 }
+  \item{sampleSizeOverride}{
+  Whether to use the sample size of the sample as sample size for the sampling distribution,
+  instead of the sampling distribution size. This makes sense, because otherwise, the sample
+  size and thus sensitivity of the null hypothesis significance tests is a function of the
+  number of samples used to generate the sampling distribution.
+  }
   \item{...}{
   Anything else is passed on my sampingDistribution to normalityAssessment.
 }

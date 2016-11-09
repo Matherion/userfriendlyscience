@@ -23,6 +23,10 @@ importLimeSurveyData <- function(datafile = NULL,
                                  dataEncoding='unknown', #'UTF-8',
                                  scriptEncoding='ASCII') {
   
+  if (!is.null(encoding)) {
+    dataEncoding <- scriptEncoding <- encoding;
+  }
+
   ### Load datafile
   if (dataHasVarNames) {
     data <- getData(datafile, quote = "'\"", na.strings=c("", "\"\""),
@@ -30,10 +34,6 @@ importLimeSurveyData <- function(datafile = NULL,
   } else {
     data <- getData(datafile, quote = "'\"", na.strings=c("", "\"\""),
                     stringsAsFactors=FALSE, encoding=dataEncoding, header=FALSE);
-  }
-  
-  if (!is.null(encoding)) {
-    dataEncoding <- scriptEncoding <- encoding;
   }
   
   ### Load scriptfile

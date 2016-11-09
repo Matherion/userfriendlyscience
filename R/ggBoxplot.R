@@ -17,7 +17,7 @@ ggBoxplot <- function(dat, y = NULL, x = NULL,
                               1:nrow(tmpDf),
                               as.numeric(NA));
       resPlot <- ggplot(tmpDf, aes_string(y=varname)) +
-        geom_boxplot(aes(x=factor(varname))) +
+        geom_boxplot(aes(x=factor(varname)), ...) +
         xlab("") + theme_bw() +
         theme(axis.text.x = element_blank(),
               axis.ticks.x = element_blank());
@@ -39,6 +39,12 @@ ggBoxplot <- function(dat, y = NULL, x = NULL,
            "dataframe specified by 'dat'; instead, no 'y' is specified.");
     }
     
+    if (length(y) > 1) {
+      warning("If argument 'y' is specified, it should be the name of a ",
+              "variable in the dataframe specified by argument 'dat'. However, ",
+              "'y' had ", length(y), "elements. Discarding all but the last one.");
+    }
+    
     if (!(y %in% names(dat))) {
       stop("Argument 'y' should be a text string specifying a variable in the ",
            "dataframe specified by 'dat', but '", y, "' isn't among ",
@@ -52,18 +58,27 @@ ggBoxplot <- function(dat, y = NULL, x = NULL,
                             1:nrow(dat),
                             as.numeric(NA));
       
-      resPlot <- ggplot(dat, aes_string(y=y)) + geom_boxplot(aes(x=factor(y))) +
+      resPlot <- ggplot(dat, aes_string(y=y)) + geom_boxplot(aes(x=factor(y)), ...) +
                xlab("") + theme +
                theme(axis.text.x = element_blank(),
                      axis.ticks.x = element_blank());
       if (labelOutliers) {
         resPlot <- resPlot +
-          geom_text_repel(aes(x=1, label = outlier), na.rm = TRUE,
+          geom_text_repel(aes_string(x='1', label = 'outlier'), na.rm = TRUE,
                           color = outlierColor);
       }
       return(resPlot);
       
     } else {
+      
+      if (length(x) > 1) {
+        warning("If argument 'x' is specified, it should be the name of a ",
+                "variable (a factor, normally) in the dataframe",
+                " specified by argument 'dat'. However, ",
+                "'x' had ", length(x), "elements. Discarding all but the last one.");
+      }
+      
+      
       if (!(x %in% names(dat))) {
         stop("Argument 'x' should be a text string specifying a variable in the ",
              "dataframe specified by 'dat', but '", x, "' isn't among ",
@@ -87,11 +102,11 @@ ggBoxplot <- function(dat, y = NULL, x = NULL,
                             as.numeric(NA));
 
       resPlot <- ggplot(dat, aes_string(y=y, x=x)) +
-        geom_boxplot() +
+        geom_boxplot(...) +
         theme;
       if (labelOutliers) {
         resPlot <- resPlot +
-          geom_text_repel(aes(label = outlier), na.rm = TRUE,
+          geom_text_repel(aes_string(label = 'outlier'), na.rm = TRUE,
                           color=outlierColor);
       }
       return(resPlot);

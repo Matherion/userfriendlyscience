@@ -13,7 +13,7 @@ what SPSS's DESCRIPTIVES (often called with DESCR) does.
 descr(x, digits = 4, errorOnFactor = FALSE,
       include = c("central tendency", "spread", "range",
                   "distribution shape", "sample size"),
-      t = FALSE);
+      t = FALSE, conf.level=.95);
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -32,6 +32,9 @@ descr(x, digits = 4, errorOnFactor = FALSE,
 }
   \item{t}{
   Whether to transpose the dataframes when printing them to the screen (this is easier for users relying on screen readers).
+}
+  \item{conf.level}{
+  Confidence of confidence interval around the mean in the central tendency measures.
 }
 }
 \details{

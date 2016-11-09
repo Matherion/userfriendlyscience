@@ -12,10 +12,10 @@ powerHist <- function(vector,
                       normalLineSize = 1,
                       histAlpha = .25,
                       xLabel = NULL,
-                      yLabel = NULL, density=FALSE,
+                      yLabel = NULL,
                       normalCurve = TRUE,
                       breaks = 30,
-                      theme=dlvTheme(axis.title=element_text(colour = "black")),
+                      theme=dlvTheme(),
                       rug=NULL, jitteredRug=TRUE, rugSides="b",
                       rugAlpha = .2,
                       returnPlotOnly = FALSE) {
@@ -59,44 +59,27 @@ powerHist <- function(vector,
   
   ### Generate labels if these weren't specified
   if (is.null(xLabel)) {
-    xLabel <- paste0('Value of ', varName);
+    xLabel <- paste0('Value of ', extractVarName(varName));
   }
   if (is.null(yLabel)) {
-    yLabel <- ifelse(density, "Density", "Frequency");
+    yLabel <- "Frequency";
   }
-  if (density) {
-    ### Plot distribution
-    res$plot <- ggplot(data=res$dat, aes(x=distribution)) + 
-      xlab(xLabel) +
-      ylab(yLabel) +
-      geom_histogram(aes(y=..density..), color=NA, fill=histColor,
-                     alpha=histAlpha, binwidth=res$intermediate$tempBinWidth) +
-      geom_density(color=distributionColor, size=distributionLineSize);
-    if (normalCurve) {
-      res$plot <- res$plot +
-        geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize);
-    }
-    res$plot <- res$plot + theme;
-  }
-  else {
 
-    
-    ### Plot distribution
-    res$plot <- ggplot(data=res$dat, aes(x=distribution)) + 
-      xlab(xLabel) +
-      ylab(yLabel) +
-      geom_histogram(color=NA, fill=histColor,
-                     alpha=histAlpha, binwidth=res$intermediate$tempBinWidth) +
-      geom_line(aes_q(y=bquote(..scaled.. * .(scalingFactor))),
-                stat = 'density',
-                color=distributionColor, size=distributionLineSize);
-    if (normalCurve) {
-      res$plot <- res$plot +
-        geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize);
-    }
-    res$plot <- res$plot + theme;
+  ### Plot distribution
+  res$plot <- ggplot(data=res$dat, aes(x=distribution)) + 
+    xlab(xLabel) +
+    ylab(yLabel) +
+    geom_histogram(color=NA, fill=histColor,
+                   alpha=histAlpha, binwidth=res$intermediate$tempBinWidth) +
+    geom_line(aes_q(y=bquote(..scaled.. * .(scalingFactor))),
+              stat = 'density',
+              color=distributionColor, size=distributionLineSize);
+  if (normalCurve) {
+    res$plot <- res$plot +
+      geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize);
   }
-  
+  res$plot <- res$plot + theme;
+
   if (is.null(rug)) {
     if (nrow(res$dat) < 1000) {
       rug <- TRUE;

@@ -13,6 +13,7 @@ processOpenSesameIAT(dataPath,
                      blocks.incongruent = c(4, 5),
                      blocks.realTrials = c(3, 5),
                      blocks.practiceTrials = c(2, 4),
+                     congruentLarger = TRUE,
                      responseTime.min = 400,
                      responseTime.max = 2500,
                      responseTime.penalty = 600,
@@ -25,8 +26,13 @@ processOpenSesameIAT(dataPath,
                      taskVarName = "session",
                      openSesameVarNames = list(correct = "correct",
                                                response_time = "response_time"),
+                     stimulusSelectionVarName = NULL,
+                     stimulusSelectionValues = NULL,
                      roundOutput = 6,
-                     decimalSeparator = ".")
+                     decimalSeparator = ".",
+                     inputDecimalSeparator = ".",
+                     inputfileSelectionColumns = NULL,
+                     inputfileSelectionValues = NULL)
 }
 \arguments{
   \item{dataPath}{
@@ -46,6 +52,9 @@ processOpenSesameIAT(dataPath,
 }
   \item{blocks.practiceTrials}{
   A vector containing the numbers of the practice trials.
+}
+  \item{congruentLarger}{
+  Whether the response latencies for the congruent trials (TRUE) or the incongruent trials (FALSE) are expected to be larger. This simply multiplies the final D600 measures with -1.
 }
 \item{responseTime.min}{
   Minimum number of milliseconds of response time (all shorter times will
@@ -105,6 +114,9 @@ processOpenSesameIAT(dataPath,
   the response was correct or not ('correct') and what the response time
   was ('response_time');
 }
+\item{stimulusSelectionVarName, stimulusSelectionValues}{
+  These arguments can be used to specify a subset of stimuli to process. Specify which column contains the values to select in \code{stimulusSelectionVarName}, and specify the value(s) to select in \code{stimulusSelectionValues}.
+}
 \item{roundOutput}{
   Number of digits to round the output to. This is useful for importing into
   a program that doesn't quite get how storing numbers works, such as SPSS or
@@ -114,6 +126,12 @@ processOpenSesameIAT(dataPath,
   When working with e.g. Excel, it can be easier to just specify the decimal
   separator rather than switch Excel's (and therefore Windows') locale.
 }
+\item{inputDecimalSeparator}{
+  The decimal separator to specify to \code{\link{read.csv}} when reading the data files.
+}
+\item{inputfileSelectionColumns, inputfileSelectionValues}{
+  This functionality still has to be implemented. Once implemented, these arguments can be used to specify a column, and a (set of) value(s) in that column to use to select which rows to process (also see \code{stimulusSelectionVarName} and \code{stimulusSelectionValues}).
+}
 }
 \details{
 
@@ -122,7 +140,7 @@ created by the OpenSesame script developed by Kenny Wolfs, Jacques van
 Lankveld, and Frederik van Acker at the Open University of the Netherlands.
 If you use a different version (for example, the one contributed to the
 OpenSesame paradigm repository by Hansika Kapoor, see
-\url{http://osdoc.cogsci.nl/standard-tasks/#implicit-association-test-iat}),
+\url{http://osdoc.cogsci.nl/3.0/standard-tasks/#implicit-association-test-iat}),
 you will have to specify the variable names you specified to OpenSesame
 for the response time and for whether the response was correct in
 \code{openSesameVarNames}. For example, if you use Hansika's IAT task,

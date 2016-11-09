@@ -1,6 +1,6 @@
 diamondCoordinates <- function(values, otherAxisValue = 1,
-                                   direction = 'horizontal',
-                                   autoSize=NULL, fixedSize=.25) {
+                               direction = 'horizontal',
+                               autoSize=NULL, fixedSize=.15) {
   if (length(values) < 1) {
     stop("Specify at least two values!");
   }

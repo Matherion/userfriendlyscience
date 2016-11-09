@@ -1,40 +1,223 @@
-exportPattern("^[[:alpha:]]+");
-export("%IN%");
+#exportPattern("^[[:alpha:]]+");
 
+export("%IN%");
+export("addToLog");
+export("associationMatrix");
+export("asymmetricalScatterMatrix");
+export("averageFishersZs");
+export("averagePearsonRs");
+export("cat0");
+export("computeEffectSize_d");
+export("computeEffectSize_etasq");
+export("computeEffectSize_omegasq");
+export("computeEffectSize_r");
+export("computeEffectSize_v");
+export("computeStatistic_chisq");
+export("computeStatistic_f");
+export("computeStatistic_r");
+export("computeStatistic_t");
+export("confIntOmegaSq");
+export("confIntV");
+export("convert.b.to.t");
+export("convert.chisq.to.p");
+export("convert.chisq.to.V");
+export("convert.cohensf.to.omegasq");
+export("convert.cohensfsq.to.omegasq");
+export("convert.d.to.logodds");
+export("convert.d.to.r");
+export("convert.d.to.t");
+export("convert.d.to.variance");
+export("convert.etasq.to.cohensf");
+export("convert.f.to.d");
+export("convert.f.to.etasq");
+export("convert.f.to.omegasq");
+export("convert.f.to.p");
+export("convert.fisherz.to.r");
+export("convert.logodds.to.d");
+export("convert.logodds.to.r");
+export("convert.means.to.d");
+export("convert.ncf.to.omegasq");
+export("convert.omegasq.to.cohensf");
+export("convert.omegasq.to.cohensfsq");
+export("convert.omegasq.to.f");
+export("convert.or.to.d");
+export("convert.or.to.r");
+export("convert.percentage.to.se");
+export("convert.r.to.d");
+export("convert.r.to.fisherz");
+export("convert.r.to.p");
+export("convert.r.to.t");
+export("convert.t.to.d");
+export("convert.t.to.p");
+export("convert.t.to.r");
+export("cramersV");
+export("createSigma");
+export("crossTab");
+export("dataShape");
+export("dCohensd");
+export("dd");
+export("descr");
+export("descriptives");
+export("detectRareWords");
+export("diamondCoordinates");
+export("diamondPlot");
+export("didacticPlot");
+export("didacticPlotTheme");
+export("dlvPlot");
+export("dlvTheme");
+export("domegaSq");
+export("dRsq");
+export("examine");
+export("examineBy");
+export("exceptionalScore");
+export("exceptionalScores");
+export("extractVarName");
+export("faConfInt");
+export("factorLoadingDiamondCIplot");
+export("filterBy");
+export("formatCI");
+export("freq");
+export("frequencies");
+export("fullFact");
+export("getDat");
+export("getData");
+export("ggBarChart");
+export("ggBoxplot");
+export("ggDiamondLayer");
+export("ggPie");
+export("ggqq");
+export("hasLaTeX");
+export("ifelseObj");
+export("importLimeSurveyData");
+export("invertItem");
+export("invertItems");
+export("iqrOutlier");
+export("is.even");
+export("is.nr");
+export("is.odd");
+export("isTrue");
+export("itemInspection");
+export("makeScales");
+export("meanConfInt");
+export("meanDiff");
+export("meanDiff.multi");
+export("meansDiamondPlot");
+export("meanSDtoDiamondPlot");
+export("mediaan");
+export("modus");
+export("normalityAssessment");
+export("oddsratio");
+export("oneway");
+export("paginatedAsymmetricalScatterMatrix");
+export("parallelSubscales");
+export("pCohensd");
+export("pd");
+export("pdExtreme");
+export("pdExtreme");
+export("pdInterval");
+export("pdInterval");
+export("pdMild");
+export("pdMild");
+export("pomegaSq");
+export("posthocTGH");
+export("powerHist");
+export("prevalencePower");
+export("processOpenSesameIAT");
+export("pRsq");
+export("pwr.omegasq");
+export("qCohensd");
+export("qd");
+export("qomegaSq");
+export("qRsq");
+export("rCohensd");
+export("rd");
+export("regr");
+export("regrInfluential");
+export("removeExceptionalValues");
+export("repStr");
+export("repeatStr");
+export("rMatrix");
+export("rnwString.generate");
+export("rnwString.initiate");
+export("rnwString.terminate");
+export("romegaSq");
+export("rRsq");
+export("safeRequire");
+export("samplingDistribution");
+export("sanitizeLatexString");
+export("scaleDiagnosis");
+export("scaleDiagnosisToPDF");
+export("scaleInspection");
+export("scaleStructure");
+export("scaleReliability");
+export("scatterMatrix");
+export("scatterPlot");
+export("sdConfInt");
+export("setFigCapNumbering");
+export("setTabCapNumbering");
+export("showPearsonPower");
+export("simDataSet");
+export("testRetestAlpha");
+export("testRetestCES");
+export("testRetestReliability");
+export("textToWords");
+export("therapyMonitor");
+export("therapyMonitor.multi");
+export("trim");
+export("useAll");
+export("vecTxt");
+export("vecTxtQ");
+
+S3method(print, associationMatrix);
+S3method(print, asymmetricalScatterMatrix);
+S3method(print, confIntOmegaSq);
+S3method(print, confIntV);
+S3method(print, CramersV);
+S3method(print, crossTab);
+S3method(print, dataShape);
+S3method(print, descr);
+S3method(print, didacticPlot);
 S3method(print, dlvPlot);
+S3method(print, examine);
+S3method(print, examineBy);
 S3method(print, freq);
+S3method(print, frequencies);
+S3method(print, fullFact);
 S3method(print, meanConfInt);
 S3method(print, meanDiff);
 S3method(print, meanDiff.multi);
 S3method(print, normalityAssessment);
 S3method(print, oddsratio);
+S3method(print, oneway);
+S3method(print, parallelSubscales);
+S3method(print, posthocTGH);
+S3method(print, power.htest.usf);
 S3method(print, powerHist);
+S3method(print, processOpenSesameIAT);
+S3method(print, processOpenSesameIAT.log);
+S3method(print, regr);
+S3method(print, regrInfluential);
 S3method(print, rMatrix);
 S3method(print, scaleDiagnosis);
+S3method(print, scaleInspection);
 S3method(print, scaleStructure);
+S3method(print, scatterMatrix);
 S3method(print, sdConfInt);
 S3method(print, testRetestAlpha);
 S3method(print, testRetestCES);
 S3method(print, testRetestReliability);
-S3method(print, parallelSubscales);
-S3method(print, dataShape);
-S3method(print, didacticPlot);
-S3method(print, scatterMatrix);
-S3method(print, CramersV);
-S3method(print, confIntV);
-S3method(print, crossTab);
-S3method(print, associationMatrix);
-S3method(print, oneway);
-S3method(print, posthocTGH);
-S3method(print, scaleInspection);
-S3method(print, regr);
-S3method(print, asymmetricalScatterMatrix);
 S3method(print, therapyMonitor);
 S3method(print, therapyMonitor.multi);
-S3method(print, descr);
-S3method(print, processOpenSesameIAT);
-S3method(print, processOpenSesameIAT.log);
-S3method(print, fullFact);
+
+S3method(pander, crossTab);
+S3method(pander, dataShape);
+S3method(pander, descr);
+S3method(pander, examine);
+S3method(pander, examineBy);
+S3method(pander, freq);
+S3method(pander, frequencies);
+S3method(pander, oneway);
+S3method(pander, regr);
 
 S3method(sort, associationMatrix)
 
@@ -48,6 +231,7 @@ importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
            "dbeta", "pbeta", "qbeta", "rbeta",
            "pt", "rt", "qt", "dt",
            "df", "qf", "rf", "pf",
+           "qtukey",
            "ptukey", "qchisq",
            "quantile", "reshape", "sd", "shapiro.test", "t.test",
            "terms", "var", "var.test", "runif",
@@ -57,12 +241,13 @@ importFrom("utils", "capture.output", "chooseCRANmirror", "combn",
            "head", "install.packages", "installed.packages",
            "packageVersion", "read.csv", "read.delim", "tail",
            "write.table", "write.csv", "as.roman")
+importFrom("scales", "rescale");
 
-importFrom('plyr', 'ddply', 'raply', 'dlply', '`.`', 'progress_text');
+importFrom('plyr', 'ddply', 'raply', 'dlply', 'progress_text', 'as.quoted');
 
 importFrom('psych', 'describe', 'alpha', 'omega', 'glb',
            'fa', 'principal', 'polychoric', 'fisherz', 'fisherz2r',
-           'fa.parallel', 'vss', 'r.con', 'rescale', 'describeBy');
+           'fa.parallel', 'vss', 'r.con', 'describeBy');
 importFrom('pwr', 'pwr.t.test', 'pwr.r.test', 'pwr.anova.test');
 importFrom('fBasics', 'adTest');
 importFrom('MBESS', 'ci.reliability', 'ci.pvaf', 'conf.limits.ncf');
@@ -74,10 +259,11 @@ importFrom('GPArotation', 'oblimin');
 importFrom('MASS', 'mvrnorm');
 importFrom('mosaic', 'do', 'resample');
 
-importFrom('foreign', 'read.spss');
+### Rio supersedes this
+#importFrom('foreign', 'read.spss');
 
 importFrom('knitr', 'knit', 'knit_hooks', 'opts_knit');
-importFrom('pander', 'pander');
+importFrom('pander', 'pander', 'pandoc.p');
 
 importFrom('xtable', 'xtable');
 
@@ -97,13 +283,15 @@ importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes
            'element_line', 'element_rect', 'element_text', 'element_blank', 'scale_fill_brewer',
            'position_jitter', 'position_dodge', 'geom_smooth', 'geom_rug',
            'stat_summary', 'labs', 'xlab', 'ylab', 'rel', 'theme_bw', 'scale_y_reverse',
-           'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'guides', 'guide_legend',
-           'geom_polygon', 'geom_boxplot', 'geom_polygon', 'geom_abline', 'aes_q',
-           'qplot', "scale_colour_gradient");
+           'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'coord_flip', 'guides',
+           'guide_legend', 'geom_polygon', 'geom_boxplot', 'geom_ribbon', 'geom_abline',
+           'geom_text', 'aes_q', 'qplot', 'scale_colour_gradient',
+           'scale_x_continuous', 'scale_y_continuous', 'geom_vline', 'geom_hline');
 importFrom('GGally', 'ggpairs', 'getPlot', 'putPlot', 'wrap');
 importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.layout',
            'textGrob', 'grid.rect', 'gpar', 'grid.draw');
 importFrom('gridExtra', 'arrangeGrob', 'grid.arrange');
 importFrom('ggrepel', 'geom_text_repel')
+importFrom('RColorBrewer', 'brewer.pal');
 
 importFrom('lavaan', 'sem');

@@ -8,27 +8,27 @@
 
 ### Note: this is necessary to prevent Rcmd CHECK from throwing a note;
 ### otherwise it think these variables weren't defined yet.
-utils::globalVariables(c("y_density", "yMaxFromY"));
+# utils::globalVariables(c("y_density", "yMaxFromY"));
 
 ### Theme used for the plots
-dlvTheme <- function(base_size = 14, base_family = "", ...) {
-  # Starts with theme_grey and then modify some parts
-  theme_grey(base_size = base_size, base_family = base_family) %+replace%
+dlvTheme <- function(base_size = 14, base_family = "",
+                     ...) {
+  theme_bw(base_size = base_size, base_family = base_family) %+replace%
     theme(
-      axis.text         = element_text(colour="#000000", size = rel(0.8)),
-      axis.ticks        = element_line(colour = "black"),
-      axis.title        = element_blank(),
-      legend.text       = element_text(size = rel(0.6)),
-      legend.key        = element_rect(colour = "grey80"),
-      legend.position   = "top",
-      legend.direction  = "horizontal",
-      legend.key.size   = unit(6, "mm"),
-      panel.background  = element_rect(fill = "white", colour = NA),
-      panel.border      = element_rect(fill = NA, colour = "grey50"),
-      panel.grid.major  = element_line(colour = "grey90", size = 0.2),
-      panel.grid.minor  = element_line(colour = "grey98", size = 0.5),
-      strip.background  = element_rect(fill = "grey80", colour = "grey50"),
-      panel.margin      = unit(c(.5), "cm"),
+      # axis.title        = element_blank(),
+      # axis.text         = element_text(colour="#000000", size = rel(0.8)),
+      # axis.ticks        = element_line(colour = "black"),
+      # axis.title        = element_blank(),
+      # legend.text       = element_text(size = rel(0.6)),
+      # legend.key        = element_rect(colour = "grey80"),
+      # legend.position   = "top",
+      # legend.direction  = "horizontal",
+      # legend.key.size   = unit(6, "mm"),
+      # panel.background  = element_rect(fill = "white", colour = NA),
+      # panel.border      = element_rect(fill = NA, colour = "grey50"),
+      # panel.grid.major  = element_line(colour = "grey90", size = 0.2),
+      # panel.grid.minor  = element_line(colour = "grey98", size = 0.5),
+      # panel.margin      = unit(c(.5), "cm"),
       ...
     )
 }
@@ -130,7 +130,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                                               stackdir="center", position=position_dodge(width=posDodge));
         }
         else if (dotsize=="density") {
-          res$plot <- res$plot + geom_point(aes(size=y_density), color='grey60',
+          res$plot <- res$plot + geom_point(aes_string(size='y_density'), color='grey60',
                                             alpha=dotAlpha, show.legend=FALSE);
         }
         else {
@@ -227,7 +227,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                                               );
         }
         else if (dotsize=="density") {
-          res$plot <- res$plot + geom_point(aes(size=y_density), color='grey60',
+          res$plot <- res$plot + geom_point(aes_string(size='y_density'), color='grey60',
                                             alpha=dotAlpha, show.legend=FALSE);
         }
         else {
@@ -321,7 +321,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                                               stackdir="center", position=position_dodge(width=posDodge));
         }
         else if (dotsize=="density") {
-          res$plot <- res$plot + geom_point(aes(size=y_density),
+          res$plot <- res$plot + geom_point(aes_string(size='y_density'),
                                             alpha=dotAlpha, show.legend=FALSE);
         }
         else {
@@ -413,7 +413,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                                               stackdir="center", position=position_dodge(width=posDodge));
         }
         else if (dotsize=="density") {
-          res$plot <- res$plot + geom_point(aes(size=y_density),
+          res$plot <- res$plot + geom_point(aes_string(size='y_density'),
                                             alpha=dotAlpha, show.legend=FALSE, position=position_dodge(width=posDodge));
         }
         else {
@@ -450,7 +450,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
   }
   
   assign('yMaxFromY', max(res$plot$data[, res$plot$labels$y]), envir = res$plot$plot_env);
-  res$plot <- res$plot + aes(ymax = yMaxFromY);
+  res$plot <- res$plot + aes_string(ymax = 'yMaxFromY');
   
   ### Set class of result
   class(res) <- c('dlvPlot');

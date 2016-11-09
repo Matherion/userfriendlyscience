@@ -57,12 +57,12 @@ showPearsonPower <- function(n = 100, rho=.3, rNull = 0,
          
 }
 
-require('userfriendlyscience');
+#require('userfriendlyscience');
 
-require('SuppDists')
-require('ggplot2')
-print(showPearsonPower(n=40));
+#require('SuppDists')
+#require('ggplot2')
+#print(showPearsonPower(n=40));
 
-print(showPearsonPower(n=40, alpha=.15));
+#print(showPearsonPower(n=40, alpha=.15));
 
-print(showPearsonPower(n=40, alpha=.45));
+#print(showPearsonPower(n=40, alpha=.45));

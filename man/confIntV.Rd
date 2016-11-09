@@ -12,9 +12,9 @@ Cramer's V. The crossTab function also shows a crosstable.
 \usage{
 crossTab(x, y=NULL, conf.level=.95,
          digits=2, pValueDigits=3, ...)
-cramersV(x, y = NULL, digits=4)
+cramersV(x, y = NULL, digits=2)
 confIntV(x, y = NULL, conf.level=.95,
-         samples = 500, digits=4,
+         samples = 500, digits=2,
          method=c('bootstrap', 'fisher'),
          storeBootstrappingData = FALSE)
 }

@@ -5,7 +5,7 @@ diamondPlot <- function(data,
                         yValues=NULL, yLabels=NULL, ylab = NULL,
                         autoSize=NULL, fixedSize=.15,
                         xlab='Effect Size Estimate',
-                        theme=dlvTheme(), color='black', ...) {
+                        theme=theme_bw(), color='black', ...) {
   
   if (!is.null(yValues)) {
     ### Check whether yValues specifies a column in 'data' or whether it's a vector
@@ -45,6 +45,15 @@ diamondPlot <- function(data,
     yLabels <- rownames(data);
   } else {
     yLabels <- yValues;
+  }
+  
+  if (length(colorCol) > 1) {
+    if (length(colorCol) != nrow(data)) {
+      stop("When specifying a vector as colorCol, this has ",
+           "to be the same length as the dataframe!");
+    }
+    data$colorCol <- colorCol;
+    colorCol <- 'colorCol';
   }
 
   if (is.null(otherAxisCol)) {
