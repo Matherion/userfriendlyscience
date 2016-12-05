@@ -343,9 +343,10 @@ print.meanDiff <- function (x, digits=x$digits, powerDigits=x$digits + 2, ...) {
            powerInfo,
            "\n\n(secondary information (NHST): t[", round(x$df, digits), "] = ", round(x$t, digits), ", ", formatPvalue(x$p, digits=digits+1), ")\n"));
   if (regexpr("unequal variances", x$type) > -1) {
-    cat(paste0("NOTE: because the t-test is based on unequal variances, the ",
-               "NHST p-value may be inconsistent with the confidence interval! ",
-               "Use parameter 'var.equal = TRUE' to force equal variances."));
+    cat(paste0("\n\nNOTE: because the t-test is based on unequal variances, the ",
+               "NHST p-value may be inconsistent with the confidence interval. ",
+               "Although this is not a problem, if you wish to ensure consistency, ",
+               "you can use parameter \"var.equal = 'yes'\" to force equal variances.\n\n"));
   }
   
   if (!is.null(x$dlvPlot)) {
@@ -400,8 +401,9 @@ pander.meanDiff <- function (x, digits=x$digits, powerDigits=x$digits + 2, ...) 
              "\n\n*(secondary information (NHST): t[", round(x$df, digits), "] = ", round(x$t, digits), ", ", formatPvalue(x$p, digits=digits+1), ")*\n"));
   if (regexpr("unequal variances", x$type) > -1) {
     cat(paste0("\n\nNOTE: because the t-test is based on unequal variances, the ",
-               "NHST p-value may be inconsistent with the confidence interval! ",
-               "Use parameter 'var.equal = TRUE' to force equal variances.\n\n"));
+               "NHST p-value may be inconsistent with the confidence interval. ",
+               "Although this is not a problem, if you wish to ensure consistency, ",
+               "you can use parameter \"var.equal = 'yes'\" to force equal variances.\n\n"));
   }
   
   invisible();

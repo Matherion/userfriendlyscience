@@ -1,7 +1,8 @@
 descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
                                   include=c("central tendency", "spread",
                                             "range", "distribution shape", "sample size"),
-                                  t=FALSE, conf.level=.95) {
+                                  t=FALSE, conf.level=.95,
+                                  quantileType = 2) {
   varName <- deparse(substitute(x));
   if (is.factor(x)) {
     if (errorOnFactor) {
@@ -29,8 +30,7 @@ descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
                                      `meanCI` = meanCi),
                 spread = data.frame(var = var(x),
                                     sd = sd(x),
-                                    iqr = median(x[x > median(x)]) -
-                                          median(x[x < median(x)]),
+                                    iqr = quantile(x, type=quantileType)[4] - quantile(x, type=quantileType)[2],
                                     se = sqrt(var(x)) / sqrt(length(x))),
                 range = data.frame(min = min(x),
                                    q1 = median(x[x < median(x)]),

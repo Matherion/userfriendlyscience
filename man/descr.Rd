@@ -13,7 +13,8 @@ what SPSS's DESCRIPTIVES (often called with DESCR) does.
 descr(x, digits = 4, errorOnFactor = FALSE,
       include = c("central tendency", "spread", "range",
                   "distribution shape", "sample size"),
-      t = FALSE, conf.level=.95);
+      t = FALSE, conf.level=.95,
+      quantileType = 2);
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,6 +36,9 @@ descr(x, digits = 4, errorOnFactor = FALSE,
 }
   \item{conf.level}{
   Confidence of confidence interval around the mean in the central tendency measures.
+}
+  \item{quantileType}{
+  The type of quantiles to be used to compute the interquartile range (IQR). See \code{\link{quantile}} for more information.
 }
 }
 \details{

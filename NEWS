@@ -1,6 +1,15 @@
 userfriendlyscience NEWS
 ------------------------
 
+0.5-2 2016-
+  * Fixed some errors in the list of exported functions
+  * descr function now uses the quantile function to compute the interquartile range
+  * Minor fix in dlvPlot (removed unknown aesthetic)
+  * Fix in invertItems to no longer simplify a dataframe to a vector if only one
+    column is selected
+  * Added Coefficient H to scaleStructure
+  * Minor improvement in getData to enable suppressing messages
+
 0.5-1 2016-11-09
   * Minor tweaks to work with newest version of ggplot2
   * No longer exporting all functions using regex but explicitly naming them now

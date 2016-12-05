@@ -126,7 +126,10 @@ pander.examine <- function(x, headerPrefix = "", headerStyle = "**",
     }
     cat("\n");
     if (!is.null(x[[currentName]]$dataShapePlot)) {
-      grid.arrange(textGrob(paste0('Histogram, Q-Q plot & boxplot for ', extractVarName(currentName)),
+      plotTitle <- ifelse('gTree' %in% class(x[[currentName]]$dataShapePlot),
+                          paste0('Histogram, Q-Q plot & boxplot for ', extractVarName(currentName)),
+                          paste0('Barchart for ', extractVarName(currentName)));
+      grid.arrange(textGrob(plotTitle,
                             gp=gpar(fontsize=14)),
                    x[[currentName]]$dataShapePlot,
                    ncol=1, heights=c(.1, .9));

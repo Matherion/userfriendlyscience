@@ -1,5 +1,5 @@
 ### To invert mirrored items
-invertItem <- function(item, range=NULL, ignorePreviousInversion = FALSE) {
+invertItem <- function(item, fullRange=NULL, ignorePreviousInversion = FALSE) {
   ### Check whether this was already inverted
   if (!is.null(attr(item, "inverted"))) {
     if ((attr(item, "inverted") == TRUE) & !(ignorePreviousInversion)) {
@@ -12,16 +12,21 @@ invertItem <- function(item, range=NULL, ignorePreviousInversion = FALSE) {
   
   ### Not inverted yet (or ignorePreviousInversion set to TRUE)
   if (is.numeric(item)) {
-    if (is.null(range)) {
-      res <- sum(range(na.omit(item))) - item;
+    if (is.null(fullRange)) {
+      fullRange <- range(item, na.rm=TRUE);
     }
     else {
-      res <- sum(range(range)) - item;
+      fullRange <- range(fullRange);
     }
+    res <- sum(fullRange) - item;
   }
   else {
     stop("Provide a numeric vector!");
   }
-  attr(res, "inverted") <- TRUE;
+  if (is.null(attr(item, "inverted"))) {    
+    attr(res, "inverted") <- TRUE;
+  } else {
+    attr(res, "inverted") <- !(attr(res, "inverted"));
+  }
   return(res);
 }

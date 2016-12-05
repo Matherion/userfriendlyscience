@@ -13,7 +13,8 @@ oneway(y, x, posthoc=NULL, means=FALSE,
        fullDescribe=FALSE, levene=FALSE,
        plot=FALSE, digits=2, omegasq = TRUE,
        etasq = TRUE, corrections = FALSE,
-       pvalueDigits=3, t=FALSE, conf.level=.95)
+       pvalueDigits=3, t=FALSE, conf.level=.95,
+       silent=FALSE)
 }
 \arguments{
   \item{y}{
@@ -72,6 +73,9 @@ or Steiger, J. H. (2004). Beyond the F test: Effect size confidence intervals
 and tests of close fit in the analysis of variance and contrast analysis.
 Psychological methods, 9(2), 164-82. doi:10.1037/1082-989X.9.2.164
 }
+  \item{silent}{
+Whether to show warnings and other diagnostic information or remain silent.
+}
 }
 \value{
 A list of three elements:
@@ -86,7 +90,9 @@ By my knowledge the Brown-Forsythe correction was not yet available in R. I took
 }
 \references{
 Brown, M., & Forsythe, A. (1974). \emph{The small sample behavior of some statistics which test the equality of several means.} Technometrics, 16(1), 129-132. https://doi.org/10.2307/1267501
+
 Field, A. (2014) \emph{Discovering statistics using SPSS} (4th ed.). London: Sage.
+
 Steiger, J. H. (2004). \emph{Beyond the F test: Effect size confidence intervals and tests of close fit in the analysis of variance and contrast analysis}. Psychological methods, 9(2), 164-82. doi:10.1037/1082-989X.9.2.164
 }
 \author{

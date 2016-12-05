@@ -3,7 +3,8 @@ getData <- function(filename=NULL, file=NULL,
                     applyRioLabels= TRUE,
                     use.value.labels=FALSE,
                     to.data.frame=TRUE,
-                    stringsAsFactors=FALSE, ...) {
+                    stringsAsFactors=FALSE,
+                    silent=FALSE, ...) {
   
   dots <- list(...);
   fullArguments <- as.list(environment());
@@ -19,13 +20,15 @@ getData <- function(filename=NULL, file=NULL,
 
   if (is.null(filename)) {
     ### If no filename is specified, request one from the user
-    cat("You did not specify a file to open. Therefore, please select the",
-        "file to open in the File Selection Dialog.",
-        "Note that this dialog can sometimes appear behind the R window.",
-        "If you do not see the file dialog now, use ALT-TAB or check the ",
-        "start bar (in Windows), use COMMAND-TAB (in OSX), or check the ",
-        "dock (in *nux based systems such as",
-        "Ubuntu or OS X).");
+    if (!silent) {
+      cat("You did not specify a file to open. Therefore, please select the",
+          "file to open in the File Selection Dialog.",
+          "Note that this dialog can sometimes appear behind the R window.",
+          "If you do not see the file dialog now, use ALT-TAB or check the ",
+          "start bar (in Windows), use COMMAND-TAB (in OSX), or check the ",
+          "dock (in *nux based systems such as",
+          "Ubuntu or OS X).");
+    }
     filename <- file <- file.choose();
     slashesFilename <- gsub("\\", "/", filename, fixed=TRUE);
     
@@ -41,11 +44,13 @@ getData <- function(filename=NULL, file=NULL,
     
     filenameArgument <- gsub(", ", ",\n        ", filenameArgument, fixed=TRUE);
     
-    cat("\n\nYou have selected a file. Based on your call and the filename",
-        "and directory (path) you selected, this is the",
-        "command you can use to read the datafile without",
-        "a dialog, for example in an R script:\n\n");
-    cat(filenameArgument, ";\n\n", sep="");
+    if (!silent) {
+      cat("\n\nYou have selected a file. Based on your call and the filename",
+          "and directory (path) you selected, this is the",
+          "command you can use to read the datafile without",
+          "a dialog, for example in an R script:\n\n");
+      cat(filenameArgument, ";\n\n", sep="");
+    }
     
     filenameArgument <- filename;
     

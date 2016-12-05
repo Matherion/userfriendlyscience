@@ -235,8 +235,8 @@ print.regr <- function(x, digits=x$input$digits,
 
 ### Function to smoothly pander output from regr function in userfriendlyscience
 pander.regr <- function (x, digits = x$input$digits, pvalueDigits = x$input$pvalueDigits, ...) {
-  pandoc.p(paste0("#### Regression analysis for formula: ", x$intermediate$formula.as.character));
-  pandoc.p("##### Significance test of the entire model (all predictors together):");
+  pandoc.p(paste0("\n\n#### Regression analysis for formula: ", x$intermediate$formula.as.character));
+  pandoc.p("\n\n##### Significance test of the entire model (all predictors together):\n\n");
   pandoc.p(paste0("Multiple R-squared: [", round(x$output$rsq.ci[1], 
                                                  digits), ", ", round(x$output$rsq.ci[2], digits), 
                   "] (point estimate = ", round(x$intermediate$summary.raw$r.squared, 
@@ -250,21 +250,21 @@ pander.regr <- function (x, digits = x$input$digits, pvalueDigits = x$input$pval
                                         lower.tail = FALSE), digits = pvalueDigits), "\n"));
   
   if ("raw" %in% x$input$coefficients) {
-    pandoc.p("##### Raw regression coefficients (unstandardized beta values, called 'B' in SPSS):");
+    pandoc.p("\n\n##### Raw regression coefficients (unstandardized beta values, called 'B' in SPSS):\n\n");
     tmpDat <- round(x$output$coef.raw[, 1:5], digits);
     tmpDat[[1]] <- paste0("[", tmpDat[[1]], "; ", tmpDat[[2]], "]");
     tmpDat[[2]] <- NULL;
     names(tmpDat)[1] <- paste0(x$input$conf.level * 100, "% conf. int.");
     tmpDat$p <- formatPvalue(x$output$coef.raw$p, digits = pvalueDigits, includeP = FALSE);
-    pander(tmpDat, ..., missing="");
+    pander(tmpDat, missing="");
   }
   if ("scaled" %in% x$input$coefficients) {
-    pandoc.p("##### Scaled regression coefficients (standardized beta values, called 'Beta' in SPSS):");
+    pandoc.p("\n\n##### Scaled regression coefficients (standardized beta values, called 'Beta' in SPSS):\n\n");
     tmpDat <- round(x$output$coef.scaled[, 1:5], digits);
     tmpDat[[1]] <- paste0("[", tmpDat[[1]], "; ", tmpDat[[2]], "]");
     tmpDat[[2]] <- NULL;
     names(tmpDat)[1] <- paste0(x$input$conf.level * 100, "% conf. int.");
     tmpDat$p <- formatPvalue(x$output$coef.scaled$p, digits = pvalueDigits, includeP = FALSE);
-    pander(tmpDat, ..., missing="");
+    pander(tmpDat, missing="");
   }
 }

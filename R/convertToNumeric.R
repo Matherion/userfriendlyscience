@@ -1,5 +1,5 @@
 ### Convert a vector to numeric values and trying to be smart about it.
-convertToNumeric <- function (vector, byFactorLabel = FALSE) {
+convertToNumeric <- function(vector, byFactorLabel = FALSE) {
   ### Check whether the vector is datetime
   if (sum(sapply(class(vector), grepl, pattern='POSIX')) > 0) {
     return(vector);
@@ -13,11 +13,14 @@ convertToNumeric <- function (vector, byFactorLabel = FALSE) {
   if(is.factor(vector) && byFactorLabel) {
     ### Decimal symbol might be a comma instead of a period: convert
     ### factor to character vector and replace commas with periods
-    vector <- as.numeric(gsub(as.character(vector), pattern=",", replacement="."));
+    vector <- as.numeric(gsub(as.character(vector), pattern=",",
+                              replacement="."),
+                         fixed=TRUE);
     return();
   }
   else if (is.character(vector)) {
-    return(suppressWarnings(as.numeric(gsub(as.character(vector), pattern=",", replacement="."))));
+    return(suppressWarnings(as.numeric(gsub(as.character(vector),
+                                            pattern=",", replacement="."))));
   }
   else {
     ### Thus, for numeric vectors; factors to be converted by index of the levels

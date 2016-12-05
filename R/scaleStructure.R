@@ -15,8 +15,8 @@ scaleStructure <- scaleReliability <- function (dat=NULL, items = 'all', digits 
     dat <- getData(errorMessage=paste0("No dataframe specified, and no valid datafile selected in ",
                                        "the dialog I then showed to allow selection of a dataset.",
                                        "Original error:\n\n[defaultErrorMessage]"),
-                   use.value.labels=FALSE, applyRioLabels = FALSE);
-    res$input$dat.name <- paste0("SPSS file imported from ", attr(dat, "filename"));
+                   use.value.labels=FALSE, applyRioLabels = FALSE, silent=TRUE);
+    res$input$dat.name <- paste0("SPSS file imported from ", attr(dat, "fileName"));
   }
   else {
     if (!is.data.frame(dat)) {
@@ -89,6 +89,17 @@ scaleStructure <- scaleReliability <- function (dat=NULL, items = 'all', digits 
     res$output$dat$spearman.brown <- res$intermediate$spearman.brown;
   }
   else if (res$input$n.items > 2) {
+    
+    ### Added at 2016-12-05: Coefficient H
+    
+    res$intermediate$fa <- suppressWarnings(fa(res$input$dat,
+                                               nfactors=1,
+                                               fm='ml'));
+    res$intermediate$loadings <- as.vector(res$intermediate$fa$Structure);
+    res$intermediate$minorDenom <- 1 / sum((res$intermediate$loadings ^ 2) /
+                                           (1 - (res$intermediate$loadings ^ 2)));
+    res$output$coefficientH <- 1 / (1 + res$intermediate$minorDenom);
+
     ### GLB
     suppressWarnings(res$intermediate$glb <- glb(res$input$dat));
     res$output$glb  <- res$intermediate$glb$glb.max;
@@ -245,7 +256,7 @@ print.scaleStructure <- function (x, digits=x$input$digits, ...) {
         "You can safely ignore these.\n\n", sep="");
   }
   
-  cat(paste0("Information about this analysis:\n",
+  cat(paste0("\nInformation about this analysis:\n",
              "\n                 Dataframe: ", x$input$dat.name,
              "\n                     Items: ", paste(x$input$items, collapse=", "),
              "\n              Observations: ", x$input$n.observations,
@@ -258,9 +269,10 @@ print.scaleStructure <- function (x, digits=x$input$digits, ...) {
                "\n      Omega (hierarchical): ",
                round(x$intermediate$omega.psych$omega_h, digits=digits)));
     if (x$input$omega.psych) {
-      cat(paste0("\nOmega (from psych package): ", round(x$output$omega.psych, digits=digits)));
+      cat(paste0("\n   Revelle's omega (total): ", round(x$output$omega.psych, digits=digits)));
     }
     cat(paste0("\nGreatest Lower Bound (GLB): ", round(x$output$glb, digits=digits),
+               "\n             Coefficient H: ", round(x$output$coefficientH, digits=digits),
                "\n          Cronbach's alpha: ", round(x$output$cronbach.alpha, digits=digits), "\n"));
     if (x$input$ci & !is.null(x$output$alpha.ci)) {
       ### If confidence intervals were computed AND obtained, print them

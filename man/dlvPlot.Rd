@@ -15,7 +15,7 @@ dlvPlot(dat, x = NULL, y, z = NULL, conf.level = .95,
         normalDotBaseSize=1, violinAlpha = .2, dotAlpha = .4,
         lineAlpha = 1, connectingLineAlpha = 1,
         meanDotSize=5, posDodge=0.2, errorType = "both")
-dlvTheme(base_size = 14, base_family = "", ...)
+dlvTheme(base_size = 11, base_family = "", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

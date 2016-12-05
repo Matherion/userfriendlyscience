@@ -17,7 +17,7 @@ Basic functons to make working with R easier for SPSS users: getData and getDat 
 getData(filename = NULL, file = NULL, errorMessage =
         "[defaultErrorMessage]", applyRioLabels = TRUE,
         use.value.labels = FALSE, to.data.frame = TRUE,
-        stringsAsFactors = FALSE, ...)
+        stringsAsFactors = FALSE, silent=FALSE, ...)
         
 getDat(..., dfName = "dat", backup = TRUE)
 
@@ -53,6 +53,9 @@ modus(vector)
 }
   \item{stringsAsFactors}{
   Whether to read strings as strings (FALSE) or factors (TRUE).
+}
+  \item{silent}{
+  Whether to suppress potentially useful information.
 }
   \item{...}{
   Additional options, passed on to the function used to import the data (which depends on the extension of the file).

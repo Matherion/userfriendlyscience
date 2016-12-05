@@ -10,6 +10,7 @@
 \alias{pdExtreme}
 \alias{pdMild}
 \alias{pdInterval}
+\alias{cohensdCI}
 \title{
 The distribution of Cohen's \emph{d}
 }
@@ -30,6 +31,8 @@ rCohensd(n, df, populationD = 0)
 pdExtreme(d, n, populationD=0)
 pdMild(d, n, populationD=0)
 pdInterval(ds, n, populationD=0)
+
+cohensdCI(d, n, conf.level = .95)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -54,7 +57,10 @@ pdInterval(ds, n, populationD=0)
 }
   \item{lower.tail}{
   logical; if TRUE (default), probabilities are the likelihood of finding a Cohen's \emph{d} smaller than the specified value; otherwise, the likelihood of finding a Cohen's \emph{d} larger than the specified value.
-  }
+}
+  \item{conf.level}{
+  The level of confidence of the confidence interval.
+}
 }
 \details{
   The functions use \code{\link{convert.d.to.t}} and \code{\link{convert.t.to.d}} to provide the Cohen's \emph{d} distribution.
@@ -67,7 +73,6 @@ pdInterval(ds, n, populationD=0)
 \code{pdMild} returns the probability (or probabilities) of finding a Cohen's \emph{d} equal to or \emph{less} extreme than the specified value(s).
 
 \code{pdInterval} returns the probability of finding a Cohen's \emph{d} that lies in between the two specified values of Cohen's \emph{d}.
-
 }
 \author{
 Gjalt-Jorn Peters

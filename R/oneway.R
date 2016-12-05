@@ -3,15 +3,14 @@ oneway <- function(y, x, posthoc=NULL, means=FALSE, fullDescribe=FALSE,
                    omegasq = TRUE,
                    etasq = TRUE,
                    corrections = FALSE,
-                   pvalueDigits=3, t=FALSE, conf.level=.95) {
+                   pvalueDigits=3, t=FALSE, conf.level=.95,
+                   silent=FALSE) {
   
   res <- list(input = as.list(environment()));
-  
-  res$input$x.name=unlist(strsplit(deparse(substitute(x)), "\\$"))[
-    length(unlist(strsplit(deparse(substitute(x)), "\\$")))];
-  res$input$y.name=unlist(strsplit(deparse(substitute(y)), "\\$"))[
-    length(unlist(strsplit(deparse(substitute(y)), "\\$")))];
-  
+
+  res$input$x.name <- extractVarName(deparse(substitute(x)));
+  res$input$y.name <- extractVarName(deparse(substitute(y)));
+
   if (!is.numeric(y)) {
     stop("The y variable (", res$input$y.name, ") is not a numeric ",
         "vector! Note that in analysis of variance, the 'y' variable ",
@@ -19,10 +18,12 @@ oneway <- function(y, x, posthoc=NULL, means=FALSE, fullDescribe=FALSE,
   }
   
   if (!is.factor(x)) {
-    warning("### Warning: the x variable (", res$input$x.name, ") is not a ",
-           "factor! Converting it myself - but note that variables in R have ",
-           "data types, and it's advisable to set these adequately (use for ",
-           "example 'as.factor'; see '?as.factor' for help)!");
+    if (!silent) {
+      warning("### Warning: the x variable (", res$input$x.name, ") is not a ",
+             "factor! Converting it myself - but note that variables in R have ",
+             "data types, and it's advisable to set these adequately (use for ",
+             "example 'as.factor'; see '?as.factor' for help)!");
+    }
     res$input$x.raw <- x;
     x <- as.factor(x);
     res$input$x <- x;
@@ -73,7 +74,7 @@ oneway <- function(y, x, posthoc=NULL, means=FALSE, fullDescribe=FALSE,
   if (levene) {
     res$intermediate$leveneTest <- leveneTest(y, group=x, center=mean);
   }
-  
+
   res$intermediate$etasq <- computeEffectSize_etasq(var1=x, var2=y,
                                                     conf.level=conf.level);
   
@@ -242,9 +243,7 @@ print.oneway <- function(x, digits=x$input$digits,
          ", ", formatPvalue(x$intermediate$brown.forsythe$p, digits=digits+1),
          ".\n");    
   }
-  
-  cat("\n");
-  
+
 }
 
 
@@ -302,7 +301,7 @@ pander.oneway <- function(x, digits=x$input$digits,
          headerStyle);
     lapply(1:length(x$intermediate$means), function(index) {
       cat0("\n\n", x$input$x.name, " = ",
-           names(x$intermediate$means[index]), ":  \n");
+           names(x$intermediate$means[index]), ":  \n\n");
       pander(x$intermediate$means[[index]], digits=digits);
     });
     cat("\n");

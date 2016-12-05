@@ -137,8 +137,10 @@ exampleData <- testRetestSimData[2:6];
 ### Use all items
 scaleStructure(dat=exampleData);
 
-### Use a selection of two variables
-scaleStructure(dat=exampleData, items=c('t0_item2', 't0_item4'));
+### Use a selection of three variables (without confidence
+### intervals to save time
+scaleStructure(dat=exampleData, items=c('t0_item2', 't0_item3', 't0_item4'),
+               ci=FALSE);
 
 ### Make the items resemble an ordered categorical (ordinal) scale
 ordinalExampleData <- data.frame(apply(exampleData, 2, cut,
@@ -146,9 +148,7 @@ ordinalExampleData <- data.frame(apply(exampleData, 2, cut,
                                        labels=as.character(1:5)));
 
 ### Now we also get estimates assuming the ordinal measurement level
-scaleStructure(ordinalExampleData);
-
-
+scaleStructure(ordinalExampleData, ci=FALSE);
 
 }
 \keyword{ utilities }

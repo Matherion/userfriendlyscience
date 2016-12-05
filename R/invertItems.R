@@ -5,7 +5,7 @@ invertItems <- function(dat, items = NULL, ...) {
     stop("Argument 'items' is not a character vector or numeric vector ",
          "(but instead of type ", typeof(dat), ").");
   }
-  usedDat <- dat[, items];
+  usedDat <- dat[, items, drop=FALSE];
   
   ### Previous inversions
   prevInv <- lapply(dat[, items], attr, 'inverted');
@@ -18,23 +18,23 @@ invertItems <- function(dat, items = NULL, ...) {
             " have already been inverted! ",
             "Set ignorePreviousInversion to TRUE to override this check ",
             "and invert the vector anyway.");
-    usedDat <- usedDat[, !(names(usedDat) %in% alreadyInverted)];
+    usedDat <- usedDat[, !(names(usedDat) %in% alreadyInverted), drop=FALSE];
   }
   
   ### All convert factors to numeric vectors
   usedDat <- massConvertToNumeric(usedDat);
-  
+
   ### Check whether any non-numeric vectors remain
   invalidVectors <- lapply(usedDat, is.numeric);
   if (FALSE %in% unlist(invalidVectors)) {
     invalidVectors <- names(invalidVectors)[!unlist(invalidVectors)];
-    warning("Variables (columsn) ", vecTxt(invalidVectors, useQuote='"'),
+    warning("Variables (colums) ", vecTxt(invalidVectors, useQuote='"'),
             " have a type other than numeric or factor! Ignoring these.");
-    usedDat <- usedDat[, !(names(usedDat) %in% invalidVectors)];
+    usedDat[] <- usedDat[, !(names(usedDat) %in% invalidVectors)];
   }
   
   items <- names(usedDat);
-  
+
   dat[, items] <- data.frame(lapply(usedDat, invertItem), ...);
   return(dat);
 }

@@ -33,7 +33,7 @@ formatR(r, digits)
 repStr(n = 1, str = " ")
 repeatStr(n = 1, str = " ")
 ifelseObj(condition, ifTrue, ifFalse)
-invertItem(item, range=NULL, ignorePreviousInversion = FALSE)
+invertItem(item, fullRange=NULL, ignorePreviousInversion = FALSE)
 is.odd(vector)
 is.even(vector)
 convertToNumeric(vector, byFactorLabel = FALSE)
@@ -96,7 +96,7 @@ The number of times to repeat the string.
   \item{item}{
   Item to invert
 }
-  \item{range}{
+  \item{fullRange}{
   If provided it must be a numeric vector with the minimum and the maximum of the scale. If not provided, the range function is used (so, use this range argument if the scale minimum and/or maximum do not occur in the data).
 }
   \item{ignorePreviousInversion}{

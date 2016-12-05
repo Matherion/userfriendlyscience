@@ -1,5 +1,5 @@
 ### Function to format p values nicely
-formatPvalue <- function (values, digits = 3, spaces=TRUE, includeP = TRUE) {
+formatPvalue <- function(values, digits = 3, spaces=TRUE, includeP = TRUE) {
   missingValues <- is.na(values);
   values <- ifelse(values < 0, 0, ifelse(values > 1, 1, values));
   pchar <- ifelse(includeP, "p = ", "");

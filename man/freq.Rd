@@ -1,12 +1,13 @@
 \name{freq}
 \alias{freq}
+\alias{frequency}
 \alias{frequencies}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Freq and frequencies
+Frequency tables
 }
 \description{
-Function to show frequencies in a manner similar to what SPSS' "FREQUENCIES" command does.
+Function to show frequencies in a manner similar to what SPSS' "FREQUENCIES" command does. Note that \code{frequency} is an alias for \code{freq}.
 }
 \usage{
 freq(vector, digits = 1, nsmall=1, transposed=FALSE,

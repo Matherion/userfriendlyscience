@@ -11,7 +11,7 @@
 # utils::globalVariables(c("y_density", "yMaxFromY"));
 
 ### Theme used for the plots
-dlvTheme <- function(base_size = 14, base_family = "",
+dlvTheme <- function(base_size = 11, base_family = "",
                      ...) {
   theme_bw(base_size = base_size, base_family = base_family) %+replace%
     theme(
@@ -106,15 +106,19 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
       criticalValue <- qt(1-((1-conf.level)/2), df=n-1); 
       ci.lo <- mean - criticalValue * se;
       ci.hi <- mean + criticalValue * se;
+      meanMinSE <- mean - se;
+      meanPlusSE <- mean + se;
       res$descr <- data.frame(y = y,
                               n = n,
                               mean = mean, sd = sd,
                               se = se,
                               ci.lo = ci.lo,
-                              ci.hi = ci.hi);
+                              ci.hi = ci.hi,
+                              meanMinSE = meanMinSE,
+                              meanPlusSE = meanPlusSE);
       res$yRange=c(min(res$dat[[y]][!is.na(res$dat[[y]])]),
                    max(res$dat[[y]][!is.na(res$dat[[y]])]));
-      
+
       ### Generate plot
       res$plot <- ggplot(data=res$dat, aes_string(x=xVarName, y=y));
       res$plot <- res$plot + dlvTheme();
@@ -140,28 +144,29 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
       if (error == "lines") {
         if (errorType=="ci") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=y, y=mean, ymin=ci.lo, ymax=ci.hi),
+                                                 aes_string(x='y', y='mean', ymin='ci.lo', ymax='ci.hi'),
                                                  size = 1, alpha=lineAlpha);
         } else if (errorType=="se") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=y, y=mean, ymin=mean-se, ymax=mean+se),
+                                                 aes_string(x='y', y='mean', ymin='meanMinSE', ymax='meanPlusSE'),
                                                  size = 1, alpha=lineAlpha);
         } else if (errorType=="both") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=y, y=mean, ymin=ci.lo, ymax=ci.hi),
+                                                 aes_string(x='y', y='mean', ymin='ci.lo', ymax='ci.hi'),
                                                  size = 1, alpha=lineAlpha);
           res$plot <- res$plot + geom_errorbar(data=res$descr,
-                                               aes(x=y, y=mean, ymin=mean-se, ymax=mean+se),
-                                               size = 2, alpha=lineAlpha, width=0);
+                                               aes_string(x='y', ymin='meanMinSE', ymax='meanPlusSE'),
+                                               size = 2, alpha=lineAlpha, width=0,
+                                               inherit.aes = FALSE);
         }        
       }
       else if (error == "whiskers") {
         res$plot <- res$plot + geom_errorbar(data=res$descr,
-                                             aes(x=y, y=mean, ymin=ci.lo, ymax=ci.hi),
+                                             aes_string(x='y', y='mean', ymin='ci.lo', ymax='ci.hi'),
                                              size = 1, width=.1, alpha=lineAlpha);
       }
       res$plot <- res$plot + geom_point(data=res$descr,
-                                        aes(x=y, y=mean), size=meanDotSize, alpha=lineAlpha);
+                                        aes_string(x='y', y='mean'), size=meanDotSize, alpha=lineAlpha);
       
     }
     else {
@@ -200,13 +205,17 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
         criticalValue <- qt(1-((1-conf.level)/2), df=n-1); 
         ci.lo <- mean - criticalValue * se;
         ci.hi <- mean + criticalValue * se;
+        meanMinSE <- mean - se;
+        meanPlusSE <- mean + se;
         ### Add descriptives
         res$descr <- rbind(res$descr, data.frame(y = currentVar,
                                                  n = n,
                                                  mean = mean, sd = sd,
                                                  se = se,
                                                  ci.lo = ci.lo,
-                                                 ci.hi = ci.hi));
+                                                 ci.hi = ci.hi,
+                                                 meanMinSE = meanMinSE,
+                                                 meanPlusSE = meanPlusSE));
       }
       
       res$yRange=c(min(res$dat[['y']][!is.na(res$dat[['y']])]),
@@ -237,18 +246,18 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
       if (error == "lines") {
         if (errorType=="ci") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=x, y=mean, ymin=ci.lo, ymax=ci.hi),
+                                                 aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi'),
                                                  size = 1, alpha=lineAlpha);
         } else if (errorType=="se") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=x, y=mean, ymin=mean-se, ymax=mean+se),
+                                                 aes_string(x=y, y='mean', ymin='meanMinSE', ymax='meanPlusSE'),
                                                  size = 1, alpha=lineAlpha);
         } else if (errorType=="both") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=x, y=mean, ymin=ci.lo, ymax=ci.hi),
+                                                 aes_string(x=y, y='mean', ymin='ci.lo', ymax='ci.hi'),
                                                  size = 1, alpha=lineAlpha);
           res$plot <- res$plot + geom_errorbar(data=res$descr,
-                                               aes(x=x, y=mean, ymin=mean-se, ymax=mean+se),
+                                               aes_string(x=y, y='mean', ymin='meanMinSE', ymax='meanPlusSE'),
                                                size = 2, alpha=lineAlpha, width=0);
         }
       }
@@ -281,12 +290,17 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                            criticalValue <- qt(1-((1-conf.level)/2), df=n-1); 
                            ci.lo <- mean - criticalValue * se;
                            ci.hi <- mean + criticalValue * se;
+                           meanMinSE <- mean - se;
+                           meanPlusSE <- mean + se;
                            rslt <- data.frame(x = dat[1, x],
                                               y = y,
                                               n = nrow(dat),
                                               mean = mean, sd = sd,
                                               se = se, ci.lo = ci.lo,
-                                              ci.hi = ci.hi);
+                                              ci.hi = ci.hi,
+                                              meanMinSE = meanMinSE,
+                                              meanPlusSE = meanPlusSE,
+                                              numericX = as.numeric(dat[1, x]));
                            rslt <- rslt[complete.cases(rslt), ];
                            return(rslt);
                          }, conf.level=conf.level);
@@ -306,7 +320,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
       
       res$yRange=c(min(res$dat[[y]][!is.na(res$dat[[y]])]),
                    max(res$dat[[y]][!is.na(res$dat[[y]])]));
-      
+
       res$plot <- ggplot(data=res$dat, aes_string(x=x, y=y));
       res$plot <- res$plot + dlvTheme();
       res$plot <- res$plot + geom_violin(trim=FALSE, alpha=violinAlpha, fill="#BBBBBB", linetype="blank", position=position_dodge(width=posDodge));
@@ -331,29 +345,34 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
       if (error == "lines") {
         if (errorType=="ci") {
         res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                               aes(x=x, y=mean, ymin=ci.lo, ymax=ci.hi),
-                                               size = 1, alpha=lineAlpha);
+                                               aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi'),
+                                               size = 1, alpha=lineAlpha,
+                                               inherit.aes = FALSE);
         } else if (errorType=="se") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=x, y=mean, ymin=mean-se, ymax=mean+se),
-                                                 size = 1, alpha=lineAlpha);
+                                                 aes_string(x='x', y='mean', ymin='meanMinSE', ymax='meanPlusSE'),
+                                                 size = 1, alpha=lineAlpha,
+                                                 inherit.aes = FALSE);
         } else if (errorType=="both") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=x, y=mean, ymin=ci.lo, ymax=ci.hi),
-                                                 size = 1, alpha=lineAlpha);
+                                                 aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi'),
+                                                 size = 1, alpha=lineAlpha,
+                                                 inherit.aes = FALSE);
           res$plot <- res$plot + geom_errorbar(data=res$descr,
-                                               aes(x=x, y=mean, ymin=mean-se, ymax=mean+se),
-                                               size = 2, alpha=lineAlpha, width=0);
+                                               aes_string(x='x', ymin='meanMinSE', ymax='meanPlusSE'),
+                                               size = 2, alpha=lineAlpha, width=0,
+                                               inherit.aes = FALSE);
         }
       }
       else if (error == "whiskers") {
         res$plot <- res$plot + geom_errorbar(data=res$descr,
-                                             aes(x=x, y=mean, ymin=ci.lo, ymax=ci.hi),
-                                             size = 1, width=.1, alpha=lineAlpha);
+                                             aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi'),
+                                             size = 1, width=.1, alpha=lineAlpha,
+                                             inherit.aes = FALSE);
       }
       res$plot <- res$plot + stat_summary(fun.y=mean, geom="point", size=meanDotSize, alpha=lineAlpha);
       res$plot <- res$plot + geom_line(data=res$descr,
-                                       aes(x=as.numeric(x), y=mean), size=1, alpha=connectingLineAlpha);
+                                       aes_string(x='x', y='mean', group=NA), size=1, alpha=connectingLineAlpha);
     }
     else {
       
@@ -372,13 +391,18 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                        criticalValue <- qt(1-((1-conf.level)/2), df=n-1); 
                        ci.lo <- mean - criticalValue * se;
                        ci.hi <- mean + criticalValue * se;
+                       meanMinSE <- mean - se;
+                       meanPlusSE <- mean + se;
                        res <- data.frame(x = dat[1, x],
                                          y = y,
                                          z = dat[1, z],
                                          n = nrow(dat),
                                          mean = mean, sd = sd,
                                          se = se, ci.lo = ci.lo,
-                                         ci.hi = ci.hi);
+                                         ci.hi = ci.hi,
+                                         meanMinSE = meanMinSE,
+                                         meanPlusSE = meanPlusSE,
+                                         numericX = as.numeric(dat[1, x]));
                        return(res[complete.cases(res), ]);
                      }, conf.level=conf.level);
       ### Store densities; must be done for each group (value of x)
@@ -423,28 +447,33 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
       if (error == "lines") {
         if (errorType=="ci") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=x, y=mean, ymin=ci.lo, ymax=ci.hi, group=z),
-                                                 size = 1, alpha=lineAlpha, position=position_dodge(width=posDodge));
+                                                 aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi', group='z'),
+                                                 size = 1, alpha=lineAlpha, position=position_dodge(width=posDodge),
+                                                 inherit.aes = FALSE);
         } else if (errorType=="se") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=x, y=mean, ymin=mean-se, ymax=mean+se, group=z),
-                                                 size = 1, alpha=lineAlpha, position=position_dodge(width=posDodge));
+                                                 aes_string(x='x', y='mean', ymin='meanMinSE', ymax='meanPlusSE', group='z'),
+                                                 size = 1, alpha=lineAlpha, position=position_dodge(width=posDodge),
+                                                 inherit.aes = FALSE);
         } else if (errorType=="both") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes(x=x, y=mean, ymin=ci.lo, ymax=ci.hi, group=z),
-                                                 size = 1, alpha=lineAlpha, position=position_dodge(width=posDodge));
+                                                 aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi', group='z'),
+                                                 size = 1, alpha=lineAlpha, position=position_dodge(width=posDodge),
+                                                 inherit.aes = FALSE);
           res$plot <- res$plot + geom_errorbar(data=res$descr,
-                                               aes(x=x, y=mean, ymin=mean-se, ymax=mean+se, group=z),
-                                               size = 2, alpha=lineAlpha, width=0, position=position_dodge(width=posDodge));
+                                               aes_string(x='x', ymin='meanMinSE', ymax='meanPlusSE', group='z'),
+                                               size = 2, alpha=lineAlpha, width=0, position=position_dodge(width=posDodge),
+                                               inherit.aes = FALSE);
         }
       }
       else if (error == "whiskers") {
         res$plot <- res$plot + geom_errorbar(data=res$descr,
-                                             aes(x=x, y=mean, ymin=ci.lo, ymax=ci.hi, group=z),
-                                             size = 1, width=.1, alpha=lineAlpha, position=position_dodge(width=posDodge));
+                                             aes_string(x='x', ymin='ci.lo', ymax='ci.hi', group='z'),
+                                             size = 1, width=.1, alpha=lineAlpha, position=position_dodge(width=posDodge),
+                                             inherit.aes = FALSE);
       }
       res$plot <- res$plot + stat_summary(fun.y=mean, geom="point", size=meanDotSize, position=position_dodge(width=posDodge));
-      res$plot <- res$plot + geom_line(data=res$descr, aes(x=x, y=mean, group=z), size=1,
+      res$plot <- res$plot + geom_line(data=res$descr, aes_string(x='x', y='mean', group='z'), size=1,
                                        alpha=connectingLineAlpha, position=position_dodge(width=posDodge));
     }
   }

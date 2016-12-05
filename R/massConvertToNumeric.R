@@ -1,4 +1,4 @@
-massConvertToNumeric <- function (dat, byFactorLabel = FALSE,
+massConvertToNumeric <- function(dat, byFactorLabel = FALSE,
                                   ignoreCharacter = TRUE,
                                   stringsAsFactors = FALSE) {
   storedAttributes <- attributes(dat);
