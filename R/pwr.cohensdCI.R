@@ -38,7 +38,6 @@ pwr.cohensdCI <- function(d, w=.1, conf.level=.95, extensive = FALSE, silent=FAL
     withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, n[di]-2, populationD=abs(d[di]), lower.tail=TRUE) ||
                                upperBound[di] < qCohensd(upperP, n[di]-2, populationD=d[di], lower.tail=FALSE)) {
       n[di] <- n[di] + 1;
-      warning('bla');
     }, warning = wHandler);
   }
   if (extensive) {
