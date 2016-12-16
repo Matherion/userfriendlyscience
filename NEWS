@@ -1,7 +1,7 @@
 userfriendlyscience NEWS
 ------------------------
 
-0.5-2 2016-
+0.5-2 2016-12-15
   * Fixed some errors in the list of exported functions
   * descr function now uses the quantile function to compute the interquartile range
   * Minor fix in dlvPlot (removed unknown aesthetic)
@@ -9,6 +9,9 @@ userfriendlyscience NEWS
     column is selected
   * Added Coefficient H to scaleStructure
   * Minor improvement in getData to enable suppressing messages
+  * Fix in meanDiff to better interpret measurement levels of input variables
+  * Added pwr.cohensdCI for 'power analyses' for Cohen's d confidence intervals
+  * Fix in 'modus' function (for finding the mode of a vector)
 
 0.5-1 2016-11-09
   * Minor tweaks to work with newest version of ggplot2

@@ -42,8 +42,11 @@ pdMild <- function(d, n, populationD = 0) {
 cohensdCI <- function(d, n, conf.level = .95) {
   ci.bound.lo <- (1 - conf.level) / 2;
   ci.bound.hi <- 1 - (1 - conf.level) / 2;
-  return(c(qCohensd(ci.bound.lo, n, populationD=d),
-           qCohensd(ci.bound.hi, n, populationD=d)));
+  res <- matrix(c(qCohensd(ci.bound.lo, n, populationD=d),
+                  qCohensd(ci.bound.hi, n, populationD=d)), ncol=2);
+  colnames(res) <- c('lo', 'hi');
+  rownames(res) <- d;
+  return(res);
 }
 
 # ggplot(data.frame(x = seq(-3, 3, by=.1),

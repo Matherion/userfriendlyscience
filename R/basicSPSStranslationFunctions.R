@@ -343,7 +343,7 @@ modus <- function(vector) {
     categoryVector <- as.factor(categoryVector);
   }
   else {
-    class(categoryVector) <- originalClass;
+    suppressWarnings(class(categoryVector) <- originalClass);
   }
    return(categoryVector);
 }

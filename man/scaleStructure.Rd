@@ -6,6 +6,8 @@ scaleStructure
 }
 \description{
 The scaleStructure function (which was originally called scaleReliability) computes a number of measures to assess scale reliability and internal consistency.
+
+If you use this function in an academic paper, please cite Peters (2014), where the function is introduced.
 }
 \usage{
 scaleStructure(dat=NULL, items = 'all', digits = 2, ci = TRUE,
@@ -94,6 +96,7 @@ An object with the input and several output variables. Most notably:
   \item{output$omega}{Point estimate for omega}
   \item{output$glb}{Point estimate for the Greatest Lower Bound}
   \item{output$alpha}{Point estimate for Cronbach's alpha}
+  \item{output$coefficientH}{Coefficient H}
   \item{output$omega.ci}{Confidence interval for omega}
   \item{output$alpha.ci}{Confidence interval for Cronbach's alpha}
 }
@@ -116,7 +119,7 @@ Sijtsma, K. (2009). On the Use, the Misuse, and the Very Limited Usefulness of C
 Zinbarg, R. E., Revelle, W., Yovel, I., & Li, W. (2005). Cronbach's alpha, Revelle's beta and McDonald's omega H: Their relations with each other and two alternative conceptualizations of reliability. \emph{Psychometrika}, 70(1), 123-133. doi:10.1007/s11336-003-0974-7
 }
 \author{
-Gjalt-Jorn Peters
+Gjalt-Jorn Peters and Daniel McNeish (University of North Carolina, Chapel Hill, US).
 
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
