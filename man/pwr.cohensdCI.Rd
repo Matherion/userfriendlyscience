@@ -30,7 +30,7 @@ pwr.cohensdCI(d, w = 0.1, conf.level = 0.95, extensive = FALSE, silent=FALSE)
 The sample size(s) you need (or, if \code{extensive} is \code{TRUE}, also the requested and resulting confidence interval bounds).
 }
 \references{
-Peters, G. J. Y. & Crutzen, R. (forthcoming) An easy and foolproof method for establishing how effective an intervention of behavior change method is: required sample size for accurate parameter estimation in health psychology.
+Peters, G. J. Y. & Crutzen, R. (forthcoming) An easy and foolproof method for establishing how effective an intervention or behavior change method is: required sample size for accurate parameter estimation in health psychology.
 
 Maxwell, S. E., Kelley, K., & Rausch, J. R. (2008). Sample size planning for statistical power and accuracy in parameter estimation. Annual Review of Psychology, 59, 537-63. https://doi.org/10.1146/annurev.psych.59.103006.093735
 

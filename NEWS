@@ -3,6 +3,7 @@ userfriendlyscience NEWS
 
 0.5-3 2017-
 * Fixed warning-generating 'bla' in pwr.cohensdCI
+* Added confIntR and pwr.confIntR based on the Moinester & Gottfried (2014) and the Bonett (2011) papers (with permission)
 
 0.5-2 2016-12-15
 * Fixed some errors in the list of exported functions
