@@ -49,7 +49,7 @@ convert.cohensf.to.omegasq(cohensf)
 convert.cohensfsq.to.omegasq(cohensfsq)
 
 convert.d.to.logodds(d)
-convert.d.to.r(d, n1 = NULL, n2 = NULL)
+convert.d.to.r(d, n1 = NULL, n2 = NULL, akfEq8='if (n1 + n2) < 50')
 convert.d.to.t(d, df = NULL, n1 = NULL, n2 = NULL, proportion = 0.5)
 convert.d.to.variance(d, n1, n2)
 
@@ -121,14 +121,23 @@ convert.t.to.p(t, df)
   \item{lower.tail}{
   For the F and chisquare distributions, whether to get the probability of the lower or upper tail.
 }
+  \item{akfEq8}{
+  When converting Cohen's \emph{d} to \emph{r}, for small sample sizes, bias is introduced when the commonly suggested formula is used (Aaron, Kromrey & Ferron, 1998). Therefore, by default, this function uses different equations depending on the sample size (for n < 50 and for n > 50). When \code{akfEq8} is set to TRUE or FALSE, the corresponding action is taken; when \code{akfEq8} is not logical (i.e. TRUE or FALSE), the function depends on the sample size.
+}
   \item{var.equal}{
   Whether to compute the value of \emph{t} or Cohen's \emph{d} assuming equal variances ('yes'), unequal variances ('no'), or whether to test for the difference ('test').
 }
+}
+\details{
+Note that by default, the behavior of \code{convert.d.to.r} depends on the sample size (see Bruce, Kromrey & Ferron, 1998).
 }
 \value{
 
 The converted value as a numeric value.
 
+}
+\references{
+Aaron, B. Kromrey J. D. & Ferron, J. (1998) \emph{Equating "r"-based and "d"-based Effect Size Indices: Problems with a Commonly Recommended Formula.} Paper presented at the Annual Meeting of the Florida Educational Research Association (43rd, Orlando, FL, November 2-4, 1998).
 }
 \author{
 Gjalt-Jorn Peters and Peter Verboon
@@ -136,7 +145,6 @@ Gjalt-Jorn Peters and Peter Verboon
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \examples{
-
 convert.t.to.r(t=-6.46, n=200);
 convert.r.to.t(r=-.41, n=200);
 
@@ -145,5 +153,8 @@ convert.t.to.p(4.2, 197);
 convert.chisq.to.p(5.2, 3);
 convert.f.to.p(8.93, 3, 644);
 
+### Convert d to r using both equations
+convert.d.to.r(d=.2, n1=5, n2=5, akfEq8 = FALSE);
+convert.d.to.r(d=.2, n1=5, n2=5, akfEq8 = TRUE);
 }
 \keyword{ utilities }

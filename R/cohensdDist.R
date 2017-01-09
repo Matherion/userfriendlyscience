@@ -51,8 +51,10 @@ cohensdCI <- function(d, n, conf.level = .95) {
 
 # ggplot(data.frame(x = seq(-3, 3, by=.1),
 #                   d = dCohensd(seq(-3, 3, by=.1), populationD = .5, 18),
+#                   d2 = dCohensd(seq(-3, 3, by=.1), populationD = .5, 180),
 #                   t = dt(seq(-3, 3, by=.1), 18)),
 #        aes(x=x)) +
 #   geom_line(aes(y=d), color='red') +
+#   geom_line(aes(y=d2), color='green') +
 #   geom_line(aes(y=t), color='blue') +
 #   theme_bw();

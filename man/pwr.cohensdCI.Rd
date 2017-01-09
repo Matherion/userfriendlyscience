@@ -4,7 +4,7 @@
 Determine required sample size for a given confidence interval width for Cohen's d
 }
 \description{
-This function computes how many participants you need if you want to achieve a confidence interval of a given width. This is useful when you do a study and you are interested in how strongly twovariables are associated.
+This function computes how many participants you need if you want to achieve a confidence interval of a given width. This is useful when you do a study and you are interested in how strongly two variables are associated.
 }
 \usage{
 pwr.cohensdCI(d, w = 0.1, conf.level = 0.95, extensive = FALSE, silent=FALSE)
@@ -39,6 +39,8 @@ Cumming, G. (2013). The New Statistics: Why and How. Psychological Science, (Nov
 }
 \author{
 Gjalt-Jorn Peters
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \seealso{
 \code{\link{cohensdCI}}
