@@ -122,11 +122,9 @@ getData() currently can't read from LibreOffice or OpenOffice files. There doesn
 }
 \examples{
 
+\dontrun{
 ### Open a dialogue to read an SPSS file
-### (wrapped in 'if (interactive())' to prevent execution during
-###  the testing of the examples when building the package)
-if (interactive()) {
-  getData();
+getData();
 }
 
 ### Get a median and a mode
