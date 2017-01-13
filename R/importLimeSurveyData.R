@@ -1,4 +1,6 @@
 importLimeSurveyData <- function(datafile = NULL,
+                                 dataPath = NULL,
+                                 datafileRegEx = NULL,
                                  scriptfile = NULL,
                                  limeSurveyRegEx.varNames =
                                    "names\\(data\\)\\[\\d*\\] <- ",
@@ -27,15 +29,42 @@ importLimeSurveyData <- function(datafile = NULL,
     dataEncoding <- scriptEncoding <- encoding;
   }
 
-  ### Load datafile
-  if (dataHasVarNames) {
-    data <- getData(datafile, quote = "'\"", na.strings=c("", "\"\""),
-                    stringsAsFactors=FALSE, encoding=dataEncoding, header=TRUE);
+  ### Set filename(s) to read
+  if (!is.null(dataPath) && !is.null(datafileRegEx)) {
+    files <- unique(list.files(path = dataPath,
+                               pattern = datafileRegEx,
+                               ignore.case = TRUE,
+                               recursive=TRUE,
+                               full.names=TRUE));
+    
+  } else if (!is.null(datafile)) {
+    if (!file.exists(datafile)) {
+      stop("File specified as datafile ('", datafile, "') does not exist!");
+    } else {
+      files <- datafile;
+    }
   } else {
-    data <- getData(datafile, quote = "'\"", na.strings=c("", "\"\""),
-                    stringsAsFactors=FALSE, encoding=dataEncoding, header=FALSE);
+    stop("Please specify a datafile to read, or a datafileRegEx to read multiple datafiles!");
   }
   
+  ### Load datafile(s)
+  data <- NULL;
+  for (currentDatafile in files) {
+    print(currentDatafile);
+    if (dataHasVarNames) {
+      currentData <- getData(currentDatafile, quote = "'\"", na.strings=c("", "\"\""),
+                             stringsAsFactors=FALSE, encoding=dataEncoding, header=TRUE);
+    } else {
+      currentData <- getData(currentDatafile, quote = "'\"", na.strings=c("", "\"\""),
+                             stringsAsFactors=FALSE, encoding=dataEncoding, header=FALSE);
+    }
+    if (is.null(data)) {
+      data <- currentData;
+    } else {
+      data <- rbind(data, currentData);
+    }
+  }
+
   ### Load scriptfile
   if (!is.null(scriptfile)) {
     if (!file.exists(scriptfile)) {
