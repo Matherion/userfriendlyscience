@@ -7,8 +7,10 @@ ggqq <- function(x, distribution = "norm", ...,
                  line.estimate = NULL,
                  conf.level = 0.95,
                  sampleSizeOverride = NULL,
-                 xlab = "Theoretical quantiles",
-                 ylab = "Observed quantiles",
+                 observedOnX = TRUE,
+                 scaleExpected = TRUE,
+                 theoryLab = "Theoretical quantiles",
+                 observeLab = "Observed quantiles",
                  theme = theme_bw()){
   
   q.function <- eval(parse(text = paste0("q", distribution)));
@@ -19,29 +21,51 @@ ggqq <- function(x, distribution = "norm", ...,
   P <- ppoints(length(x));
   df <- data.frame(ord.x = x[ord], z = q.function(P, ...));
   
+  if (scaleExpected) {
+    df$expected <- (df$z * sd(x, na.rm=TRUE)) + mean(x, na.rm=TRUE);
+  }
+  
   if(is.null(line.estimate)){
     Q.x <- quantile(df$ord.x, c(0.25, 0.75));
     Q.z <- q.function(c(0.25, 0.75), ...);
+
+    if (scaleExpected) {
+      Q.z <- (Q.z * sd(x, na.rm=TRUE)) + mean(x, na.rm=TRUE);
+    }    
+    
     b <- diff(Q.x)/diff(Q.z);
     coef <- c(Q.x[1] - b * Q.z[1], b);
   } else {
     coef <- coef(line.estimate(ord.x ~ z));
   }
-  
+
   zz <- qnorm(1 - (1 - conf.level)/2);
-  SE <- (coef[2]/d.function(df$z)) * sqrt(P * (1 - P)/n);
-  fit.value <- coef[1] + coef[2] * df$z;
-  df$upper <- fit.value + zz * SE;
-  df$lower <- fit.value - zz * SE;
+  
+  if (scaleExpected) {
+    SE <- (coef[2]/d.function(df$z)) * sqrt(P * (1 - P)/n) * sd(x, na.rm=TRUE);
+    fit.value <- coef[1] + coef[2] * df$expected;
+    df$z <- df$expected;
+    df$upper <- fit.value + zz * SE;
+    df$lower <- fit.value - zz * SE;
+  } else{
+    SE <- (coef[2]/d.function(df$z)) * sqrt(P * (1 - P)/n);
+    fit.value <- coef[1] + coef[2] * df$z;
+    df$upper <- fit.value + zz * SE;
+    df$lower <- fit.value - zz * SE;
+  }
 
   p <- ggplot(df, aes_string(x='z', y='ord.x')) +
     geom_point() + 
     geom_abline(intercept = coef[1], slope = coef[2]) +
-    xlab(xlab) + ylab(ylab) + theme;
-
+    xlab(theoryLab) + ylab(observeLab) + theme;
+  
   if (ci) {
     p <- p +
       geom_ribbon(aes_string(ymin = 'lower', ymax = 'upper'), alpha=0.2);
+  }
+  
+  if (observedOnX) {
+    p <- p + coord_flip();
   }
   
   return(p);
