@@ -50,7 +50,6 @@ importLimeSurveyData <- function(datafile = NULL,
   ### Load datafile(s)
   data <- NULL;
   for (currentDatafile in files) {
-    print(currentDatafile);
     if (dataHasVarNames) {
       currentData <- getData(currentDatafile, quote = "'\"", na.strings=c("", "\"\""),
                              stringsAsFactors=FALSE, encoding=dataEncoding, header=TRUE);
