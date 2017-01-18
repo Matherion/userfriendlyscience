@@ -22,7 +22,7 @@
 ###########################################################
 ###########################################################
 
-freq <- frequency <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
+freq <- Frequency <- function(vector, digits = 1, nsmall=1, transposed=FALSE, round=1,
                               plot=FALSE, plotTheme = theme_bw()) {
   
   ### Store variable name

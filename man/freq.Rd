@@ -1,6 +1,6 @@
 \name{freq}
 \alias{freq}
-\alias{frequency}
+\alias{Frequency}
 \alias{frequencies}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
