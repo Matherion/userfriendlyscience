@@ -42,12 +42,25 @@ pdMild <- function(d, n, populationD = 0) {
 cohensdCI <- function(d, n, conf.level = .95) {
   ci.bound.lo <- (1 - conf.level) / 2;
   ci.bound.hi <- 1 - (1 - conf.level) / 2;
-  res <- matrix(c(qCohensd(ci.bound.lo, n, populationD=d),
-                  qCohensd(ci.bound.hi, n, populationD=d)), ncol=2);
+  if (length(d) == length(n)) {
+    res <- t(sapply(1:length(d), function(i) {
+      return(c(qCohensd(ci.bound.lo, n[i], populationD=d[i]),
+               qCohensd(ci.bound.hi, n[i], populationD=d[i])));
+    }));
+  } else if ((length(d) == 1) || (length(n) == 1)) {
+    res <- matrix(c(qCohensd(ci.bound.lo, n, populationD=d),
+                    qCohensd(ci.bound.hi, n, populationD=d)), ncol=2);
+  } else {
+    stop("Either specify vectors of equal length as 'd' and 'n', or a ",
+         "single value for one and a vector for the other.");
+  }
+
   colnames(res) <- c('lo', 'hi');
   
-  if (length(n) > length(d)) d <- rep(d, length(n));
-  rownames(res) <- d;
+  d <- paste0('d=', d);
+  n <- paste0('n=', n);
+
+  rownames(res) <- paste0(d, ", ", n);
   
   return(res);
 }
