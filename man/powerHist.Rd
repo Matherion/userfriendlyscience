@@ -11,8 +11,8 @@ powerHist(vector, histColor = "#0000CC",
           distributionColor = "#0000CC",
           normalColor = "#00CC00", distributionLineSize = 1,
           normalLineSize = 1, histAlpha = 0.25, xLabel = NULL,
-          yLabel = NULL, normalCurve = TRUE, breaks = 30,
-          theme = dlvTheme(),
+          yLabel = NULL, normalCurve = TRUE, distCurve = TRUE,
+          breaks = 30, theme = dlvTheme(),
           rug = NULL, jitteredRug = TRUE, rugSides = "b",
           rugAlpha = .2, returnPlotOnly = FALSE)
           
@@ -47,6 +47,9 @@ powerHist(vector, histColor = "#0000CC",
 }
   \item{normalCurve}{
   Whether to display the normal curve.
+  }
+  \item{distCurve}{
+  Whether to display the curve showing the distribution of the observed data.
   }
   \item{breaks}{
   The number of breaks to use (this is equal to the number of bins minus one,

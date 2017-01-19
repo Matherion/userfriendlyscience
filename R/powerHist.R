@@ -14,6 +14,7 @@ powerHist <- function(vector,
                       xLabel = NULL,
                       yLabel = NULL,
                       normalCurve = TRUE,
+                      distCurve = TRUE,
                       breaks = 30,
                       theme=dlvTheme(),
                       rug=NULL, jitteredRug=TRUE, rugSides="b",
@@ -70,10 +71,13 @@ powerHist <- function(vector,
     xlab(xLabel) +
     ylab(yLabel) +
     geom_histogram(color=NA, fill=histColor,
-                   alpha=histAlpha, binwidth=res$intermediate$tempBinWidth) +
+                   alpha=histAlpha, binwidth=res$intermediate$tempBinWidth);
+  if (distCurve) {
+    res$plot <- res$plot +
     geom_line(aes_q(y=bquote(..scaled.. * .(scalingFactor))),
               stat = 'density',
               color=distributionColor, size=distributionLineSize);
+  }
   if (normalCurve) {
     res$plot <- res$plot +
       geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize);
