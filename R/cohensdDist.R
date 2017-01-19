@@ -45,7 +45,10 @@ cohensdCI <- function(d, n, conf.level = .95) {
   res <- matrix(c(qCohensd(ci.bound.lo, n, populationD=d),
                   qCohensd(ci.bound.hi, n, populationD=d)), ncol=2);
   colnames(res) <- c('lo', 'hi');
+  
+  if (length(n) > length(d)) d <- rep(d, length(n));
   rownames(res) <- d;
+  
   return(res);
 }
 
