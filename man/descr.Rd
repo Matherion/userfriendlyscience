@@ -13,6 +13,7 @@ what SPSS's DESCRIPTIVES (often called with DESCR) does.
 descr(x, digits = 4, errorOnFactor = FALSE,
       include = c("central tendency", "spread", "range",
                   "distribution shape", "sample size"),
+      maxModes = 1,
       t = FALSE, conf.level=.95,
       quantileType = 2);
 }
