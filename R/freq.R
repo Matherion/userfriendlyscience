@@ -48,7 +48,7 @@ freq <- Frequency <- function(vector, digits = 1, nsmall=1, transposed=FALSE, ro
               intermediate = list(),
               output = list());
   
-  if (!(is.factor(vector) | is.numeric(vector) | is.character(vector))) {
+  if (!(is.factor(vector) | is.numeric(vector) | is.logical(vector) | is.character(vector))) {
     stop("Please provide a single vector in argument 'vector' ",
          "(you supplied an object of class '", class(vector),
          "'). Use 'frequencies' ",
