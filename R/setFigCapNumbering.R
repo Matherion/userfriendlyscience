@@ -44,16 +44,13 @@ setFigCapNumbering <- function(figure_counter_str = "Figure %s: ",
       }
     }
     
-    cntr <- getOption("figure_counter", FALSE);
-    if (cntr != FALSE) {
-      if (is.logical(cntr)) cntr <- 1;
-      fig_number_txt <- 
-        sprintf(getOption("figure_counter_str", figure_counter_str), 
-                ifelse(getOption("figure_counter_roman", FALSE), 
-                       as.character(as.roman(cntr)), as.character(cntr)));
-      options(figure_counter = cntr + 1);
-    }
-    
+    cntr <- getOption("figure_counter", 1);
+    fig_number_txt <- 
+      sprintf(getOption("figure_counter_str", figure_counter_str), 
+              ifelse(getOption("figure_counter_roman", FALSE), 
+                     as.character(as.roman(cntr)), as.character(cntr)));
+    options(figure_counter = cntr + 1);
+
     fullFigureClass <- ifelse(nchar(figureClass) > 0,
                               paste0("class='", figureClass, "'"), "");
     fullImgClass <- ifelse(nchar(imgClass) > 0,
