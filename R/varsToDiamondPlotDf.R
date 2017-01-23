@@ -1,16 +1,20 @@
 varsToDiamondPlotDf <- function(dat, items = NULL, labels = NULL,
                                 decreasing=NULL,
                                 conf.level=.95) {
-  
-  if (is.null(items)) items <- names(dat);
+
+  if (is.null(items)) {
+    items <- names(dat);
+  } else if (is.numeric(items)) {
+    items <- names(dat)[items];
+  }
   if (is.null(labels)) labels <- items;
-  
+
   resDf <- data.frame(t(sapply(dat[, items], function(x) {
     x <- na.omit(x);
     ci <- meanConfInt(x, conf.level=conf.level)$output$ci;
     return(data.frame(lo = ci[1], mean = mean(x), hi = ci[2]));
   })));
-  
+
   resDf$label <- labels;
   resDf$rownr <- 1:nrow(resDf);
   resDf$constant <- 1;
@@ -31,7 +35,7 @@ varsToDiamondPlotDf <- function(dat, items = NULL, labels = NULL,
   
   ### Return this vector as attribute to use in meansDiamondPlot
   attr(resDf, 'sortedByMean') <- sortedByMean;
-  
+
   return(resDf);
   
 }
