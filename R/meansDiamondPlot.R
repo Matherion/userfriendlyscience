@@ -4,6 +4,8 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                              showData = TRUE, dataAlpha = .1,
                              dataColor = "#444444",
                              diamondColors = NULL,
+                             jitterWidth = 1.25,
+                             jitterHeight = .5,
                              ...) {
 
   res <- list();
@@ -51,8 +53,8 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                                  color = dataColor,
                                  alpha = dataAlpha,
                                  stroke = 0,
-                                 width=1.25,
-                                 height=.25), plot$layers);
+                                 width=jitterWidth,
+                                 height=jitterHeight), plot$layers);
   }
   
   return(plot);

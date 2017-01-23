@@ -15,6 +15,8 @@ meansDiamondPlot(dat, items = NULL,
                  dataAlpha = 0.1,
                  dataColor = "#444444",
                  diamondColors = NULL,
+                 jitterWidth = 1.25,
+                 jitterHeight = .5,
                  ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -46,6 +48,12 @@ meansDiamondPlot(dat, items = NULL,
   \item{diamondColors}{
   A vector of the same length as there are rows in the dataframe,
   to manually specify colors for the diamonds.
+}
+  \item{jitterWidth}{
+  How much to jitter the individual datapoints horizontally.
+}
+  \item{jitterHeight}{
+  How much to jitter the individual datapoints vertically.
 }
   \item{\dots}{
   Additional arguments are passed to \code{\link{diamondPlot}} and eventually to \code{\link{ggDiamondLayer}}. This can be used to, for example, specify two or more colors to use to generate a gradient (using \code{generateColors} and maybe \code{fullColorRange}).
