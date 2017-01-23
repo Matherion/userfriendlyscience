@@ -4,6 +4,7 @@ ggDiamondLayer <- function(data,
                            generateColors = NULL,
                            fullColorRange = NULL,
                            color="black",
+                           lineColor=NA,
                            otherAxisCol=1:nrow(data),
                            autoSize=NULL,
                            fixedSize=.15,
@@ -46,12 +47,12 @@ ggDiamondLayer <- function(data,
       return(geom_polygon(tmpDf,
                           mapping=aes(x=x, y=y),
                           fill=color,
-                          color=color, ...));
+                          color=ifelse(is.na(lineColor), color, lineColor), ...));
     } else {
       return(geom_polygon(tmpDf,
                           mapping=aes(x=x, y=y),
                           fill=x[[cCol]],
-                          color = x[[cCol]], ...));
+                          color = ifelse(is.na(lineColor), x[[cCol]], lineColor), ...));
     }
   }));
 }

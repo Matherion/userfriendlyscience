@@ -13,6 +13,7 @@ ggDiamondLayer(data, ciCols = 1:3,
                generateColors = NULL,
                fullColorRange = NULL,
                color = "black",
+               lineColor=NA,
                otherAxisCol = 1:nrow(data),
                autoSize = NULL,
                fixedSize = 0.15,
@@ -45,6 +46,9 @@ diamondCoordinates(values,
 }
   \item{color}{
   When no colors are automatically generated, all diamonds will have this color.
+}
+  \item{lineColor}{
+  If NA, lines will have the same colors as the diamonds' fill. If not NA, must be a valid color, which is then used as line color. Note that e.g. \code{linetype} and \code{color} can be used as well, which will be passed on to \code{\link{geom_polygon}}.
 }
   \item{otherAxisCol}{
   A vector of values, or the index of the column in the dataframe, that specifies the values for the Y axis of the diamonds. This should normally just be a vector of consecutive integers.
