@@ -39,7 +39,7 @@ pdMild <- function(d, n, populationD = 0) {
   return(1 - pdExtreme(d, n, populationD=populationD));
 }
 
-cohensdCI <- function(d, n, conf.level = .95) {
+cohensdCI <- function(d, n, conf.level = .95, plot=FALSE) {
   ci.bound.lo <- (1 - conf.level) / 2;
   ci.bound.hi <- 1 - (1 - conf.level) / 2;
   if (length(d) == length(n)) {
@@ -56,6 +56,34 @@ cohensdCI <- function(d, n, conf.level = .95) {
   }
 
   colnames(res) <- c('lo', 'hi');
+  
+  if (plot) {
+    if ((length(d) > 1) || (length(n) > 1) || (length(conf.level) > 1)) {
+      warning("I can only produce a plot if you supply only one value for ",
+              "arguments d, n, and conf.level!");
+    } else {
+      df <- data.frame(d = seq(min(res) - .5, max(res) + .5, .01));
+      df$density <- dd(df$d, df = n-2, populationD = d);
+      print(ggplot(df, aes(x=d, y=density)) +
+              theme_bw() +
+              geom_ribbon(data=df[df$d > min(res) & df$d < max(res), ],
+                          aes(ymin = 0, ymax=density),
+                          fill='#cadded') +
+              geom_segment(x = min(res),
+                           xend = min(res),
+                           y = 0,
+                           yend = dd(min(res), df = n-2,
+                                     populationD = d),
+                           color = '#2a5581', size=1.5) +
+              geom_segment(x = max(res),
+                           xend = max(res),
+                           y = 0,
+                           yend = dd(max(res), df = n-2,
+                                     populationD = d),
+                           color = '#2a5581', size=1.5) +
+              geom_line(size=1.5));
+    }
+  }
   
   d <- paste0('d=', d);
   n <- paste0('n=', n);

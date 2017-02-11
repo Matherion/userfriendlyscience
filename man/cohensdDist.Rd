@@ -32,7 +32,7 @@ pdExtreme(d, n, populationD=0)
 pdMild(d, n, populationD=0)
 pdInterval(ds, n, populationD=0)
 
-cohensdCI(d, n, conf.level = .95)
+cohensdCI(d, n, conf.level = .95, plot=FALSE)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -60,6 +60,9 @@ cohensdCI(d, n, conf.level = .95)
 }
   \item{conf.level}{
   The level of confidence of the confidence interval.
+}
+  \item{plot}{
+  Whether to show a plot of the sampling distribution of Cohen's \emph{d} and the confidence interval. This can only be used if specifying one value for \code{d}, \code{n}, and \code{conf.level}.
 }
 }
 \details{
