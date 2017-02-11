@@ -4,8 +4,12 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                              showData = TRUE, dataAlpha = .1,
                              dataColor = "#444444",
                              diamondColors = NULL,
-                             jitterWidth = 1.25,
-                             jitterHeight = .5,
+                             jitterWidth = .5,
+                             jitterHeight = .4,
+                             returnLayerOnly = FALSE,
+                             xlab='Effect size estimate',
+                             theme=theme_bw(),
+                             ylab=NULL,
                              ...) {
 
   res <- list();
@@ -15,30 +19,36 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
   
   res$intermediate$dat <- varsToDiamondPlotDf(dat, items = items,
                                               labels = labels,
-                                              decreasing=NULL,
+                                              decreasing=decreasing,
                                               conf.level=conf.level);
   
-  if (is.null(labels)) labels <- res$intermediate$dat$labels;
-  sortedByMean <- attr(res$intermediate$dat, 'sortedByMean');
+  ### Get labels from this dataframe, because they may have been sorted
+  labels <- res$intermediate$dat$label;
 
-  plot <- diamondPlot(res$intermediate$dat, ciCols=c('lo', 'mean', 'hi'),
-                      yLabels = labels, colorCol=diamondColors, ...); 
+  diamondLayer <- diamondPlot(res$intermediate$dat, ciCols=c('lo', 'mean', 'hi'),
+                      yLabels = labels, colorCol=diamondColors,
+                      returnLayerOnly = TRUE, ...);
+  
+  if (returnLayerOnly) {
+    return(diamondLayer);
+  }
+
+  plot <- ggplot();
 
   if (showData) {
-
-    rawData <- na.omit(data.frame(value = unlist(dat[, items[sortedByMean]]),
-                          labels = rep(1:length(items),
-                                       each=nrow(dat))));
-    
-    plot$layers <- c(geom_jitter(data=rawData,
-                                 mapping=aes_string(x='value', y='labels'),
-                                 size = 2.5,
-                                 color = dataColor,
-                                 alpha = dataAlpha,
-                                 stroke = 0,
-                                 width=jitterWidth,
-                                 height=jitterHeight), plot$layers);
+    plot <- plot +
+      rawDataDiamondLayer(dat, items=items,
+                          itemOrder = res$intermediate$dat$rownr);
   }
+
+  plot <- plot + diamondLayer +
+    scale_y_continuous(breaks=sort(res$intermediate$dat$rownr),
+                       minor_breaks=NULL,
+                       labels=res$intermediate$dat$label) +
+    theme + ylab(ylab) + xlab(xlab) +
+    theme(panel.grid.minor.y=element_blank());
+    
+  attr(plot, 'itemOrder') <- res$intermediate$dat$rownr;
   
   return(plot);
 }

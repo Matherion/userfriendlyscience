@@ -4,8 +4,9 @@ diamondPlot <- function(data,
                         otherAxisCol=NULL,
                         yValues=NULL, yLabels=NULL, ylab = NULL,
                         autoSize=NULL, fixedSize=.15,
-                        xlab='Effect Size Estimate',
-                        theme=theme_bw(), color='black', ...) {
+                        xlab='Effect size estimate',
+                        theme=theme_bw(), color='black',
+                        returnLayerOnly = FALSE, ...) {
   
   if (!is.null(yValues)) {
     ### Check whether yValues specifies a column in 'data' or whether it's a vector
@@ -61,14 +62,22 @@ diamondPlot <- function(data,
     otherAxisCol <- 'otherAxisCol';
   }
 
+  diamondLayer <- ggDiamondLayer(data, ciCols = ciCols,
+                                 colorCol = colorCol,
+                                 otherAxisCol = otherAxisCol,
+                                 autoSize=autoSize,
+                                 fixedSize = fixedSize,
+                                 color=color, ...);
+  
+  if (returnLayerOnly) {
+    return(diamondLayer);
+  }
+  
   return(ggplot() +
-           ggDiamondLayer(data, ciCols = ciCols,
-                           colorCol = colorCol,
-                           otherAxisCol = otherAxisCol,
-                           autoSize=autoSize,
-                           fixedSize = fixedSize,
-                           color=color, ...) +
-           scale_y_continuous(breaks=data$otherAxisCol, labels=yLabels) +
+           diamondLayer +
+           scale_y_continuous(breaks=data$otherAxisCol, minor_breaks=NULL,
+                                labels=yLabels) +
 #           scale_y_continuous(breaks=yValues, labels=yLabels) +
-           theme + ylab(ylab) + xlab(xlab));
+           theme + ylab(ylab) + xlab(xlab)) +
+    theme(panel.grid.minor.y=element_blank());
 }
