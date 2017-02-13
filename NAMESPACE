@@ -292,11 +292,16 @@ importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes
            'stat_summary', 'labs', 'xlab', 'ylab', 'rel', 'theme_bw', 'scale_y_reverse',
            'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'coord_flip', 'guides',
            'guide_legend', 'geom_polygon', 'geom_boxplot', 'geom_ribbon', 'geom_abline',
+           'geom_segment',
            'geom_text', 'aes_q', 'qplot', 'scale_colour_gradient',
-           'scale_x_continuous', 'scale_y_continuous', 'geom_vline', 'geom_hline');
+           'scale_x_continuous', 'scale_y_continuous', 'geom_vline', 'geom_hline',
+           'ggplot_gtable', 'ggplotGrob', 'sec_axis', 'dup_axis');
 importFrom('GGally', 'ggpairs', 'getPlot', 'putPlot', 'wrap');
+importFrom('gtable', 'gtable_add_grob', 'gtable_add_cols',
+           'gtable_filter');
 importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.layout',
-           'textGrob', 'grid.rect', 'gpar', 'grid.draw');
+           'textGrob', 'grid.rect', 'gpar', 'grid.draw',
+           'convertUnit');
 importFrom('gridExtra', 'arrangeGrob', 'grid.arrange');
 importFrom('ggrepel', 'geom_text_repel')
 importFrom('RColorBrewer', 'brewer.pal');

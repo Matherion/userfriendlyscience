@@ -22,5 +22,5 @@ Imports: grDevices, stats, utils, grid, scales,
          psych, fBasics, MBESS, GPArotation, lavaan,
          MASS, mosaic, diptest, car, SCRT,
          XML, knitr, xtable, pander,
-         ggplot2, GGally, gridExtra, ggrepel, RColorBrewer
+         ggplot2, GGally, gtable, gridExtra, ggrepel, RColorBrewer
          
