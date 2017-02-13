@@ -14,7 +14,9 @@ diamondPlot(data, ciCols = 1:3,
             fixedSize = 0.15,
             xlab = "Effect Size Estimate",
             theme = theme_bw(),
-            color = "black", ...)
+            color = "black",
+            returnLayerOnly = FALSE,
+            ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -44,8 +46,8 @@ diamondPlot(data, ciCols = 1:3,
   \item{yLabels}{
   The labels to use for for each diamond (placed on the Y axis).
 }
-  \item{ylab}{
-  The label of the Y axis.
+  \item{xlab, ylab}{
+  The labels of the X and Y axes.
 }
   \item{autoSize}{
   Whether to make the height of each diamond conditional upon
@@ -55,14 +57,14 @@ diamondPlot(data, ciCols = 1:3,
   If not using relative heights, \code{fixedSize} determines
   the height to use.
 }
-  \item{xlab}{
-  The label of the X axis.
-}
   \item{theme}{
   The theme to use.
 }
   \item{color}{
   Color to use if colors are specified for each diamond.
+}
+  \item{returnLayerOnly}{
+  Set this to TRUE to only return the \code{\link{ggplot}} layer of the diamondplot, which can be useful to include it in other plots.
 }
   \item{\dots}{
   Additional arguments will be passed to \code{\link{ggDiamondLayer}}.

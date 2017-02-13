@@ -15,8 +15,12 @@ meansDiamondPlot(dat, items = NULL,
                  dataAlpha = 0.1,
                  dataColor = "#444444",
                  diamondColors = NULL,
-                 jitterWidth = 1.25,
-                 jitterHeight = .5,
+                 jitterWidth = 0.5,
+                 jitterHeight = 0.4,
+                 returnLayerOnly = FALSE,
+                 xlab = "Effect size estimate",
+                 theme = theme_bw(),
+                 ylab = NULL, 
                  ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -54,6 +58,15 @@ meansDiamondPlot(dat, items = NULL,
 }
   \item{jitterHeight}{
   How much to jitter the individual datapoints vertically.
+}
+  \item{returnLayerOnly}{
+  Set this to TRUE to only return the \code{\link{ggplot}} layer of the diamondplot, which can be useful to include it in other plots.
+}
+  \item{xlab, ylab}{
+  The labels of the X and Y axes.
+}
+  \item{theme}{
+  The theme to use.
 }
   \item{\dots}{
   Additional arguments are passed to \code{\link{diamondPlot}} and eventually to \code{\link{ggDiamondLayer}}. This can be used to, for example, specify two or more colors to use to generate a gradient (using \code{generateColors} and maybe \code{fullColorRange}).

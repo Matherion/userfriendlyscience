@@ -11,6 +11,8 @@ psychological experiments and other research.
 }
 \usage{
 importLimeSurveyData(datafile = NULL,
+  dataPath = NULL,
+  datafileRegEx = NULL,
   scriptfile = NULL,
   limeSurveyRegEx.varNames =
     "names\\\\(data\\\\)\\\\[\\\\d*\\\\] <- ",
@@ -39,6 +41,9 @@ importLimeSurveyData(datafile = NULL,
 \arguments{
   \item{datafile}{
   The path and filename of the file containing the data (comma separated values).
+}
+  \item{dataPath, datafileRegEx}{
+  Path containing datafiles: this can be used to read multiple datafiles, if the data is split between those. This is useful when downloading the entire datafile isn't possible because of server restrictions, for example when the processing time for the script in LimeSurvey that generates the datafiles is limited. In that case, the data can be downloaded in portions, and specifying a path here enables reading all datafiles in one go. Use the regular expression to indicate which files in the path should be read.
 }
   \item{scriptfile}{
   The path and filename of the file containing the R script to import the data.

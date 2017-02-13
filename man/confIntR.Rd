@@ -29,7 +29,7 @@ Bonett, D. G., Wright, T. A. (2000). Sample size requirements for estimating Pea
 
 Bonett, D. G. (2014). CIcorr.R and sizeCIcorr.R http://people.ucsc.edu/~dgbonett/psyc181.html
 
-Moinester, M., & Gottfried, R. (2014). Sample size estimation for correlations with pre-specified confidence interval. \emph{The Quantitative Methods of Psychology, 10}(2), 124–130. http://www.tqmp.org/RegularArticles/vol10-2/p124/p124.pdf
+Moinester, M., & Gottfried, R. (2014). Sample size estimation for correlations with pre-specified confidence interval. \emph{The Quantitative Methods of Psychology, 10}(2), 124-130. http://www.tqmp.org/RegularArticles/vol10-2/p124/p124.pdf
 
 Peters, G. J. Y. & Crutzen, R. (forthcoming) An easy and foolproof method for establishing how effective an intervention or behavior change method is: required sample size for accurate parameter estimation in health psychology.
 }

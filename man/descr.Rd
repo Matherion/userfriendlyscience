@@ -32,6 +32,9 @@ descr(x, digits = 4, errorOnFactor = FALSE,
   \item{include}{
   Which elements to include when showing the results.
 }
+  \item{maxModes}{
+  Maximum number of modes to display: displays "multi" if more than this number of modes if found.
+}
   \item{t}{
   Whether to transpose the dataframes when printing them to the screen (this is easier for users relying on screen readers).
 }
