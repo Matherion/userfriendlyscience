@@ -62,26 +62,29 @@ cohensdCI <- function(d, n, conf.level = .95, plot=FALSE) {
       warning("I can only produce a plot if you supply only one value for ",
               "arguments d, n, and conf.level!");
     } else {
-      df <- data.frame(d = seq(min(res) - .5, max(res) + .5, .01));
+      df <- data.frame(d = seq(min(res) - .5, max(res) + .5, .001));
       df$density <- dd(df$d, df = n-2, populationD = d);
-      print(ggplot(df, aes(x=d, y=density)) +
-              theme_bw() +
-              geom_ribbon(data=df[df$d > min(res) & df$d < max(res), ],
-                          aes(ymin = 0, ymax=density),
-                          fill='#cadded') +
-              geom_segment(x = min(res),
-                           xend = min(res),
-                           y = 0,
-                           yend = dd(min(res), df = n-2,
-                                     populationD = d),
-                           color = '#2a5581', size=1.5) +
-              geom_segment(x = max(res),
-                           xend = max(res),
-                           y = 0,
-                           yend = dd(max(res), df = n-2,
-                                     populationD = d),
-                           color = '#2a5581', size=1.5) +
-              geom_line(size=1.5));
+
+      plot <- ggplot(df, aes(x=d, y=density)) +
+                theme_bw() +
+                geom_ribbon(data=df[df$d >= min(res) & df$d <= max(res), ],
+                            aes(ymin = 0, ymax=density),
+                            fill='#cadded') +
+                geom_segment(x = min(res),
+                             xend = min(res),
+                             y = 0,
+                             yend = dd(min(res), df = n-2,
+                                       populationD = d),
+                             color = '#2a5581', size=1.5) +
+                geom_segment(x = max(res),
+                             xend = max(res),
+                             y = 0,
+                             yend = dd(max(res), df = n-2,
+                                       populationD = d),
+                             color = '#2a5581', size=1.5) +
+                geom_line(size=1.5);
+      attr(res, "plot") <- plot;
+      class(res) <- 'cohensdCI';
     }
   }
   
@@ -91,6 +94,17 @@ cohensdCI <- function(d, n, conf.level = .95, plot=FALSE) {
   rownames(res) <- paste0(d, ", ", n);
   
   return(res);
+}
+
+print.cohensdCI <- function(x, ...) {
+  ### Basically a trick because we're passing the plot as an attribute.
+  if (!is.null(attr(x, 'plot'))) {
+    grid.draw(attr(x, 'plot'));
+    ### So remove the plot
+    attr(x, 'plot') <- NULL;
+  }
+  ### And then remove the class to print
+  print(unclass(x));
 }
 
 # ggplot(data.frame(x = seq(-3, 3, by=.1),
