@@ -1,153 +1,212 @@
-# determinantImportance <- function(data, determinants, targets,
-#                                   conf.level = list(means = .9999,
-#                                                     associations = .95),
-#                                   subQuestions = NULL,
-#                                   leftAnchors = rep("-", length(determinants)),
-#                                   rightAnchors = rep("+", length(determinants)),
-#                                   orderBy = NULL,
-#                                   decreasing = NULL,
-#                                   generateColors = list(means = c("red", "blue", "green"),
-#                                                         associations = c("red", "grey", "green")),
-#                                   fullColorRange = NULL,
-#                                   associationsAlpha = .5,
-#                                   returnPlotOnly = TRUE,
-#                                   drawPlot = TRUE,
-#                                   theme=theme_bw(),
-#                                   ...) {
-#   
-#   if (!all(c(determinants, targets) %in% names(dat))) {
-#     stop("Not all variables names you passed in arguments ",
-#          "'determinants' or 'targets' are in your dataset!");
-#   }
-# 
-#   res <- list(input = as.list(environment()),
-#               intermediate = list(),
-#               output = list());
-#   
-#   if (is.null(subQuestions)) subQuestions <- determinants;
-#   
-#   ### Extract relevant subdatasets
-#   res$intermediate$determinantsDat <- data[, determinants];
-#   res$intermediate$dat <- data[, c(determinants, targets)];
-#   
-#   ### For the scores, the max and min need to be determined from the data
-#   res$intermediate$fullColorRange <-
-#     range(res$intermediate$determinantsDat, na.rm = TRUE);
-#   
-#   ### These will be used to determine the breaks in the plot with
-#   ### the scores
-#   res$intermediate$uniqueValues <-
-#     sort(unique(na.omit(unlist(res$intermediate$determinantsDat))));
-# 
-#   ### If only one of the sorting arguments is set, set the other
-#   ### one on the basis of the defaults; otherwise, store the
-#   ### passed arguments for use later on.
-#   if (!is.null(orderBy) && is.null(decreasing)) {
-#     res$intermediate$decreasing <- TRUE;
-#   } else if (is.null(orderBy) && !is.null(decreasing)) {
-#     res$intermediate$orderBy <- TRUE;
-#   } else {
-#     res$intermediate$decreasing <- decreasing;
-#     res$intermediate$orderBy <- orderBy;
-#   }
-# 
-#   ### Get confidence intervals (we may re-sort later)
-#   res$intermediate$meansDat <-
-#     varsToDiamondPlotDf(dat, items = determinants,
-#                         decreasing=res$intermediate$decreasing,
-#                         conf.level=conf.level$means);
-#   
-#   ### Get confidence intervals for effect sizes
-#   res$intermediate$assocDat <- sapply(targets, function(currentTarget) {
-#       return(associationsToDiamondPlotDf(res$intermediate$dat,
-#                                          determinants,
-#                                          currentTarget,
-#                                          decreasing=res$intermediate$decreasing,
-#                                          esMetric = 'r'));
-#     }, simplify=FALSE);
-# 
-#   ### We now have dataframes with all means, effect sizes, and the
-#   ### corresponding confidence intervals. Now we sort them, if we
-#   ### need to.
-#   if (!is.null(res$intermediate$orderBy) &&
-#       !identical(res$intermediate$orderBy, FALSE)) {
-#     if (isTRUE(res$intermediate$orderBy)) {
-#       ### Order by determinants means
-#       res$intermediate$sortOrder <- attr(res$intermediate$meansDat,
-#                                          'sortedByMean');
-#     } else {
-#       if (!(orderBy %in% targets)) {
-#         stop("Argument 'orderBy' must be either NULL, TRUE, FALSE, ",
-#              "or the name of one of the target variables. However, ",
-#              "you passed '", orderBy, "'.");
-#       }
-#       assocDat <- attr(res$intermediate$assocDat[[orderBy]],
-#                                          'sortedByMean');
-#     }
-#   } else {
-#     res$intermediate$sortOrder <- 1:length(determinants);
-#   }
-#   
-#   res$intermediate$meansDat <-
-#     res$intermediate$meansDat[res$intermediate$sortOrder, ];
-#   res$intermediate$assocDat <-
-#     sapply(res$intermediate$assocDat, function(x) {
-#       return(x[res$intermediate$sortOrder, ]);
-#   }, simplify=FALSE);
-#   
-#   determinants <- determinants[res$intermediate$sortOrder];
-# 
-#   res$intermediate$biAxisDiamondPlot <-
-#     biAxisDiamondPlot(dat, items = determinants,
-#                       subQuestions = subQuestions,
-#                       leftAnchors = leftAnchors,
-#                       rightAnchors = rightAnchors,
-#                       generateColors = generateColors$means,
-#                       fullColorRange = res$intermediate$fullColorRange,
-#                       drawPlot = FALSE,
-#                       returnPlotOnly = FALSE,
-#                       ...);
-#   
-#   res$intermediate$meansPlot <- res$intermediate$biAxisDiamondPlot$output$plot;
-#   
-#   # yRange <- ggplot_build(res$intermediate$biAxisDiamondPlot$intermediate$meansPlot);
-#   # yMajor <- yRange$layout$panel_ranges[[1]]$y.major_source;
-#   # yRange <- range(yRange$layout$panel_ranges[[1]]$y.range);
-# 
-#   res$intermediate$assocLayers <-
-#     sapply(names(res$intermediate$assocDat),
-#            function(currentTarget) {
-#              return(diamondPlot(res$intermediate$assocDat[[currentTarget]],
-#                                 ciCols=c('lo', 'es', 'hi'), yLabels = subQuestions,
-#                                 generateColors=generateColors$associations,
-#                                 fullColorRange = c(-1, 1),
-#                                 alpha = associationsAlpha,
-#                                 returnLayerOnly = TRUE, ...));
-#            }, simplify=FALSE);
-#   
-#   res$intermediate$assocPlot <- ggplot() +
-#     res$intermediate$assocLayers +
-#     theme +
-#     xlab('Associations') +
-#     scale_x_continuous(limits=c(-1,1)) +
-#     scale_y_continuous(limits=yRange, breaks=yMajor) +
-#     theme(axis.ticks.y=element_blank(),
-#           axis.text.y=element_blank(),
-#           axis.title.y=element_blank());
-#   
-#   # builtAssocPlot <- ggplot_build(res$intermediate$assocPlot);
-#   # builtAssocPlot$layout$panel_ranges[[1]]$y.range <- yRange;
-# 
-#   res$output$plot <- arrangeGrob(res$intermediate$meansPlot,
-#                                  ggplot_gtable(builtAssocPlot),
-#                                  ncol=2,
-#                                  widths=c(2, 1));
-#   
-#   if (drawPlot) {
-#     grid.newpage();
-#     grid.draw(res$output$plot);
-#   }
-#   
-#   invisible(ifelseObj(returnPlotOnly, res$output$plot, res));
-# 
-# }
+determinantImportance <- function(data, determinants, targets,
+                                  conf.level = list(means = .9999,
+                                                    associations = .95),
+                                  subQuestions = NULL,
+                                  leftAnchors = rep("Lo", length(determinants)),
+                                  rightAnchors = rep("Hi", length(determinants)),
+                                  orderBy = NULL,
+                                  decreasing = NULL,
+                                  generateColors = list(means = c("red", "blue", "green"),
+                                                        associations = c("red", "grey", "green")),
+                                  strokeColors = brewer.pal(9, 'Set1'),
+                                  titlePrefix = "Means and associations with",
+                                  titleSuffix = "",
+                                  fullColorRange = NULL,
+                                  associationsAlpha = .5,
+                                  returnPlotOnly = TRUE,
+                                  drawPlot = TRUE,
+                                  theme=theme_bw(),
+                                  ...) {
+
+  if (!all(c(determinants, targets) %in% names(dat))) {
+    stop("Not all variables names you passed in arguments ",
+         "'determinants' or 'targets' are in your dataset!");
+  }
+
+  res <- list(input = as.list(environment()),
+              intermediate = list(),
+              output = list());
+
+  if (is.null(subQuestions)) subQuestions <- determinants;
+
+  ### Extract relevant subdatasets
+  res$intermediate$determinantsDat <- data[, determinants];
+  res$intermediate$dat <- data[, c(determinants, targets)];
+
+  ### For the scores, the max and min need to be determined from the data
+  res$intermediate$fullColorRange <-
+    range(res$intermediate$determinantsDat, na.rm = TRUE);
+
+  ### These will be used to determine the breaks in the plot with
+  ### the scores
+  res$intermediate$uniqueValues <-
+    sort(unique(na.omit(unlist(res$intermediate$determinantsDat))));
+
+  ### If only one of the sorting arguments is set, set the other
+  ### one on the basis of the defaults; otherwise, store the
+  ### passed arguments for use later on.
+  if (!is.null(orderBy) && is.null(decreasing)) {
+    res$intermediate$decreasing <- TRUE;
+  } else if (is.null(orderBy) && !is.null(decreasing)) {
+    res$intermediate$orderBy <- TRUE;
+  } else {
+    res$intermediate$decreasing <- decreasing;
+    res$intermediate$orderBy <- orderBy;
+  }
+
+  ### Turn 'decreasing' around, because ggplot places the 'first' values
+  ### at the bottom and the last ones at the top
+  if (!is.null(res$intermediate$decreasing)) {
+    decreasing <- res$intermediate$decreasing <- !res$intermediate$decreasing;
+  }
+
+  if (is.null(orderBy)) {
+    res$intermediate$sortOrder <- 1:length(determinants);
+  } else if (isTrue(orderBy)) {
+    res$intermediate$sortOrder <- order(colMeans(dat[, items], na.rm=TRUE),
+                                        decreasing=res$intermediate$decreasing);
+  } else if (orderBy %IN% (targets)) {
+    res$intermediate$sortOrder <- sort(associationMatrix(dat,
+                                                         x=items,
+                                                         y=orderBy),
+                                       decreasing=res$intermediate$decreasing)$intermediate$sorting$order;
+  } else {
+    stop("In argument 'orderBy' either pass TRUE (to order by ",
+         "(sub)determinants), or the name of one of the target ",
+         "variables (e.g. determinants such as attitude, motivational ",
+         "constructs such as intention, behavioral proxies or ",
+         "behavioral measures).");
+  }
+
+  ### Get confidence intervals (we may re-sort later)
+  res$intermediate$meansDat <-
+    varsToDiamondPlotDf(dat, items = determinants,
+                        conf.level=conf.level$means);
+
+  ### Get confidence intervals for effect sizes
+  res$intermediate$assocDat <- sapply(targets, function(currentTarget) {
+    return(associationsToDiamondPlotDf(res$intermediate$dat,
+                                       determinants,
+                                       currentTarget,
+                                       esMetric = 'r'));
+  }, simplify=FALSE);
+
+  res$intermediate$meansDat <-
+    res$intermediate$meansDat[res$intermediate$sortOrder, ];
+  res$intermediate$assocDat <-
+    sapply(res$intermediate$assocDat, function(x) {
+      return(x[res$intermediate$sortOrder, ]);
+    }, simplify=FALSE);
+
+  ### This can be removed
+  determinants <- determinants[res$intermediate$sortOrder];
+
+  res$intermediate$biAxisDiamondPlot <-
+    biAxisDiamondPlot(dat, items = determinants,
+                      subQuestions = subQuestions[res$intermediate$sortOrder],
+                      leftAnchors = leftAnchors[res$intermediate$sortOrder],
+                      rightAnchors = rightAnchors[res$intermediate$sortOrder],
+                      generateColors = generateColors$means,
+                      fullColorRange = res$intermediate$fullColorRange,
+                      conf.level = conf.level$means,
+                      drawPlot = FALSE,
+                      returnPlotOnly = FALSE,
+                      ...);
+
+  res$intermediate$meansPlot <- res$intermediate$biAxisDiamondPlot$output$plot;
+
+  builtMeansPlot <- ggplot_build(res$intermediate$biAxisDiamondPlot$intermediate$meansPlot);
+  yMajor <- builtMeansPlot$layout$panel_ranges[[1]]$y.major_source;
+  yRange <- range(builtMeansPlot$layout$panel_ranges[[1]]$y.range);
+
+  if (length(targets)==1) {
+    strokeColors <- "#000000";
+  } else {
+    ### brewer.pal(12, 'Set1')
+    strokeColors <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00",
+                      "#FFFF33", "#A65628", "#F781BF", "#999999")[1:length(targets)];
+  }
+  names(strokeColors) <- targets;
+
+  res$intermediate$assocLayers <-
+    sapply(names(res$intermediate$assocDat),
+           function(currentTarget) {
+             return(diamondPlot(res$intermediate$assocDat[[currentTarget]],
+                                ciCols=c('lo', 'es', 'hi'), yLabels = subQuestions,
+                                generateColors=generateColors$associations,
+                                fullColorRange = c(-1, 1),
+                                alpha = associationsAlpha,
+                                lineColor=strokeColors[currentTarget],
+                                size=1,
+                                returnLayerOnly = TRUE, ...));
+           }, simplify=FALSE);
+
+  res$intermediate$assocPlot <- ggplot() +
+    res$intermediate$assocLayers +
+    theme +
+    xlab(paste0(round(100 * conf.level$associations, 2), '% CIs of associations')) +
+    scale_x_continuous(limits=c(-1,1)) +
+    scale_y_continuous(breaks=yMajor) +
+    theme(axis.ticks.y=element_blank(),
+          panel.grid.minor.y = element_blank(),
+          axis.text.y=element_blank(),
+          axis.title.y=element_blank());
+
+  builtAssocPlot <- ggplot_build(res$intermediate$assocPlot);
+  builtAssocPlot$layout$panel_ranges[[1]]$y.range <- yRange;
+  builtAssocPlot$layout$panel_ranges[[1]]$y.major <-
+    builtMeansPlot$layout$panel_ranges[[1]]$y.major;
+
+  titleGrobs <- list(textGrob(label = paste0(titlePrefix, " "),
+                              x = unit(0.2, "lines"),
+                              y = unit(0.8, "lines"),
+                              hjust = 0, vjust = 0));
+  currentXpos <- sum(unit(0.2, "lines"), grobWidth(titleGrobs[[1]]));
+  newGrob <- textGrob(label = targets[1],
+                      x = currentXpos,
+                      y = unit(.8, "lines"),
+                      hjust = 0, vjust = 0,
+                      gp = gpar(col = strokeColors[targets[1]]));
+  titleGrobs <- c(titleGrobs, list(newGrob));
+  currentXpos <- sum(currentXpos, grobWidth(titleGrobs[[2]]));
+
+  if (length(targets) > 1) {
+    for (i in 2:length(targets)) {
+      prefixGrob <- textGrob(label = ifelse(i == length(targets), " & ", ", "),
+                             x = currentXpos,
+                             y = unit(0.8, "lines"),
+                             hjust = 0, vjust = 0,
+                             gp = gpar(col = "#000000"));
+      currentXpos <- sum(currentXpos, grobWidth(prefixGrob));
+      newGrob <- textGrob(label = targets[i],
+                          x = currentXpos,
+                          y = unit(0.8, "lines"),
+                          hjust = 0, vjust = 0,
+                          gp = gpar(col = strokeColors[targets[i]]));
+      currentXpos <- sum(currentXpos, grobWidth(newGrob));
+      titleGrobs <- c(titleGrobs, list(prefixGrob, newGrob));
+    }
+  }
+  titleGrobs <- c(titleGrobs, list(textGrob(label = paste0(" ", titleSuffix),
+                                            x = currentXpos,
+                                            y = unit(0.8, "lines"),
+                                            hjust = 0, vjust = 0)));
+
+  titleGrob <- do.call(grobTree, c(list(gp = gpar(fontsize = 14, fontface = "bold")),
+                                   titleGrobs));
+
+  res$output$plot <- arrangeGrob(res$intermediate$meansPlot,
+                                 ggplot_gtable(builtAssocPlot),
+                                 ncol=2,
+                                 widths=c(2, 1),
+                                 top = titleGrob,
+                                 padding = unit(2, "line"));
+
+  if (drawPlot) {
+    grid.newpage();
+    grid.draw(res$output$plot);
+  }
+
+  invisible(ifelseObj(returnPlotOnly, res$output$plot, res));
+
+}
