@@ -1,8 +1,10 @@
 processLSvarLabels <- function(dat,
                                varnameRegExPairs = NULL,
                                labelExtractionRegExPair = c("\\[(.*)\\].*", "\\1"),
-                               leftAnchorRegExPairs = list(c(".*[a-z\\.]([A-Z][a-z][^|]*)\\|(.+)", "\\1")),
-                               rightAnchorRegExPairs = list(c(".*[a-z\\.]([A-Z][a-z][^|]*)\\|(.+)", "\\2"))) {
+                               lengthToWrap = 40,
+                               lengthToWrapAnchors = 20,
+                               leftAnchorRegExPairs = list(c(".*[[:graph:]]([A-Z][a-z][^|]*)\\|(.+)", "\\1")),
+                               rightAnchorRegExPairs = list(c(".*[[:graph:]]([A-Z][a-z][^|]*)\\|(.+)", "\\2"))) {
 
   labelDat <- data.frame(varNames.raw = names(dat),
                          varLabels.raw = attributes(dat)$variable.labels,
@@ -60,6 +62,23 @@ processLSvarLabels <- function(dat,
 
   labelDat$questionText <- trim(sub("\\[.*\\](.*)", "\\1", labelDat$varLabels.raw));
 
+  if (lengthToWrap > 0) {
+    labelDat$questionText <- paste0(strwrap(labelDat$questionText,
+                                            width=lengthToWrap),
+                                    collapse="\n");
+    labelDat$subQuestions <- paste0(strwrap(labelDat$subQuestions,
+                                            width=lengthToWrap),
+                                    collapse="\n");
+  }
+  if (lengthToWrapAnchors > 0) {
+    labelDat$leftAnchors <- paste0(strwrap(labelDat$leftAnchors,
+                                           width=lengthToWrapAnchors),
+                                    collapse="\n");
+    labelDat$rightAnchors <- paste0(strwrap(labelDat$rightAnchors,
+                                            width=lengthToWrapAnchors),
+                                    collapse="\n");
+  }
+  
   return(labelDat);
 
 }
