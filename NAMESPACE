@@ -252,6 +252,8 @@ importFrom("scales", "rescale");
 
 importFrom('plyr', 'ddply', 'raply', 'dlply', 'progress_text', 'as.quoted');
 
+importFrom('data.tree', 'SetGraphStyle', 'as.Node', 'Get', 'Do');
+
 importFrom('psych', 'describe', 'alpha', 'omega', 'glb',
            'fa', 'principal', 'polychoric', 'fisherz', 'fisherz2r',
            'fa.parallel', 'vss', 'r.con', 'describeBy');
