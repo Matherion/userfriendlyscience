@@ -1,13 +1,22 @@
 ### This function actually makes the scales
-makeScales <- function(dat, scales) {
+makeScales <- function(dat, scales, append=TRUE) {
+  resDat <- dat[, FALSE];
   for (currentScale in 1:length(scales)) {
     if (length(unlist(scales[currentScale])) > 1) {
-      dat[[names(scales[currentScale])]] <-
+      resDat[[names(scales[currentScale])]] <-
         rowMeans(dat[, unlist(scales[currentScale])], na.rm=TRUE);
+      resDat[[names(scales[currentScale])]] <-
+        ifelse(is.nan(resDat[[names(scales[currentScale])]]),
+               NA,
+               resDat[[names(scales[currentScale])]]);
     }
     else if (length(unlist(scales[currentScale])) == 1) {
-      dat[[names(scales[currentScale])]] <- dat[[unlist(scales[currentScale])]];
+      resDat[[names(scales[currentScale])]] <- dat[[unlist(scales[currentScale])]];
     }
   }
-  return(dat);
+  if (append) {
+    return(cbind(dat, resDat));
+  } else {
+    return(resDat);
+  }
 }

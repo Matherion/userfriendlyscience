@@ -16,7 +16,7 @@ detStructImportance <- function(determinantStructure,
                                 associationsAlpha = .5,
                                 theme=theme_bw(),
                                 ...) {
-  
+
   determinantStructure$Do(function(currentNode) {
     targets <- currentNode$Get('name', traversal='ancestor',
                                filterFun=function(x)
@@ -55,5 +55,5 @@ detStructImportance <- function(determinantStructure,
                             ...);
   }, traversal = 'level', filterFun = function(x)
     return((x$type=="subdeterminants" || x$type=="subdeterminantProducts")));
-  
+
 }

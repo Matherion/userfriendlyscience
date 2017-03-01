@@ -16,19 +16,19 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
   res$intermediate <- list();
 
   if (is.null(items)) items <- names(dat);
-  
+
   res$intermediate$dat <- varsToDiamondPlotDf(dat, items = items,
                                               labels = labels,
                                               decreasing=decreasing,
                                               conf.level=conf.level);
-  
+
   ### Get labels from this dataframe, because they may have been sorted
   labels <- res$intermediate$dat$label;
 
   diamondLayer <- diamondPlot(res$intermediate$dat, ciCols=c('lo', 'mean', 'hi'),
                       yLabels = labels, colorCol=diamondColors,
                       returnLayerOnly = TRUE, ...);
-  
+
   if (returnLayerOnly) {
     return(diamondLayer);
   }
@@ -47,9 +47,9 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                        labels=res$intermediate$dat$label) +
     theme + ylab(ylab) + xlab(xlab) +
     theme(panel.grid.minor.y=element_blank());
-    
+
   attr(plot, 'itemOrder') <- res$intermediate$dat$rownr;
-  
+
   return(plot);
 }
-                                
+

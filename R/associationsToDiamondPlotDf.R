@@ -7,7 +7,7 @@ associationsToDiamondPlotDf <- function(dat, covariates, criterion,
   if (is.null(labels)) labels <- covariates;
 
   assocMatrix <- associationMatrix(dat, x=covariates, y=criterion);
-  
+
   resDf <- data.frame(lo = as.numeric(assocMatrix$output$raw$ci.lo),
                       es = as.numeric(assocMatrix$output$raw$es),
                       hi = as.numeric(assocMatrix$output$raw$ci.hi));
@@ -31,7 +31,7 @@ associationsToDiamondPlotDf <- function(dat, covariates, criterion,
   resDf$label <- labels;
   resDf$rownr <- 1:nrow(resDf);
   resDf$constant <- 1;
-  
+
   if (!is.null(decreasing)) {
     ### Invert 'decreasing' because ggplot plots the lowest/first value first (near the origin).
     ### So a decreasing sort would normally result in higher means being displayed LOWER in
@@ -45,10 +45,10 @@ associationsToDiamondPlotDf <- function(dat, covariates, criterion,
     ### reorganised
     sortedByMean <- 1:length(labels);
   }
-  
+
   ### Return this vector as attribute to use in meansDiamondPlot
   attr(resDf, 'sortedByMean') <- sortedByMean;
 
   return(resDf);
-  
+
 }
