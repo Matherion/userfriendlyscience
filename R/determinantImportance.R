@@ -221,7 +221,7 @@ determinantImportance <- function(data, determinants, targets,
                                  padding = unit(1.25, "line"));
 
   ### Default sizes ; first compute in centimeters, then convert to inches
-  attr(res$output$plot, 'height') <- baseSize + 1.25 * baseSize * max(length(determinants), 2.5);
+  attr(res$output$plot, 'height') <- baseSize + 1.25 * baseSize * max(length(determinants), 1.5);
   attr(res$output$plot, 'width') <- 21 - 3;
   attr(res$output$plot, 'height') <- attr(res$output$plot, 'height') / 2.54;
   attr(res$output$plot, 'width') <- attr(res$output$plot, 'width') / 2.54;
