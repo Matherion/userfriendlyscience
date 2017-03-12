@@ -198,7 +198,7 @@ S3method(print, oddsratio);
 S3method(print, oneway);
 S3method(print, parallelSubscales);
 S3method(print, posthocTGH);
-S3method(print, power.htest.usf);
+S3method(print, power.htest.ufs);
 S3method(print, powerHist);
 S3method(print, processOpenSesameIAT);
 S3method(print, processOpenSesameIAT.log);
@@ -252,7 +252,8 @@ importFrom("scales", "rescale");
 
 importFrom('plyr', 'ddply', 'raply', 'dlply', 'progress_text', 'as.quoted');
 
-importFrom('data.tree', 'SetGraphStyle', 'as.Node', 'Get', 'Do');
+importFrom('data.tree', 'SetGraphStyle', 'as.Node', 'Get', 'Do',
+           'SetEdgeStyle', 'ToDiagrammeRGraph');
 
 importFrom('psych', 'describe', 'alpha', 'omega', 'glb',
            'fa', 'principal', 'polychoric', 'fisherz', 'fisherz2r',
@@ -307,5 +308,6 @@ importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.lay
 importFrom('gridExtra', 'arrangeGrob', 'grid.arrange');
 importFrom('ggrepel', 'geom_text_repel')
 importFrom('RColorBrewer', 'brewer.pal');
+importFrom('DiagrammeR', 'add_global_graph_attrs', 'render_graph');
 
 importFrom('lavaan', 'sem');

@@ -21,6 +21,6 @@ Imports: grDevices, stats, utils, grid, scales,
          rio, pwr, SuppDists, plyr,
          psych, fBasics, MBESS, GPArotation, lavaan,
          MASS, mosaic, diptest, car, SCRT,
-         XML, knitr, xtable, pander,
+         XML, knitr, xtable, pander, data.tree, DiagrammeR,
          ggplot2, GGally, gtable, gridExtra, ggrepel, RColorBrewer
          
