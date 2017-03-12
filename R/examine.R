@@ -2,42 +2,51 @@ examine <- function(..., stem=TRUE, plots=TRUE,
                     extremeValues = 5, descr.include=NULL,
                     qqCI=TRUE, conf.level=.95) {
 
+  originalVarNames <- unlist(as.list(substitute(list(...)))[-1]);
+  dotList <- list(...);
+
+  if (!is.null(dotList$plot) && dotList$plot) {
+    plots <- TRUE;
+    dotList$plot <- NULL;
+    originalVarNames$plot <- NULL;
+  }
+
   varNames <- NULL;
-  
-  if (length(list(...)) == 1) {
-    dat <- list(...)[[1]];
+
+  if (length(dotList) == 1) {
+    dat <- dotList[[1]];
     if (is.data.frame(dat)) {
       vectorList <- dat;
       varNames <- names(dat);
     } else {
-      vectorList <- list(...);
+      vectorList <- dotList;
     }
   } else {
-    vectorList <- list(...);
+    vectorList <- dotList;
   }
-  
+
   if (is.null(varNames)) {
-    varNames <- unlist(as.list(substitute(list(...)))[-1]);
+    varNames <- originalVarNames;
   }
 
   ### Call functions to explore the variables
   res <- lapply(vectorList, function(x) {
     rsl <- list();
-    
+
     if (is.null(descr.include)) {
       rsl$descr <- descr(x, conf.level=conf.level);
     } else {
       rsl$descr <- descr(x, conf.level=conf.level, include=descr.include);
     }
-    
+
     tmpDf <- data.frame(rowNr = 1:length(x), value=x);
     tmpDf <- tmpDf[order(x), ];
-    
+
     if (extremeValues) {
       rsl$xtrm <- list(lo = head(na.omit(tmpDf), extremeValues),
                        hi = tail(na.omit(tmpDf), extremeValues));
     }
-    
+
     if (plots) {
       if (is.numeric(x)) {
         rsl$dataShapePlot <- dataShape(x, qqCI=qqCI)$output$plot;
@@ -49,7 +58,7 @@ examine <- function(..., stem=TRUE, plots=TRUE,
     if (stem) {
       rsl$stem <- paste0(capture.output(stem(as.numeric(x))), collapse="\n");
     }
-    
+
     return(rsl);
   });
 
@@ -64,7 +73,7 @@ examine <- function(..., stem=TRUE, plots=TRUE,
   # if (length(res) == 1) {
   #   res <- res[[1]];
   # }
-  
+
   ### Set class for correct printing and return result
   class(res) <- 'examine';
   return(res);
