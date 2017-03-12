@@ -1,10 +1,16 @@
-biAxisDiamondPlot <- function(dat, leftAnchors, rightAnchors, subQuestions,
-                              items = NULL, decreasing = NULL, conf.level = 0.95,
+biAxisDiamondPlot <- function(dat, items = NULL,
+                              leftAnchors=NULL, rightAnchors=NULL,
+                              subQuestions=NULL,
+                              decreasing = NULL, conf.level = 0.95,
                               showData = TRUE, dataAlpha = 0.1, dataColor = "#444444",
                               diamondColors = NULL, jitterWidth = .45, jitterHeight = .45,
                               xBreaks=NULL, xLabels=NA,
                               xAxisLab = paste0('Scores and ', round(100 * conf.level, 2), "% CIs"),
                               drawPlot = TRUE, returnPlotOnly=TRUE,
+                              baseSize = 1,
+                              dotSize = baseSize,
+                              baseFontSize=10*baseSize,
+                              theme=theme_bw(base_size=baseFontSize),
                               ...) {
 
   if (length(leftAnchors) != length(rightAnchors)) {
@@ -27,12 +33,17 @@ biAxisDiamondPlot <- function(dat, leftAnchors, rightAnchors, subQuestions,
               intermediate = list(),
               output = list());
 
+  if (is.null(items)) items <- names(dat);
+  if (is.null(leftAnchors)) leftAnchors <- rep("lo", length(items));
+  if (is.null(rightAnchors)) rightAnchors <- rep("hi", length(items));
+  if (is.null(subQuestions)) subQuestions <- items;
+
   ### Generate plot
   plot <- meansDiamondPlot(dat=dat, items = items, decreasing = decreasing,
                            conf.level = conf.level, showData = showData, dataAlpha = dataAlpha,
                            dataColor = dataColor, diamondColors = diamondColors,
                            jitterWidth = jitterWidth, jitterHeight = jitterHeight,
-                           xlab = xAxisLab,
+                           xlab = xAxisLab, theme=theme, size=dotSize,
                            ...);
 
   ### Extract order of the items after sorting
@@ -64,7 +75,7 @@ biAxisDiamondPlot <- function(dat, leftAnchors, rightAnchors, subQuestions,
                      conf.level = conf.level, showData = showData, dataAlpha = dataAlpha,
                      dataColor = dataColor, diamondColors = diamondColors,
                      jitterWidth = jitterWidth, jitterHeight = jitterHeight,
-                     xlab = xAxisLab,
+                     xlab = xAxisLab, theme=theme, size=dotSize,
                      ...);
 
   suppressMessages(subQuestionLabelplot <- subQuestionLabelplot +
