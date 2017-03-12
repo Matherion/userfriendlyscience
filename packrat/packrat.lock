@@ -64,17 +64,12 @@ Package: MBESS
 Source: CRAN
 Version: 4.2.0
 Hash: 2fdbdebb58be4c4fc8d6f939725702cc
-Requires: OpenMx, gsl, lavaan, mnormt, nlme, sem, semTools
-
-Package: Matrix
-Source: CRAN
-Version: 1.2-8
+Requires: OpenMx, gsl, lavaan, mnormt, sem, semTools
 
 Package: MatrixModels
 Source: CRAN
 Version: 0.4-1
 Hash: 60a5c75e57aae4a0ce76cb7422939aaf
-Requires: Matrix
 
 Package: NMF
 Source: CRAN
@@ -87,7 +82,7 @@ Package: OpenMx
 Source: CRAN
 Version: 2.7.4
 Hash: b7fd19af2cdfe59cbc5fa001ee470b52
-Requires: BH, Matrix, Rcpp, RcppEigen, StanHeaders, digest, rpf
+Requires: BH, Rcpp, RcppEigen, StanHeaders, digest, rpf
 
 Package: R6
 Source: CRAN
@@ -114,7 +109,7 @@ Package: RcppEigen
 Source: CRAN
 Version: 0.3.2.9.0
 Hash: 3f0a2179e872b4e0eddfb747b289b7be
-Requires: Matrix, Rcpp
+Requires: Rcpp
 
 Package: Rook
 Source: CRAN
@@ -161,7 +156,7 @@ Package: arm
 Source: CRAN
 Version: 1.9-3
 Hash: 41676f4f8aabf1267347c22a42c3b9e2
-Requires: Matrix, abind, coda, lme4, nlme
+Requires: abind, coda, lme4
 
 Package: assertthat
 Source: CRAN
@@ -198,7 +193,7 @@ Package: car
 Source: CRAN
 Version: 2.1-4
 Hash: d8cc2f66d4ba0c91312f1c1c5773d502
-Requires: mgcv, pbkrtest, quantreg
+Requires: pbkrtest, quantreg
 
 Package: cellranger
 Source: CRAN
@@ -221,6 +216,22 @@ Package: colorspace
 Source: CRAN
 Version: 1.3-2
 Hash: 0bf8618b585fa98eb23414cd3ab95118
+
+Package: cowplot
+Source: CRAN
+Version: 0.7.0
+Hash: 2466c098180dba6d13128bbdafeb1eda
+Requires: ggplot2, gtable, plyr
+
+Package: cranlogs
+Source: github
+Version: 2.1.1
+Hash: 04232c6447e697b2c691b5efd9f996a6
+Requires: httr, jsonlite
+GithubRepo: cranlogs
+GithubUsername: metacran
+GithubRef: master
+GithubSha1: cb719729bbdab4f9702bfd74096fc26a94964d0d
 
 Package: csvy
 Source: CRAN
@@ -394,19 +405,18 @@ Package: igraph
 Source: CRAN
 Version: 1.0.1
 Hash: 26ac36402e881905359daabfd9ba4057
-Requires: Matrix, NMF, irlba, magrittr
+Requires: NMF, irlba, magrittr
 
 Package: influenceR
 Source: CRAN
 Version: 0.1.0
 Hash: 74fa4b51bb8c4ee841f712d40dbf5f13
-Requires: Matrix, igraph
+Requires: igraph
 
 Package: irlba
 Source: CRAN
 Version: 2.1.2
-Hash: a2706b25acbc7d4c8e88047294b2eca7
-Requires: Matrix
+Hash: b3433ead7f8cd82b73f8f7541726e8ac
 
 Package: iterators
 Source: CRAN
@@ -450,7 +460,13 @@ Package: lme4
 Source: CRAN
 Version: 1.1-12
 Hash: d306e239f525642f2e0d83433e811bd7
-Requires: Matrix, Rcpp, RcppEigen, minqa, nlme, nloptr
+Requires: Rcpp, RcppEigen, minqa, nloptr
+
+Package: lubridate
+Source: CRAN
+Version: 1.6.0
+Hash: b90f4cbefe0b3c545dd68b22c66a8a12
+Requires: stringr
 
 Package: magrittr
 Source: CRAN
@@ -474,16 +490,11 @@ Version: 1.0.0
 Hash: 56e7087c3559eb7ba72a9afb349bf896
 Requires: digest
 
-Package: mgcv
-Source: CRAN
-Version: 1.8-17
-Requires: Matrix, nlme
-
 Package: mi
 Source: CRAN
 Version: 1.0
 Hash: 03251a5b79fe9b15c2ccaf06ee9114b1
-Requires: Matrix, arm
+Requires: arm
 
 Package: mime
 Source: CRAN
@@ -505,8 +516,8 @@ Package: mosaic
 Source: CRAN
 Version: 0.14.4
 Hash: 630baf47be61f6726df104bf6f3521db
-Requires: Matrix, dplyr, ggdendro, ggplot2, gridExtra, latticeExtra,
-    lazyeval, mosaicData, readr, tidyr
+Requires: dplyr, ggdendro, ggplot2, gridExtra, latticeExtra, lazyeval,
+    mosaicData, readr, tidyr
 
 Package: mosaicData
 Source: CRAN
@@ -523,10 +534,6 @@ Package: mvtnorm
 Source: CRAN
 Version: 1.0-5
 Hash: 55a3581188e15f13f5ba19c18e151ac2
-
-Package: nlme
-Source: CRAN
-Version: 3.1-131
 
 Package: nloptr
 Source: CRAN
@@ -569,7 +576,7 @@ Package: pbkrtest
 Source: CRAN
 Version: 0.4-6
 Hash: 8117c37e2e3078e3c6465134bac6956e
-Requires: Matrix, lme4
+Requires: lme4
 
 Package: pkgmaker
 Source: CRAN
@@ -620,7 +627,7 @@ Package: quantreg
 Source: CRAN
 Version: 5.29
 Hash: a06b5a1adfd5068a49e8e960b884d08e
-Requires: Matrix, MatrixModels, SparseM
+Requires: MatrixModels, SparseM
 
 Package: readODS
 Source: CRAN
@@ -743,7 +750,6 @@ Package: survival
 Source: CRAN
 Version: 2.40-1
 Hash: 6c0779308f30f29df842fe8dfa725593
-Requires: Matrix
 
 Package: tibble
 Source: CRAN
