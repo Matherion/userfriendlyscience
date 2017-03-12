@@ -2,13 +2,16 @@ determinantStructure <-
   determinantVar <-
   subdeterminants <-
   subdeterminantProducts <- function(name,
-                                     selection,
+                                     selection = NULL,
                                      ...) {
     
     type <- curfnfinder();
     
     res <- list(name = name,
                 type = type);
+    
+    if (is.null(selection))
+      selection <- name;
     
     if (is.list(selection) && 'behaviorRegEx' %in% names(selection)) {
       ### A behaviorRegEx is specified, as well
