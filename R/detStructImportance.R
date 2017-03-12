@@ -5,7 +5,7 @@ detStructImportance <- function(determinantStructure,
                                 subQuestions = NULL,
                                 leftAnchors = rep("Lo", length(determinants)),
                                 rightAnchors = rep("Hi", length(determinants)),
-                                orderBy = NULL,
+                                orderBy = 1,
                                 decreasing = NULL,
                                 generateColors = list(means = c("red", "blue", "green"),
                                                       associations = c("red", "grey", "green")),
@@ -14,13 +14,20 @@ detStructImportance <- function(determinantStructure,
                                 titleSuffix = "",
                                 fullColorRange = NULL,
                                 associationsAlpha = .5,
-                                theme=theme_bw(),
+                                baseSize = .8,
+                                dotSize = baseSize,
+                                baseFontSize=10*baseSize,
+                                theme=theme_bw(base_size=baseFontSize),
                                 ...) {
 
   determinantStructure$Do(function(currentNode) {
-    targets <- currentNode$Get('name', traversal='ancestor',
-                               filterFun=function(x)
-                                 return(x$type=='determinantVar'));
+    varNames <- currentNode$Get('name', traversal='ancestor',
+                                filterFun=function(x)
+                                  return(x$type=='determinantVar'));
+    scaleVarNames <- currentNode$Get('scaleVarName', traversal='ancestor',
+                                     filterFun=function(x)
+                                     return(x$type=='determinantVar'));
+    targets <- ifelseObj(is.null(scaleVarNames), varNames, scaleVarNames);
     currentSubQuestions <- ifelseObj(is.null(currentNode$subQuestions),
                                      subQuestions,
                                      currentNode$subQuestions);
@@ -33,6 +40,11 @@ detStructImportance <- function(determinantStructure,
     determinants <- ifelseObj(currentNode$type=="subdeterminantProducts",
                               unlist(currentNode$productVarNames),
                               unlist(currentNode$varNames));
+
+    if (is.numeric(orderBy)) {
+      orderBy <- targets[orderBy];
+    }
+
     currentNode$determinantImportance <-
       determinantImportance(data = dat,
                             determinants = determinants,
@@ -49,8 +61,10 @@ detStructImportance <- function(determinantStructure,
                             titleSuffix = titleSuffix,
                             fullColorRange = fullColorRange,
                             associationsAlpha = associationsAlpha,
+                            titleVarLabels=varNames,
                             returnPlotOnly = TRUE,
                             drawPlot = FALSE,
+                            baseFontSize=baseFontSize,
                             theme=theme,
                             ...);
   }, traversal = 'level', filterFun = function(x)
