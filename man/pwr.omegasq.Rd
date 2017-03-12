@@ -35,7 +35,7 @@ pwr.omegasq(k = NULL, n = NULL, omegasq = NULL,
 This function was written to work similarly to the power functions in the \code{\link{pwr}} package.
 }
 \value{
-An \code{power.htest.usf} object that contains a number of input and output values, most notably:
+An \code{power.htest.ufs} object that contains a number of input and output values, most notably:
 
 \item{power}{The (specified or computed) power}
 \item{n}{The (specified or computed) sample size in each group}
