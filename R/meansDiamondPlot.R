@@ -1,7 +1,7 @@
 meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                              decreasing=NULL,
                              conf.level=.95,
-                             showData = TRUE, dataAlpha = .1,
+                             showData = TRUE, dataAlpha = .1, dataSize=1,
                              dataColor = "#444444",
                              diamondColors = NULL,
                              jitterWidth = .5,
@@ -38,7 +38,10 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
   if (showData) {
     plot <- plot +
       rawDataDiamondLayer(dat, items=items,
-                          itemOrder = res$intermediate$dat$rownr);
+                          jitterWidth = jitterWidth,
+                          jitterHeight = jitterHeight,
+                          itemOrder = res$intermediate$dat$rownr,
+                          size=dataSize);
   }
 
   plot <- plot + diamondLayer +
