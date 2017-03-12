@@ -9,7 +9,7 @@ pwr.omegasq <- function(k = NULL, n = NULL,
   res$note <- "n is number in each group";
   res$method <- paste("Balanced one-way analysis of variance",
                       "power calculation");
-  class(res) <- "power.htest.usf";
+  class(res) <- "power.htest.ufs";
 
   ### Check assumptions
   if (sum(sapply(list(k, n, omegasq, power, sig.level), is.null)) != 1) {
@@ -76,7 +76,7 @@ pwr.omegasq <- function(k = NULL, n = NULL,
   
 }
 
-print.power.htest.usf <- function(x, digits=x$digits, ...) {
+print.power.htest.ufs <- function(x, digits=x$digits, ...) {
   cat0("\n");
   cat0("     ", x$method, "\n");
   cat0("\n");

@@ -41,8 +41,9 @@ determinantStructure <-
   }
 
 print.determinantStructure <- function(x, ...) {
+  class(x) <- c('Node', 'R6');
+  print(x, ...);
   xGraph <- ToDiagrammeRGraph(x, direction = "descend");
   xGraph <- add_global_graph_attrs(xGraph, "rankdir", "RL", "graph");
   render_graph(xGraph);
-  invisible();
 }
