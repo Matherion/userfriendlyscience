@@ -29,10 +29,9 @@ determinantStructure <-
       res <- as.Node(res);
       ### Arrows from children to parents
       SetEdgeStyle(res, dir='back');
-      ### Plot from right to left
+      ### Plot from right to left; note that this doesn't work for some reason;
+      ### there's a 'solution' in the print method
       SetGraphStyle(res, rankdir='RL');
-      ### Doesn't work for some reason; this does
-      res <- add_global_graph_attrs(res, "rankdir", "RL", "graph")
       ### Set class and return result
       class(res) <- c('determinantStructure', class(res));
       return(res);
@@ -40,3 +39,10 @@ determinantStructure <-
       return(res);
     }
   }
+
+print.determinantStructure <- function(x, ...) {
+  xGraph <- ToDiagrammeRGraph(x, direction = "descend");
+  xGraph <- add_global_graph_attrs(xGraph, "rankdir", "RL", "graph");
+  render_graph(xGraph);
+  invisible();
+}
