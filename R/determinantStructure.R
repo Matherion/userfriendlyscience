@@ -27,7 +27,13 @@ determinantStructure <-
     
     if (type == 'determinantStructure') {
       res <- as.Node(res);
-      SetGraphStyle(res, rankdir = "LR");
+      ### Arrows from children to parents
+      SetEdgeStyle(res, dir='back');
+      ### Plot from right to left
+      SetGraphStyle(res, rankdir='RL');
+      ### Doesn't work for some reason; this does
+      res <- add_global_graph_attrs(res, "rankdir", "RL", "graph")
+      ### Set class and return result
       class(res) <- c('determinantStructure', class(res));
       return(res);
     } else {
