@@ -1,7 +1,7 @@
 processLSvarLabels <- function(dat,
                                varnameRegExPairs = NULL,
                                labelExtractionRegExPair = c("\\[(.*)\\].*", "\\1"),
-                               lengthToWrap = 40,
+                               lengthToWrap = 50,
                                lengthToWrapAnchors = 20,
                                leftAnchorRegExPairs = list(c(".*[[:graph:]]([A-Z][a-z][^|]*)\\|(.+)", "\\1")),
                                rightAnchorRegExPairs = list(c(".*[[:graph:]]([A-Z][a-z][^|]*)\\|(.+)", "\\2"))) {
@@ -63,22 +63,18 @@ processLSvarLabels <- function(dat,
   labelDat$questionText <- trim(sub("\\[.*\\](.*)", "\\1", labelDat$varLabels.raw));
 
   if (lengthToWrap > 0) {
-    labelDat$questionText <- paste0(strwrap(labelDat$questionText,
-                                            width=lengthToWrap),
-                                    collapse="\n");
-    labelDat$subQuestions <- paste0(strwrap(labelDat$subQuestions,
-                                            width=lengthToWrap),
-                                    collapse="\n");
+    labelDat$questionText <- sapply(labelDat$questionText, function(x)
+      return(paste0(strwrap(x, lengthToWrap), collapse="\n")));
+    labelDat$subQuestions <- sapply(labelDat$subQuestions, function(x)
+      return(paste0(strwrap(x, lengthToWrap), collapse="\n")));
   }
   if (lengthToWrapAnchors > 0) {
-    labelDat$leftAnchors <- paste0(strwrap(labelDat$leftAnchors,
-                                           width=lengthToWrapAnchors),
-                                    collapse="\n");
-    labelDat$rightAnchors <- paste0(strwrap(labelDat$rightAnchors,
-                                            width=lengthToWrapAnchors),
-                                    collapse="\n");
+    labelDat$leftAnchors <- sapply(labelDat$leftAnchors, function(x)
+      return(paste0(strwrap(x, lengthToWrapAnchors), collapse="\n")));
+    labelDat$rightAnchors <- sapply(labelDat$rightAnchors, function(x)
+      return(paste0(strwrap(x, lengthToWrapAnchors), collapse="\n")));
   }
-  
+
   return(labelDat);
 
 }
