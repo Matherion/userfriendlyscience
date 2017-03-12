@@ -10,12 +10,16 @@ determinantImportance <- function(data, determinants, targets,
                                                         associations = c("red", "grey", "green")),
                                   strokeColors = brewer.pal(9, 'Set1'),
                                   titlePrefix = "Means and associations with",
+                                  titleVarLabels = NULL,
                                   titleSuffix = "",
                                   fullColorRange = NULL,
                                   associationsAlpha = .5,
                                   returnPlotOnly = TRUE,
                                   drawPlot = TRUE,
-                                  theme=theme_bw(),
+                                  baseSize = .8,
+                                  dotSize = baseSize,
+                                  baseFontSize=10*baseSize,
+                                  theme=theme_bw(base_size=baseFontSize),
                                   ...) {
 
   if (!all(c(determinants, targets) %in% names(dat))) {
@@ -61,13 +65,14 @@ determinantImportance <- function(data, determinants, targets,
   }
 
   if (is.null(orderBy)) {
-    res$intermediate$sortOrder <- 1:length(determinants);
+    ### Invert order, because ggplot starts from the bottom on the y axis.
+    res$intermediate$sortOrder <- rev(1:length(determinants));
   } else if (isTrue(orderBy)) {
-    res$intermediate$sortOrder <- order(colMeans(dat[, items], na.rm=TRUE),
+    res$intermediate$sortOrder <- order(colMeans(dat[, determinants], na.rm=TRUE),
                                         decreasing=res$intermediate$decreasing);
   } else if (orderBy %IN% (targets)) {
     res$intermediate$sortOrder <- sort(associationMatrix(dat,
-                                                         x=items,
+                                                         x=determinants,
                                                          y=orderBy),
                                        decreasing=res$intermediate$decreasing)$intermediate$sorting$order;
   } else {
@@ -90,6 +95,7 @@ determinantImportance <- function(data, determinants, targets,
                                        currentTarget,
                                        esMetric = 'r'));
   }, simplify=FALSE);
+  names(res$intermediate$assocDat) <- targets;
 
   res$intermediate$meansDat <-
     res$intermediate$meansDat[res$intermediate$sortOrder, ];
@@ -98,7 +104,7 @@ determinantImportance <- function(data, determinants, targets,
       return(x[res$intermediate$sortOrder, ]);
     }, simplify=FALSE);
 
-  ### This can be removed
+  ### Sort determinant names
   determinants <- determinants[res$intermediate$sortOrder];
 
   res$intermediate$biAxisDiamondPlot <-
@@ -111,6 +117,10 @@ determinantImportance <- function(data, determinants, targets,
                       conf.level = conf.level$means,
                       drawPlot = FALSE,
                       returnPlotOnly = FALSE,
+                      dotSize = dotSize,
+                      baseFontSize = baseFontSize,
+                      theme = theme,
+                      jitterHeight = .3,
                       ...);
 
   res$intermediate$meansPlot <- res$intermediate$biAxisDiamondPlot$output$plot;
@@ -137,7 +147,7 @@ determinantImportance <- function(data, determinants, targets,
                                 fullColorRange = c(-1, 1),
                                 alpha = associationsAlpha,
                                 lineColor=strokeColors[currentTarget],
-                                size=1,
+                                size=1, theme=theme,
                                 returnLayerOnly = TRUE, ...));
            }, simplify=FALSE);
 
@@ -162,7 +172,7 @@ determinantImportance <- function(data, determinants, targets,
                               y = unit(0.8, "lines"),
                               hjust = 0, vjust = 0));
   currentXpos <- sum(unit(0.2, "lines"), grobWidth(titleGrobs[[1]]));
-  newGrob <- textGrob(label = targets[1],
+  newGrob <- textGrob(label = titleVarLabels[1],
                       x = currentXpos,
                       y = unit(.8, "lines"),
                       hjust = 0, vjust = 0,
@@ -170,6 +180,8 @@ determinantImportance <- function(data, determinants, targets,
   titleGrobs <- c(titleGrobs, list(newGrob));
   currentXpos <- sum(currentXpos, grobWidth(titleGrobs[[2]]));
 
+  if (is.null(titleVarLabels)) titleVarLabels <- targets;
+  
   if (length(targets) > 1) {
     for (i in 2:length(targets)) {
       prefixGrob <- textGrob(label = ifelse(i == length(targets), " & ", ", "),
@@ -178,7 +190,7 @@ determinantImportance <- function(data, determinants, targets,
                              hjust = 0, vjust = 0,
                              gp = gpar(col = "#000000"));
       currentXpos <- sum(currentXpos, grobWidth(prefixGrob));
-      newGrob <- textGrob(label = targets[i],
+      newGrob <- textGrob(label = titleVarLabels[i],
                           x = currentXpos,
                           y = unit(0.8, "lines"),
                           hjust = 0, vjust = 0,
@@ -192,15 +204,27 @@ determinantImportance <- function(data, determinants, targets,
                                             y = unit(0.8, "lines"),
                                             hjust = 0, vjust = 0)));
 
-  titleGrob <- do.call(grobTree, c(list(gp = gpar(fontsize = 14, fontface = "bold")),
+  titleGrob <- do.call(grobTree, c(list(gp = gpar(fontsize = 1.2*baseFontSize, fontface = "bold")),
                                    titleGrobs));
 
-  res$output$plot <- arrangeGrob(res$intermediate$meansPlot,
-                                 ggplot_gtable(builtAssocPlot),
-                                 ncol=2,
-                                 widths=c(2, 1),
+  res$output$plot <- gtable_add_cols(res$intermediate$meansPlot,
+                                     unit(1, "null"));
+
+  res$output$plot <- gtable_add_grob(res$output$plot,
+                                     ggplot_gtable(builtAssocPlot),
+                                     t=1,
+                                     b=length(res$output$plot$heights),
+                                     l=length(res$output$plot$widths));
+  
+  res$output$plot <- arrangeGrob(res$output$plot,
                                  top = titleGrob,
-                                 padding = unit(2, "line"));
+                                 padding = unit(1.25, "line"));
+
+  ### Default sizes ; first compute in centimeters, then convert to inches
+  attr(res$output$plot, 'height') <- baseSize + 1.25 * baseSize * max(length(determinants), 2.5);
+  attr(res$output$plot, 'width') <- 21 - 3;
+  attr(res$output$plot, 'height') <- attr(res$output$plot, 'height') / 2.54;
+  attr(res$output$plot, 'width') <- attr(res$output$plot, 'width') / 2.54;
 
   if (drawPlot) {
     grid.newpage();
