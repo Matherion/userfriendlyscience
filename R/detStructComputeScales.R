@@ -3,6 +3,14 @@ detStructComputeScales <- function(determinantStructure,
                                    append = TRUE,
                                    separator = "_") {
   
+  if (!("determinantStructure" %in% class(determinantStructure))) {
+    stop("The first argument must be a determint structure object!");
+  }
+  
+  if (!("data.frame" %in% class(dat))) {
+    stop("The first argument must be a dataframe!");
+  }
+  
   ### Get behavior regex
   ### Get all behaviorRegExes that are set (should only be one)
   behaviorRegEx <- determinantStructure$Get('behaviorRegEx',
