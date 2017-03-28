@@ -47,6 +47,7 @@ descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
                                   "NA" = nrNA,
                                   valid = length(x)));
     names(res[['central tendency']])[4] <- paste0(conf.level * 100, '% CI mean');
+    row.names(res$spread) <- NULL;
     attr(res, "varName") <- varName;
     attr(res, "digits") <- digits;
     attr(res, "include") <- include;
