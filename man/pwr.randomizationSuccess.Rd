@@ -1,20 +1,33 @@
-\name{pwr.randomizationSuccess}
+\name{randomizationSuccess}
 \alias{pwr.randomizationSuccess}
+\alias{prob.randomizationSuccess}
 \title{
-Compute sample size required for successful randomization
+Computations for successful randomization
 }
 \description{
-This function computes the sample size required to make randomization
+\code{prob.randomizationSuccess} computes the probability that two groups are
+equivalent given a specific sample size, number of nuisance variables,
+and definition of 'equivalence' (in terms of the Cohen's d expressing the
+maximum acceptable difference between the groups on any of the nuisance
+variables).
+
+\code{pwr.randomizationSuccess} computes the sample size required to make randomization
 succeed in a specified proportion of the studies with a two-cell design.
 'Success' is defined as the two groups differing at most with a specified
 effect size on any of a given number or nuisance variables.
 }
 \usage{
+prob.randomizationSuccess(n = 1000,
+                          dNonequivalence = .2,
+                          nNuisanceVars = 100)
 pwr.randomizationSuccess(dNonequivalence = 0.2,
                          pRandomizationSuccess = 0.95,
                          nNuisanceVars = 100)
 }
 \arguments{
+  \item{n}{
+  The sample size.
+}
   \item{dNonequivalence}{
   The maximum difference between the two groups that is deemed
   acceptable.
@@ -32,74 +45,52 @@ pwr.randomizationSuccess(dNonequivalence = 0.2,
   For more details, see Peters & Gruijters (2017).
 }
 \value{
-  The required sample size; the function is vectorized, so returns either
-  a vector of length one, a vector of length > 1, a matrix, or an array.
+  For \code{prob.randomizationSuccess}, the probability that the two groups
+  are equivalent. The function is vectorized, so returns either a vector
+  of length one, a vector of length > 1, a matrix, or an array.
+  
+  For \code{pwr.randomizationSuccess}, the required sample size. The function is
+  vectorized, so returns either a vector of length one, a vector of
+  length > 1, a matrix, or an array.
 }
 \references{
 Peters, G. J.-Y. & Gruijters, S. Why your experiments fail: sample sizes required for randomization to generate equivalent groups as a partial solution to the replication crisis (2017). http://dx.doi.org/
 }
 \author{
-Gjalt-Jorn Peters (Open University of the Netherlands, Greater Good, Maastricht University) & Stefan Gruijters (Maastricht University).
+Gjalt-Jorn Peters
 
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{dCohensd}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+### To be on the safe side: sample size required to
+### obtain 95\% likelihood of success when assuming
+### 100 nuisance variables exist.
+pwr.randomizationSuccess(dNonequivalence = 0.2,
+                         pRandomizationSuccess = 0.95,
+                         nNuisanceVars = 100);
 
-## The function is currently defined as
-function (dNonequivalence = 0.2, pRandomizationSuccess = 0.95, 
-    nNuisanceVars = 100) 
-{
-    res <- sapply(dNonequivalence, function(dNonequival) {
-        return(sapply(pRandomizationSuccess, function(rRandSuccess, 
-            dNonequiv = dNonequival) {
-            return(sapply(nNuisanceVars, function(nNuisance, 
-                pSuccess = rRandSuccess, dNoneq = dNonequiv) {
-                n <- 10
-                if (pdMild(dNoneq, n)^nNuisance > pSuccess) {
-                  return(n)
-                } else {
-                  while (pdMild(dNoneq, n)^nNuisance < pSuccess) {
-                    n <- n + 100
-                  }
-                  n <- n - 100
-                  while (pdMild(dNoneq, n)^nNuisance < pSuccess) {
-                    n <- n + 10
-                  }
-                  n <- n - 10
-                  while (pdMild(dNoneq, n)^nNuisance < pSuccess) {
-                    n <- n + 1
-                  }
-                  return(n)
-                }
-            }))
-        }))
-    })
-    res <- array(unclass(res), dim = c(length(nNuisanceVars), 
-        length(pRandomizationSuccess), length(dNonequivalence)), 
-        dimnames = list(paste("Nuisance var:", nNuisanceVars), 
-            paste("Equival. prob:", pRandomizationSuccess), paste("Nonequival. at: d=", 
-                dNonequivalence)))
-    if (sum(dim(res) == 1) > 1) {
-        return(as.vector(res))
-    }
-    else if (sum(dim(res) == 1) == 1) {
-        dims <- dim(res)
-        dimNms <- dimnames(res)
-        dimNms <- dimNms[dims > 1]
-        dims <- dims[dims > 1]
-        res <- matrix(res, ncol = dims[1], dimnames = dimNms)
-        return(res)
-    }
-    else {
-        return(res)
-    }
-  }
+### Living on the edge:
+pwr.randomizationSuccess(dNonequivalence = 0.2,
+                         pRandomizationSuccess = 0.60,
+                         nNuisanceVars = 10);
+
+### For those with quite liberal ideas of 'equivalence':
+pwr.randomizationSuccess(dNonequivalence = 0.5,
+                         pRandomizationSuccess = 0.95,
+                         nNuisanceVars = 100);
+
+### And these results can be checked with
+### prob.randomizationSuccess:
+prob.randomizationSuccess(1212, .2, 100);
+prob.randomizationSuccess(386, .2, 10);
+prob.randomizationSuccess(198, .5, 100);
+
+### Or in one go:
+prob.randomizationSuccess(n=c(198, 386, 1212), c(.2, .5), c(10, 100));
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
