@@ -1,9 +1,19 @@
 userfriendlyscience NEWS
 ------------------------
 
-0.5-3 2017-
+0.6-0 2017-04-01
+* Added CIBER for Confidence Interval-Based Estimation of Relevance
+* Added a number of diamond plot functions (biAxisDiamondPlot, associationsDiamondPlot) and supporting functions (varsToDiamondPlotDf, associationsToDiamondPlotDf, rawDataDiamondLayer)
+* Added pwr.randomizationSuccess
+* Small improvements to cohensdCI and pwr.cohensdCI
+* Added confIntR and pwr.confIntR based on the Moinester & Gottfried (2014) and
+  the Bonett (2011) papers (with permission)
+* Added determinant structure specification functions (determinantStructure, determinantVar, subdeterminants, subdeterminantProducts)
+* Added determinant structure processing functions (detStructAddVarNames, detStructAddVarLabels, detStructComputeProducts, detStructComputeScales, detStructCIBER)
+* Added function to easily process LimeSurvey variable lables (processLSvarLabels)
+* Added curfnfinder (from Nick Sabbe, with permission)
+* Added escapeRegex (from Hmisc, to prevent importing package)
 * Fixed warning-generating 'bla' in pwr.cohensdCI
-* Added confIntR and pwr.confIntR based on the Moinester & Gottfried (2014) and the Bonett (2011) papers (with permission)
 
 0.5-2 2016-12-15
 * Fixed some errors in the list of exported functions

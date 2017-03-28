@@ -7,10 +7,22 @@ The package imports functions from many other packages, which is in line with it
 
 The only publications where the package has been mentioned so far are available at:
 
-- http://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p56/1
-- http://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p70/25
-- http://www.tandfonline.com/doi/pdf/10.1080/17437199.2015.1124240
+- Peters, G.-J. Y. (2014). [The alpha and the omega of scale reliability and validity: why and how to abandon Cronbach’s alpha and the route towards more comprehensive assessment of scale quality.](http://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p56/1) *The European Health Psychologist*, 16, 56–69.
 
-All are Open Access. Please cite the manual and/or one of these publications when you use the package.
+- Crutzen, R. (2014). [Time is a jailer : what do alpha and its alternatives tell us about reliability?](http://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p70/25) *The European Health Psychologist*, 1(2), 70–74.
+
+- Crutzen, R., & Peters, G.-J. Y. (2015). [Scale quality: alpha is an inadequate estimate and factor-analytic evidence is needed first of all.](http://www.tandfonline.com/doi/pdf/10.1080/17437199.2015.1124240) *Health Psychology Review*. http://dx.doi.org/10.1080/17437199.2015.1124240
+
+Four more have been submitted for publication and are currently available as preprints at PsyArXiv:
+
+- Peters, G.-J. Y. & Crutzen, R. (2017). Knowing exactly how effective an intervention, treatment, or manipulation is and ensuring that a study replicates: accuracy in parameter estimation as a partial solution to the replication crisis. http://dx.doi.org/
+
+- Peters, G.-J. Y. & Gruijters, S. (2017). Why your experiments fail: sample sizes required for randomization to generate equivalent groups as a partial solution to the replication crisis. http://dx.doi.org/
+
+- Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2017). How to Select Relevant Social-Cognitive Determinants and Use them in the Development of Behaviour Change Interventions? Confidence Interval-Based Estimation of Relevance. http://dx.doi.org/
+
+- Gruijters, S., & Peters, G.-J. Y. (2017). Introducing the Numbers Needed for Change (NNC): A practical measure of effect size for intervention research. http://dx.doi.org/
+
+All are (and will be) Open Access. Please cite the manual and/or one of these publications when you use the package.
 
 If you have any questions, you can reach me at gjalt-jorn@userfriendlyscience.com.
