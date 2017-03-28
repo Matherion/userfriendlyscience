@@ -40,10 +40,19 @@ determinantStructure <-
     }
   }
 
-print.determinantStructure <- function(x, ...) {
-  class(x) <- c('Node', 'R6');
-  print(x, ...);
+plot.determinantStructure <- function(x, ...) {
   xGraph <- ToDiagrammeRGraph(x, direction = "descend");
+  xGraph <- add_global_graph_attrs(xGraph, "layout", "dot", "graph");
   xGraph <- add_global_graph_attrs(xGraph, "rankdir", "RL", "graph");
   render_graph(xGraph);
+  invisible(xGraph);
+}
+
+print.determinantStructure <- function(x, plot=FALSE, ...) {
+  if (plot) {
+    y <- plot(x);
+  }
+  class(x) <- c('Node', 'R6');
+  print(x, ...);
+  if (plot) invisible(y);
 }
