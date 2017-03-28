@@ -22,7 +22,7 @@ CIBER <- function(data, determinants, targets,
                   theme=theme_bw(base_size=baseFontSize),
                   ...) {
 
-  if (!all(c(determinants, targets) %in% names(dat))) {
+  if (!all(c(determinants, targets) %in% names(data))) {
     stop("Not all variables names you passed in arguments ",
          "'determinants' or 'targets' are in your dataset!");
   }
@@ -41,8 +41,9 @@ CIBER <- function(data, determinants, targets,
   res$output$associationsN <- sum(complete.cases(res$intermediate$dat));
   
   ### For the scores, the max and min need to be determined from the data
-  res$intermediate$fullColorRange <-
-    range(res$intermediate$determinantsDat, na.rm = TRUE);
+  res$intermediate$fullColorRange <- ifelse(is.null(fullColorRange),
+                                            range(res$intermediate$determinantsDat, na.rm = TRUE),
+                                            fullColorRange);
 
   ### These will be used to determine the breaks in the plot with
   ### the scores
@@ -88,7 +89,7 @@ CIBER <- function(data, determinants, targets,
 
   ### Get confidence intervals (we may re-sort later)
   res$intermediate$meansDat <-
-    varsToDiamondPlotDf(dat, items = determinants,
+    varsToDiamondPlotDf(data, items = determinants,
                         conf.level=conf.level$means);
 
   ### Get confidence intervals for effect sizes
@@ -100,6 +101,13 @@ CIBER <- function(data, determinants, targets,
   }, simplify=FALSE);
   names(res$intermediate$assocDat) <- targets;
 
+  ### Get R squared values
+  res$intermediate$Rsq <- lapply(targets, function(currentTarget) {
+    return(regr(formula(paste(currentTarget, '~', paste(determinants, collapse=" + "))),
+                dat=res$intermediate$dat,
+                conf.level=conf.level$associations));
+  });
+                                       
   res$intermediate$meansDat <-
     res$intermediate$meansDat[res$intermediate$sortOrder, ];
   res$intermediate$assocDat <-
@@ -111,7 +119,7 @@ CIBER <- function(data, determinants, targets,
   determinants <- determinants[res$intermediate$sortOrder];
 
   res$intermediate$biAxisDiamondPlot <-
-    biAxisDiamondPlot(dat, items = determinants,
+    biAxisDiamondPlot(data, items = determinants,
                       subQuestions = subQuestions[res$intermediate$sortOrder],
                       leftAnchors = leftAnchors[res$intermediate$sortOrder],
                       rightAnchors = rightAnchors[res$intermediate$sortOrder],
@@ -170,20 +178,22 @@ CIBER <- function(data, determinants, targets,
   builtAssocPlot$layout$panel_ranges[[1]]$y.major <-
     builtMeansPlot$layout$panel_ranges[[1]]$y.major;
 
+  
+  if (is.null(titleVarLabels)) titleVarLabels <- targets;
+
   titleGrobs <- list(textGrob(label = paste0(titlePrefix, " "),
                               x = unit(0.2, "lines"),
                               y = unit(0.8, "lines"),
                               hjust = 0, vjust = 0));
   currentXpos <- sum(unit(0.2, "lines"), grobWidth(titleGrobs[[1]]));
-  newGrob <- textGrob(label = titleVarLabels[1],
+  newGrob <- textGrob(label = paste0(titleVarLabels[1], " (R^2 = ",
+                                     formatCI(res$intermediate$Rsq[[1]]$output$rsq.ci, noZero=TRUE), ")"),
                       x = currentXpos,
                       y = unit(.8, "lines"),
                       hjust = 0, vjust = 0,
                       gp = gpar(col = strokeColors[targets[1]]));
   titleGrobs <- c(titleGrobs, list(newGrob));
   currentXpos <- sum(currentXpos, grobWidth(titleGrobs[[2]]));
-
-  if (is.null(titleVarLabels)) titleVarLabels <- targets;
   
   if (length(targets) > 1) {
     for (i in 2:length(targets)) {
@@ -193,7 +203,8 @@ CIBER <- function(data, determinants, targets,
                              hjust = 0, vjust = 0,
                              gp = gpar(col = "#000000"));
       currentXpos <- sum(currentXpos, grobWidth(prefixGrob));
-      newGrob <- textGrob(label = titleVarLabels[i],
+      newGrob <- textGrob(label = paste0(titleVarLabels[i], " (R^2 = ",
+                                         formatCI(res$intermediate$Rsq[[i]]$output$rsq.ci, noZero=TRUE), ")"),
                           x = currentXpos,
                           y = unit(0.8, "lines"),
                           hjust = 0, vjust = 0,
