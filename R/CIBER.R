@@ -1,26 +1,26 @@
-determinantImportance <- function(data, determinants, targets,
-                                  conf.level = list(means = .9999,
-                                                    associations = .95),
-                                  subQuestions = NULL,
-                                  leftAnchors = rep("Lo", length(determinants)),
-                                  rightAnchors = rep("Hi", length(determinants)),
-                                  orderBy = NULL,
-                                  decreasing = NULL,
-                                  generateColors = list(means = c("red", "blue", "green"),
-                                                        associations = c("red", "grey", "green")),
-                                  strokeColors = brewer.pal(9, 'Set1'),
-                                  titlePrefix = "Means and associations with",
-                                  titleVarLabels = NULL,
-                                  titleSuffix = "",
-                                  fullColorRange = NULL,
-                                  associationsAlpha = .5,
-                                  returnPlotOnly = TRUE,
-                                  drawPlot = TRUE,
-                                  baseSize = .8,
-                                  dotSize = baseSize,
-                                  baseFontSize=10*baseSize,
-                                  theme=theme_bw(base_size=baseFontSize),
-                                  ...) {
+CIBER <- function(data, determinants, targets,
+                  conf.level = list(means = .9999,
+                                    associations = .95),
+                  subQuestions = NULL,
+                  leftAnchors = rep("Lo", length(determinants)),
+                  rightAnchors = rep("Hi", length(determinants)),
+                  orderBy = NULL,
+                  decreasing = NULL,
+                  generateColors = list(means = c("red", "blue", "green"),
+                                        associations = c("red", "grey", "green")),
+                  strokeColors = brewer.pal(9, 'Set1'),
+                  titlePrefix = "Means and associations with",
+                  titleVarLabels = NULL,
+                  titleSuffix = "",
+                  fullColorRange = NULL,
+                  associationsAlpha = .5,
+                  returnPlotOnly = TRUE,
+                  drawPlot = TRUE,
+                  baseSize = .8,
+                  dotSize = baseSize,
+                  baseFontSize=10*baseSize,
+                  theme=theme_bw(base_size=baseFontSize),
+                  ...) {
 
   if (!all(c(determinants, targets) %in% names(dat))) {
     stop("Not all variables names you passed in arguments ",
@@ -36,7 +36,10 @@ determinantImportance <- function(data, determinants, targets,
   ### Extract relevant subdatasets
   res$intermediate$determinantsDat <- data[, determinants];
   res$intermediate$dat <- data[, c(determinants, targets)];
-
+  
+  res$output$determinantsN <- sum(complete.cases(res$intermediate$determinantsDat));
+  res$output$associationsN <- sum(complete.cases(res$intermediate$dat));
+  
   ### For the scores, the max and min need to be determined from the data
   res$intermediate$fullColorRange <-
     range(res$intermediate$determinantsDat, na.rm = TRUE);
