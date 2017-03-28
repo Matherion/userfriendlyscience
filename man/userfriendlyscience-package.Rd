@@ -16,8 +16,8 @@ This package contains a number of functions that serve
 \tabular{ll}{
 Package: \tab userfriendlyscience\cr
 Type: \tab Package\cr
-Version: \tab 0.5-2\cr
-Date: \tab December 2016\cr
+Version: \tab 0.6-0\cr
+Date: \tab March 2016\cr
 License: \tab GPL (>= 2)\cr
 }
 The package contains a variety of functions designed to make life easier. These functions are geared towards researchers in psychology.
@@ -27,9 +27,11 @@ The package implements many solutions provided by people all over the world, mos
 \author{
 Author: Gjalt-Jorn Peters (Open University of the Netherlands, Greater Good, and Maastricht University).
 
-Contributors: Peter Verboon (\code{\link{convert.omegasq.to.cohensf}}, Open University of the Netherlands), Amy Chan (\code{\link{ggPie}}), Jeff Baggett (\code{\link{posthocTGH}}, University of Wisconsin - La Crosse), Daniel McNeish (\code{\link{scaleStructure}}, University of North Carolina).
+Contributors: Peter Verboon (\code{\link{convert.omegasq.to.cohensf}}, Open University of the Netherlands), Amy Chan (\code{\link{ggPie}}), Jeff Baggett (\code{\link{posthocTGH}}, University of Wisconsin - La Crosse), Daniel McNeish (\code{\link{scaleStructure}}, University of North Carolina), Nick Sabbe (\code{\link{curfnfinder}}, Arteveldehogeschool)
 
-A number of functions in this package use code fragments that were used without explicit communicating with the author (because I've been unable to find contact details of the authors, or because I haven't gotten around to contacing them yet). The authors of these fragments are John Fox (\code{\link{car}} code in \code{\link{ggqq}}), Floo0 (\code{\link{ggqq}}), Jason Aizkalns (\code{\link{ggBoxplot}}).
+A number of functions in this package use code fragments that were used without explicit communicating with the author (because I've been unable to find contact details of the authors, or because I haven't gotten around to contacting them yet). The authors of these fragments are John Fox (\code{\link{car}} code in \code{\link{ggqq}}), Floo0 (\code{\link{ggqq}}), Jason Aizkalns (\code{\link{ggBoxplot}}).
+
+In addition, the function \code{escapeRegEx} from package \code{Hmisc} is included and used internally to avoid importing that entire package just for that function.
 
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
