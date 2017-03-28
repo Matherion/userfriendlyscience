@@ -1,4 +1,4 @@
-pwr.cohensdCI <- function(d, w=.1, conf.level=.95, extensive = FALSE, silent=FALSE) {
+pwr.cohensdCI <- pwr.confIntd <- function(d, w=.1, conf.level=.95, extensive = FALSE, silent=FALSE) {
   if (length(w) != 1) {
     warning("Multiple widths not supported (yet); only the first one is used!");
     w <- w[1];
@@ -7,7 +7,7 @@ pwr.cohensdCI <- function(d, w=.1, conf.level=.95, extensive = FALSE, silent=FAL
     warning("Multiple confidence levels not supported (yet); only the first one is used!");
     conf.level <- conf.level[1];
   }
-  
+
   ### From a post at the R-help mailig list by Luke Tierney, see
   ### http://stackoverflow.com/questions/3903157/how-can-i-check-whether-a-function-call-results-in-a-warning
   wHandler <- function(w) {
@@ -15,27 +15,27 @@ pwr.cohensdCI <- function(d, w=.1, conf.level=.95, extensive = FALSE, silent=FAL
     invokeRestart("muffleWarning");
   }
   myWarnings <- NULL;
-  
+
   dSign <- ifelse(d < 0, -1, 1);
   d <- abs(d);
   lowerP <- (1-conf.level) / 2;
-  upperP <- (1-conf.level) / 2;
+  upperP <- 1 - ((1-conf.level) / 2);
   lowerBound <- abs(d) - abs(w);
   upperBound <- abs(d) + abs(w);
   n <- numeric();
   for (di in 1:length(d)) {
     n[di] <- 20;
-    withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, n[di]-2, populationD=abs(d[di]), lower.tail=TRUE) ||
+    withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, n[di]-2, populationD=d[di], lower.tail=TRUE) ||
                                upperBound[di] < qCohensd(upperP, n[di]-2, populationD=d[di], lower.tail=FALSE)) {
       n[di] <- n[di] + 100;
     }, warning = wHandler);
     n[di] <- n[di] - 100;
-    withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, n[di]-2, populationD=abs(d[di]), lower.tail=TRUE) ||
+    withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, n[di]-2, populationD=d[di], lower.tail=TRUE) ||
                                upperBound[di] < qCohensd(upperP, n[di]-2, populationD=d[di], lower.tail=FALSE)) {
       n[di] <- n[di] + 10;
     }, warning = wHandler);
     n[di] <- n[di] - 10;
-    withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, n[di]-2, populationD=abs(d[di]), lower.tail=TRUE) ||
+    withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, n[di]-2, populationD=d[di], lower.tail=TRUE) ||
                                upperBound[di] < qCohensd(upperP, n[di]-2, populationD=d[di], lower.tail=FALSE)) {
       n[di] <- n[di] + 1;
     }, warning = wHandler);
@@ -54,7 +54,7 @@ pwr.cohensdCI <- function(d, w=.1, conf.level=.95, extensive = FALSE, silent=FAL
                                myWarnings, fixed = TRUE);
     if (any(precisionWarnings)) {
       cat0("Function 'qt', which is used under the hood of this function (see ?qt for more information), ",
-           "warned that 'full precisiou may not have been achieved'. ",
+           "warned that 'full precision may not have been achieved'. ",
            "This is normally no cause for concern, because with sample sizes this big, small deviations ",
            "have little impact, but informing you seemed appropriate nonetheless.\n\n");
     }

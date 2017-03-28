@@ -56,7 +56,7 @@ cohensdCI <- function(d, n, conf.level = .95, plot=FALSE) {
   }
 
   colnames(res) <- c('lo', 'hi');
-  
+
   if (plot) {
     if ((length(d) > 1) || (length(n) > 1) || (length(conf.level) > 1)) {
       warning("I can only produce a plot if you supply only one value for ",
@@ -65,34 +65,48 @@ cohensdCI <- function(d, n, conf.level = .95, plot=FALSE) {
       df <- data.frame(d = seq(min(res) - .5, max(res) + .5, .001));
       df$density <- dd(df$d, df = n-2, populationD = d);
 
+      cilo <- min(res);
+      cihi <- max(res);
+      dValue <- d;
+
       plot <- ggplot(df, aes(x=d, y=density)) +
-                theme_bw() +
-                geom_ribbon(data=df[df$d >= min(res) & df$d <= max(res), ],
-                            aes(ymin = 0, ymax=density),
-                            fill='#cadded') +
-                geom_segment(x = min(res),
-                             xend = min(res),
-                             y = 0,
-                             yend = dd(min(res), df = n-2,
-                                       populationD = d),
-                             color = '#2a5581', size=1.5) +
-                geom_segment(x = max(res),
-                             xend = max(res),
-                             y = 0,
-                             yend = dd(max(res), df = n-2,
-                                       populationD = d),
-                             color = '#2a5581', size=1.5) +
-                geom_line(size=1.5);
+        theme_bw() +
+        theme(axis.title.x.top = element_blank()) +
+        scale_x_continuous(sec.axis = dup_axis(breaks=c(cilo,
+                                                        dValue,
+                                                        cihi),
+                                               labels=round(c(cilo,
+                                                              dValue,
+                                                              cihi), 2))) +
+        geom_vline(aes(xintercept=cilo), linetype='dashed') +
+        geom_vline(aes(xintercept=dValue), linetype='dashed') +
+        geom_vline(aes(xintercept=cihi), linetype='dashed') +
+        geom_ribbon(data=df[df$d >= min(res) & df$d <= max(res), ],
+                    aes(ymin = 0, ymax=density),
+                    fill='#cadded') +
+        geom_segment(x = min(res),
+                     xend = min(res),
+                     y = 0,
+                     yend = dd(min(res), df = n-2,
+                               populationD = d),
+                     color = '#2a5581', size=1.5) +
+        geom_segment(x = max(res),
+                     xend = max(res),
+                     y = 0,
+                     yend = dd(max(res), df = n-2,
+                               populationD = d),
+                     color = '#2a5581', size=1.5) +
+        geom_line(size=1.5);
       attr(res, "plot") <- plot;
       class(res) <- 'cohensdCI';
     }
   }
-  
+
   d <- paste0('d=', d);
   n <- paste0('n=', n);
 
   rownames(res) <- paste0(d, ", ", n);
-  
+
   return(res);
 }
 
