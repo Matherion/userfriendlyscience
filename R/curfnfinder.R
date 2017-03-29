@@ -20,7 +20,7 @@ curfnfinder <- function(skipframes=0,
   else {
     res <- as.character(unlist(prefix[1]));
     if (length(prefix) > 1) {
-      res <- paste(paste(rep(extraPrefPerLevel, length(prefix) - 1), collapse=""), retval, sep="");
+      res <- paste(paste(rep(extraPrefPerLevel, length(prefix) - 1), collapse=""), res, sep="");
     }
     return(res);
   }

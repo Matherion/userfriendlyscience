@@ -1,6 +1,8 @@
 \name{ggDiamondLayer}
 \alias{ggDiamondLayer}
 \alias{diamondCoordinates}
+\alias{varsToDiamondPlotDf}
+\alias{rawDataDiamondLayer}
 \title{
 Basic ggplot2 diamond plot layer construction functions
 }
@@ -23,11 +25,19 @@ diamondCoordinates(values,
                    direction = "horizontal",
                    autoSize = NULL,
                    fixedSize = 0.15)
+varsToDiamondPlotDf(dat, items = NULL,
+                    labels = NULL, decreasing = NULL, 
+                    conf.level = 0.95)
+rawDataDiamondLayer(dat, items = NULL,
+                    itemOrder = 1:length(items),
+                    dataAlpha = 0.1, dataColor = "#444444",
+                    jitterWidth = 0.5, jitterHeight = 0.4,
+                    size = 2, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{data}{
-  A dataframe (or matrix) containing lower bounds, centers (e.g. means), and upper bounds of intervals (e.g. confidence intervals).
+  \item{data, dat}{
+  A dataframe (or matrix) containing lower bounds, centers (e.g. means), and upper bounds of intervals (e.g. confidence intervals) for \code{ggDiamondLayer} or items and raw data for \code{varsToDiamondPlotDf} and \code{rawDataDiamondLayer}.
 }
   \item{ciCols}{
   The columns in the dataframe with the lower bounds, centers (e.g. means), and
@@ -62,7 +72,7 @@ diamondCoordinates(values,
   the height to use.
 }
   \item{\dots}{
-  Any additional arguments are passed to \code{\link{geom_polygon}}. This can be used to set, for example, the \code{alpha} value of the diamonds.
+  Any additional arguments are passed to \code{\link{geom_polygon}}. This can be used to set, for example, the \code{alpha} value of the diamonds. Additional arguments for \code{rawDataDiamondLayer} are passed on to \code{\link{geom_jitter}}.
 }
   \item{values}{
   A vector of 2 or more values that are used to construct the diamond coordinates. If three values are provided, the middle one becomes the diamond's center. If two, four, or more values are provided, the median becomes the diamond's center.
@@ -73,11 +83,47 @@ diamondCoordinates(values,
   \item{direction}{
   Whether the diamonds should be constructed horizontally or vertically.
 }
+  \item{items}{
+  The items from the dataframe to include in the diamondplot or dataframe.
+}
+  \item{labels}{
+  The item labels to add to the dataframe.
+}
+  \item{decreasing}{
+  Whether to sort the items (rows) in the dataframe decreasing (TRUE),
+  increasing (FALSE), or not at all (NULL).
+}
+  \item{conf.level}{
+  The confidence of the confidence intervals.
+}
+  \item{itemOrder}{
+  Order of the items to use (if not sorting).
+}
+  \item{dataAlpha}{
+  This determines the alpha (transparency) of the data points.
+}
+  \item{dataColor}{
+  The color of the data points.
+}
+  \item{jitterWidth}{
+  How much to jitter the individual datapoints horizontally.
+}
+  \item{jitterHeight}{
+  How much to jitter the individual datapoints vertically.
+}
+  \item{size}{
+  The size of the data points.
+}
 }
 \value{
 \code{ggDiamondLayer} returns a \code{\link{ggplot}} \code{\link{geom_polygon}} object, which can then be used in \code{\link{ggplot}} plots (as \code{\link{diamondPlot}} does).
 
 \code{diamondCoordinates} returns a set of four coordinates that together specify a diamond.
+
+\code{varsToDiamondPlotDf} returns a dataframe of diamondCoordinates.
+
+\code{rawDataDiamondLayer} returns a \code{\link{geom_jitter}} object.
+
 }
 \author{
 Gjalt-Jorn Peters

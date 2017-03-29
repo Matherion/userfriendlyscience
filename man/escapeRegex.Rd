@@ -21,7 +21,7 @@ escapeRegex(string)
   special meaning in a reqular expression escaped.
 }
 \note{
-  Note that this function was copied literally from the \code{\link{Hmics}} package (to prevent importing the entire package for one line of code).
+  Note that this function was copied literally from the \code{Hmisc} package (to prevent importing the entire package for one line of code).
 }
 \author{
   Charles Dupont\cr
@@ -30,7 +30,7 @@ escapeRegex(string)
 
   Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
-\seealso{ \code{\link[base]{grep}}, \url{http://biostat.mc.vanderbilt.edu/wiki/Main/Hmisc}, \url{https://github.com/harrelfe/Hmisc} }
+\seealso{ \code{\link[base]{grep}}, \code{Hmisc}, \url{http://biostat.mc.vanderbilt.edu/wiki/Main/Hmisc}, \url{https://github.com/harrelfe/Hmisc} }
 \examples{
 string <- "this\\\\(system) {is} [full]."
 escapeRegex(string)

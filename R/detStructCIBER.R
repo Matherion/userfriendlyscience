@@ -1,3 +1,7 @@
+### Arguments that are evaluated only after
+### they got a value
+globalVariables(c('determinants'));
+
 detStructCIBER <- function(determinantStructure,
                            dat,
                            conf.level = list(means = .9999,
@@ -11,6 +15,7 @@ detStructCIBER <- function(determinantStructure,
                                                  associations = c("red", "grey", "green")),
                            strokeColors = brewer.pal(9, 'Set1'),
                            titlePrefix = "Means and associations with",
+                           titleVarLabels = NULL,
                            titleSuffix = "",
                            fullColorRange = NULL,
                            associationsAlpha = .5,
@@ -31,15 +36,15 @@ detStructCIBER <- function(determinantStructure,
     currentSubQuestions <- ifelseObj(is.null(currentNode$subQuestions),
                                      subQuestions,
                                      currentNode$subQuestions);
+    determinants <- ifelseObj(currentNode$type=="subdeterminantProducts",
+                              unlist(currentNode$productVarNames),
+                              unlist(currentNode$varNames));
     currentLeftAnchors <- ifelseObj(is.null(currentNode$leftAnchors),
                                     leftAnchors,
                                     currentNode$leftAnchors);
     currentRightAnchors <- ifelseObj(is.null(currentNode$rightAnchors),
                                      rightAnchors,
                                      currentNode$rightAnchors);
-    determinants <- ifelseObj(currentNode$type=="subdeterminantProducts",
-                              unlist(currentNode$productVarNames),
-                              unlist(currentNode$varNames));
 
     if (is.numeric(orderBy)) {
       orderBy <- targets[orderBy];

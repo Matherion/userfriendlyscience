@@ -48,11 +48,11 @@ plot.determinantStructure <- function(x, ...) {
   invisible(xGraph);
 }
 
-print.determinantStructure <- function(x, plot=FALSE, ...) {
-  if (plot) {
-    y <- plot(x);
-  }
+print.determinantStructure <- function(x, ...) {
+  # if (plot) {
+  #   y <- plot(x);
+  # }
   class(x) <- c('Node', 'R6');
   print(x, ...);
-  if (plot) invisible(y);
+  # if (plot) invisible(y);
 }

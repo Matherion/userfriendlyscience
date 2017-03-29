@@ -3,6 +3,8 @@
 \alias{determinantVar}
 \alias{subdeterminants}
 \alias{subdeterminantProducts}
+\alias{plot.determinantStructure}
+\alias{print.determinantStructure}
 \title{
 Determinant Structure specification
 }
@@ -16,11 +18,17 @@ forthcoming article for more information.
 }
 \usage{
 determinantStructure(name, selection = NULL, ...)
+
 determinantVar(name, selection = NULL, ...)
+
 subdeterminants(name, selection = NULL, ...)
+
 subdeterminantProducts(name, selection = NULL, ...)
+
+\method{print}{determinantStructure}(x, ...)
+\method{plot}{determinantStructure}(x, ...)
+
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{name}{
   The name of the variable that is specified.
@@ -32,6 +40,9 @@ subdeterminantProducts(name, selection = NULL, ...)
   a named regular expression with the name 'behaviorRegEx', which specifies
   the name of the behavior to which this determinant structure pertains.
 }
+  \item{x}{
+  The \code{determinantStructure} object to print or plot.
+}
   \item{\dots}{
   Any additional arguments are other determinant structure building
   functions. These are used to construct the determinant structure 'tree'.
@@ -40,6 +51,8 @@ subdeterminantProducts(name, selection = NULL, ...)
 \details{
 This family of functions will be explained more in detail in a forthcoming
 paper.
+
+\code{plot} and \code{print} methods plot and print a determinantStructure object.
 }
 \value{
 A determinantStructure object, which is a \code{\link{data.tree}} object.

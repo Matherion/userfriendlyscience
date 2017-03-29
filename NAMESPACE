@@ -215,6 +215,8 @@ S3method(print, testRetestCES);
 S3method(print, testRetestReliability);
 S3method(print, therapyMonitor);
 S3method(print, therapyMonitor.multi);
+S3method(print, cohensdCI);
+S3method(print, determinantStructure)
 
 S3method(pander, crossTab);
 S3method(pander, dataShape);
@@ -227,6 +229,8 @@ S3method(pander, oneway);
 S3method(pander, regr);
 
 S3method(sort, associationMatrix)
+
+S3method(plot, determinantStructure)
 
 importFrom("grDevices", "dev.off", "png", "svg", "rgb", "colorRamp")
 importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
@@ -304,7 +308,7 @@ importFrom('gtable', 'gtable_add_grob', 'gtable_add_cols',
            'gtable_filter');
 importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.layout',
            'textGrob', 'grid.rect', 'gpar', 'grid.draw',
-           'convertUnit');
+           'convertUnit', 'grobWidth', 'grobTree');
 importFrom('gridExtra', 'arrangeGrob', 'grid.arrange');
 importFrom('ggrepel', 'geom_text_repel')
 importFrom('RColorBrewer', 'brewer.pal');

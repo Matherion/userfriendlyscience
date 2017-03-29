@@ -22,6 +22,7 @@
 \alias{print.associationMatrix}
 \alias{print.crossTab}
 \alias{print.confIntV}
+\alias{print.cohensdCI}
 \alias{print.CramersV}
 \alias{print.oneway}
 \alias{print.posthocTGH}
@@ -77,6 +78,7 @@ colNames = x$colNames, ...)
                                   info = x$input$info,
                                   file = x$input$file, ...)
 \method{print}{confIntV}(x, digits = x$input$digits, ...)
+\method{print}{cohensdCI}(x, ...)
 \method{print}{crossTab}(x, digits = x$input$digits,
                          pValueDigits=x$input$pValueDigits, ...)
 \method{print}{oneway}(x, digits = x$input$digits,

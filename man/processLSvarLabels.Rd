@@ -9,13 +9,13 @@ This function is meant to quickly parse the variable labels set by LimeSurvey. I
 \usage{
 processLSvarLabels(dat,
                    varnameRegExPairs = NULL,
-                   labelExtractionRegExPair = c("\\[(.*)\\].*", "\\1"),
+                   labelExtractionRegExPair = c("\\\\[(.*)\\\\].*", "\\\\1"),
                    lengthToWrap = 50,
                    lengthToWrapAnchors = 20,
-                   leftAnchorRegExPairs = list(c(".*[[:graph:]]([A-Z][a-z][^|]*)\\|(.+)",
-                                                 "\\1")),
-                   rightAnchorRegExPairs = list(c(".*[[:graph:]]([A-Z][a-z][^|]*)\\|(.+)",
-                                                  "\\2")))
+                   leftAnchorRegExPairs = list(c(".*[[:graph:]]([A-Z][a-z][^|]*)\\\\|(.+)",
+                                                 "\\\\1")),
+                   rightAnchorRegExPairs = list(c(".*[[:graph:]]([A-Z][a-z][^|]*)\\\\|(.+)",
+                                                  "\\\\2")))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

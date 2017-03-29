@@ -12,7 +12,8 @@ meansDiamondPlot(dat, items = NULL,
                  decreasing = NULL,
                  conf.level = 0.95,
                  showData = TRUE,
-                 dataAlpha = 0.1,
+                 dataAlpha = .1,
+                 dataSize = 1,
                  dataColor = "#444444",
                  diamondColors = NULL,
                  jitterWidth = 0.5,
@@ -45,6 +46,9 @@ meansDiamondPlot(dat, items = NULL,
 }
   \item{dataAlpha}{
   This determines the alpha (transparency) of the data points. Note that argument \code{alpha} can be used to set the alpha of the diamonds; this is eventually passed on to \code{\link{ggDiamondLayer}}.
+}
+  \item{dataSize}{
+  The size of the data points.
 }
   \item{dataColor}{
   The color of the data points.

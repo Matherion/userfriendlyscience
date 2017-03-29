@@ -20,7 +20,7 @@ scaleInspection(dat, items = NULL,
                 scatterPlotBaseSize = 4,
                 pageMargins=15, show=FALSE,
                 pval=TRUE)
-makeScales(dat, scales)
+makeScales(dat, scales, append=TRUE)
 meanConfInt(vector=NULL, mean=NULL, sd=NULL, n=NULL, se=NULL, conf.level=.95)
 sdConfInt(vector=NULL, sd=NULL, n=NULL, conf.level=.95)
 }
@@ -98,6 +98,11 @@ which is what pdfLaTexPath should be in that default case.
 }
   \item{pval}{
   Whether to print p-values as p-values in correlation matrix.
+}
+  \item{append}{
+  Whether to return the dataframe including the new variables
+  (\code{TRUE}), or a dataframe with only those new
+  variables (\code{FALSE}).
 }
   \item{vector}{
   Numeric vector to use when computing confidence intervals.

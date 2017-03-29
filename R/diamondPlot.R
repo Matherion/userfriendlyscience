@@ -4,7 +4,7 @@ diamondPlot <- function(data,
                         otherAxisCol=NULL,
                         yValues=NULL, yLabels=NULL, ylab = NULL,
                         autoSize=NULL, fixedSize=.15,
-                        xlab='Effect size estimate',
+                        xlab='Effect Size Estimate',
                         theme=theme_bw(), color='black',
                         returnLayerOnly = FALSE, ...) {
   

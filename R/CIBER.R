@@ -72,10 +72,10 @@ CIBER <- function(data, determinants, targets,
     ### Invert order, because ggplot starts from the bottom on the y axis.
     res$intermediate$sortOrder <- rev(1:length(determinants));
   } else if (isTrue(orderBy)) {
-    res$intermediate$sortOrder <- order(colMeans(dat[, determinants], na.rm=TRUE),
+    res$intermediate$sortOrder <- order(colMeans(data[, determinants], na.rm=TRUE),
                                         decreasing=res$intermediate$decreasing);
   } else if (orderBy %IN% (targets)) {
-    res$intermediate$sortOrder <- sort(associationMatrix(dat,
+    res$intermediate$sortOrder <- sort(associationMatrix(data,
                                                          x=determinants,
                                                          y=orderBy),
                                        decreasing=res$intermediate$decreasing)$intermediate$sorting$order;

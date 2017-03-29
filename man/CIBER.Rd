@@ -37,14 +37,13 @@ detStructCIBER(determinantStructure, dat,
                subQuestions = NULL,
                leftAnchors = rep("Lo", length(determinants)),
                rightAnchors = rep("Hi", length(determinants)),
-               orderBy = NULL, decreasing = NULL,
+               orderBy = 1, decreasing = NULL,
                generateColors = list(means = c("red", "blue", "green"),
                                      associations = c("red", "grey", "green")),
                strokeColors = brewer.pal(9, "Set1"),
                titlePrefix = "Means and associations with",
                titleVarLabels = NULL, titleSuffix = "",
                fullColorRange = NULL, associationsAlpha = 0.5,
-               returnPlotOnly = TRUE, drawPlot = TRUE,
                baseSize = 0.8, dotSize = baseSize,
                baseFontSize = 10 * baseSize,
                theme = theme_bw(base_size = baseFontSize), ...)
@@ -95,7 +94,7 @@ detStructCIBER(determinantStructure, dat,
 }
   \item{orderBy}{
   Whether to sort the determinants. Set to \code{NULL} to not sort at all;
-  specify the name of one of the \code{target}s to sort by the point
+  specify the name or index of one of the \code{target}s to sort by the point
   estimates of the associations with that target variable. Use
   \code{decreasing} to determine whether to sort in ascending or
   descending order. For convenience, if \code{orderBy} is not
@@ -145,8 +144,8 @@ detStructCIBER(determinantStructure, dat,
   \code{fullColorRange}.
 }
   \item{associationsAlpha}{
-  The alpha level (transparency) of the individual datapoints in the
-  left hand plot. Value between 0 and 1, where 0 signifies complete
+  The alpha level (transparency) of the confidence interval diamonds in the
+  right hand plot. Value between 0 and 1, where 0 signifies complete
   transparency (i.e. invisibility) and 1 signifies complete 'opaqueness'.
 }
   \item{returnPlotOnly}{
@@ -179,7 +178,7 @@ detStructCIBER(determinantStructure, dat,
 Details are explained in Crutzen & Peters (2017).
 }
 \value{
-Depending on the value of \code{\link{returnPlotOnly}}, either the
+Depending on the value of \code{returnPlotOnly}, either the
 plot only (a \code{\link{gtable}} object) or an object containing most
 objects created along the way (in which case the plot is stored
 in \code{$output$bla}).
