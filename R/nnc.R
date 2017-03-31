@@ -1,5 +1,5 @@
-nnc <- function(d = NULL, cer = NULL, eventDesirable = TRUE,
-                eventIfHigher = TRUE, r = 1,
+nnc <- function(d = NULL, cer = NULL, r = 1,
+                eventDesirable = TRUE, eventIfHigher = TRUE,
                 d.ci = NULL, cer.ci = NULL, r.ci=NULL,
                 d.n = NULL, cer.n = NULL, r.n = NULL, plot = TRUE,
                 meanValue = 0, sd = 1,
@@ -59,9 +59,9 @@ nnc <- function(d = NULL, cer = NULL, eventDesirable = TRUE,
   if (cer.ci[2] - .5 == min(abs(cer.ci - .5))) cer.ci <- rev(cer.ci);
 
   nnc.lb <- convert.d.to.nnc(d=d.ci[1], cer=cer.ci[1], r=r.ci[1],
-                             eventDesirabl=eventDesirable);
+                             eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
   nnc.ub <- convert.d.to.nnc(d=d.ci[2], cer=cer.ci[2], r=r.ci[2],
-                             eventDesirabl=eventDesirable);
+                             eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
 
   eer.ci <- c(attr(nnc.lb, 'eer'),
               attr(nnc.ub, 'eer'));
@@ -146,7 +146,7 @@ print.nnc <- function(x, ...) {
 
   if (is.null(attr(x, 'cer.ci'))) {
     cer <- attr(x, 'cer');
-    cerStatement <- paste0("a Control Event Rate (CER) of ", cer);
+    cerStatement <- paste0("a Control Event Rate (CER) of ", formatR(cer));
   } else {
     cer <- formatCI(sort(attr(x, 'cer.ci')), noZero=TRUE);
     cerStatement <- paste0("a Control Event Rate (CER) with a confidence interval of ",

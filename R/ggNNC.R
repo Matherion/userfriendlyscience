@@ -35,7 +35,7 @@ ggNNC <- function(cerDataSeq, d = NULL,
 
   if (!is.null(d)) d <- convert.r.to.d(convert.d.to.r(d) * r);
   if (!is.null(d)) {
-    eer <- convert.d.to.eer(d, cer);
+    eer <- convert.d.to.eer(d, cer, eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
   } else {
     eer <- cer;
   }
@@ -52,7 +52,7 @@ ggNNC <- function(cerDataSeq, d = NULL,
   eerValueDensity <- eerDataSeq[eerDataSeq$x == max(eerDataSeq[eerDataSeq$x < cerValue, 'x']), 'density'];
   cerLabel <- paste0("CER = ", round(100*cer, 2), ifelse(d != 0, "%    ", "%"));
   eerLabel <- paste0("EER = ", round(100*eer, 2), "%");
-  nnc <- nnc(d = d, cer = cer, eventDesirable=eventDesirable, plot=FALSE);
+  nnc <- nnc(d = d, cer = cer, eventDesirable=eventDesirable, eventIfHigher=eventIfHigher, plot=FALSE);
   if (!is.null(plotTitle)) {
     if (length(plotTitle) == 2) {
       plotTitle <- paste0(plotTitle[1], round(nnc, 2), plotTitle[2]);
