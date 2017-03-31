@@ -41,9 +41,9 @@ CIBER <- function(data, determinants, targets,
   res$output$associationsN <- sum(complete.cases(res$intermediate$dat));
   
   ### For the scores, the max and min need to be determined from the data
-  res$intermediate$fullColorRange <- ifelse(is.null(fullColorRange),
-                                            range(res$intermediate$determinantsDat, na.rm = TRUE),
-                                            fullColorRange);
+  res$intermediate$fullColorRange <- ifelseObj(is.null(fullColorRange),
+                                               range(res$intermediate$determinantsDat, na.rm = TRUE),
+                                               fullColorRange);
 
   ### These will be used to determine the breaks in the plot with
   ### the scores
@@ -117,7 +117,7 @@ CIBER <- function(data, determinants, targets,
 
   ### Sort determinant names
   determinants <- determinants[res$intermediate$sortOrder];
-
+  
   res$intermediate$biAxisDiamondPlot <-
     biAxisDiamondPlot(data, items = determinants,
                       subQuestions = subQuestions[res$intermediate$sortOrder],
