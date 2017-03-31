@@ -186,7 +186,7 @@ CIBER <- function(data, determinants, targets,
                               y = unit(0.8, "lines"),
                               hjust = 0, vjust = 0));
   currentXpos <- sum(unit(0.2, "lines"), grobWidth(titleGrobs[[1]]));
-  newGrob <- textGrob(label = paste0(titleVarLabels[1], " (R^2 = ",
+  newGrob <- textGrob(label = paste0(titleVarLabels[1], " (R\U00B2 = ",
                                      formatCI(res$intermediate$Rsq[[1]]$output$rsq.ci, noZero=TRUE), ")"),
                       x = currentXpos,
                       y = unit(.8, "lines"),
@@ -203,7 +203,7 @@ CIBER <- function(data, determinants, targets,
                              hjust = 0, vjust = 0,
                              gp = gpar(col = "#000000"));
       currentXpos <- sum(currentXpos, grobWidth(prefixGrob));
-      newGrob <- textGrob(label = paste0(titleVarLabels[i], " (R^2 = ",
+      newGrob <- textGrob(label = paste0(titleVarLabels[i], " (R\U00B2 = ",
                                          formatCI(res$intermediate$Rsq[[i]]$output$rsq.ci, noZero=TRUE), ")"),
                           x = currentXpos,
                           y = unit(0.8, "lines"),
