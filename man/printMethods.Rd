@@ -41,6 +41,7 @@
 \alias{print.frequencies}
 \alias{print.power.htest.ufs}
 \alias{print.regrInfluential}
+\alias{print.nnc}
 \title{
 userfriendlyscience print methods
 }
@@ -103,6 +104,7 @@ colNames = x$colNames, ...)
 \method{print}{frequencies}(x, ...)
 \method{print}{power.htest.ufs}(x, digits = x$digits, ...)
 \method{print}{regrInfluential}(x, ...)
+\method{print}{nnc}(x, ...)
 }
 \arguments{
   \item{x}{
