@@ -31,7 +31,7 @@ diamondPlot <- function(data,
   if (is.null(yValues)) {
     yValues <- 1:nrow(data);
   }
-
+  
   if (!is.null(yLabels)) {
     ### Check whether yLabels specifies a column in 'data' or whether it's a vector
     if (length(yLabels) == 1) {
@@ -61,12 +61,12 @@ diamondPlot <- function(data,
     data$colorCol <- colorCol;
     colorCol <- 'colorCol';
   }
-
+  
   if (is.null(otherAxisCol)) {
     data$otherAxisCol <- as.numeric(factor(yValues));
     otherAxisCol <- 'otherAxisCol';
   }
-
+  
   print(data);
   
   diamondLayer <- ggDiamondLayer(data, ciCols = ciCols,
@@ -83,8 +83,8 @@ diamondPlot <- function(data,
   return(ggplot() +
            diamondLayer +
            scale_y_continuous(breaks=data$otherAxisCol, minor_breaks=NULL,
-                                labels=yLabels) +
-#           scale_y_continuous(breaks=yValues, labels=yLabels) +
+                              labels=yLabels) +
+           #           scale_y_continuous(breaks=yValues, labels=yLabels) +
            theme + ylab(ylab) + xlab(xlab)) +
     theme(panel.grid.minor.y=element_blank());
 }
