@@ -12,8 +12,8 @@ ggNNC <- function(cerDataSeq, d = NULL,
                   dArrowColor = "#000000",
                   cerAlpha = .66,
                   eerAlpha = .66,
-                  xlim = NULL,
-                  xlimAutoDensityTolerance = .001,
+                  xLim = NULL,
+                  xLimAutoDensityTolerance = .001,
                   showLegend = TRUE,
                   verticalLineColor = "#172F47",
                   desirableColor = "#00FF00",
@@ -68,7 +68,7 @@ ggNNC <- function(cerDataSeq, d = NULL,
   }
 
   ### Compute sensible limits
-  densityTolerance <- xlimAutoDensityTolerance * max(cerDataSeq$density);
+  densityTolerance <- xLimAutoDensityTolerance * max(cerDataSeq$density);
   if (meanValue < newMeanValue) {
     lowestXWithDensity <- floor(max(cerDataSeq[cerDataSeq$density < densityTolerance & cerDataSeq$x < meanValue, 'x']));
     highestXWithDensity <- ceiling(min(eerDataSeq[eerDataSeq$density < densityTolerance & eerDataSeq$x > newMeanValue, 'x']));
@@ -76,11 +76,11 @@ ggNNC <- function(cerDataSeq, d = NULL,
     lowestXWithDensity <- floor(max(eerDataSeq[eerDataSeq$density < densityTolerance & eerDataSeq$x < newMeanValue, 'x']));
     highestXWithDensity <- ceiling(min(cerDataSeq[cerDataSeq$density < densityTolerance & cerDataSeq$x > meanValue, 'x']));
   }
-  if (is.null(xlim)) xlim <- c(lowestXWithDensity,
+  if (is.null(xLim)) xLim <- c(lowestXWithDensity,
                                highestXWithDensity);
 
   ### Basic plot
-  basePlot <- ggplot() + theme + xlim(xlim);
+  basePlot <- ggplot() + theme + xlim(xLim);
 
   ### Layer with CER normal curve
   if (eventIfHigher) {
