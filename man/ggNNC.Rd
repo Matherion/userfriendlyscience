@@ -5,7 +5,7 @@
 Visualising Numbers Needed for Change
 }
 \description{
-These functions can be used to visualise Numbers Needed for Change. \code{erDataSeq} is a helper function to generate an Event Rate Data Sequence.
+These functions can be used to visualise Numbers Needed for Change. \code{erDataSeq} is a helper function to generate an Event Rate Data Sequence, and it uses \code{convert.threshold.to.er} and \code{convert.er.to.threshold} to convert thresholds to event rates and vice versa.
 }
 \usage{
 erDataSeq(er = NULL, threshold = NULL,
@@ -30,11 +30,20 @@ ggNNC(cerDataSeq, d = NULL, eventDesirable = TRUE,
       undesirableTextColor = "#990000",
       dArrowDistance = 0.04 * max(cerDataSeq$density),
       dLabelDistance = 0.08 * max(cerDataSeq$density))
+      
+convert.threshold.to.er(threshold, mean, sd,
+                        eventIfHigher = TRUE,
+                        pdist = pnorm)
+
+convert.er.to.threshold(er, mean, sd,
+                        eventIfHigher = TRUE,
+                        qdist = qnorm)
+
 }
 
 \arguments{
   \item{er}{
-  Event rate to visualise.
+  Event rate to visualise (or convert).
 }
   \item{threshold}{
   If the event rate is not available, a threshold value can be specified
@@ -146,6 +155,10 @@ ggNNC(cerDataSeq, d = NULL, eventDesirable = TRUE,
 }
   \item{dLabelDistance}{
   The distance of the effect size label from the top of the distributions.
+}
+  \item{pdist, qdist}{
+  Distributions to use when converting thresholds to event rates and vice
+  versa; defaults to the normal distribution.
 }
 }
 \details{

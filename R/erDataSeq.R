@@ -19,8 +19,7 @@ erDataSeq <- function(er = NULL, threshold = NULL, mean = NULL, sd = NULL,
                                   mean = mean,
                                   sd = sd,
                                   eventIfHigher = eventIfHigher);
-
-  if (is.null(threshold)) {
+  } else if (is.null(threshold)) {
     if (is.null(mean) && is.null(sd)) {
       mean <- 0;
       sd <- 1;
