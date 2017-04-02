@@ -30,8 +30,9 @@ ggDiamondLayer <- function(data,
                                               from = fullColorRange);
     colorPositionCol <- ncol(data);
     colorPaletteFunction <- colorRamp(generateColors);
-    data[!is.na(colorPositionCol), ncol(data) + 1] <-
-      rgb(colorPaletteFunction(data[!is.na(colorPositionCol), colorPositionCol]) / 256);
+
+    data[!is.na(data[, colorPositionCol]), ncol(data) + 1] <-
+      rgb(colorPaletteFunction(data[!is.na(data[, colorPositionCol]), colorPositionCol]) / 256);
     colorCol <- ncol(data);
 
   }
