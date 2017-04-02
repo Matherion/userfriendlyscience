@@ -1,6 +1,8 @@
 \name{ggNNC}
 \alias{ggNNC}
 \alias{erDataSeq}
+\alias{convert.threshold.to.er}
+\alias{convert.er.to.threshold}
 \title{
 Visualising Numbers Needed for Change
 }

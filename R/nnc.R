@@ -120,7 +120,7 @@ nnc <- function(d = NULL, cer = NULL, r = 1,
              "of the lower and upper confidence interval bounds (", formatR(r), ") for the plot!\n");
     }
 
-    plot <- ggNNC(erDataSeq(er=cer, meanValue=meanValue, sd=sd, eventIfHigher=eventIfHigher),
+    plot <- ggNNC(erDataSeq(er=cer, mean=meanValue, sd=sd, eventIfHigher=eventIfHigher),
                   eventDesirable = eventDesirable,
                   d=d, r=r);
     if (returnPlot) {
