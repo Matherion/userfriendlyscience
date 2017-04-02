@@ -33,8 +33,6 @@ ggNNC <- function(cerDataSeq, d = NULL,
   eventIfHigher <- attr(cerDataSeq, 'eventIfHigher');
   
   cer <- attr(cerDataSeq, 'er');
-  
-  cer <- ifelse(eventIfHigher, 1 - cer, cer);
 
   if (!is.null(d)) d <- convert.r.to.d(convert.d.to.r(d) * r);
   if (!is.null(d)) {
@@ -47,8 +45,8 @@ ggNNC <- function(cerDataSeq, d = NULL,
   if (is.null(d)) d <- 0;
 
   sd <- attr(cerDataSeq, 'sd');
-  cerValue <- attr(cerDataSeq, 'erValue');
-  meanValue <- attr(cerDataSeq, 'meanValue');
+  cerValue <- attr(cerDataSeq, 'threshold');
+  meanValue <- attr(cerDataSeq, 'mean');
   eerDataSeq <- cerDataSeq;
   eerDataSeq$x <- eerDataSeq$x + d * sd;
   newMeanValue <- meanValue + d * sd;

@@ -8,8 +8,8 @@ Visualising Numbers Needed for Change
 These functions can be used to visualise Numbers Needed for Change. \code{erDataSeq} is a helper function to generate an Event Rate Data Sequence.
 }
 \usage{
-erDataSeq(er = NULL, erValue = NULL,
-          meanValue = NULL, sd = NULL,
+erDataSeq(er = NULL, threshold = NULL,
+          mean = NULL, sd = NULL,
           eventIfHigher = TRUE,
           pRange = c(1e-06, 0.99999),
           xStep = 0.01)
@@ -36,14 +36,14 @@ ggNNC(cerDataSeq, d = NULL, eventDesirable = TRUE,
   \item{er}{
   Event rate to visualise.
 }
-  \item{erValue}{
+  \item{threshold}{
   If the event rate is not available, a threshold value can be specified
   instead, which is then used in conjunction with the mean
-  (\code{meanValue}) and standard deviation (\code{sd}) and assuming
+  (\code{mean}) and standard deviation (\code{sd}) and assuming
   a normal distribution to compute the event rate.
   
 }
-  \item{meanValue}{
+  \item{mean}{
   The mean of the control group distribution.
 }
   \item{sd}{
@@ -169,25 +169,25 @@ Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \examples{
 ### Show distribution for an event rate value of 125
-ggNNC(erDataSeq(erValue=125, meanValue=90, sd=30));
+ggNNC(erDataSeq(threshold=125, mean=90, sd=30));
 
 ### If the event occurs under the threshold instead of
 ### above it
-ggNNC(erDataSeq(erValue=125, meanValue=90, sd=30,
+ggNNC(erDataSeq(threshold=125, mean=90, sd=30,
       eventIfHigher = FALSE));
 
 ### ... And for undesirable events (note how
 ### desirability is an argument for ggNNC, whereas
 ### whether an event occurs 'above' or 'below' the
 ### threshold is an argument for erDataSeq):
-ggNNC(erDataSeq(erValue=125, meanValue=90, sd=30,
+ggNNC(erDataSeq(threshold=125, mean=90, sd=30,
                 eventIfHigher = FALSE),
       eventDesirable = FALSE);
 
 ### Show event rate for both experimental and
 ### control conditions, and show the numbers
 ### needed for change
-ggNNC(erDataSeq(erValue=125, meanValue=90, sd=30), d=.5);
+ggNNC(erDataSeq(threshold=125, mean=90, sd=30), d=.5);
 
 ### Illustration of how even with very large effect
 ### sizes, if the control event rate is very high,
