@@ -9,7 +9,7 @@ ggDiamondLayer <- function(data,
                            autoSize=NULL,
                            fixedSize=.15,
                            ...) {
-  
+
   ### Set column with y axis values
   if (length(otherAxisCol) > 1) {
     data[, 'otherAxisValues'] <- otherAxisCol;
@@ -30,7 +30,8 @@ ggDiamondLayer <- function(data,
                                               from = fullColorRange);
     colorPositionCol <- ncol(data);
     colorPaletteFunction <- colorRamp(generateColors);
-    data[, ncol(data) + 1] <- rgb(colorPaletteFunction(data[, colorPositionCol]) / 256);
+    data[!is.na(colorPositionCol), ncol(data) + 1] <-
+      rgb(colorPaletteFunction(data[!is.na(colorPositionCol), colorPositionCol]) / 256);
     colorCol <- ncol(data);
 
   }
