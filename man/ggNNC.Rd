@@ -109,12 +109,12 @@ ggNNC(cerDataSeq, d = NULL, eventDesirable = TRUE,
   \item{eerAlpha}{
   The alpha value (transparency) to use for the control group distribution.
 }
-  \item{xlim}{
+  \item{xLim}{
   This can be used to manually specify the limits for the X axis; if
-  \code{NULL}, sensible limits will be derived using \code{xlimAutoDensityTolerance}.
+  \code{NULL}, sensible limits will be derived using \code{xLimAutoDensityTolerance}.
 }
-  \item{xlimAutoDensityTolerance}{
-  If \code{xlim} is \code{NULL}, the limits will be set where the density
+  \item{xLimAutoDensityTolerance}{
+  If \code{xLim} is \code{NULL}, the limits will be set where the density
   falls below this proportion of its maximum value.
 }
   \item{showLegend}{
