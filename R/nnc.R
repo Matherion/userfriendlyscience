@@ -1,8 +1,8 @@
 nnc <- function(d = NULL, cer = NULL, r = 1,
+                threshold = NULL, mean = 0, sd = 1,
                 eventDesirable = TRUE, eventIfHigher = TRUE,
                 d.ci = NULL, cer.ci = NULL, r.ci=NULL,
                 d.n = NULL, cer.n = NULL, r.n = NULL, plot = TRUE,
-                meanValue = 0, sd = 1,
                 returnPlot = TRUE, silent=FALSE) {
 
   if (is.null(d)) {
@@ -12,10 +12,11 @@ nnc <- function(d = NULL, cer = NULL, r = 1,
          "Of course, replace '3.2' and '98' with your t value and the degrees of freedom.");
   }
 
-  if (is.null(cer)) {
+  if (is.null(cer) && is.null(threshold)) {
     if (!silent) {
-      warning("You did not specify a Control Event Rate (CER, argument 'cer'). I will use ",
-              "Kraemer & Kupfer's approach.");
+      warning("You did not specify a Control Event Rate (CER, argument 'cer'). I will assume ",
+              "a Control Event Rate of 50% (cer = .5).");
+      cer <- .5;
     }
   } else {
     if (length(cer) > 1) {
@@ -32,6 +33,13 @@ nnc <- function(d = NULL, cer = NULL, r = 1,
 
   if (!is.null(r.ci) && (r == 1)) r <- NULL;
 
+  ### Compute CER if it was not specified
+  if (is.null(cer) && !is.null(threshold)) {
+    cer <- convert.threshold.to.er(threshold = threshold,
+                                   mean = mean,
+                                   sd = sd);
+  }
+  
   ### Compute confidence intervals if we can
   if (is.null(d.ci) && !is.null(d.n))
     d.ci <- cohensdCI(d=d, n = sum(d.n));
@@ -120,7 +128,7 @@ nnc <- function(d = NULL, cer = NULL, r = 1,
              "of the lower and upper confidence interval bounds (", formatR(r), ") for the plot!\n");
     }
 
-    plot <- ggNNC(erDataSeq(er=cer, mean=meanValue, sd=sd, eventIfHigher=eventIfHigher),
+    plot <- ggNNC(erDataSeq(er=cer, mean=mean, sd=sd, eventIfHigher=eventIfHigher),
                   eventDesirable = eventDesirable,
                   d=d, r=r);
     if (returnPlot) {

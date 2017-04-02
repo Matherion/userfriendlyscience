@@ -9,11 +9,11 @@ visualisation to illustrate them.
 }
 \usage{
 nnc(d = NULL, cer = NULL, r = 1,
+    threshold = NULL, mean = 0, sd = 1,
     eventDesirable = TRUE, eventIfHigher = TRUE,
     d.ci = NULL, cer.ci = NULL, r.ci = NULL,
     d.n = NULL, cer.n = NULL, r.n = NULL,
-    plot = TRUE, meanValue = 0, sd = 1,
-    returnPlot = TRUE, silent = FALSE)
+    plot = TRUE, returnPlot = TRUE, silent = FALSE)
 }
 \arguments{
   \item{d}{
@@ -25,6 +25,20 @@ nnc(d = NULL, cer = NULL, r = 1,
   \item{r}{
   The correlation between the determinant and behavior (for mediated
   Numbers Needed for Change).
+}
+  \item{threshold}{
+  If the event rate is not available, a threshold value can be specified
+  instead, which is then used in conjunction with the mean
+  (\code{mean}) and standard deviation (\code{sd}) and assuming
+  a normal distribution to compute the event rate.
+}
+  \item{mean}{
+  The mean value, used to draw the plot, or, if no CER is provided but
+  instead the threshold value, to compute the CER.
+}
+  \item{sd}{
+  The standard deviation, used to draw the plot (and to compute the CER
+  if a threshold value is supplied instead of the CER).
 }
   \item{eventDesirable}{
   Whether an event is desirable or undesirable.
@@ -62,12 +76,6 @@ nnc(d = NULL, cer = NULL, r = 1,
 }
   \item{plot}{
   Whether to generate and show the plot.
-}
-  \item{meanValue}{
-  The mean value, used to draw the plot,
-}
-  \item{sd}{
-  The standard deviation, used to draw the plot.
 }
   \item{returnPlot}{
   Whether to return the plot (as an attribute), or to only display it.

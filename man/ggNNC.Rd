@@ -52,7 +52,6 @@ convert.er.to.threshold(er, mean, sd,
   instead, which is then used in conjunction with the mean
   (\code{mean}) and standard deviation (\code{sd}) and assuming
   a normal distribution to compute the event rate.
-  
 }
   \item{mean}{
   The mean of the control group distribution.
