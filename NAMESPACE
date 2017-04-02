@@ -216,7 +216,8 @@ S3method(print, testRetestReliability);
 S3method(print, therapyMonitor);
 S3method(print, therapyMonitor.multi);
 S3method(print, cohensdCI);
-S3method(print, determinantStructure)
+S3method(print, determinantStructure);
+S3method(print, nnc);
 
 S3method(pander, crossTab);
 S3method(pander, dataShape);
@@ -247,7 +248,7 @@ importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
            "quantile", "reshape", "sd", "shapiro.test", "t.test",
            "terms", "var", "var.test", "runif",
            "ppoints", "IQR", "oneway.test",
-           "influence.measures")
+           "influence.measures", "prop.test")
 importFrom("utils", "capture.output", "chooseCRANmirror", "combn",
            "head", "install.packages", "installed.packages",
            "packageVersion", "read.csv", "read.delim", "tail",
@@ -299,7 +300,7 @@ importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes
            'stat_summary', 'labs', 'xlab', 'ylab', 'rel', 'theme_bw', 'scale_y_reverse',
            'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'coord_flip', 'guides',
            'guide_legend', 'geom_polygon', 'geom_boxplot', 'geom_ribbon', 'geom_abline',
-           'geom_segment',
+           'geom_segment', 'geom_rect', 'scale_fill_manual',
            'geom_text', 'aes_q', 'qplot', 'scale_colour_gradient',
            'scale_x_continuous', 'scale_y_continuous', 'geom_vline', 'geom_hline',
            'ggplot_gtable', 'ggplotGrob', 'sec_axis', 'dup_axis');
@@ -307,7 +308,7 @@ importFrom('GGally', 'ggpairs', 'getPlot', 'putPlot', 'wrap');
 importFrom('gtable', 'gtable_add_grob', 'gtable_add_cols',
            'gtable_filter');
 importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.layout',
-           'textGrob', 'grid.rect', 'gpar', 'grid.draw',
+           'textGrob', 'grid.rect', 'gpar', 'grid.draw', 'arrow',
            'convertUnit', 'grobWidth', 'grobTree');
 importFrom('gridExtra', 'arrangeGrob', 'grid.arrange');
 importFrom('ggrepel', 'geom_text_repel')
