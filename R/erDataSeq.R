@@ -10,7 +10,7 @@ erDataSeq <- function(er = NULL, erValue = NULL, meanValue = NULL, sd = NULL,
   if (is.null(er)) {
     ### Determine er from erValue
     if (is.null(meanValue) || is.null(sd)) {
-      stop("When I need to derive the er from the cut-off value, ",
+      stop("When I need to derive the er from the threshold value, ",
            "you must also provide me with the mean and the standard ",
            "deviation!");
     }
@@ -26,18 +26,20 @@ erDataSeq <- function(er = NULL, erValue = NULL, meanValue = NULL, sd = NULL,
   }
 
   if (is.null(erValue)) {
-    if (is.null(meanValue)) {
-      stop("If not providing a erValue, you must provide a mean!");
-    }
-    if (is.null(sd)) {
-      stop("If not providing a erValue, you must provide a standard deviation!");
+    if (is.null(meanValue) && is.null(sd)) {
+      meanValue <- 0;
+      sd <- 1;
+    } else if (is.null(meanValue)) {
+      stop("If providing an event rate (er) and a standard deviation, you must also provide a mean value!");
+    } else if (is.null(sd)) {
+      stop("If providing an event rate (er) and a mean value, you must also provide a standard deviation!");
     }
     erValue <- meanValue + z * sd;
   }
 
   if (is.null(meanValue)) {
     if (is.null(erValue)) {
-      stop("If not providing a mean, you must provide a erValue!");
+      stop("If not providing a mean, you must provide an erValue!");
     }
     if (is.null(sd)) {
       stop("If not providing a mean, you must provide a standard deviation!");
@@ -55,6 +57,7 @@ erDataSeq <- function(er = NULL, erValue = NULL, meanValue = NULL, sd = NULL,
   attr(res, 'er') <- er;
   attr(res, 'erValue') <- erValue;
   attr(res, 'meanValue') <- meanValue;
+  attr(res, 'eventIfHigher') <- eventIfHigher;
   attr(res, 'sd') <- sd;
 
   class(res) <- c('erDataSeq', class(res));

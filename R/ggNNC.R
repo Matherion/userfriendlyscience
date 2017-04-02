@@ -1,6 +1,5 @@
 ggNNC <- function(cerDataSeq, d = NULL,
                   eventDesirable = TRUE,
-                  eventIfHigher = TRUE,
                   r = 1,
                   xlab = "Continuous outcome",
                   plotTitle = c("Numbers Needed for Change = ", ""),
@@ -31,11 +30,16 @@ ggNNC <- function(cerDataSeq, d = NULL,
          "the result of a call to function 'erDataSeq' (see ?erDataSeq for help).");
   }
 
+  eventIfHigher <- attr(cerDataSeq, 'eventIfHigher');
+  
   cer <- attr(cerDataSeq, 'er');
+  
+  cer <- ifelse(eventIfHigher, 1 - cer, cer);
 
   if (!is.null(d)) d <- convert.r.to.d(convert.d.to.r(d) * r);
   if (!is.null(d)) {
-    eer <- convert.d.to.eer(d, cer, eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
+    eer <- convert.d.to.eer(d, cer,
+                            eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
   } else {
     eer <- cer;
   }
@@ -52,7 +56,9 @@ ggNNC <- function(cerDataSeq, d = NULL,
   eerValueDensity <- eerDataSeq[eerDataSeq$x == max(eerDataSeq[eerDataSeq$x < cerValue, 'x']), 'density'];
   cerLabel <- paste0("CER = ", round(100*cer, 2), ifelse(d != 0, "%    ", "%"));
   eerLabel <- paste0("EER = ", round(100*eer, 2), "%");
-  nnc <- nnc(d = d, cer = cer, eventDesirable=eventDesirable, eventIfHigher=eventIfHigher, plot=FALSE);
+  nnc <- nnc(d = d, cer = cer,
+             eventDesirable=eventDesirable, eventIfHigher=eventIfHigher,
+             plot=FALSE);
   if (!is.null(plotTitle)) {
     if (length(plotTitle) == 2) {
       plotTitle <- paste0(plotTitle[1], round(nnc, 2), plotTitle[2]);
@@ -169,7 +175,10 @@ ggNNC <- function(cerDataSeq, d = NULL,
   basePlot <- basePlot +
     eventBarNoEvent + eventBarEvent +
     eventBarNoEventText + eventBarEventText;
-  if (d>0) {
+  if (d == 0) {
+    basePlot <- basePlot + cerFill + cerOutline + cerLine + zeroLine +
+      scale_fill_manual(values = c(cerColor), name="");
+  } else if (d>0) {
     basePlot <- basePlot + eerFill + eerOutline + eerLine +
       cerFill + cerOutline + cerLine;
     basePlot <- basePlot + dArrow + dText + zeroLine +
@@ -180,14 +189,14 @@ ggNNC <- function(cerDataSeq, d = NULL,
     basePlot <- basePlot + dArrow + dText + zeroLine +
       scale_fill_manual(values = c(cerColor, eerColor), name="");
   }
-  if (showLegend) {
+  if (showLegend && d!=0) {
     basePlot <- basePlot +
       guides(fill=guide_legend(override.aes=list(color=c(cerLineColor, eerLineColor), size=lineSize))) +
       theme(legend.position="top");
   } else {
     basePlot <- basePlot + theme(legend.position="none");
   }
-  if (!is.null(plotTitle)) {
+  if (!is.null(plotTitle) && (d!=0)) {
     basePlot <- basePlot + ggtitle(plotTitle);
   }
   return(basePlot + xlab(xlab) + ylab('Density'));

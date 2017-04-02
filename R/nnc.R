@@ -34,11 +34,11 @@ nnc <- function(d = NULL, cer = NULL, r = 1,
 
   ### Compute confidence intervals if we can
   if (is.null(d.ci) && !is.null(d.n))
-    d.ci <- cohensdCI(d=d, n = sum(n.d));
+    d.ci <- cohensdCI(d=d, n = sum(d.n));
   if (is.null(cer.ci) && !is.null(cer.n))
     cer.ci <- prop.test(cer*cer.n, cer.n)$conf.int[1:2]
   if (is.null(r.ci) && !is.null(r.n))
-    r.ci <- confIntR(r=r, n = r.n);
+    r.ci <- confIntR(r=r, N = r.n);
 
   ### Where we were unable to compute confidence intervals, just take the
   ### point estimate as both lower and upper bounds
@@ -122,7 +122,6 @@ nnc <- function(d = NULL, cer = NULL, r = 1,
 
     plot <- ggNNC(erDataSeq(er=cer, meanValue=meanValue, sd=sd, eventIfHigher=eventIfHigher),
                   eventDesirable = eventDesirable,
-                  eventIfHigher = eventIfHigher,
                   d=d, r=r);
     if (returnPlot) {
       attr(res, 'plot') <- plot;
