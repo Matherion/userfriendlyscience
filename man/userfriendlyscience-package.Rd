@@ -68,10 +68,13 @@ data(testRetestSimData);
 exampleData <- testRetestSimData[2:6];
 
 ### Show reliabilities
-scaleStructure(dat=exampleData);
+scaleStructure(dat=exampleData, ci=FALSE);
 
 ### Create a dichotomous variable
 exampleData$group <- cut(exampleData$t0_item2, 2);
+
+### Show item distributions and means
+meansDiamondPlot(exampleData);
 
 ### Show a dlvPlot
 dlvPlot(exampleData, x="group", y="t0_item1");

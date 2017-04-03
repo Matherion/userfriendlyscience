@@ -7,7 +7,7 @@ scaleStructure
 \description{
 The scaleStructure function (which was originally called scaleReliability) computes a number of measures to assess scale reliability and internal consistency.
 
-If you use this function in an academic paper, please cite Peters (2014), where the function is introduced.
+If you use this function in an academic paper, please cite Peters (2014), where the function is introduced, and/or Crutzen & Peters (2015), where the function is discussed from a broader perspective.
 }
 \usage{
 scaleStructure(dat=NULL, items = 'all', digits = 2, ci = TRUE,
@@ -104,13 +104,15 @@ An object with the input and several output variables. Most notably:
   \code{\link{omega}}, \code{\link{alpha}}, and \code{\link{ci.reliability}}.
 }
 \references{
+Crutzen, R., & Peters, G.-J. Y. (2015). Scale quality: alpha is an inadequate estimate and factor-analytic evidence is needed first of all. \emph{Health Psychology Review.} http://dx.doi.org/10.1080/17437199.2015.1124240
+
 Dunn, T. J., Baguley, T., & Brunsden, V. (2014). From alpha to omega: A practical solution to the pervasive problem of internal consistency estimation. \emph{British Journal of Psychology}, 105(3), 399-412. doi:10.1111/bjop.12046
 
 Eisinga, R., Grotenhuis, M. Te, & Pelzer, B. (2013). The reliability of a two-item scale: Pearson, Cronbach, or Spearman-Brown? \emph{International Journal of Public Health}, 58(4), 637-42. doi:10.1007/s00038-012-0416-3
 
 Gadermann, A. M., Guhn, M., Zumbo, B. D., & Columbia, B. (2012). Estimating ordinal reliability for Likert-type and ordinal item response data: A conceptual, empirical, and practical guide. \emph{Practical Assessment, Research & Evaluation}, 17(3), 1-12.
 
-Peters, G.-J. Y. (2014). The alpha and the omega of scale reliability and validity: why and how to abandon Cronbach's alpha and the route towards more comprehensive assessment of scale quality. \emph{European Health Psychologist}, 16(2), 56-69.
+Peters, G.-J. Y. (2014). The alpha and the omega of scale reliability and validity: why and how to abandon Cronbach's alpha and the route towards more comprehensive assessment of scale quality. \emph{European Health Psychologist}, 16(2), 56-69. \url{http://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p56/1}
 
 Revelle, W., & Zinbarg, R. E. (2009). Coefficients Alpha, Beta, Omega, and the glb: Comments on Sijtsma. \emph{Psychometrika}, 74(1), 145-154. doi:10.1007/s11336-008-9102-z
 
@@ -126,9 +128,11 @@ Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 \examples{
 
 \dontrun{
+### (These examples take a lot of time, so they are not run
+###  during testing.)
+
 ### This will prompt the user to select an SPSS file
 scaleStructure();
-}
 
 ### Load data from simulated dataset testRetestSimData (which
 ### satisfies essential tau-equivalence).
@@ -137,8 +141,9 @@ data(testRetestSimData);
 ### Select some items in the first measurement
 exampleData <- testRetestSimData[2:6];
 
-### Use all items
-scaleStructure(dat=exampleData);
+### Use all items (don't order confidence intervals to save time
+### during automated testing of the example)
+scaleStructure(dat=exampleData, ci=FALSE);
 
 ### Use a selection of three variables (without confidence
 ### intervals to save time
@@ -152,6 +157,7 @@ ordinalExampleData <- data.frame(apply(exampleData, 2, cut,
 
 ### Now we also get estimates assuming the ordinal measurement level
 scaleStructure(ordinalExampleData, ci=FALSE);
+}
 
 }
 \keyword{ utilities }
