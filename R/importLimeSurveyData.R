@@ -10,7 +10,7 @@ importLimeSurveyData <- function(datafile = NULL,
                                    "attributes\\(data\\)\\$variable.labels\\[\\d*\\] <- \".*\"",
                                  limeSurveyRegEx.toFactor =
                                    paste0("data\\[, \\d*\\] <- factor\\(data\\[, \\d*\\], ",
-                                          "levels=c\\(.*\\),labels=c\\(.*\\)\\)"),
+                                          "levels=c\\(.*\\),.*labels=c\\(.*\\)\\)"),
                                  limeSurveyRegEx.varNameSanitizing =
                                    list(list(pattern = "#", replacement = "."),
                                         list(pattern = "\\$", replacement = ".")),
@@ -81,6 +81,7 @@ importLimeSurveyData <- function(datafile = NULL,
                                      datascript)];
     toFactorScript <- datascript[grepl(limeSurveyRegEx.toFactor,
                                        datascript)];
+    
     if (setVarNames) {
       eval(parse(text=varNamesScript));
     }
