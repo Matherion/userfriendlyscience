@@ -67,8 +67,11 @@ data(testRetestSimData);
 ### Select some items in the first measurement
 exampleData <- testRetestSimData[2:6];
 
+\dontrun{
 ### Show reliabilities
-scaleStructure(dat=exampleData, ci=FALSE);
+scaleStructure(dat=exampleData, ci=FALSE,
+               omega.psych=FALSE, poly=FALSE);
+}
 
 ### Create a dichotomous variable
 exampleData$group <- cut(exampleData$t0_item2, 2);
