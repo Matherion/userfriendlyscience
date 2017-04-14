@@ -2,7 +2,7 @@ confIntR <- function(r, N, conf.level = .95) {
   if ((r < -1) || (r > 1)) {
     stop("The specified observed correlation (argument 'r') must be between -1 and 1.");
   }
-  if ((conf.level < 0.01) || (conf.level >= 1)) {
+  if ((conf.level < 0.0001) || (conf.level >= 1)) {
     stop("The specified desired confidence level (argument 'conf.level') must be between 0 and 1.");
   }
   if (N < 4) {
@@ -13,8 +13,8 @@ confIntR <- function(r, N, conf.level = .95) {
   zr <- log((1 + r)/(1 - r))/2;
   LL0 <- zr - Z*se;
   UL0 <- zr + Z*se;
-  LL <- (exp(2*LL0) - 1)/(exp(2*LL0) + 1);
-  UL <- (exp(2*UL0) - 1)/(exp(2*UL0) + 1);
+  LL <- max(0, (exp(2*LL0) - 1)/(exp(2*LL0) + 1));
+  UL <- min(1, (exp(2*UL0) - 1)/(exp(2*UL0) + 1));
   CI2w <- UL - LL;
   CI <- matrix(c(LL, UL), byrow=TRUE, ncol=2);
   rownames(CI) <- r;
