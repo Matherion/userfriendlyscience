@@ -1,6 +1,6 @@
 ggConfidenceCurve <- function(metric = 'd', value = .5, n = 128,
                               conf.level=NULL,
-                              wRange = c(.05, 1),
+                              wRange = c(.05, .8),
                               confRange = c(.0001, .9999),
                               steps=1000,
                               theme=theme_bw()) {
