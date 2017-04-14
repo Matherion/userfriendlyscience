@@ -58,6 +58,3 @@ ggConfidenceCurve <- function(metric = 'd', value = .5, n = 128,
   plot <- plot + theme;
   return(plot);
 }
-
-require(ggplot2);
-print(confidenceCurve());
