@@ -24,17 +24,17 @@ pwr.cohensdCI <- pwr.confIntd <- function(d, w=.1, conf.level=.95, extensive = F
   upperBound <- abs(d) + abs(w);
   n <- numeric();
   for (di in 1:length(d)) {
-    n[di] <- 20;
-    withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, n[di]-2, populationD=d[di], lower.tail=TRUE) ||
-                               upperBound[di] < qCohensd(upperP, n[di]-2, populationD=d[di], lower.tail=FALSE)) {
+    n[di] <- 4;
+    withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, df=n[di]-2, populationD=d[di], lower.tail=TRUE) ||
+                               upperBound[di] < qCohensd(upperP, df=n[di]-2, populationD=d[di], lower.tail=FALSE)) {
       n[di] <- n[di] + 100;
     }, warning = wHandler);
-    n[di] <- n[di] - 100;
-    withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, n[di]-2, populationD=d[di], lower.tail=TRUE) ||
-                               upperBound[di] < qCohensd(upperP, n[di]-2, populationD=d[di], lower.tail=FALSE)) {
+    if (n[di] > 100) n[di] <- n[di] - 100;
+    withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, df=n[di]-2, populationD=d[di], lower.tail=TRUE) ||
+                               upperBound[di] < qCohensd(upperP, df=n[di]-2, populationD=d[di], lower.tail=FALSE)) {
       n[di] <- n[di] + 10;
     }, warning = wHandler);
-    n[di] <- n[di] - 10;
+    if (n[di] > 10) n[di] <- n[di] - 10;
     withCallingHandlers(while (lowerBound[di] > qCohensd(lowerP, n[di]-2, populationD=d[di], lower.tail=TRUE) ||
                                upperBound[di] < qCohensd(upperP, n[di]-2, populationD=d[di], lower.tail=FALSE)) {
       n[di] <- n[di] + 1;
