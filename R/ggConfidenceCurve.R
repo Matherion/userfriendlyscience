@@ -1,4 +1,4 @@
-confidenceCurve <- function(metric = 'd', value = .5, n = 128,
+ggConfidenceCurve <- function(metric = 'd', value = .5, n = 128,
                             conf.level=NULL,
                             wRange = c(.05, 1),
                             confRange = c(.0001, .9999),
