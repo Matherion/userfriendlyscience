@@ -39,7 +39,7 @@ Douglas Bonett (UC Santa Cruz, United States), with minor edits by Murray Moines
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \seealso{
-\code{\link{pwr.confIntR}}
+\code{\link{confIntR}}
 }
 \examples{
   
