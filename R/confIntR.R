@@ -13,8 +13,8 @@ confIntR <- function(r, N, conf.level = .95) {
   zr <- log((1 + r)/(1 - r))/2;
   LL0 <- zr - Z*se;
   UL0 <- zr + Z*se;
-  LL <- max(0, (exp(2*LL0) - 1)/(exp(2*LL0) + 1));
-  UL <- min(1, (exp(2*UL0) - 1)/(exp(2*UL0) + 1));
+  LL <- (exp(2*LL0) - 1)/(exp(2*LL0) + 1);
+  UL <- (exp(2*UL0) - 1)/(exp(2*UL0) + 1);
   CI2w <- UL - LL;
   CI <- matrix(c(LL, UL), byrow=TRUE, ncol=2);
   rownames(CI) <- r;
