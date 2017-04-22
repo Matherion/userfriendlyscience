@@ -9,17 +9,17 @@
 ### Function for the t-test
 computeStatistic_t <- function(var1, var2, conf.level=.95,
                                var.equal='test', ...) {
+
   if (nlevels(as.factor(var1)) == 2) {
     dichotomous <- factor(var1);
     interval <- var2;
-  }
-  else if (nlevels(as.factor(var2)) == 2) {
+  } else if (nlevels(as.factor(var2)) == 2) {
     dichotomous <- factor(var2);
     interval <- var1;
-  }
-  else {
+  } else {
     stop("Error: none of the two variables has only two levels!");
   }
+
   res <- list();
   res$object <- meanDiff(interval ~ dichotomous, conf.level = conf.level,
                          envir=environment(), var.equal=var.equal);
@@ -45,7 +45,7 @@ computeStatistic_r <- function(var1, var2, conf.level=.95,
 ### Function for Anova (f)
 computeStatistic_f <- function(var1, var2, conf.level=.95,
                                ...) {
-  
+
   if (is.factor(var1) & is.numeric(var2)) {
     factor <- var1;
     dependent <- var2;
@@ -61,17 +61,17 @@ computeStatistic_f <- function(var1, var2, conf.level=.95,
     factor <- factor(var2);
     dependent <- as.numeric(var1);
   }
-  
+
   ### In the future perhaps include tests of
   ### homogeneity of variances:
   #bartlett.test(dependent ~ factor);
   #fligner.test(dependent ~ factor);
   #safeRequire('car');
   #levene.test(dependent ~ factor);
-  
+
   res <- list();
   res$object <- aov(dependent ~ factor);
-  
+
   res$statistic <- summary(res$object)[[1]][['F value']][1];
   res$statistic.type <- "f";
   res$parameter <- c(summary(res$object)[[1]][['Df']]);
@@ -95,11 +95,11 @@ computeStatistic_chisq <- function(var1, var2, conf.level=.95,
 ### Effect size Cohens d
 computeEffectSize_d <- function(var1, var2, conf.level=.95,
                                 var.equal="test", ...) {
-  if (length(unique(var1)) == 2) {
+  if (length(unique(na.omit(var1))) == 2) {
     dichotomous <- factor(var1);
     interval <- var2;
   }
-  else if (length(unique(var2)) == 2) {
+  else if (length(unique(na.omit(var2))) == 2) {
     dichotomous <- factor(var2);
     interval <- var1;
   }
@@ -130,7 +130,7 @@ computeEffectSize_r <- function(var1, var2, conf.level=.95,
 ### Function for eta squared (etasq)
 computeEffectSize_etasq <- function(var1, var2, conf.level=.95,
                                     ...) {
-  
+
   if (is.factor(var1) & is.numeric(var2)) {
     factor <- var1;
     dependent <- var2;
@@ -147,22 +147,22 @@ computeEffectSize_etasq <- function(var1, var2, conf.level=.95,
     factor <- factor(var2);
     dependent <- as.numeric(var1);
   }
-  
+
   res <- list();
 
   ### Confidence level should be doubled (i.e. unconfidence level
   ### should be doubled to be more precise), so .95 becomes .90 ->
   ### see http://daniellakens.blogspot.nl/2014/06/calculating-confidence-intervals-for.html
   ### for a brief explanation and links to more extensive explanations.
-  
+
   res$realConfidence <- 1 - ((1-conf.level) * 2);
-  
+
   res$object.aov <- aov(dependent ~ factor);
-  
+
   df_num <- summary(res$object.aov)[[1]][1,1];
   df_den <- summary(res$object.aov)[[1]][2,1];
   f_val <- summary(res$object.aov)[[1]][1,4];
-  
+
   ### This is suggested by the page at
   ### http://yatani.jp/HCIstats/ANOVA#RCodeOneWay
   ### (capture.output used because this function for
@@ -177,15 +177,15 @@ computeEffectSize_etasq <- function(var1, var2, conf.level=.95,
   ###      of close fit in the analysis of variance and
   ###      contrast analysis. Psychological methods, 9(2),
   ###      164-82. doi:10.1037/1082-989X.9.2.164
-  
+
   res$es <- df_num*f_val/(df_den + df_num*f_val);
   res$es.type <- "etasq";
   capture.output(res$object <- ci.pvaf(F.value=f_val, df.1=df_num, df.2=df_den,
                         N=(df_den+df_num+1), conf.level=res$realConfidence));
-  
+
   res$ci <- c(res$object$Lower.Limit.Proportion.of.Variance.Accounted.for,
               res$object$Upper.Limit.Proportion.of.Variance.Accounted.for);
-  
+
   return(res);
 }
 
@@ -193,13 +193,13 @@ computeEffectSize_etasq <- function(var1, var2, conf.level=.95,
 ### Function for omega squared (etasq)
 computeEffectSize_omegasq <- function(var1, var2, conf.level=.95,
                                       ...) {
-  
+
   res$object <- confIntOmegaSq(var1, var2, conf.level=conf.level);
-  
+
   res$es <- res$object$output$es;
   res$es.type <- "omegasq";
   res$ci <- res$object$output$ci;
-  
+
   return(res);
 }
 
@@ -285,7 +285,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
                               statistic = associationMatrixStatDefaults,
                               effectSize = associationMatrixESDefaults,
                               var.equal = "test") {
-  
+
   ### Make object to store results
   res <- list(input = as.list(environment()),
               intermediate = list(),
@@ -293,7 +293,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   res$intermediate$statistics <- list();
   res$intermediate$effectSizes <- list();
   res$intermediate$sampleSizes <- list();
-  
+
   ### If no dataframe was specified, load it from an SPSS file
   if (is.null(dat)) {
     dat <- getData(errorMessage=paste0("No dataframe specified, and no valid datafile selected in ",
@@ -309,23 +309,23 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
     }
     res$input$dat.name <- deparse(substitute(dat));
   }
-  
+
   ### If no variables are specified, take them all.
   if (is.null(x) && is.null(y)) {
     x <- names(dat);
   }
-  
+
   ### If y was accidently specified, but x wasn't, copy y to x.
   if (is.null(x) && !is.null(y)) {
     x <- y;
   }
-  
+
   ### Check whether the first vector of variable names has sufficient elements.
   if (length(x) < 1) {
     stop(paste0("Error: x vector has 0 elements or less; ",
                 "make sure to specify at least one variable name!."));
   }
-  
+
   ### Check and store the measurement level of the variables:
   ### dichotomous, nominal, ordinal, or interval
   measurementLevelsX <- vector();
@@ -341,12 +341,12 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
     else if (is.factor(dat[,curXvar])) {
       if (length(levels(dat[,curXvar])) == 2) {
         measurementLevelsX[xCounter] <- "dichotomous";
-      }        
+      }
       else if (is.ordered(dat[,curXvar])) {
         measurementLevelsX[xCounter] <- "ordinal";
       }
       else {
-        measurementLevelsX[xCounter] <- "nominal";      
+        measurementLevelsX[xCounter] <- "nominal";
       }
     }
     else {
@@ -355,7 +355,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
     }
     xCounter <- xCounter + 1;
   }
-  
+
   ### Check whether we have a second set of variables
   if (!is.null(y)) {
     ### Check whether the second vector of variable names has sufficient elements.
@@ -379,12 +379,12 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
       else if (is.factor(dat[,curYvar])) {
         if (length(levels(dat[,curYvar])) == 2) {
           measurementLevelsY[yCounter] <- "dichotomous";
-        }        
+        }
         else if (is.ordered(dat[,curYvar])) {
           measurementLevelsY[yCounter] <- "ordinal";
         }
         else {
-          measurementLevelsY[yCounter] <- "nominal";      
+          measurementLevelsY[yCounter] <- "nominal";
         }
       }
       else {
@@ -399,7 +399,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
     y <- x;
     measurementLevelsY <- measurementLevelsX;
   }
-  
+
   ### Generate vectors with row and column names
   if (colNames) {
     rowNames <- x;
@@ -409,7 +409,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
     rowNames <- paste(1:length(x), x, sep=". ");
     columnNames <- paste0(1:length(y), ".");
   }
-  
+
   ### Generate matrices for results and set row and column names
   res$output$matrix <- list();
   res$output$matrix$es <- matrix(nrow = length(x), ncol = length(y));
@@ -446,7 +446,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   res$output$raw$p <- matrix(nrow = length(x), ncol = length(y));
   rownames(res$output$raw$p) <- rowNames;
   colnames(res$output$raw$p) <- columnNames;
-  
+
   xCounter <- 1;
   for(curXvar in x) {
     ### For each row, create the object (list) that will
@@ -459,18 +459,18 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
       ### If a symmetric table was requested, don't do
       ### anything unless we're in the lower left half.
       if (!symmetric | (yCounter < xCounter)) {
-        
+
         ### Call the function to compute the statistic.
         ### Which function this is, depends on the preferences
         ### of the user (or the defaults).
         tmpFun <- match.fun(statistic[[measurementLevelsX[xCounter]]]
                                      [[measurementLevelsY[yCounter]]]);
-        res$intermediate$statistics[[curXvar]][[curYvar]] <- 
+        res$intermediate$statistics[[curXvar]][[curYvar]] <-
           tmpFun(dat[,curXvar], dat[,curYvar], conf.level = conf.level);
         ### We repeat the same trick for the effect sizes.
         tmpFun <- match.fun(effectSize[[measurementLevelsX[xCounter]]]
                             [[measurementLevelsY[yCounter]]]);
-        res$intermediate$effectSizes[[curXvar]][[curYvar]] <- 
+        res$intermediate$effectSizes[[curXvar]][[curYvar]] <-
           tmpFun(dat[,curXvar], dat[,curYvar], conf.level = conf.level,
                  var.equal = var.equal);
         res$intermediate$sampleSizes[[curXvar]][[curYvar]] <- nrow(na.omit(dat[,c(curXvar, curYvar)]));
@@ -479,7 +479,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
     }
     xCounter <- xCounter + 1;
   }
-  
+
   ### Correct p-values for multiple testing
   ### First build a matrix with the raw p-values
   res$intermediate$pvalMatrix <- matrix(nrow=length(x), ncol=length(y), dimnames=list(x, y));
@@ -508,14 +508,14 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
   ### estimates and p-values corrected for multiple testing; one with
   ### confidence intervals; and one with two rows for each variable,
   ### combining the information).
-  
+
   for(rowVar in 1:length(x)) {
     for(colVar in 1:length(y)) {
       ### If a symmetric table was requested, only fill the cells if we're
       ### in the lower left half.
       if (!symmetric | (colVar < rowVar)) {
         ### Extract and set confidence interval and then es estimate & p value
-        
+
         ### Confidence intervals
         res$output$matrix$ci[rowVar, colVar] <- paste0(
           substr(res$intermediate$effectSizes[[rowVar]][[colVar]]$es.type, 1, 1), "=[",
@@ -525,7 +525,7 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
           res$intermediate$effectSizes[[rowVar]][[colVar]]$ci[1];
         res$output$raw$ci.hi[rowVar, colVar] <-
           res$intermediate$effectSizes[[rowVar]][[colVar]]$ci[2];
-        
+
         ### Effect size
         res$output$matrix$es[rowVar, colVar] <-
           paste0(substr(res$intermediate$effectSizes[[rowVar]][[colVar]]$es.type, 1, 1), "=",
@@ -535,17 +535,17 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
           res$intermediate$effectSizes[[rowVar]][[colVar]]$es;
         res$output$raw$esType[rowVar, colVar] <-
           res$intermediate$effectSizes[[rowVar]][[colVar]]$es.type;
-        
+
         ### P values
         res$output$raw$p[rowVar, colVar] <-
           res$intermediate$statistics[[rowVar]][[colVar]]$p.adj;
-        
+
         ### Sample sizes
         res$output$matrix$sampleSizes[rowVar, colVar] <-
           res$intermediate$sampleSizes[[rowVar]][[colVar]];
         res$output$raw$n[rowVar, colVar] <-
           res$intermediate$sampleSizes[[rowVar]][[colVar]];
-        
+
         ### Convert x (row variable) to two row indices in combined matrix
         res$output$matrix$full[(rowVar*2)-1, colVar] <-
           res$output$matrix$ci[rowVar, colVar];
@@ -568,19 +568,19 @@ associationMatrix <- function(dat=NULL, x=NULL, y=NULL, conf.level = .95,
       }
     }
   }
-  
+
   ### Set class & return result
   class(res) <- c("associationMatrix");
   return(res);
 }
 
 print.associationMatrix <- function (x, type = x$input$type,
-                                     info = x$input$info, 
+                                     info = x$input$info,
                                      file = x$input$file, ...) {
-  
+
   ### Extract matrix to print (es, ci, or full)
   matrixToPrint <- x$output$matrix[[info[1]]];
-  
+
   ### Either show in R, or convert to html or latex
   if (toupper(type[1])=="R") {
     if (file=="") {
@@ -606,14 +606,14 @@ print.associationMatrix <- function (x, type = x$input$type,
           sanitize.text.function=function(x) { return (x); },
           file=file);
   }
-    
+
   invisible();
 }
 
 pander.associationMatrix <- function (x,
-                                     info = x$input$info, 
+                                     info = x$input$info,
                                      file = x$input$file, ...) {
-  
+
   ### Extract matrix to print (es, ci, or full)
   pander(x$output$matrix[[info[1]]],
          missing="");

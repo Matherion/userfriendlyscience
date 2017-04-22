@@ -16,13 +16,13 @@ associationsDiamondPlot <- function(dat, covariates, criterion,
                                                       decreasing=decreasing,
                                                       conf.level=conf.level,
                                                       esMetric = esMetric);
-  
+
   ### Get labels from this dataframe, because they may have been sorted
   labels <- res$intermediate$dat$label;
 
   return(diamondPlot(res$intermediate$dat, ciCols=c('lo', 'es', 'hi'),
                      yLabels = labels, colorCol=diamondColors,
                      returnLayerOnly = returnLayerOnly, ...));
-  
+
 }
-                                
+
