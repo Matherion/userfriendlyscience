@@ -38,9 +38,11 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
   if (showData) {
     plot <- plot +
       rawDataDiamondLayer(dat, items=items,
+                          itemOrder = res$intermediate$dat$rownr,
+                          dataAlpha=dataAlpha,
+                          dataColor=dataColor,
                           jitterWidth = jitterWidth,
                           jitterHeight = jitterHeight,
-                          itemOrder = res$intermediate$dat$rownr,
                           size=dataSize);
   }
 
