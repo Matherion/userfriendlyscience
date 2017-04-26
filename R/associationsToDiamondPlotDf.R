@@ -23,6 +23,17 @@ associationsToDiamondPlotDf <- function(dat, covariates, criterion,
         return(resDf[i, ]);
       }
     }), ncol=3, byrow=TRUE));
+  } else if (esMetric == 'd' | esMetric == 'g') {
+    resDf <- data.frame(matrix(sapply(1:length(covariates), function(i) {
+      if (assocMatrix$output$raw$esType[i] == 'r' | assocMatrix$output$raw$esType[i] == 'v') {
+        return(convert.r.to.d(resDf[i, ]));
+      } else if ((assocMatrix$output$raw$esType[i] == 'etasq') ||
+                 (assocMatrix$output$raw$esType[i] == 'omegasq')) {
+        return(convert.r.to.d(sqrt(resDf[i, ])));
+      } else {
+        return(resDf[i, ]);
+      }
+    }), ncol=3, byrow=TRUE));
   } else {
     stop("No other effect size metrics implemented yet!");
   }
