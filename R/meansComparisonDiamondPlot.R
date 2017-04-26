@@ -14,6 +14,7 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
                                        theme=theme_bw(),
                                        ylab=NULL,
                                        showLegend=TRUE,
+                                       lineSize=1,
                                        ...) {
 
   res <- list();
@@ -61,7 +62,8 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
                   ciCols=c('lo', 'mean', 'hi'),
                   yLabels = labels, colorCol=comparisonColors[i],
                   alpha = alpha,
-                  returnLayerOnly = TRUE, ...);
+                  returnLayerOnly = TRUE,
+                  size=lineSize, ...);
   }
   
   plot <- ggplot();
