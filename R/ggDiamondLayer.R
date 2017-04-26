@@ -50,6 +50,11 @@ ggDiamondLayer <- function(data,
                           mapping=aes(x=x, y=y),
                           fill=color,
                           color=ifelse(is.na(lineColor), color, lineColor), ...));
+    } else if (areColors(cCol)) {
+      return(geom_polygon(tmpDf,
+                          mapping=aes(x=x, y=y),
+                          fill=cCol,
+                          color = ifelse(is.na(lineColor), cCol, lineColor), ...));
     } else {
       return(geom_polygon(tmpDf,
                           mapping=aes(x=x, y=y),
