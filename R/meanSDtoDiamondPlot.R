@@ -3,6 +3,7 @@ meanSDtoDiamondPlot <- function(dat = NULL,
                                 labels = NULL,
                                 colorCol=NULL,
                                 conf.level=.95,
+                                xlab='Means',
                                 ...) {
 
   varNamesToUse <- c(means, sds, ns);
@@ -10,7 +11,7 @@ meanSDtoDiamondPlot <- function(dat = NULL,
     varNamesToUse <- c(varNamesToUse, labels);
   if (!is.null(colorCol))
     varNamesToUse <- c(varNamesToUse, colorCol);
-  
+
   if (!is.null(dat)) {
     if (!is.null(labels)) {
       dat <- na.omit(dat[, varNamesToUse]);
@@ -39,7 +40,7 @@ meanSDtoDiamondPlot <- function(dat = NULL,
   tmpDf[, 3] <- tmpDf[, 2];
   tmpDf[, 2] <- means;
   tmpDf[, 4] <- labels;
-  
+
   if (!is.null(colorCol))
     tmpDf[, 5] <- dat[, 5];
 
@@ -47,9 +48,9 @@ meanSDtoDiamondPlot <- function(dat = NULL,
   rownames(tmpDf) <- NULL;
 
   if (is.null(colorCol)) {
-    return(diamondPlot(tmpDf, yValues=4, yLabels=4, ...));
+    return(diamondPlot(tmpDf, yValues=4, yLabels=4, xlab=xlab, ...));
   } else {
-    return(diamondPlot(tmpDf, yValues=4, yLabels=4, colorCol=5, ...));
+    return(diamondPlot(tmpDf, yValues=4, yLabels=4, colorCol=5, xlab=xlab, ...));
   }
 
 }

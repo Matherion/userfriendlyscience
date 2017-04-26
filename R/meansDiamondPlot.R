@@ -7,7 +7,7 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                              jitterWidth = .5,
                              jitterHeight = .4,
                              returnLayerOnly = FALSE,
-                             xlab='Effect size estimate',
+                             xlab='Scores and means',
                              theme=theme_bw(),
                              ylab=NULL,
                              ...) {
