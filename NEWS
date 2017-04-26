@@ -1,6 +1,11 @@
 userfriendlyscience NEWS
 ------------------------
 
+0.6-1 2017-05-01
+* Added support for Cohen's d diamond plots
+* Added function for confidence curves
+* Fixed measurement level related bug in associationMatrix
+
 0.6-0 2017-04-01
 * Added CIBER for Confidence Interval-Based Estimation of Relevance
 * Added a number of diamond plot functions (biAxisDiamondPlot, associationsDiamondPlot) and supporting functions (varsToDiamondPlotDf, associationsToDiamondPlotDf, rawDataDiamondLayer)

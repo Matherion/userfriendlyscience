@@ -7,6 +7,8 @@ The package imports functions from many other packages, which is in line with it
 
 The only publications where the package has been mentioned so far are available at:
 
+- Peters, G.-J. Y. (2017). [Diamond Plots: a tutorial to introduce a visualisation tool that facilitates interpretation and comparison of multiple sample estimates while respecting their inaccuracy.](https://doi.org/10.17605/OSF.IO/9W8YV) *PsyArXiv*, https://doi.org/10.17605/OSF.IO/9W8YV
+
 - Peters, G.-J. Y. (2014). [The alpha and the omega of scale reliability and validity: why and how to abandon Cronbach’s alpha and the route towards more comprehensive assessment of scale quality.](http://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p56/1) *The European Health Psychologist*, 16, 56–69.
 
 - Crutzen, R. (2014). [Time is a jailer : what do alpha and its alternatives tell us about reliability?](http://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p70/25) *The European Health Psychologist*, 1(2), 70–74.
