@@ -1,7 +1,7 @@
 meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                              decreasing=NULL,
                              conf.level=.95,
-                             showData = TRUE, dataAlpha = .1, dataSize=2,
+                             showData = TRUE, dataAlpha = .1, dataSize=3,
                              dataColor = "#444444",
                              diamondColors = NULL,
                              jitterWidth = .5,

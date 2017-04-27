@@ -37,7 +37,7 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
   ### can be missing, so set default value if one is.
   if (!is.null(sortBy) && is.null(decreasing)) decreasing <- TRUE;
   if (!is.null(decreasing)) {
-    if (is.null(sortBy)) sortBy <- names(res$intermediate$dat)[1];
+    if (is.null(sortBy)) sortBy <- criteriaLabels[1];
     res$intermediate$sortOrder <-
       order(res$intermediate$dat[[sortBy]][, 'es'],
             decreasing = decreasing);

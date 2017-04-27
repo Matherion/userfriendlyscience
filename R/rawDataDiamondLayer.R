@@ -3,7 +3,7 @@ rawDataDiamondLayer <- function(dat, items = NULL, itemOrder = 1:length(items),
                                 dataColor = "#444444",
                                 jitterWidth = .5,
                                 jitterHeight = .4,
-                                size=2,
+                                size=3,
                                 ...) {
 
   rawData <- na.omit(data.frame(value = unlist(dat[, items[itemOrder]]),
