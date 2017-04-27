@@ -30,7 +30,7 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
                                  decreasing=NULL,
                                  conf.level=conf.level,
                                  esMetric = esMetric);
-  
+
   names(res$intermediate$dat) <- criteriaLabels;
 
   ### Check whether we should sort, and if so, sort. One of these
@@ -48,11 +48,11 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
   } else {
     res$intermediate$sortOrder <- 1:nrow(res$intermediate$dat[[1]]);
   }
-  
+
   ### Get labels from one of these dataframes,
   ### because they may have been sorted
   labels <- res$intermediate$dat[[1]]$label;
-  
+
   ### Get diamond layers
   res$intermediate$diamondLayers <- list();
   for (i in 1:length(criteriaLabels)) {
@@ -66,7 +66,13 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
                   size=lineSize, ...);
   }
 
-  plot <- ggplot();
+
+  ### Only return the layer(s) with diamonds
+  if (returnLayerOnly) {
+    return(res$intermediate$diamondLayers[[criteriaLabels[i]]]);
+  } else {
+    plot <- ggplot();
+  }
 
   ### Add diamond layers
   for (i in 1:length(res$intermediate$diamondLayers)) {
@@ -80,7 +86,7 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
                        labels=labels) +
     theme + ylab(ylab) + xlab(xlab) +
     theme(panel.grid.minor.y=element_blank());
-  
+
   if (length(criteriaLabels) > 1 & showLegend) {
     ### First have to add a ribbon layer so that we can actually
     ### map the fill aesthetic to something in the plot
@@ -96,7 +102,7 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
                                title=NULL)) +
       theme(legend.position="top");
   }
-  
+
   return(plot);
 
 }
