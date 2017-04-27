@@ -39,7 +39,7 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
   if (!is.null(decreasing)) {
     if (is.null(sortBy)) sortBy <- names(res$intermediate$dat)[1];
     res$intermediate$sortOrder <-
-      order(res$intermediate$dat[[sortBy]][, 'mean'],
+      order(res$intermediate$dat[[sortBy]][, 'es'],
             decreasing = decreasing);
     res$intermediate$dat <- lapply(res$intermediate$dat,
                                    function(df, s = res$intermediate$sortOrder) {
