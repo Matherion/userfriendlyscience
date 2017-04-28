@@ -15,6 +15,7 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
                                        ylab=NULL,
                                        showLegend=TRUE,
                                        lineSize=1,
+                                       xbreaks = "auto",
                                        ...) {
 
   res <- list();
@@ -114,7 +115,13 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
                                title=NULL)) +
       theme(legend.position="top");
   }
-
+  
+  if (tolower(xbreaks) == "auto") {
+    plot <- plot + scale_x_continuous(breaks=sort(unique(unlist(dat[, items]))));
+  } else if (is.numeric(xbreaks)) {
+    plot <- plot + scale_x_continuous(breaks=xbreaks);
+  }
+  
   attr(plot, 'itemOrder') <- res$intermediate$sortOrder;
 
   return(plot);

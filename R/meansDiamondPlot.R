@@ -10,6 +10,7 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                              xlab='Scores and means',
                              theme=theme_bw(),
                              ylab=NULL,
+                             xbreaks = "auto",
                              ...) {
 
   res <- list();
@@ -53,6 +54,12 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
     theme + ylab(ylab) + xlab(xlab) +
     theme(panel.grid.minor.y=element_blank());
 
+  if (tolower(xbreaks) == "auto") {
+    plot <- plot + scale_x_continuous(breaks=sort(unique(unlist(dat[, items]))));
+  } else if (is.numeric(xbreaks)) {
+    plot <- plot + scale_x_continuous(breaks=xbreaks);
+  }
+  
   attr(plot, 'itemOrder') <- res$intermediate$dat$rownr;
 
   return(plot);
