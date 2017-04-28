@@ -7,10 +7,11 @@ bibentry(bibtype = "Manual",
          year = year,
          note = note,
          url = "http://userfriendlyscience.com",
-         doi = "https://doi.org/10.17605/OSF.IO/TXEQU")
+         doi = "10.17605/OSF.IO/TXEQU")
 
 bibentry(bibtype = "Article",
          title = "Diamond plots: a tutorial to introduce a visualisation tool that facilitates interpretation and comparison of multiple sample estimates while respecting their inaccuracy",
-         author = "{Gjalt-Jorn Ygram Peters}",
+         author = c(person("Gjalt-Jorn Ygram", "Peters")),
+         journal= "PsyArXiv",
          year = 2017,
          url = "http://osf.io/fzh6c")
