@@ -22,7 +22,7 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
 
   if (is.null(items)) items <- names(dat)[2:ncol(dat)-1];
   if (is.null(compareBy)) compareBy <- names(dat)[ncol(dat)];
-  
+
   res$intermediate$rawDat <- split(dat, dat[, compareBy]);
 
   ### Get diamondPlotDf's, but don't sort anything yet
@@ -32,7 +32,7 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
                                  labels = labels,
                                  decreasing=NULL,
                                  conf.level=conf.level);
-  
+
   ### Check whether we should sort, and if so, sort. One of these
   ### can be missing, so set default value if one is.
   if (!is.null(sortBy) && is.null(decreasing)) decreasing <- TRUE;
@@ -40,7 +40,8 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
     if (is.null(sortBy)) sortBy <- names(res$intermediate$rawDat)[1];
     res$intermediate$sortOrder <-
       order(res$intermediate$rawDat[[sortBy]][, 'mean'],
-            decreasing = decreasing);
+            decreasing = !decreasing); ## Invert because ggplot plots
+                                       ## first elements on y axis lowest
     res$intermediate$dat <- lapply(res$intermediate$dat,
                                    function(df, s = res$intermediate$sortOrder) {
                                      return(df[s, ]);
@@ -53,7 +54,7 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
   ### because they may have been sorted
   labels <- res$intermediate$dat[[1]]$label;
   if (is.null(compareByLabels)) compareByLabels <- names(res$intermediate$dat);
-  
+
   ### Get diamond layers
   res$intermediate$diamondLayers <- list();
   for (i in 1:length(res$intermediate$dat)) {
@@ -65,7 +66,7 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
                   returnLayerOnly = TRUE,
                   size=lineSize, ...);
   }
-  
+
   plot <- ggplot();
 
   ### If requested, get data layers and add these to the plot
@@ -90,7 +91,7 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
     plot <- plot +
       res$intermediate$diamondLayers[[compareByLabels[i]]];
   }
-  
+
   plot <- plot +
     scale_y_continuous(breaks=sort(res$intermediate$sortOrder),
                        minor_breaks=NULL,
@@ -113,7 +114,7 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
                                title=NULL)) +
       theme(legend.position="top");
   }
-  
+
   attr(plot, 'itemOrder') <- res$intermediate$sortOrder;
 
   return(plot);

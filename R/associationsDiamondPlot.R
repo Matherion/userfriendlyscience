@@ -38,9 +38,13 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
   if (!is.null(sortBy) && is.null(decreasing)) decreasing <- TRUE;
   if (!is.null(decreasing)) {
     if (is.null(sortBy)) sortBy <- criteriaLabels[1];
+    ### No idea why this unlist is necessary; for some reason,
+    ### using the 'es' index to extract that column returns
+    ### a list instead of a vector.
     res$intermediate$sortOrder <-
-      order(res$intermediate$dat[[sortBy]][, 'es'],
-            decreasing = decreasing);
+      order(unlist(res$intermediate$dat[[sortBy]][, 'es']),
+            decreasing = !decreasing); ## Invert because ggplot plots
+                                       ## first elements on y axis lowest
     res$intermediate$dat <- lapply(res$intermediate$dat,
                                    function(df, s = res$intermediate$sortOrder) {
                                      return(df[s, ]);
