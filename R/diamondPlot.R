@@ -6,7 +6,14 @@ diamondPlot <- function(data,
                         autoSize=NULL, fixedSize=.15,
                         xlab='Effect Size Estimate',
                         theme=theme_bw(), color='black',
-                        returnLayerOnly = FALSE, ...) {
+                        returnLayerOnly = FALSE,
+                        outputFile = NULL,
+                        outputWidth = 10,
+                        outputHeight = 10,
+                        ggsaveParams = list(units='cm',
+                                            dpi=300,
+                                            type="cairo"),
+                        ...) {
 
   ### In case we want to check for a complete dataframe
   # if (sum(complete.cases(data[, c(ciCols, colorCol, otherAxisCol)])) < nrow(data)) {
@@ -33,9 +40,11 @@ diamondPlot <- function(data,
     yValues <- 1:nrow(data);
   }
 
+  ### Check whether yLabels specifies a column in 'data' or whether it's a vector
   if (!is.null(yLabels)) {
-    ### Check whether yLabels specifies a column in 'data' or whether it's a vector
-    if (length(yLabels) == 1) {
+    if ((nrow(data) == 1) && (length(yLabels) == 1) && (is.character(yLabels))) {
+      ### Don't do anything
+    } else if (length(yLabels) == 1 && (nrow(data) > 1)) {
       ### Probably index in dataframe
       if (is.character(yLabels) && (yLabels %in% names(data))) {
         yLabels <- data[, yLabels];
@@ -53,6 +62,8 @@ diamondPlot <- function(data,
   } else {
     yLabels <- yValues;
   }
+
+  data$diamondPlotYLabelColumn <- diamondPlotYLabelColumn <- yLabels;
 
   if (length(colorCol) > 1) {
     if (length(colorCol) != nrow(data)) {
@@ -75,15 +86,26 @@ diamondPlot <- function(data,
                                  fixedSize = fixedSize,
                                  color=color, ...);
 
-  if (returnLayerOnly) {
-    return(diamondLayer);
+  plot <- ggplot() +
+    diamondLayer +
+    scale_y_continuous(breaks=data$otherAxisCol, minor_breaks=NULL,
+                       labels=diamondPlotYLabelColumn) +
+    theme + ylab(ylab) + xlab(xlab) +
+    theme(panel.grid.minor.y=element_blank());
+
+  if (!is.null(outputFile)) {
+    ggsaveParameters <- c(list(filename = outputFile,
+                               plot = plot,
+                               width = outputWidth,
+                               height = outputHeight),
+                          ggsaveParams);
+    do.call(ggsave, ggsaveParameters);
   }
 
-  return(ggplot() +
-           diamondLayer +
-           scale_y_continuous(breaks=data$otherAxisCol, minor_breaks=NULL,
-                              labels=yLabels) +
-           #           scale_y_continuous(breaks=yValues, labels=yLabels) +
-           theme + ylab(ylab) + xlab(xlab)) +
-    theme(panel.grid.minor.y=element_blank());
+  if (returnLayerOnly) {
+    return(diamondLayer);
+  } else {
+    return(plot);
+  }
+
 }

@@ -232,8 +232,8 @@ S3method(pander, regr);
 S3method(sort, associationMatrix)
 
 S3method(plot, determinantStructure)
-
-importFrom("grDevices", "dev.off", "png", "svg", "rgb", "colorRamp")
+importFrom("grDevices", "dev.off", "png", "svg", "rgb", "colorRamp",
+           "col2rgb")
 importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
            "chisq.test", "complete.cases", "confint", "cor",
            "cor.test", "cov", "dchisq", "density",
@@ -306,7 +306,7 @@ importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes
            'ggplot_gtable', 'ggplotGrob', 'sec_axis', 'dup_axis');
 importFrom('GGally', 'ggpairs', 'getPlot', 'putPlot', 'wrap');
 importFrom('gtable', 'gtable_add_grob', 'gtable_add_cols',
-           'gtable_filter');
+           'gtable_filter', 'gtable_add_rows');
 importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.layout',
            'textGrob', 'grid.rect', 'gpar', 'grid.draw', 'arrow',
            'convertUnit', 'grobWidth', 'grobTree');

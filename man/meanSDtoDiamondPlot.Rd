@@ -12,6 +12,13 @@ meanSDtoDiamondPlot(dat = NULL, means = 1,
                     labels = NULL,
                     colorCol = NULL,
                     conf.level = 0.95,
+                    xlab='Means',
+                    outputFile = NULL,
+                    outputWidth = 10,
+                    outputHeight = 10,
+                    ggsaveParams = list(units='cm',
+                                        dpi=300,
+                                        type="cairo"),
                     ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -36,6 +43,18 @@ meanSDtoDiamondPlot(dat = NULL, means = 1,
   Optionally, either the column in the dataframe containing manually specified colours, as numeric or as character index, or a vector of manually specified colours.
 }  \item{conf.level}{
   The confidence of the confidence intervals.
+}
+  \item{xlab}{
+  The label for the x axis.
+}
+  \item{outputFile}{
+  A file to which to save the plot.
+}
+  \item{outputWidth, outputHeight}{
+  Width and height of saved plot (specified in centimeters by default, see \code{ggsaveParams}).
+}
+  \item{ggsaveParams}{
+  Parameters to pass to ggsave when saving the plot.
 }
   \item{\dots}{
   Additional arguments are passed to \code{\link{diamondPlot}} and eventually to \code{\link{ggDiamondLayer}}. This can be used to, for example, specify two or more colors to use to generate a gradient (using \code{generateColors} and maybe \code{fullColorRange}).
@@ -62,7 +81,7 @@ tmpDf <- data.frame(means = c(1, 2, 3),
 ### A simple diamond plot
 meanSDtoDiamondPlot(tmpDf);
 
-### A simple diamond plot
+### A simple diamond plot with labels
 meanSDtoDiamondPlot(tmpDf, labels=4);
 
 ### When specifying column names, specify column

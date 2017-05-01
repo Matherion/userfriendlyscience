@@ -4,13 +4,19 @@ biAxisDiamondPlot <- function(dat, items = NULL,
                               decreasing = NULL, conf.level = 0.95,
                               showData = TRUE, dataAlpha = 0.1, dataColor = "#444444",
                               diamondColors = NULL, jitterWidth = .45, jitterHeight = .45,
-                              xBreaks=NULL, xLabels=NA,
+                              xbreaks=NULL, xLabels=NA,
                               xAxisLab = paste0('Scores and ', round(100 * conf.level, 2), "% CIs"),
                               drawPlot = TRUE, returnPlotOnly=TRUE,
                               baseSize = 1,
                               dotSize = baseSize,
                               baseFontSize=10*baseSize,
                               theme=theme_bw(base_size=baseFontSize),
+                              outputFile = NULL,
+                              outputWidth = 10,
+                              outputHeight = 10,
+                              ggsaveParams = list(units='cm',
+                                                  dpi=300,
+                                                  type="cairo"),
                               ...) {
 
   if (length(leftAnchors) != length(rightAnchors)) {
@@ -55,15 +61,15 @@ biAxisDiamondPlot <- function(dat, items = NULL,
                        sec.axis = sec_axis(~., breaks=1:length(rightAnchors),
                                            labels=rightAnchors[itemOrder])));
 
-  if (is.null(xBreaks)) {
-    xBreaks <- sort(unique(na.omit(unlist(dat[, items]))));
+  if (is.null(xbreaks)) {
+    xbreaks <- sort(unique(na.omit(unlist(dat[, items]))));
   }
 
-  if (length(xBreaks) > 1) {
+  if (length(xbreaks) > 1) {
     if (!is.na(xLabels[1])) {
-      plot <- plot + scale_x_continuous(breaks=xBreaks, labels=xLabels);
+      suppressMessages(plot <- plot + scale_x_continuous(breaks=xbreaks, labels=xLabels));
     } else {
-      plot <- plot + scale_x_continuous(breaks=xBreaks);
+      suppressMessages(plot <- plot + scale_x_continuous(breaks=xbreaks));
     }
   }
 
@@ -123,6 +129,15 @@ biAxisDiamondPlot <- function(dat, items = NULL,
                               name = "subquestions");
 
   res$output$plot <- fullPlot;
+
+  if (!is.null(outputFile)) {
+    ggsaveParameters <- c(list(filename = outputFile,
+                               plot = fullPlot,
+                               width = outputWidth,
+                               height = outputHeight),
+                          ggsaveParams);
+    do.call(ggsave, ggsaveParameters);
+  }
 
   if (drawPlot == TRUE) {
     grid.newpage();

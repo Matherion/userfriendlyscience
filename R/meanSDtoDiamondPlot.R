@@ -4,6 +4,12 @@ meanSDtoDiamondPlot <- function(dat = NULL,
                                 colorCol=NULL,
                                 conf.level=.95,
                                 xlab='Means',
+                                outputFile = NULL,
+                                outputWidth = 10,
+                                outputHeight = 10,
+                                ggsaveParams = list(units='cm',
+                                                    dpi=300,
+                                                    type="cairo"),
                                 ...) {
 
   varNamesToUse <- c(means, sds, ns);
@@ -40,17 +46,29 @@ meanSDtoDiamondPlot <- function(dat = NULL,
   tmpDf[, 3] <- tmpDf[, 2];
   tmpDf[, 2] <- means;
   tmpDf[, 4] <- labels;
-
+  tmpDf[, 5] <- 1:nrow(tmpDf);
+        
   if (!is.null(colorCol))
-    tmpDf[, 5] <- dat[, 5];
+    tmpDf[, 6] <- dat[, colorCol];
 
   names(tmpDf) <- NULL;
   rownames(tmpDf) <- NULL;
 
   if (is.null(colorCol)) {
-    return(diamondPlot(tmpDf, yValues=4, yLabels=4, xlab=xlab, ...));
+    plot <- diamondPlot(tmpDf, yLabels=4, yValues=5, xlab=xlab, ...);
   } else {
-    return(diamondPlot(tmpDf, yValues=4, yLabels=4, colorCol=5, xlab=xlab, ...));
+    plot <- diamondPlot(tmpDf, yLabels=4, yValues=5, colorCol=6, xlab=xlab, ...);
   }
+
+  if (!is.null(outputFile)) {
+    ggsaveParameters <- c(list(filename = outputFile,
+                               plot = plot,
+                               width = outputWidth,
+                               height = outputHeight),
+                          ggsaveParams);
+    do.call(ggsave, ggsaveParameters);
+  }
+  
+  return(plot);
 
 }

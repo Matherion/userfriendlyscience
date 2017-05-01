@@ -8,9 +8,15 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
                              jitterHeight = .4,
                              returnLayerOnly = FALSE,
                              xlab='Scores and means',
-                             theme=theme_bw(),
                              ylab=NULL,
+                             theme=theme_bw(),
                              xbreaks = "auto",
+                             outputFile = NULL,
+                             outputWidth = 10,
+                             outputHeight = 10,
+                             ggsaveParams = list(units='cm',
+                                                 dpi=300,
+                                                 type="cairo"),
                              ...) {
 
   res <- list();
@@ -54,10 +60,21 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
     theme + ylab(ylab) + xlab(xlab) +
     theme(panel.grid.minor.y=element_blank());
 
-  if (tolower(xbreaks) == "auto") {
+  if (!is.null(xbreaks) &&
+      length(xbreaks) == 1 &&
+      tolower(xbreaks) == "auto") {
     plot <- plot + scale_x_continuous(breaks=sort(unique(unlist(dat[, items]))));
   } else if (is.numeric(xbreaks)) {
     plot <- plot + scale_x_continuous(breaks=xbreaks);
+  }
+  
+  if (!is.null(outputFile)) {
+    ggsaveParameters <- c(list(filename = outputFile,
+                               plot = plot,
+                               width = outputWidth,
+                               height = outputHeight),
+                          ggsaveParams);
+    do.call(ggsave, ggsaveParameters);
   }
   
   attr(plot, 'itemOrder') <- res$intermediate$dat$rownr;

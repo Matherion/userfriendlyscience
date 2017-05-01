@@ -11,12 +11,18 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
                                     multiAlpha=.33,
                                     singleAlpha = 1,
                                     showLegend=TRUE,
-                                    theme=theme_bw(),
-                                    ylab="",
                                     xlab="Effect size estimates",
+                                    ylab="",
+                                    theme=theme_bw(),
                                     lineSize = 1,
+                                    outputFile = NULL,
+                                    outputWidth = 10,
+                                    outputHeight = 10,
+                                    ggsaveParams = list(units='cm',
+                                                        dpi=300,
+                                                        type="cairo"),                                    
                                     ...) {
-
+  
   res <- list(input = as.list(environment()),
               intermediate = list());
 
@@ -43,14 +49,18 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
     ### a list instead of a vector.
     res$intermediate$sortOrder <-
       order(unlist(res$intermediate$dat[[sortBy]][, 'es']),
-            decreasing = !decreasing); ## Invert because ggplot plots
-                                       ## first elements on y axis lowest
+            decreasing = decreasing);
+    
+    ### Invert because ggplot plots first elements on y axis lowest
+    res$intermediate$sortOrder <- rev(res$intermediate$sortOrder);
+    
     res$intermediate$dat <- lapply(res$intermediate$dat,
                                    function(df, s = res$intermediate$sortOrder) {
                                      return(df[s, ]);
                                    });
   } else {
-    res$intermediate$sortOrder <- 1:nrow(res$intermediate$dat[[1]]);
+    ### Invert because ggplot plots first elements on y axis lowest
+    res$intermediate$sortOrder <- rev(1:nrow(res$intermediate$dat[[1]]));
   }
 
   ### Get labels from one of these dataframes,
@@ -60,14 +70,36 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
   ### Get diamond layers
   res$intermediate$diamondLayers <- list();
   for (i in 1:length(criteriaLabels)) {
-    res$intermediate$diamondLayers[[criteriaLabels[i]]] <-
-      diamondPlot(res$intermediate$dat[[criteriaLabels[i]]],
-                  ciCols=c('lo', 'es', 'hi'),
-                  yLabels = labels,
-                  colorCol=ifelse(length(criteria) == 1, criterionColor, criteriaColors[i]),
-                  alpha = ifelse(length(criteria) == 1, singleAlpha, multiAlpha),
-                  returnLayerOnly = TRUE,
-                  size=lineSize, ...);
+    
+    if ('generateColors' %in% names(list(...))) {
+      if (length(criteriaLabels) > 1) {
+        res$intermediate$diamondLayers[[criteriaLabels[i]]] <-
+          diamondPlot(res$intermediate$dat[[criteriaLabels[i]]],
+                      ciCols=c('lo', 'es', 'hi'),
+                      yLabels = labels,
+                      lineColor=ifelse(length(criteria) == 1, criterionColor, criteriaColors[i]),
+                      alpha = ifelse(length(criteria) == 1, singleAlpha, multiAlpha),
+                      returnLayerOnly = TRUE,
+                      size=lineSize, ...);
+      } else {
+        res$intermediate$diamondLayers[[criteriaLabels[i]]] <-
+          diamondPlot(res$intermediate$dat[[criteriaLabels[i]]],
+                      ciCols=c('lo', 'es', 'hi'),
+                      yLabels = labels,
+                      alpha = ifelse(length(criteria) == 1, singleAlpha, multiAlpha),
+                      returnLayerOnly = TRUE,
+                      size=lineSize, ...);
+      }
+    } else {
+      res$intermediate$diamondLayers[[criteriaLabels[i]]] <-
+        diamondPlot(res$intermediate$dat[[criteriaLabels[i]]],
+                    ciCols=c('lo', 'es', 'hi'),
+                    yLabels = labels,
+                    colorCol=ifelse(length(criteria) == 1, criterionColor, criteriaColors[i]),
+                    alpha = ifelse(length(criteria) == 1, singleAlpha, multiAlpha),
+                    returnLayerOnly = TRUE,
+                    size=lineSize, ...);
+    }
   }
 
 
@@ -106,7 +138,16 @@ associationsDiamondPlot <- function(dat, covariates, criteria,
                                title=NULL)) +
       theme(legend.position="top");
   }
-
+  
+  if (!is.null(outputFile)) {
+    ggsaveParameters <- c(list(filename = outputFile,
+                               plot = plot,
+                               width = outputWidth,
+                               height = outputHeight),
+                          ggsaveParams);
+    do.call(ggsave, ggsaveParameters);
+  }
+  
   return(plot);
 
 }

@@ -32,7 +32,7 @@ rawDataDiamondLayer(dat, items = NULL,
                     itemOrder = 1:length(items),
                     dataAlpha = 0.1, dataColor = "#444444",
                     jitterWidth = 0.5, jitterHeight = 0.4,
-                    size = 2, ...)
+                    size = 3, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

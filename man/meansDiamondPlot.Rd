@@ -13,15 +13,22 @@ meansDiamondPlot(dat, items = NULL,
                  conf.level = 0.95,
                  showData = TRUE,
                  dataAlpha = .1,
-                 dataSize = 1,
+                 dataSize = 3,
                  dataColor = "#444444",
                  diamondColors = NULL,
                  jitterWidth = 0.5,
                  jitterHeight = 0.4,
                  returnLayerOnly = FALSE,
-                 xlab = "Effect size estimate",
-                 theme = theme_bw(),
+                 xlab = "Scores and means",
                  ylab = NULL, 
+                 theme = theme_bw(),
+                 xbreaks="auto",
+                 outputFile = NULL,
+                 outputWidth = 10,
+                 outputHeight = 10,
+                 ggsaveParams = list(units='cm',
+                                     dpi=300,
+                                     type="cairo"),
                  ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -71,6 +78,18 @@ meansDiamondPlot(dat, items = NULL,
 }
   \item{theme}{
   The theme to use.
+}
+  \item{xbreaks}{
+  Where the breaks (major grid lines, ticks, and labels) on the x axis should be.
+}
+  \item{outputFile}{
+  A file to which to save the plot.
+}
+  \item{outputWidth, outputHeight}{
+  Width and height of saved plot (specified in centimeters by default, see \code{ggsaveParams}).
+}
+  \item{ggsaveParams}{
+  Parameters to pass to ggsave when saving the plot.
 }
   \item{\dots}{
   Additional arguments are passed to \code{\link{diamondPlot}} and eventually to \code{\link{ggDiamondLayer}}. This can be used to, for example, specify two or more colors to use to generate a gradient (using \code{generateColors} and maybe \code{fullColorRange}).

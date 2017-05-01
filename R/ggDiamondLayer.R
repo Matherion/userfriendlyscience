@@ -45,17 +45,21 @@ ggDiamondLayer <- function(data,
                                            otherAxisValue=as.numeric(x[[otherAxisCol]]),
                                            autoSize = aSize,
                                            fixedSize = fSize));
+
     if (is.null(cCol)) {
+      ### If no color column is passed, just use the general color
       return(geom_polygon(tmpDf,
                           mapping=aes(x=x, y=y),
                           fill=color,
                           color=ifelse(is.na(lineColor), color, lineColor), ...));
-    } else if (areColors(cCol)) {
+    } else if (!is.numeric(cCol) && all(unlist(areColors(cCol)))) {
+      ### If a specific color is passed, use that
       return(geom_polygon(tmpDf,
                           mapping=aes(x=x, y=y),
                           fill=cCol,
                           color = ifelse(is.na(lineColor), cCol, lineColor), ...));
     } else {
+      ### Otherwise, a column with a color is passed, so extract & use that
       return(geom_polygon(tmpDf,
                           mapping=aes(x=x, y=y),
                           fill=x[[cCol]],

@@ -25,7 +25,14 @@ biAxisDiamondPlot(dat, items = NULL,
                   drawPlot = TRUE, returnPlotOnly = TRUE,
                   baseSize = 1, dotSize = baseSize,
                   baseFontSize = 10 * baseSize,
-                  theme = theme_bw(base_size = baseFontSize), ...)
+                  theme = theme_bw(base_size = baseFontSize),
+                  outputFile = NULL,
+                  outputWidth = 10,
+                  outputHeight = 10,
+                  ggsaveParams = list(units='cm',
+                                      dpi=300,
+                                      type="cairo"),
+                  ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -114,6 +121,15 @@ biAxisDiamondPlot(dat, items = NULL,
 }
   \item{theme}{
   This is the theme that is used for the plots.
+}
+  \item{outputFile}{
+  A file to which to save the plot.
+}
+  \item{outputWidth, outputHeight}{
+  Width and height of saved plot (specified in centimeters by default, see \code{ggsaveParams}).
+}
+  \item{ggsaveParams}{
+  Parameters to pass to ggsave when saving the plot.
 }
   \item{\dots}{
   These arguments are passed on to \code{\link{diamondPlot}}.

@@ -1,4 +1,4 @@
-ggConfidenceCurve <- function(metric = 'd', value = .5, n = 128,
+ggConfidenceCurve <- function(metric = 'd', value = NULL, n = NULL,
                               conf.level=NULL,
                               wRange = c(.05, .8),
                               curveSize = 1,
@@ -119,7 +119,7 @@ ggConfidenceCurve <- function(metric = 'd', value = .5, n = 128,
                      metric, " = ", value, " and n = ", n));
     
   }
-  if (!is.null(confLines) && (length(confLines) > 0)) {
+  if (!is.null(n) && !is.null(confLines) && (length(confLines) > 0)) {
     metricValues <- round(sort(unlist(metricValues)), 2);
     metricValueLabels <-
       ifelseObj((tolower(metric) == 'r'),

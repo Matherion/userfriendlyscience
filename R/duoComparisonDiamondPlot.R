@@ -12,11 +12,18 @@ duoComparisonDiamondPlot <- function(dat, items = NULL,
                                      jitterHeight = .4,
                                      xlab=c('Scores and means',
                                             'Effect size estimates'),
-                                     theme=theme_bw(),
                                      ylab=c(NULL, NULL),
+                                     theme=theme_bw(),
                                      showLegend=TRUE,
                                      lineSize=1,
                                      drawPlot = TRUE,
+                                     xbreaks="auto",
+                                     outputFile = NULL,
+                                     outputWidth = 10,
+                                     outputHeight = 10,
+                                     ggsaveParams = list(units='cm',
+                                                         dpi=300,
+                                                         type="cairo"),
                                      ...) {
 
   if (length(unique(na.omit(dat[, compareBy]))) != 2) {
@@ -34,11 +41,14 @@ duoComparisonDiamondPlot <- function(dat, items = NULL,
   if (is.null(decreasing)) {
     sortOrder <- 1:nrow(associationsDf);
   } else {
-    sortOrder <- order(associationsDf[, "es"],
-                       decreasing = !decreasing); ### Invert because ggplot
-                                                  ### plots first elements on
-                                                  ### y axis lowest
+    ### Again, for some reason, R returns a list instead of a vector
+    ### when slicing one column from this dataframe
+    sortOrder <- order(unlist(associationsDf[, "es"]),
+                       decreasing = decreasing);
   }
+
+  ### Invert because ggplot plots first elements on y axis lowest
+  #sortOrder <- rev(sortOrder);
 
   plot1 <- meansComparisonDiamondPlot(dat,
                                       items=items[sortOrder],
@@ -60,6 +70,7 @@ duoComparisonDiamondPlot <- function(dat, items = NULL,
                                       ylab=ylab[1],
                                       showLegend=showLegend,
                                       lineSize=lineSize,
+                                      xbreaks=xbreaks,
                                       ...);
 
   plot2 <- associationsDiamondPlot(dat,
@@ -72,14 +83,12 @@ duoComparisonDiamondPlot <- function(dat, items = NULL,
                                    conf.level=conf.level[2],
                                    criterionColor = associationsColor,
                                    returnLayerOnly = FALSE,
-                                   esMetric = 'd',
+                                   esMetric = "d",
                                    theme=theme_bw(),
                                    ylab="",
                                    xlab=xlab[2],
                                    lineSize = lineSize,
                                    ...)
-
-  ### ggplotGrob = ggplot_gtable(ggplot_build(x))
 
   builtMeansPlot <- ggplot_build(plot1);
   yMajor <- builtMeansPlot$layout$panel_ranges[[1]]$y.major_source;
@@ -119,6 +128,15 @@ duoComparisonDiamondPlot <- function(dat, items = NULL,
   if (drawPlot) {
     grid.newpage();
     grid.draw(plot);
+  }
+
+  if (!is.null(outputFile)) {
+    ggsaveParameters <- c(list(filename = outputFile,
+                               plot = plot,
+                               width = outputWidth,
+                               height = outputHeight),
+                          ggsaveParams);
+    do.call(ggsave, ggsaveParameters);
   }
 
   invisible(plot);

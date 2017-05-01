@@ -16,6 +16,12 @@ diamondPlot(data, ciCols = 1:3,
             theme = theme_bw(),
             color = "black",
             returnLayerOnly = FALSE,
+            outputFile = NULL,
+            outputWidth = 10,
+            outputHeight = 10,
+            ggsaveParams = list(units='cm',
+                                dpi=300,
+                                type="cairo"),
             ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -65,6 +71,15 @@ diamondPlot(data, ciCols = 1:3,
 }
   \item{returnLayerOnly}{
   Set this to TRUE to only return the \code{\link{ggplot}} layer of the diamondplot, which can be useful to include it in other plots.
+}
+  \item{outputFile}{
+  A file to which to save the plot.
+}
+  \item{outputWidth, outputHeight}{
+  Width and height of saved plot (specified in centimeters by default, see \code{ggsaveParams}).
+}
+  \item{ggsaveParams}{
+  Parameters to pass to ggsave when saving the plot.
 }
   \item{\dots}{
   Additional arguments will be passed to \code{\link{ggDiamondLayer}}.

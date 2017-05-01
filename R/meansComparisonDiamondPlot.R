@@ -11,11 +11,17 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
                                        jitterWidth = .5,
                                        jitterHeight = .4,
                                        xlab='Scores and means',
-                                       theme=theme_bw(),
                                        ylab=NULL,
+                                       theme=theme_bw(),
                                        showLegend=TRUE,
                                        lineSize=1,
                                        xbreaks = "auto",
+                                       outputFile = NULL,
+                                       outputWidth = 10,
+                                       outputHeight = 10,
+                                       ggsaveParams = list(units='cm',
+                                                           dpi=300,
+                                                           type="cairo"),
                                        ...) {
 
   res <- list();
@@ -41,14 +47,21 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
     if (is.null(sortBy)) sortBy <- names(res$intermediate$rawDat)[1];
     res$intermediate$sortOrder <-
       order(res$intermediate$rawDat[[sortBy]][, 'mean'],
-            decreasing = !decreasing); ## Invert because ggplot plots
-                                       ## first elements on y axis lowest
+            decreasing = decreasing);
+
+    ### Invert because ggplot plots first elements on y axis lowest
+    res$intermediate$sortOrder <- rev(res$intermediate$sortOrder);
+
     res$intermediate$dat <- lapply(res$intermediate$dat,
                                    function(df, s = res$intermediate$sortOrder) {
                                      return(df[s, ]);
                                    });
   } else {
     res$intermediate$sortOrder <- 1:nrow(res$intermediate$dat[[1]]);
+
+    ### Invert because ggplot plots first elements on y axis lowest
+    res$intermediate$sortOrder <- rev(res$intermediate$sortOrder);
+
   }
 
   ### Get labels from one of these dataframes,
@@ -74,10 +87,13 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
   if (showData) {
     res$intermediate$dataLayers <- list();
     for (i in 1:length(res$intermediate$dat)) {
+      ### Note that we revert the order here again, because
+      ### rawData uses the order as provided (whereas some
+      ### other functions invert it)
       res$intermediate$dataLayers[[compareByLabels[i]]] <-
         rawDataDiamondLayer(res$intermediate$rawDat[[compareByLabels[i]]],
                             items=items,
-                            itemOrder = res$intermediate$sortOrder,
+                            itemOrder = rev(res$intermediate$sortOrder),
                             dataAlpha = dataAlpha,
                             dataColor = comparisonColors[i],
                             jitterWidth = jitterWidth,
@@ -115,13 +131,24 @@ meansComparisonDiamondPlot <- function(dat, items = NULL,
                                title=NULL)) +
       theme(legend.position="top");
   }
-  
-  if (tolower(xbreaks) == "auto") {
+
+  if (!is.null(xbreaks) &&
+      length(xbreaks) == 1 &&
+      tolower(xbreaks) == "auto") {
     plot <- plot + scale_x_continuous(breaks=sort(unique(unlist(dat[, items]))));
   } else if (is.numeric(xbreaks)) {
     plot <- plot + scale_x_continuous(breaks=xbreaks);
   }
-  
+
+  if (!is.null(outputFile)) {
+    ggsaveParameters <- c(list(filename = outputFile,
+                               plot = plot,
+                               width = outputWidth,
+                               height = outputHeight),
+                          ggsaveParams);
+    do.call(ggsave, ggsaveParameters);
+  }
+
   attr(plot, 'itemOrder') <- res$intermediate$sortOrder;
 
   return(plot);
