@@ -17,7 +17,7 @@ CIBER <- function(data, determinants, targets,
                   returnPlotOnly = TRUE,
                   drawPlot = TRUE,
                   baseSize = .8,
-                  dotSize = baseSize,
+                  dotSize = 2.5 * baseSize,
                   baseFontSize=10*baseSize,
                   theme=theme_bw(base_size=baseFontSize),
                   ...) {
@@ -117,7 +117,7 @@ CIBER <- function(data, determinants, targets,
 
   ### Sort determinant names
   determinants <- determinants[res$intermediate$sortOrder];
-  
+
   res$intermediate$biAxisDiamondPlot <-
     biAxisDiamondPlot(data, items = determinants,
                       subQuestions = subQuestions[res$intermediate$sortOrder],
@@ -153,7 +153,7 @@ CIBER <- function(data, determinants, targets,
     sapply(names(res$intermediate$assocDat),
            function(currentTarget) {
              return(diamondPlot(res$intermediate$assocDat[[currentTarget]],
-                                ciCols=c('lo', 'es', 'hi'), yLabels = subQuestions,
+                                ciCols=c('lo', 'es', 'hi'), yLabels = subQuestions[res$intermediate$sortOrder],
                                 generateColors=generateColors$associations,
                                 fullColorRange = c(-1, 1),
                                 alpha = associationsAlpha,

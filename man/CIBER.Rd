@@ -27,7 +27,7 @@ CIBER(data, determinants, targets,
       titleVarLabels = NULL, titleSuffix = "",
       fullColorRange = NULL, associationsAlpha = 0.5,
       returnPlotOnly = TRUE, drawPlot = TRUE,
-      baseSize = 0.8, dotSize = baseSize,
+      baseSize = 0.8, dotSize = 2.5 * baseSize,
       baseFontSize = 10 * baseSize,
       theme = theme_bw(base_size = baseFontSize), ...)
 
@@ -44,7 +44,7 @@ detStructCIBER(determinantStructure, dat,
                titlePrefix = "Means and associations with",
                titleVarLabels = NULL, titleSuffix = "",
                fullColorRange = NULL, associationsAlpha = 0.5,
-               baseSize = 0.8, dotSize = baseSize,
+               baseSize = 0.8, dotSize = 2.5 * baseSize,
                baseFontSize = 10 * baseSize,
                theme = theme_bw(base_size = baseFontSize), ...)
 }

@@ -49,7 +49,7 @@ biAxisDiamondPlot <- function(dat, items = NULL,
                            conf.level = conf.level, showData = showData, dataAlpha = dataAlpha,
                            dataColor = dataColor, diamondColors = diamondColors,
                            jitterWidth = jitterWidth, jitterHeight = jitterHeight,
-                           xlab = xAxisLab, theme=theme, size=dotSize,
+                           xlab = xAxisLab, theme=theme, dataSize=dotSize,
                            ...);
 
   ### Extract order of the items after sorting
