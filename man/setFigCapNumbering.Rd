@@ -11,8 +11,10 @@ These function implement ideas by Max Gordon and DeanK (see Details) to add \cod
 setFigCapNumbering(figure_counter_str = "Figure \%s: ",
                    figureClass = "", imgClass = "",
                    figureInlineStyle = c("display:block"),
-                   imgInlineStyle = NULL)
-setTabCapNumbering(table_counter_str = ":Table \%s: ")
+                   imgInlineStyle = NULL,
+                   resetCounterTo = 1)
+setTabCapNumbering(table_counter_str = ":Table \%s: ",
+                   resetCounterTo = 1)
 }
 \arguments{
   \item{figure_counter_str, table_counter_str}{
@@ -29,6 +31,9 @@ setTabCapNumbering(table_counter_str = ":Table \%s: ")
 }
   \item{imgInlineStyle}{
   Any css style to pass to the image element directly ('inline').
+}
+  \item{resetCounterTo}{
+  If not \code{NULL} and numeric, the counter will start at this number.
 }
 }
 \details{

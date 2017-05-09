@@ -11,7 +11,8 @@ setCaptionNumbering(captionName = "tab.cap",
                     prefix = ":Table \%s: ",
                     suffix = "",
                     captionBefore = FALSE,
-                    romanNumeralSetting = "counter_roman")
+                    romanNumeralSetting = "counter_roman",
+                    resetCounterTo = 1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,6 +30,9 @@ setCaptionNumbering(captionName = "tab.cap",
 }
   \item{romanNumeralSetting}{
   The name of the option (should be retrievable with \code{\link{getOption}}) where it's configured whether to use Roman (TRUE) or Latin (FALSE) numerals. FALSE is assumed if this option isn't set.
+}
+  \item{resetCounterTo}{
+  If not \code{NULL} and numeric, the counter will start at this number.
 }
 }
 \value{

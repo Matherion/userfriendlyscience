@@ -5,8 +5,13 @@ setFigCapNumbering <- function(figure_counter_str = "Figure %s: ",
                                figureClass = "",
                                imgClass = "",
                                figureInlineStyle = c("display:block"),
-                               imgInlineStyle = NULL) {
+                               imgInlineStyle = NULL,
+                               resetCounterTo = 1) {
 
+  if (!is.null(resetCounterTo) && is.numeric(resetCounterTo)) {
+    options(figure_counter = resetCounterTo);
+  }
+  
   knit_hooks$set(plot = function(x, options) {
     fig_fn = paste0(opts_knit$get("base.url"), 
                     paste(x, collapse = "."));
@@ -45,6 +50,8 @@ setFigCapNumbering <- function(figure_counter_str = "Figure %s: ",
     }
     
     cntr <- getOption("figure_counter", 1);
+    if (is.logical(cntr)) cntr <- 1;
+    
     fig_number_txt <- 
       sprintf(getOption("figure_counter_str", figure_counter_str), 
               ifelse(getOption("figure_counter_roman", FALSE), 
