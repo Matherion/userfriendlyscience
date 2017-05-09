@@ -1,10 +1,13 @@
 userfriendlyscience NEWS
 ------------------------
 
-0.6-1 2017-05-01
+0.6-1 2017-05-09
 * Added support for Cohen's d diamond plots
 * Added function for confidence curves
 * Fixed measurement level related bug in associationMatrix
+* Added processLimeSurveyDropouts
+* Minor improvements in CIBER
+* Added possibility to easily reset counter for caption
 
 0.6-0 2017-04-01
 * Added CIBER for Confidence Interval-Based Estimation of Relevance

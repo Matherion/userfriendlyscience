@@ -18,7 +18,7 @@ biAxisDiamondPlot(dat, items = NULL,
                   showData = TRUE, dataAlpha = 0.1,
                   dataColor = "#444444", diamondColors = NULL,
                   jitterWidth = 0.45, jitterHeight = 0.45,
-                  xBreaks = NULL, xLabels = NA,
+                  xbreaks = NULL, xLabels = NA,
                   xAxisLab = paste0("Scores and ",
                                     round(100 * conf.level, 2),
                                     "\% CIs"),
@@ -90,7 +90,7 @@ biAxisDiamondPlot(dat, items = NULL,
   \item{jitterHeight}{
   How much to jitter the individual datapoints vertically.
 }
-  \item{xBreaks}{
+  \item{xbreaks}{
   Which breaks to use on the X axis (can be useful to override
   \code{\link{ggplot}}'s defaults).
 }
