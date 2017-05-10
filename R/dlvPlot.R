@@ -41,7 +41,14 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                     densityDotBaseSize=3, normalDotBaseSize=1,
                     violinAlpha = .2, dotAlpha = .4,
                     lineAlpha = 1, connectingLineAlpha = 1,
-                    meanDotSize=5, posDodge=0.2, errorType = "both") {
+                    meanDotSize=5, posDodge=0.2, errorType = "both",
+                    outputFile = NULL,
+                    outputWidth = 10,
+                    outputHeight = 10,
+                    ggsaveParams = list(units='cm',
+                                        dpi=300,
+                                        type="cairo")) {
+  
   ### This function constructs a dot-line-violin plot.
 
   ### Create object to return results
@@ -572,6 +579,16 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
   
   ### Set class of result
   class(res) <- c('dlvPlot');
+  
+  ### Save to a file, if desired
+  if (!is.null(outputFile)) {
+    ggsaveParameters <- c(list(filename = outputFile,
+                               plot = res$plot,
+                               width = outputWidth,
+                               height = outputHeight),
+                          ggsaveParams);
+    do.call(ggsave, ggsaveParameters);
+  }
   
   ### Return result
   return(res);
