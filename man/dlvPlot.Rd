@@ -9,15 +9,29 @@ dlvPlot
 The dlvPlot function produces a dot-violin-line plot, and dlvTheme is the default theme.
 }
 \usage{
-dlvPlot(dat, x = NULL, y, z = NULL, conf.level = .95,
-        jitter = "FALSE", binnedDots = TRUE, binwidth=NULL,
-        error="lines", dotsize="density",
+dlvPlot(dat, x = NULL, y, z = NULL,
+conf.level = .95,
+        jitter = "FALSE",
+        binnedDots = TRUE, binwidth=NULL,
+        error="lines",
+        dotsize="density",
         singleColor = "#BBBBBB",
         comparisonColors = brewer.pal(8, 'Set1'),
-        densityDotBaseSize=3, normalDotBaseSize=1,
-        violinAlpha = .2, dotAlpha = .4,
-        lineAlpha = 1, connectingLineAlpha = 1,
-        meanDotSize=5, posDodge=0.2, errorType = "both")
+        densityDotBaseSize=3,
+        normalDotBaseSize=1,
+        violinAlpha = .2,
+        dotAlpha = .4,
+        lineAlpha = 1,
+        connectingLineAlpha = 1,
+        meanDotSize=5,
+        posDodge=0.2,
+        errorType = "both",
+        outputFile = NULL,
+        outputWidth = 10,
+        outputHeight = 10,
+        ggsaveParams = list(units='cm',
+                            dpi=300,
+                            type="cairo"))
 dlvTheme(base_size = 11, base_family = "", ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -88,6 +102,15 @@ dlvTheme(base_size = 11, base_family = "", ...)
   the standard errors (\code{errorType='se'}), or both
   (\code{errorType='both'}). In this last case, the standard error will be
   wider than the confidence interval.
+}
+  \item{outputFile}{
+  A file to which to save the plot.
+}
+  \item{outputWidth, outputHeight}{
+  Width and height of saved plot (specified in centimeters by default, see \code{ggsaveParams}).
+}
+  \item{ggsaveParams}{
+  Parameters to pass to ggsave when saving the plot.
 }
   \item{base_size, base_family, ...}{
   Passed on to the ggplot theme_grey() function.
