@@ -11,8 +11,11 @@ The dlvPlot function produces a dot-violin-line plot, and dlvTheme is the defaul
 \usage{
 dlvPlot(dat, x = NULL, y, z = NULL, conf.level = .95,
         jitter = "FALSE", binnedDots = TRUE, binwidth=NULL,
-        error="lines", dotsize="density", densityDotBaseSize=3,
-        normalDotBaseSize=1, violinAlpha = .2, dotAlpha = .4,
+        error="lines", dotsize="density",
+        singleColor = "#BBBBBB",
+        comparisonColors = brewer.pal(8, 'Set1'),
+        densityDotBaseSize=3, normalDotBaseSize=1,
+        violinAlpha = .2, dotAlpha = .4,
         lineAlpha = 1, connectingLineAlpha = 1,
         meanDotSize=5, posDodge=0.2, errorType = "both")
 dlvTheme(base_size = 11, base_family = "", ...)
@@ -48,6 +51,12 @@ dlvTheme(base_size = 11, base_family = "", ...)
 }
   \item{dotsize}{
   Character value: "density" or "normal"; when "density", the size of each dot corresponds to the density of the distribution at that point.
+}
+  \item{singleColor}{
+  The color to use when drawing one or more univariate distributions (i.e. when no \code{z} is specified.
+}
+  \item{comparisonColors}{
+  The colors to use when a \code{z} is specified. This should be at least as many colors as \code{z} has levels. By default, palette \code{Set1} from \code{\link{RColorBrewer}} is used.
 }
   \item{densityDotBaseSize}{
   Numeric value indicating base size of dots when their size corresponds to the density (bigger = larger dots).

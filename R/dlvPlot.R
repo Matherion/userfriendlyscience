@@ -35,8 +35,11 @@ dlvTheme <- function(base_size = 11, base_family = "",
 
 dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                     jitter = "FALSE", binnedDots = TRUE, binwidth=NULL,
-                    error="lines", dotsize="density", densityDotBaseSize=3,
-                    normalDotBaseSize=1, violinAlpha = .2, dotAlpha = .4,
+                    error="lines", dotsize="density",
+                    singleColor = "black",
+                    comparisonColors = brewer.pal(8, 'Set1'),
+                    densityDotBaseSize=3, normalDotBaseSize=1,
+                    violinAlpha = .2, dotAlpha = .4,
                     lineAlpha = 1, connectingLineAlpha = 1,
                     meanDotSize=5, posDodge=0.2, errorType = "both") {
   ### This function constructs a dot-line-violin plot.
@@ -122,7 +125,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
       ### Generate plot
       res$plot <- ggplot(data=res$dat, aes_string(x=xVarName, y=y));
       res$plot <- res$plot + dlvTheme();
-      res$plot <- res$plot + geom_violin(trim=FALSE, alpha=violinAlpha, fill="#BBBBBB", linetype="blank");
+      res$plot <- res$plot + geom_violin(trim=FALSE, alpha=violinAlpha, fill=singleColor, linetype="blank");
       if (jitter) {
         res$plot <- res$plot + geom_jitter(position=position_jitter(width=.1, height=.01), alpha=dotAlpha);
       }
@@ -130,11 +133,15 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
         if (binnedDots) {
           tempBinwidth <- ifelse(is.null(binwidth), (res$yRange[2]-res$yRange[1])/30, binwidth);
           res$plot <- res$plot + geom_dotplot(alpha=dotAlpha, show.legend=FALSE,
-                                              binaxis="y", binwidth=tempBinwidth, dotsize=normalDotBaseSize,
-                                              stackdir="center", position=position_dodge(width=posDodge));
+                                              binaxis="y", binwidth=tempBinwidth,
+                                              dotsize=normalDotBaseSize,
+                                              stackdir="center",
+                                              color=singleColor,
+                                              fill=singleColor,
+                                              position=position_dodge(width=posDodge));
         }
         else if (dotsize=="density") {
-          res$plot <- res$plot + geom_point(aes_string(size='y_density'), color='grey60',
+          res$plot <- res$plot + geom_point(aes_string(size='y_density'), color=singleColor,
                                             alpha=dotAlpha, show.legend=FALSE);
         }
         else {
@@ -145,10 +152,12 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
         if (errorType=="ci") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
                                                  aes_string(x='y', y='mean', ymin='ci.lo', ymax='ci.hi'),
+                                                 color=singleColor,
                                                  size = 1, alpha=lineAlpha);
         } else if (errorType=="se") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
                                                  aes_string(x='y', y='mean', ymin='meanMinSE', ymax='meanPlusSE'),
+                                                 color=singleColor,
                                                  size = 1, alpha=lineAlpha);
         } else if (errorType=="both") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
@@ -156,6 +165,7 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
                                                  size = 1, alpha=lineAlpha);
           res$plot <- res$plot + geom_errorbar(data=res$descr,
                                                aes_string(x='y', ymin='meanMinSE', ymax='meanPlusSE'),
+                                               color=singleColor,
                                                size = 2, alpha=lineAlpha, width=0,
                                                inherit.aes = FALSE);
         }        
@@ -163,10 +173,14 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
       else if (error == "whiskers") {
         res$plot <- res$plot + geom_errorbar(data=res$descr,
                                              aes_string(x='y', y='mean', ymin='ci.lo', ymax='ci.hi'),
+                                             color=singleColor,
                                              size = 1, width=.1, alpha=lineAlpha);
       }
       res$plot <- res$plot + geom_point(data=res$descr,
-                                        aes_string(x='y', y='mean'), size=meanDotSize, alpha=lineAlpha);
+                                        color=singleColor,
+                                        aes_string(x='y', y='mean'),
+                                        size=meanDotSize,
+                                        alpha=lineAlpha);
       
     }
     else {
@@ -223,51 +237,65 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
       
       res$plot <- ggplot(data=res$dat, aes(x=x, y=y));
       res$plot <- res$plot + dlvTheme();
-      res$plot <- res$plot + geom_violin(trim=FALSE, alpha=violinAlpha, fill="#BBBBBB", linetype="blank");
+      res$plot <- res$plot + geom_violin(trim=FALSE, alpha=violinAlpha, fill=singleColor, linetype="blank");
       if (jitter) {
-        res$plot <- res$plot + geom_jitter(position=position_jitter(width=.1, height=.01), alpha=dotAlpha);
+        res$plot <- res$plot + geom_jitter(position=position_jitter(width=.1, height=.01),
+                                           color=singleColor,
+                                           alpha=dotAlpha);
       }
       else {
         if (binnedDots) {
           tempBinwidth <- ifelse(is.null(binwidth), (res$yRange[2]-res$yRange[1])/30, binwidth);
           res$plot <- res$plot + geom_dotplot(alpha=dotAlpha, show.legend=FALSE,
                                               binaxis="y", binwidth=tempBinwidth, dotsize=normalDotBaseSize,
+                                              color=singleColor,
+                                              fill=singleColor,
                                               stackdir="center", position=position_dodge(width=posDodge)
                                               );
         }
         else if (dotsize=="density") {
-          res$plot <- res$plot + geom_point(aes_string(size='y_density'), color='grey60',
+          res$plot <- res$plot + geom_point(aes_string(size='y_density'), color=singleColor,
                                             alpha=dotAlpha, show.legend=FALSE);
         }
         else {
-          res$plot <- res$plot + geom_point(alpha=dotAlpha, dotsize=normalDotBaseSize);
+          res$plot <- res$plot + geom_point(alpha=dotAlpha,
+                                            color=singleColor,
+                                            dotsize=normalDotBaseSize);
         }
       }
       if (error == "lines") {
         if (errorType=="ci") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
                                                  aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi'),
+                                                 color=singleColor,
                                                  size = 1, alpha=lineAlpha);
         } else if (errorType=="se") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
                                                  aes_string(x=y, y='mean', ymin='meanMinSE', ymax='meanPlusSE'),
+                                                 color=singleColor,
                                                  size = 1, alpha=lineAlpha);
         } else if (errorType=="both") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
                                                  aes_string(x=y, y='mean', ymin='ci.lo', ymax='ci.hi'),
+                                                 color=singleColor,
                                                  size = 1, alpha=lineAlpha);
           res$plot <- res$plot + geom_errorbar(data=res$descr,
                                                aes_string(x=y, y='mean', ymin='meanMinSE', ymax='meanPlusSE'),
+                                               color=singleColor,
                                                size = 2, alpha=lineAlpha, width=0);
         }
       }
       else if (error == "whiskers") {
         res$plot <- res$plot + geom_errorbar(data=res$descr,
                                              aes(x=y, y=mean, ymin=ci.lo, ymax=ci.hi),
+                                             color=singleColor,
                                              size = 1, width=.1, alpha=lineAlpha);
       }
       res$plot <- res$plot + geom_point(data=res$descr,
-                                        aes(x=y, y=mean), size=meanDotSize, alpha=lineAlpha);
+                                        aes(x=y, y=mean),
+                                        color=singleColor,
+                                        size=meanDotSize,
+                                        alpha=lineAlpha);
       
     }
   }
@@ -323,23 +351,35 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
 
       res$plot <- ggplot(data=res$dat, aes_string(x=x, y=y));
       res$plot <- res$plot + dlvTheme();
-      res$plot <- res$plot + geom_violin(trim=FALSE, alpha=violinAlpha, fill="#BBBBBB", linetype="blank", position=position_dodge(width=posDodge));
+      res$plot <- res$plot + geom_violin(trim=FALSE, alpha=violinAlpha,
+                                         fill=singleColor, linetype="blank",
+                                         position=position_dodge(width=posDodge));
       if (jitter) {
-        res$plot <- res$plot + geom_jitter(position=position_jitter(width=.1, height=.01), alpha=dotAlpha);
+        res$plot <- res$plot + geom_jitter(position=position_jitter(width=.1, height=.01),
+                                           color=singleColor,
+                                           alpha=dotAlpha);
       }
       else {
         if (binnedDots) {
           tempBinwidth <- ifelse(is.null(binwidth), (res$yRange[2]-res$yRange[1])/30, binwidth);
           res$plot <- res$plot + geom_dotplot(alpha=dotAlpha, show.legend=FALSE,
-                                              binaxis="y", binwidth=tempBinwidth, dotsize=normalDotBaseSize,
-                                              stackdir="center", position=position_dodge(width=posDodge));
+                                              binaxis="y", binwidth=tempBinwidth,
+                                              dotsize=normalDotBaseSize,
+                                              color=singleColor,
+                                              fill=singleColor,
+                                              stackdir="center",
+                                              position=position_dodge(width=posDodge));
         }
         else if (dotsize=="density") {
           res$plot <- res$plot + geom_point(aes_string(size='y_density'),
-                                            alpha=dotAlpha, show.legend=FALSE);
+                                            color=singleColor,
+                                            alpha=dotAlpha,
+                                            show.legend=FALSE);
         }
         else {
-          res$plot <- res$plot + geom_point(alpha=dotAlpha, dotsize=normalDotBaseSize);
+          res$plot <- res$plot + geom_point(alpha=dotAlpha,
+                                            color=singleColor,
+                                            dotsize=normalDotBaseSize);
         }
       }
       if (error == "lines") {
@@ -347,20 +387,24 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
         res$plot <- res$plot + geom_pointrange(data=res$descr,
                                                aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi'),
                                                size = 1, alpha=lineAlpha,
+                                               color=singleColor,
                                                inherit.aes = FALSE);
         } else if (errorType=="se") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
                                                  aes_string(x='x', y='mean', ymin='meanMinSE', ymax='meanPlusSE'),
                                                  size = 1, alpha=lineAlpha,
+                                                 color=singleColor,
                                                  inherit.aes = FALSE);
         } else if (errorType=="both") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
                                                  aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi'),
                                                  size = 1, alpha=lineAlpha,
+                                                 color=singleColor,
                                                  inherit.aes = FALSE);
           res$plot <- res$plot + geom_errorbar(data=res$descr,
                                                aes_string(x='x', ymin='meanMinSE', ymax='meanPlusSE'),
                                                size = 2, alpha=lineAlpha, width=0,
+                                               color=singleColor,
                                                inherit.aes = FALSE);
         }
       }
@@ -368,11 +412,17 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
         res$plot <- res$plot + geom_errorbar(data=res$descr,
                                              aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi'),
                                              size = 1, width=.1, alpha=lineAlpha,
+                                             color=singleColor,
                                              inherit.aes = FALSE);
       }
-      res$plot <- res$plot + stat_summary(fun.y=mean, geom="point", size=meanDotSize, alpha=lineAlpha);
+      res$plot <- res$plot + stat_summary(fun.y=mean, geom="point",
+                                          size=meanDotSize,
+                                          color=singleColor,
+                                          alpha=lineAlpha);
       res$plot <- res$plot + geom_line(data=res$descr,
-                                       aes_string(x='x', y='mean', group=NA), size=1, alpha=connectingLineAlpha);
+                                       aes_string(x='x', y='mean', group=NA),
+                                       color=singleColor,
+                                       size=1, alpha=connectingLineAlpha);
     }
     else {
       
@@ -422,59 +472,98 @@ dlvPlot <- function(dat, x = NULL, y, z = NULL, conf.level = .95,
       res$yRange=c(min(res$dat[[y]][!is.na(res$dat[[y]])]),
                    max(res$dat[[y]][!is.na(res$dat[[y]])]));
       
-      res$plot <- ggplot(data=res$dat, aes_string(x=x, y=y, z=z, colour=z, group=paste0(x,":",z)));
+      res$plot <- ggplot(data=res$dat, aes_string(x=x, y=y, z=z,
+                                                  colour=z,
+                                                  fill=z,
+                                                  group=paste0(x,":",z)));
       res$plot <- res$plot + dlvTheme();
-      res$plot <- res$plot + geom_violin(data=res$dat, aes_string(fill=z), alpha=violinAlpha, trim=FALSE, linetype="blank", position=position_dodge(width=posDodge));
+      res$plot <- res$plot + geom_violin(data=res$dat, aes_string(fill=z),
+                                         alpha=violinAlpha, trim=FALSE,
+                                         linetype="blank",
+                                         position=position_dodge(width=posDodge));
       if (jitter) {
-        res$plot <- res$plot + geom_jitter(position=position_jitter(width=.1, height=.01), alpha=dotAlpha);
+        res$plot <- res$plot + geom_jitter(position=position_jitter(width=.1, height=.01),
+                                           alpha=dotAlpha);
       }
       else {
         if (binnedDots) {
-          tempBinwidth <- ifelse(is.null(binwidth), (res$yRange[2]-res$yRange[1])/30, binwidth);
+          tempBinwidth <- ifelse(is.null(binwidth),
+                                 (res$yRange[2]-res$yRange[1])/30,
+                                 binwidth);
           res$plot <- res$plot + geom_dotplot(alpha=dotAlpha, show.legend=FALSE,
                                               aes_string(fill=z), binaxis="y",
-                                              binwidth=tempBinwidth, dotsize=normalDotBaseSize,
-                                              stackdir="center", position=position_dodge(width=posDodge));
+                                              binwidth=tempBinwidth,
+                                              dotsize=normalDotBaseSize,
+                                              stackdir="center",
+                                              position=position_dodge(width=posDodge));
         }
         else if (dotsize=="density") {
           res$plot <- res$plot + geom_point(aes_string(size='y_density'),
-                                            alpha=dotAlpha, show.legend=FALSE, position=position_dodge(width=posDodge));
+                                            alpha=dotAlpha, show.legend=FALSE,
+                                            position=position_dodge(width=posDodge));
         }
         else {
-          res$plot <- res$plot + geom_point(alpha=dotAlpha, dotsize=normalDotBaseSize, position=position_dodge(width=posDodge));
+          res$plot <- res$plot + geom_point(alpha=dotAlpha, dotsize=normalDotBaseSize,
+                                            position=position_dodge(width=posDodge));
         }
       }
       if (error == "lines") {
         if (errorType=="ci") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi', group='z'),
+                                                 aes_string(x='x', y='mean',
+                                                            ymin='ci.lo',
+                                                            ymax='ci.hi',
+                                                            group='z',
+                                                            color='z'),
                                                  size = 1, alpha=lineAlpha, position=position_dodge(width=posDodge),
                                                  inherit.aes = FALSE);
         } else if (errorType=="se") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes_string(x='x', y='mean', ymin='meanMinSE', ymax='meanPlusSE', group='z'),
-                                                 size = 1, alpha=lineAlpha, position=position_dodge(width=posDodge),
+                                                 aes_string(x='x', y='mean',
+                                                            ymin='meanMinSE',
+                                                            ymax='meanPlusSE',
+                                                            group='z',
+                                                            color='z'),
+                                                 size = 1, alpha=lineAlpha,
+                                                 position=position_dodge(width=posDodge),
                                                  inherit.aes = FALSE);
         } else if (errorType=="both") {
           res$plot <- res$plot + geom_pointrange(data=res$descr,
-                                                 aes_string(x='x', y='mean', ymin='ci.lo', ymax='ci.hi', group='z'),
-                                                 size = 1, alpha=lineAlpha, position=position_dodge(width=posDodge),
+                                                 aes_string(x='x', y='mean', ymin='ci.lo',
+                                                            ymax='ci.hi', group='z',
+                                                            color='z'),
+                                                 size = 1, alpha=lineAlpha,
+                                                 position=position_dodge(width=posDodge),
                                                  inherit.aes = FALSE);
           res$plot <- res$plot + geom_errorbar(data=res$descr,
-                                               aes_string(x='x', ymin='meanMinSE', ymax='meanPlusSE', group='z'),
-                                               size = 2, alpha=lineAlpha, width=0, position=position_dodge(width=posDodge),
+                                               aes_string(x='x', ymin='meanMinSE',
+                                                          ymax='meanPlusSE', group='z',
+                                                          color='z'),
+                                               size = 2, alpha=lineAlpha, width=0,
+                                               position=position_dodge(width=posDodge),
                                                inherit.aes = FALSE);
         }
       }
       else if (error == "whiskers") {
         res$plot <- res$plot + geom_errorbar(data=res$descr,
-                                             aes_string(x='x', ymin='ci.lo', ymax='ci.hi', group='z'),
-                                             size = 1, width=.1, alpha=lineAlpha, position=position_dodge(width=posDodge),
+                                             aes_string(x='x', ymin='ci.lo',
+                                                        ymax='ci.hi', group='z',
+                                                        color='z'),
+                                             size = 1, width=.1,
+                                             alpha=lineAlpha,
+                                             position=position_dodge(width=posDodge),
                                              inherit.aes = FALSE);
       }
       res$plot <- res$plot + stat_summary(fun.y=mean, geom="point", size=meanDotSize, position=position_dodge(width=posDodge));
       res$plot <- res$plot + geom_line(data=res$descr, aes_string(x='x', y='mean', group='z'), size=1,
                                        alpha=connectingLineAlpha, position=position_dodge(width=posDodge));
+      ### Add fill and color scales
+      res$plot <- res$plot + scale_fill_manual(values=comparisonColors,
+                                               name=z,
+                                               labels=sort(unique(res$descr$z))) +
+        scale_color_manual(values=comparisonColors,
+                           name=z,
+                           labels=sort(unique(res$descr$z)))
     }
   }
   
