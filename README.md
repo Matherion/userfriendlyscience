@@ -17,13 +17,13 @@ The only publications where the package has been mentioned so far are available 
 
 Four more have been submitted for publication and are currently available as preprints at PsyArXiv:
 
-- Peters, G.-J. Y. & Crutzen, R. (2017). Knowing exactly how effective an intervention, treatment, or manipulation is and ensuring that a study replicates: accuracy in parameter estimation as a partial solution to the replication crisis. http://dx.doi.org/
+- Peters, G.-J. Y. & Crutzen, R. (2017). Knowing exactly how effective an intervention, treatment, or manipulation is and ensuring that a study replicates: accuracy in parameter estimation as a partial solution to the replication crisis. http://osf.io/cjsk2/
 
-- Peters, G.-J. Y. & Gruijters, S. (2017). Why your experiments fail: sample sizes required for randomization to generate equivalent groups as a partial solution to the replication crisis. http://dx.doi.org/
+- Peters, G.-J. Y. & Gruijters, S. (2017). Why your experiments fail: sample sizes required for randomization to generate equivalent groups as a partial solution to the replication crisis. http://osf.io/38vfn/
 
-- Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2017). How to Select Relevant Social-Cognitive Determinants and Use them in the Development of Behaviour Change Interventions? Confidence Interval-Based Estimation of Relevance. http://dx.doi.org/
+- Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2017). How to Select Relevant Social-Cognitive Determinants and Use them in the Development of Behaviour Change Interventions? Confidence Interval-Based Estimation of Relevance. http://osf.io/5gnmz/
 
-- Gruijters, S., & Peters, G.-J. Y. (2017). Introducing the Numbers Needed for Change (NNC): A practical measure of effect size for intervention research. http://dx.doi.org/
+- Gruijters, S., & Peters, G.-J. Y. (2017). Introducing the Numbers Needed for Change (NNC): A practical measure of effect size for intervention research. http://osf.io/2bau7/
 
 All are (and will be) Open Access. Please cite the manual and/or one of these publications when you use the package.
 
