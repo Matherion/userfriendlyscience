@@ -1,4 +1,4 @@
-cohensdCI <- function(d, n, conf.level = .95, plot=FALSE, silent=TRUE) {
+cohensdCI <- confIntD <- function(d, n, conf.level = .95, plot=FALSE, silent=TRUE) {
   
   if (length(conf.level) != 1) {
     stop("Only specify one value for argument 'conf.level'!");
