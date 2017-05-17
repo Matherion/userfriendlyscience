@@ -1,10 +1,16 @@
 pwr.cohensdCI <- pwr.confIntd <- function(d, w=.1, conf.level=.95, extensive = FALSE, silent=TRUE) {
   if (length(w) != 1) {
-    warning("Multiple widths not supported (yet); only the first one is used!");
+    warning("Multiple widths not supported (yet); only the first one is used!\n",
+            "You can use sapply to approximate this vectorization, for example,\n\n",
+            "sapply(c(", vecTxt(widthLines, lastElements = 0), "), pwr.cohensdCI, d=", d, ")",
+            "\n");
     w <- w[1];
   }
   if (length(conf.level) != 1) {
-    warning("Multiple confidence levels not supported (yet); only the first one is used!");
+    warning("Multiple confidence levels not supported (yet); only the first one is used!\n",
+            "You can use sapply to approximate this vectorization, for example,\n\n",
+            "sapply(c(", vecTxt(conf.level, lastElements = 0), "), pwr.cohensdCI, d=", d, ")",
+            "\n");
     conf.level <- conf.level[1];
   }
 
