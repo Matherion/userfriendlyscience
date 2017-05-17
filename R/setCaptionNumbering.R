@@ -3,17 +3,17 @@ setCaptionNumbering <- function(captionName = 'tab.cap',
                                 suffix = "",
                                 captionBefore = FALSE,
                                 romanNumeralSetting = "counter_roman",
+                                optionName = paste0('setCaptionNumbering_', captionName),
                                 resetCounterTo = 1) {
   if (!is.null(resetCounterTo) && is.numeric(resetCounterTo)) {
     do.call('options', as.list(structure(resetCounterTo,
-                                         names=paste0('setCaptionNumbering_', captionName))));
+                                         names=optionName)));
   }
   if (captionBefore) {
     hookFunction <- list(captionName = function(before, options, envir) {
-      optionName <- paste0('setCaptionNumbering_', captionName);
       if (before) {
         cntr <- getOption(optionName, 1);
-        if (is.logical(cntr)) cntr <- 1;
+        if (!is.numeric(cntr)) cntr <- 1;
         prefix <- sprintf(prefix, ifelse(getOption(romanNumeralSetting, FALSE), as.character(as.roman(cntr)), as.character(cntr)));
         suffix <- sprintf(suffix, ifelse(getOption(romanNumeralSetting, FALSE), as.character(as.roman(cntr)), as.character(cntr)));
         do.call('options', as.list(structure(cntr+1, names=optionName)));
@@ -21,11 +21,10 @@ setCaptionNumbering <- function(captionName = 'tab.cap',
       }
     });
   } else {
-    hookFunction <- list(captionName = function(before, options, envir) {
-      optionName <- paste0('setCaptionNumbering_', captionName);
+    hookFunction <- list(captionName = function(after, options, envir) {
       if (!before) {
         cntr <- getOption(optionName, 1);
-        if (is.logical(cntr)) cntr <- 1;
+        if (!is.numeric(cntr)) cntr <- 1;
         prefix <- sprintf(prefix, ifelse(getOption(romanNumeralSetting, FALSE), as.character(as.roman(cntr)), as.character(cntr)));
         suffix <- sprintf(suffix, ifelse(getOption(romanNumeralSetting, FALSE), as.character(as.roman(cntr)), as.character(cntr)));
         do.call('options', as.list(structure(cntr+1, names=optionName)));
