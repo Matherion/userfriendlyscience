@@ -5,11 +5,21 @@ ggConfidenceCurve <- function(metric = 'd', value = NULL, n = NULL,
                               curveColor = 'black',
                               confRange = c(.0001, .9999),
                               confLines = c(.50, .80, .95, .99),
-                              confLineColor = 'grey',
-                              confLineSize=1,
+                              widthLines = c(min(wRange), .1, .2, .3, max(wRange)),
+                              lineColor = brewer.pal(9, 'Set1'),
+                              lineSize=1,
+                              lineAlpha = .5,
                               xlab = metric,
                               steps=1000,
-                              theme=theme_bw()) {
+                              theme=theme_bw(),
+                              gradient=NULL,
+                              gradientWidth=.01,
+                              outputFile = NULL,
+                              outputWidth = 16,
+                              outputHeight = 16,
+                              ggsaveParams = list(units='cm',
+                                                  dpi=300,
+                                                  type="cairo")) {
   ### Check arguments
   if (is.null(conf.level) && is.null(n)) {
     stop("Arguments 'conf.level' and 'n' cannot both be NULL!");
@@ -88,23 +98,107 @@ ggConfidenceCurve <- function(metric = 'd', value = NULL, n = NULL,
   }
   plot <- ggplot();
   if (is.null(n)) {
+    ### Add lines to indicate margins of error ('half-widths'), if we need to
+    if (!is.null(widthLines) && (length(widthLines) > 0)) {
+      
+      if (tolower(metric) == 'd') {
+        ### Get the required sample sizes to obtain intervals of those widths
+        ### given the specified sample size and confidence level.
+        yValues <- sapply(widthLines, pwr.cohensdCI, d=value, conf.level=conf.level);
+        ### Then get the metric values
+        metricValues <- cohensdCI(d=value, conf.level=conf.level, n = yValues);
+      } else if (tolower(metric) == 'r') {
+        ### Get the required sample sizes to obtain intervals of those widths
+        ### given the specified sample size and confidence level.
+        yValues <- sapply(widthLines, pwr.confIntR, r=value, conf.level=conf.level);
+        ### Then get the metric values
+        metricValues <- confIntR(r=value, conf.level=conf.level, N = yValues);
+      }
+
+      metricValueLabels <- ifelseObj(tolower(metric) == 'r',
+                                     formatR(metricValues),
+                                     round(metricValues, 2));
+      
+      yValueLabels <- rev(paste0(yValues, " (MoE=", round(widthLines, 2), ", total width=",
+                                 round(2*widthLines, 2), ")"));
+
+      if (length(lineColor) < length(confLines)) {
+        lineColor <- rep(lineColor, each=widthLines)[1:length(widthLines)];
+      }
+
+      for (i in seq_along(widthLines)) {
+        plot <- plot +
+          geom_hline(yintercept = yValues[i],
+                     color=lineColor[i],
+                     size=lineSize,
+                     alpha=lineAlpha) +
+          geom_vline(xintercept = metricValues[i, 1],
+                     color=lineColor[i],
+                     size=lineSize,
+                     alpha=lineAlpha) +
+          geom_vline(xintercept = metricValues[i, 2],
+                     color=lineColor[i],
+                     size=lineSize,
+                     alpha=lineAlpha);
+      }
+    }
+    
     names(df1) <- names(df2) <- c('n', metric);
     plot <- plot +
-      geom_line(data=df1, aes_string(x=metric, y='n')) +
-      geom_line(data=df2, aes_string(x=metric, y='n')) +
+      geom_line(data=df1, aes_string(x=metric, y='n'),
+                 color = curveColor, size = curveSize) +
+      geom_line(data=df2, aes_string(x=metric, y='n'),
+                color = curveColor, size = curveSize) +
       ggtitle(paste0("Inverse Confidence Curve for ",
-                     metric, " = ", value, " and conf.level = ", conf.level));
-  } else  {
+                     metric, " = ", value, " and ", round(100*conf.level, 2), "% confidence"));
+  } else {
+    ### Add gradient, if desired
+    if (!is.null(gradient)) {
+      if (length(gradient) == 1 && isTrue(gradient)) {
+        gradient <- c("black", "white")
+      }
+      if (!(length(gradient)==2)) {
+        stop("If specifying a gradient, specify exactly two values!");
+      } else {
+        if (!all(areColors(gradient))) {
+          stop("Not all values specified in 'gradient' are colors!");
+        } else {
+          names(df1) <- c('confidence', metric);
+          names(df2) <- c('confidence', metric);
+          tmpDf <- rbind(df1, df2);
+          plot <- plot +
+            geom_tile(data=tmpDf, aes_string(x=metric, y='confidence', fill='confidence'),
+                      height=Inf, width=gradientWidth) +
+            scale_fill_gradient2(low = gradient[2], mid = gradient[1], high = gradient[2], midpoint = 0);
+        }
+      }
+    }
     ### Add lines to indicate confidence intervals, if we need to
     if (!is.null(confLines) && (length(confLines) > 0)) {
+      metricValues <- round(sort(unlist(metricValues)), 2);
+      metricValueLabels <-
+        ifelseObj((tolower(metric) == 'r'),
+                  noZero(metricValues),
+                  metricValues);
+      yValues <- confLines;
+      yValueLabels <- confLines;
+      if (length(lineColor) < length(confLines)) {
+        lineColor <- rep(lineColor, each=confLines)[1:length(confLines)];
+      }
       for (i in seq_along(confLines)) {
         plot <- plot +
           geom_hline(yintercept = confLines[i],
-                     color=confLineColor, size=confLineSize) +
-          geom_vline(xintercept = metricValues[[i]][1],
-                     color=confLineColor, size=confLineSize) +
-          geom_vline(xintercept = metricValues[[i]][2],
-                     color=confLineColor, size=confLineSize);
+                     color=lineColor[length(confLines)+1-i],
+                     size=lineSize,
+                     alpha=lineAlpha) +
+          geom_vline(xintercept = metricValues[i],
+                     color=lineColor[i],
+                     size=lineSize,
+                     alpha=lineAlpha) +
+          geom_vline(xintercept = metricValues[length(metricValues)+1-i],
+                     color=lineColor[i],
+                     size=lineSize,
+                     alpha=lineAlpha);
       }
     }
     names(df1) <- names(df2) <- c('confidence', metric);
@@ -119,19 +213,26 @@ ggConfidenceCurve <- function(metric = 'd', value = NULL, n = NULL,
                      metric, " = ", value, " and n = ", n));
     
   }
-  if (!is.null(n) && !is.null(confLines) && (length(confLines) > 0)) {
-    metricValues <- round(sort(unlist(metricValues)), 2);
-    metricValueLabels <-
-      ifelseObj((tolower(metric) == 'r'),
-                noZero(metricValues),
-                metricValues);
+  if ((!is.null(n) && !is.null(confLines) && (length(confLines) > 0))
+       || (!is.null(conf.level) && !is.null(widthLines) && (length(widthLines) > 0))) {
     plot <- plot +
       scale_x_continuous(sec.axis = dup_axis(breaks=metricValues,
                                              labels=metricValueLabels,
                                              name="")) +
-      scale_y_continuous(sec.axis = dup_axis(breaks=round(sort(unlist(confLines)), 2),
+      scale_y_continuous(sec.axis = dup_axis(breaks=round(sort(unlist(yValues)), 2),
+                                             labels=yValueLabels,
                                              name=""));
   }
   plot <- plot + theme + xlab(xlab);
+
+  if (!is.null(outputFile)) {
+    ggsaveParameters <- c(list(filename = outputFile,
+                               plot = plot,
+                               width = outputWidth,
+                               height = outputHeight),
+                          ggsaveParams);
+    do.call(ggsave, ggsaveParameters);
+  }
+  
   return(plot);
 }

@@ -12,15 +12,25 @@ ggConfidenceCurve(metric = "d",
                   n = NULL,
                   conf.level = NULL,
                   wRange = c(0.05, 0.8),
-                  curveSize = 1,
+                  curveSize = 2,
                   curveColor = "black",
                   confRange = c(1e-04, 0.9999),
                   confLines = c(0.5, 0.8, 0.95, 0.99),
-                  confLineColor = "grey",
-                  confLineSize = 1,
+                  widthLines = c(.05, .1, .15, .2, .3, .4, .5),
+                  lineColor = brewer.pal(9, 'Set1'),
+                  lineSize = 1,
+                  lineAlpha = .5,
                   xlab = metric,
                   steps = 1000,
-                  theme = theme_bw())
+                  theme = theme_bw(),
+                  gradient=NULL,
+                  gradientWidth=.01,
+                  outputFile = NULL,
+                  outputWidth = 16,
+                  outputHeight = 16,
+                  ggsaveParams = list(units='cm',
+                                      dpi=300,
+                                      type="cairo"))
 }
 \arguments{
   \item{metric}{
@@ -47,14 +57,14 @@ ggConfidenceCurve(metric = "d",
   \item{confRange}{
   The range of confidence levels to plot.
 }
-  \item{confLines}{
-  If a traditional confidence curve is generated, lines can be added to indicate the metric values corresponding to the lower and upper confidence interval bounds.
+  \item{confLines, widthLines}{
+  If a traditional confidence curve is generated, lines can be added to indicate the metric values corresponding to the lower and upper confidence interval bounds. For an inverse confidence curve, lines can be added to inficate the metric values and sample sizes corresponding to specific margins of error (or 'half-widths').
 }
-  \item{confLineColor}{
-  If confidence lines are added (see \code{confLines}), this is the color in which they are drawn.
+  \item{lineColor}{
+  If confidence or 'interval width lines' lines are added (see \code{confLines}), this is the color in which they are drawn. Specify a vector (e.g. \code{\link{brewer.pal}(9, 'Set1')}) to have the colors drawn in different colors for each confidence level or width.
 }
-  \item{confLineSize}{
-  If confidence lines are added (see \code{confLines}), this is the size in which they are drawn.
+  \item{lineSize}{
+  If confidence lines or 'interval width lines' are added (see \code{confLines} and \code{widthLines}), these arguments specify the color and size in which they are drawn.
 }
   \item{xlab}{
   The label on the x axis.
@@ -64,6 +74,21 @@ ggConfidenceCurve(metric = "d",
 }
   \item{theme}{
   The \code{\link{ggplot}} theme to use.
+}
+  \item{gradient}{
+  Whether to use a gradient as background to make the confidence more explicit. This is experimental and pretty influential in terms of how the plot looks. The default gradient, used when passing \code{TRUE}, uses black as background color when the confidence is 0 percent, and white for 100 percent. If two colors are specified, these are used instead.
+}
+  \item{gradientWidth}{
+  If using a gradient, the width of the \code{\link{geom_tile}} geoms used to create the gradient.
+}
+  \item{outputFile}{
+  A file to which to save the plot.
+}
+  \item{outputWidth, outputHeight}{
+  Width and height of saved plot (specified in centimeters by default, see \code{ggsaveParams}).
+}
+  \item{ggsaveParams}{
+  Parameters to pass to ggsave when saving the plot.
 }
 }
 \value{
