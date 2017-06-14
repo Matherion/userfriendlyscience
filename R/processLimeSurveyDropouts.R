@@ -37,17 +37,17 @@ processLimeSurveyDropouts <- function(lastpage, pagenames = NULL,
   res$plots -> list;
 
   res$plots$absoluteDropout <-
-    ggplot(res$progressiveDropout, aes(x=page, y=frequency)) +
+    ggplot(res$progressiveDropout, aes_string(x='page', y='frequency')) +
     geom_point(size=4) + geom_line(size=1) + ylab('Number of participants') +
     xlab('Page in the questionnaire') + theme_bw() +
-    geom_text_repel(aes(label=frequency),
+    geom_text_repel(aes_string(label='frequency'),
                     point.padding = unit(1, 'lines'),
                     min.segment.length = unit(0.05, "lines"),
                     segment.color="#2A5581", color="#2A5581",
                     size=5, nudge_x=1) +
     scale_x_continuous(breaks=res$progressiveDropout$page);
   res$plots$relativeDropout <-
-    ggplot(res$progressiveDropout, aes(x=page, y=percentage)) +
+    ggplot(res$progressiveDropout, aes_string(x="page", y="percentage")) +
     geom_point(size=4) + geom_line(size=1) + ylab('Percentage of participants') +
     xlab('Page in the questionnaire') + theme_bw() +
     geom_text_repel(aes(label=paste0(round(percentage), "%")),
