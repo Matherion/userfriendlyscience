@@ -3,3 +3,5 @@
 language: R
 sudo: false
 cache: packages
+apt_packages:
+  - libxml2-dev
