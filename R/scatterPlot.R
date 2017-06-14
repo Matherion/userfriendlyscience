@@ -8,9 +8,16 @@ scatterPlot <- function(x, y, pointsize=3,
                         width = 0,
                         height = 0,
                         position='identity',
+                        xVarName=NULL,
+                        yVarName=NULL,
                         ...) {
-  xVarName <- extractVarName(deparse(substitute(x)));
-  yVarName <- extractVarName(deparse(substitute(y)));
+  xVarName <- ifelse(is.null(xVarName),
+                     extractVarName(deparse(substitute(x))),
+                     xVarName);
+  yVarName <- ifelse(is.null(yVarName),
+                     extractVarName(deparse(substitute(y))),
+                     yVarName);
+
   dat <- data.frame(x, y);
   names(dat) <- c(xVarName, yVarName);
   plot <- ggplot(dat, aes_string(xVarName, yVarName)) +
