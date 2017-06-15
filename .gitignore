@@ -36,7 +36,6 @@ Temporary Items
 .apdisk
 # R Studio files
 .Rproj.user
-.Rbuildignore
 .Rhistory
 userfriendlyscience.Rproj
 packrat/src
