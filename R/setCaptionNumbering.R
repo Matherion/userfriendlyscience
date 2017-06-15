@@ -1,3 +1,6 @@
+### Necessary to be able to set knitr hooks. Apparently.
+utils::globalVariables(c("before"))
+
 setCaptionNumbering <- function(captionName = 'tab.cap',
                                 prefix = ":Table %s: ",
                                 suffix = "",
