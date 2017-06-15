@@ -10,12 +10,12 @@ The dlvPlot function produces a dot-violin-line plot, and dlvTheme is the defaul
 }
 \usage{
 dlvPlot(dat, x = NULL, y, z = NULL,
-conf.level = .95,
+        conf.level = .95,
         jitter = "FALSE",
         binnedDots = TRUE, binwidth=NULL,
         error="lines",
         dotsize="density",
-        singleColor = "#BBBBBB",
+        singleColor = "black",
         comparisonColors = brewer.pal(8, 'Set1'),
         densityDotBaseSize=3,
         normalDotBaseSize=1,

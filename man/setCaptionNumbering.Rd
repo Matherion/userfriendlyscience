@@ -12,6 +12,7 @@ setCaptionNumbering(captionName = "tab.cap",
                     suffix = "",
                     captionBefore = FALSE,
                     romanNumeralSetting = "counter_roman",
+                    optionName = paste0("setCaptionNumbering_", captionName),
                     resetCounterTo = 1)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -30,6 +31,9 @@ setCaptionNumbering(captionName = "tab.cap",
 }
   \item{romanNumeralSetting}{
   The name of the option (should be retrievable with \code{\link{getOption}}) where it's configured whether to use Roman (TRUE) or Latin (FALSE) numerals. FALSE is assumed if this option isn't set.
+}
+  \item{optionName}{
+  The name of the option to use to retrieve and set the counter. This can be used, for example, to have multiple caption types use the same counter.
 }
   \item{resetCounterTo}{
   If not \code{NULL} and numeric, the counter will start at this number.

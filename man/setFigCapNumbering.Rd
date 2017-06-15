@@ -8,15 +8,20 @@ Automatic caption numbering knitr hooks for figures and tables
 These function implement ideas by Max Gordon and DeanK (see Details) to add \code{\link{knitr}} hooks to automate the numbering of figures and tables when generating R Markdown documents.
 }
 \usage{
-setFigCapNumbering(figure_counter_str = "Figure \%s: ",
+setFigCapNumbering(captionName = "fig.cap",
+                   figure_counter_str = "Figure \%s: ",
                    figureClass = "", imgClass = "",
                    figureInlineStyle = c("display:block"),
                    imgInlineStyle = NULL,
+                   optionName = paste0("setCaptionNumbering_", captionName),
                    resetCounterTo = 1)
 setTabCapNumbering(table_counter_str = ":Table \%s: ",
                    resetCounterTo = 1)
 }
 \arguments{
+  \item{captionName}{
+  The name of the caption, used in the \code{\link{knitr}} chunk options to provide the caption text.
+}
   \item{figure_counter_str, table_counter_str}{
   The string in which to add the number of the figure or table. The text '\%s' will be replaced by the number.
 }
@@ -31,6 +36,9 @@ setTabCapNumbering(table_counter_str = ":Table \%s: ",
 }
   \item{imgInlineStyle}{
   Any css style to pass to the image element directly ('inline').
+}
+  \item{optionName}{
+  The name of the option to use to retrieve and set the counter. This can be used, for example, to have multiple caption types use the same counter.
 }
   \item{resetCounterTo}{
   If not \code{NULL} and numeric, the counter will start at this number.

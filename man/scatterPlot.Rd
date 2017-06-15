@@ -15,6 +15,8 @@ scatterPlot(x, y, pointsize = 3,
             regrCIalpha = 0.25,
             width = 0, height = 0,
             position = "identity",
+            xVarName = NULL,
+            yVarName = NULL, 
             ...)
 }
 \arguments{
@@ -53,6 +55,9 @@ scatterPlot(x, y, pointsize = 3,
 }
   \item{position}{
   Whether to 'jitter' the points (adding some random noise to change their location slightly, used to prevent overplotting). Set to 'jitter' to jitter the points.
+}
+  \item{xVarName, yVarName}{
+  Can be used to manually specify the names of the variables on the x and y axes.
 }
   \item{\dots}{
   And additional arguments are passed to \code{\link{geom_point}} or \code{\link{geom_jitter}} (if \code{jitter} is set to 'jitter').

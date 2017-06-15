@@ -11,6 +11,7 @@
 \alias{pdMild}
 \alias{pdInterval}
 \alias{cohensdCI}
+\alias{confIntD}
 \alias{pwr.cohensdCI}
 \alias{pwr.confIntd}
 \title{
@@ -35,6 +36,8 @@ pdMild(d, n, populationD=0)
 pdInterval(ds, n, populationD=0)
 
 cohensdCI(d, n, conf.level = .95, plot=FALSE, silent=TRUE)
+confIntD(d, n, conf.level = .95, plot=FALSE, silent=TRUE)
+
 pwr.cohensdCI(d, w = 0.1, conf.level = 0.95,
               extensive = FALSE, silent = TRUE)
 pwr.confIntd(d, w = 0.1, conf.level = 0.95,
