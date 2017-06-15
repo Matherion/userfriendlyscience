@@ -301,9 +301,9 @@ importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes
            'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'coord_flip', 'guides',
            'guide_legend', 'geom_polygon',
            'geom_boxplot', 'geom_ribbon', 'geom_abline',
-           'geom_segment', 'geom_rect',
+           'geom_segment', 'geom_rect', 'geom_tile',
            'geom_text', 'aes_q', 'qplot',
-           'scale_fill_manual', 'scale_fill_brewer',
+           'scale_fill_manual', 'scale_fill_brewer', 'scale_fill_gradient2'.
            'scale_colour_gradient', 'scale_color_manual',
            'scale_x_continuous', 'scale_y_continuous', 'geom_vline', 'geom_hline',
            'ggplot_gtable', 'ggplotGrob', 'sec_axis', 'dup_axis');

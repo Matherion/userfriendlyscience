@@ -33,6 +33,7 @@ processLimeSurveyDropouts <- function(lastpage, pagenames = NULL,
   res$progressiveDropout$percentage <- 100 * res$progressiveDropout$frequency /
     totalParticipants;
   res$progressiveDropout$page <- 1:nrow(res$progressiveDropout);
+  res$progressiveDropout$prettyPercentage <- paste0(round(res$progressiveDropout$percentage), "%");
 
   res$plots -> list;
 
@@ -50,7 +51,7 @@ processLimeSurveyDropouts <- function(lastpage, pagenames = NULL,
     ggplot(res$progressiveDropout, aes_string(x="page", y="percentage")) +
     geom_point(size=4) + geom_line(size=1) + ylab('Percentage of participants') +
     xlab('Page in the questionnaire') + theme_bw() +
-    geom_text_repel(aes(label=paste0(round(percentage), "%")),
+    geom_text_repel(aes_string(label='prettyPercentage'),
                     point.padding = unit(1, 'lines'),
                     min.segment.length = unit(0.05, "lines"),
                     segment.color="#2A5581", color="#2A5581",

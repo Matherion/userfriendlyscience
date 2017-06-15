@@ -66,6 +66,9 @@ ggConfidenceCurve(metric = "d",
   \item{lineSize}{
   If confidence lines or 'interval width lines' are added (see \code{confLines} and \code{widthLines}), these arguments specify the color and size in which they are drawn.
 }
+  \item{lineAlpha}{
+  The alpha value (transparency) of the confidence lines or 'interval width lines'.
+}
   \item{xlab}{
   The label on the x axis.
 }

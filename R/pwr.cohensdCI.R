@@ -2,7 +2,7 @@ pwr.cohensdCI <- pwr.confIntd <- function(d, w=.1, conf.level=.95, extensive = F
   if (length(w) != 1) {
     warning("Multiple widths not supported (yet); only the first one is used!\n",
             "You can use sapply to approximate this vectorization, for example,\n\n",
-            "sapply(c(", vecTxt(widthLines, lastElements = 0), "), pwr.cohensdCI, d=", d, ")",
+            "sapply(c(", vecTxt(w, lastElements = 0), "), pwr.cohensdCI, d=", d, ")",
             "\n");
     w <- w[1];
   }
