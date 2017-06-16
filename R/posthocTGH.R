@@ -1,6 +1,6 @@
 posthocTGH <- function(y, x, method=c("games-howell", "tukey"),
                        conf.level = 0.95, digits=2,
-                       p.adjust="holm", formatPvalue = TRUE) {
+                       p.adjust="none", formatPvalue = TRUE) {
   ### Based on http://www.psych.yorku.ca/cribbie/6130/games_howell.R
   method <- tolower(method);
   tryCatch(method <- match.arg(method), error=function(err) {
@@ -55,11 +55,15 @@ posthocTGH <- function(y, x, method=c("games-howell", "tukey"),
                                  res$intermediate$t,
                                  res$intermediate$df,
                                  res$intermediate$p.tukey)
-  res$output$tukey$p.tukey.adjusted <- p.adjust(res$intermediate$p.tukey,
-                                                method = p.adjust);
-  
+  columnNames <- c('diff', 'ci.lo', 'ci.hi', 't', 'df', 'p');
+  if (p.adjust != "none") {
+    res$output$tukey$p.tukey.adjusted <- p.adjust(res$intermediate$p.tukey,
+                                                  method = p.adjust);
+    columnNames <- c(columnNames, 'p.adjusted');
+  }
+
   rownames(res$output$tukey) <- res$intermediate$pairNames;
-  colnames(res$output$tukey) <- c('diff', 'ci.lo', 'ci.hi', 't', 'df', 'p', 'p.adjusted');
+  colnames(res$output$tukey) <- columnNames;
   
   ### Start on Games-Howell
   res$intermediate$df.corrected <- combn(res$intermediate$groups, 2, function(ij) {               
@@ -96,10 +100,14 @@ posthocTGH <- function(y, x, method=c("games-howell", "tukey"),
                                         res$intermediate$t.corrected,
                                         res$intermediate$df.corrected,
                                         res$intermediate$p.gameshowell);
-  res$output$games.howell$p.gameshowell.adjusted <- p.adjust(res$intermediate$p.gameshowell,
-                                                             method = p.adjust);
+  columnNames <- c('diff', 'ci.lo', 'ci.hi', 't', 'df', 'p');
+  if (p.adjust != "none") {
+    res$output$games.howell$p.gameshowell.adjusted <- p.adjust(res$intermediate$p.gameshowell,
+                                                               method = p.adjust);
+    columnNames <- c(columnNames, 'p.adjusted');
+  }
   rownames(res$output$games.howell) <- res$intermediate$pairNames;
-  colnames(res$output$games.howell) <- c('diff', 'ci.lo', 'ci.hi', 't', 'df', 'p', 'p.adjusted');
+  colnames(res$output$games.howell) <- columnNames;
   
   ### Set class and return object
   class(res) <- 'posthocTGH';
@@ -116,9 +124,9 @@ print.posthocTGH <- function(x, digits=x$input$digits, ...) {
   else if (x$input$method == 'games-howell') {
     dat <- x$output$games.howell;
   }
-  dat[, c(6, 7)] <- lapply(dat[, c(6, 7)],
-                           formatPvalue,
-                           digits = digits,
+  dat[, 6:ncol(dat)] <- sapply(dat[, 6:ncol(dat)],
+                               formatPvalue,
+                               digits = digits,
                            includeP = FALSE);
   print(dat, digits=digits);
 }
