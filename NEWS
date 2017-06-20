@@ -3,7 +3,7 @@ userfriendlyscience NEWS
 
 0.6-2 2017-
 * At the request of Dorota Reis (through Twitter, @dororeis), made it easy to change the colors in dlvPlot()
-* 
+* In CIBER, it's now possible to number the subquestions
 
 0.6-1 2017-05-09
 * Added support for Cohen's d diamond plots

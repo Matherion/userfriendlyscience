@@ -20,6 +20,7 @@ CIBER(data, determinants, targets,
       leftAnchors = rep("Lo", length(determinants)),
       rightAnchors = rep("Hi", length(determinants)),
       orderBy = NULL, decreasing = NULL,
+      numberSubQuestions = FALSE,
       generateColors = list(means = c("red", "blue", "green"),
                             associations = c("red", "grey", "green")),
       strokeColors = brewer.pal(9, "Set1"),
@@ -109,6 +110,10 @@ detStructCIBER(determinantStructure, dat,
   their means. For convenience, if \code{orderBy} is not
   \code{NULL}, but \code{decreasing} is, the determinants are sorted in
   descending (decreasing) order.
+}
+  \item{numberSubQuestions}{
+  Whether or not to number the subquestions. If they are numbered, they are
+  numbered from the top to the bottom.
 }
   \item{generateColors}{
   The colors to use to generate the gradients for coloring the diamonds

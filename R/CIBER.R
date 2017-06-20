@@ -6,6 +6,7 @@ CIBER <- function(data, determinants, targets,
                   rightAnchors = rep("Hi", length(determinants)),
                   orderBy = NULL,
                   decreasing = NULL,
+                  numberSubQuestions = FALSE,
                   generateColors = list(means = c("red", "blue", "green"),
                                         associations = c("red", "grey", "green")),
                   strokeColors = brewer.pal(9, 'Set1'),
@@ -36,10 +37,10 @@ CIBER <- function(data, determinants, targets,
   ### Extract relevant subdatasets
   res$intermediate$determinantsDat <- data[, determinants];
   res$intermediate$dat <- data[, c(determinants, targets)];
-  
+
   res$output$determinantsN <- sum(complete.cases(res$intermediate$determinantsDat));
   res$output$associationsN <- sum(complete.cases(res$intermediate$dat));
-  
+
   ### For the scores, the max and min need to be determined from the data
   res$intermediate$fullColorRange <- ifelseObj(is.null(fullColorRange),
                                                range(res$intermediate$determinantsDat, na.rm = TRUE),
@@ -107,7 +108,7 @@ CIBER <- function(data, determinants, targets,
                 dat=res$intermediate$dat,
                 conf.level=conf.level$associations));
   });
-                                       
+
   res$intermediate$meansDat <-
     res$intermediate$meansDat[res$intermediate$sortOrder, ];
   res$intermediate$assocDat <-
@@ -118,9 +119,15 @@ CIBER <- function(data, determinants, targets,
   ### Sort determinant names
   determinants <- determinants[res$intermediate$sortOrder];
 
+  sortedSubQuestions <- subQuestions[res$intermediate$sortOrder];
+
+  if (numberSubQuestions) {
+    sortedSubQuestions <- paste0(length(sortedSubQuestions):1, ". ", sortedSubQuestions);
+  }
+
   res$intermediate$biAxisDiamondPlot <-
     biAxisDiamondPlot(data, items = determinants,
-                      subQuestions = subQuestions[res$intermediate$sortOrder],
+                      subQuestions = sortedSubQuestions,
                       leftAnchors = leftAnchors[res$intermediate$sortOrder],
                       rightAnchors = rightAnchors[res$intermediate$sortOrder],
                       generateColors = generateColors$means,
@@ -178,7 +185,7 @@ CIBER <- function(data, determinants, targets,
   builtAssocPlot$layout$panel_ranges[[1]]$y.major <-
     builtMeansPlot$layout$panel_ranges[[1]]$y.major;
 
-  
+
   if (is.null(titleVarLabels)) titleVarLabels <- targets;
 
   titleGrobs <- list(textGrob(label = paste0(titlePrefix, " "),
@@ -194,7 +201,7 @@ CIBER <- function(data, determinants, targets,
                       gp = gpar(col = strokeColors[targets[1]]));
   titleGrobs <- c(titleGrobs, list(newGrob));
   currentXpos <- sum(currentXpos, grobWidth(titleGrobs[[2]]));
-  
+
   if (length(targets) > 1) {
     for (i in 2:length(targets)) {
       prefixGrob <- textGrob(label = ifelse(i == length(targets), " & ", ", "),
@@ -229,7 +236,7 @@ CIBER <- function(data, determinants, targets,
                                      t=1,
                                      b=length(res$output$plot$heights),
                                      l=length(res$output$plot$widths));
-  
+
   res$output$plot <- arrangeGrob(res$output$plot,
                                  top = titleGrob,
                                  padding = unit(1.25, "line"));
