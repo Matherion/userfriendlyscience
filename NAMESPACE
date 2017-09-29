@@ -298,7 +298,7 @@ importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes
            'element_line', 'element_rect', 'element_text', 'element_blank',
            'position_jitter', 'position_dodge', 'geom_smooth', 'geom_rug', 'xlim',
            'stat_summary', 'labs', 'xlab', 'ylab', 'rel', 'theme_bw', 'scale_y_reverse',
-           'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'coord_flip', 'guides',
+           'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'coord_flip', 'coord_cartesian', 'guides',
            'guide_legend', 'geom_polygon',
            'geom_boxplot', 'geom_ribbon', 'geom_abline',
            'geom_segment', 'geom_rect', 'geom_tile',
@@ -317,5 +317,7 @@ importFrom('gridExtra', 'arrangeGrob', 'grid.arrange');
 importFrom('ggrepel', 'geom_text_repel')
 importFrom('RColorBrewer', 'brewer.pal');
 importFrom('DiagrammeR', 'add_global_graph_attrs', 'render_graph');
+importFrom('viridis', 'scale_color_viridis', 'scale_fill_viridis');
 
 importFrom('lavaan', 'sem');
+importFrom('lme4', 'lmer');

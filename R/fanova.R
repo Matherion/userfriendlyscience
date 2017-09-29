@@ -126,22 +126,22 @@ fanova <- function(data,
     #                                           test.statistic='F');
   }
   
-  if (plot) {
-    if (length(y) == 1)
-    
-    
-    res$intermediate$plotDat <- ifelseObj(length(y) == 1,
-                                          dat,
-                                          
-                                      
-      data.frame(x, y);
-    names(res$intermediate$dat) <- c(res$input$x.name, res$input$y.name);
-    res$output$plot <- dlvPlot(res$intermediate$dat,
-                               x=res$input$x.name,
-                               y=res$input$y.name)$plot +
-      ggtitle(paste0(res$input$x.name, " and ",
-                     res$input$y.name));
-  }
+  # if (plot) {
+  #   if (length(y) == 1)
+  #   
+  #   
+  #   res$intermediate$plotDat <- ifelseObj(length(y) == 1,
+  #                                         dat,
+  #                                         
+  #                                     
+  #     data.frame(x, y);
+  #   names(res$intermediate$dat) <- c(res$input$x.name, res$input$y.name);
+  #   res$output$plot <- dlvPlot(res$intermediate$dat,
+  #                              x=res$input$x.name,
+  #                              y=res$input$y.name)$plot +
+  #     ggtitle(paste0(res$input$x.name, " and ",
+  #                    res$input$y.name));
+  # }
   
 
   class(res) <- 'fanova';
