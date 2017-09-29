@@ -62,7 +62,12 @@ fanova <- function(data,
       res$intermediate$formula <- paste(y, "~", between);
       res$intermediate$secondaryObject <-
         userfriendlyscience::oneway(y = y,
-                                    x = x);
+                                    x = x,
+                                    plot=plot);
+      ### Get plot and store it here
+      if (plot)
+        res$output$plot <-
+          res$intermediate$secondaryObject$output$plot;
     } else {
       ### Factorial anova or ancova
       res$intermediate$formula <-
@@ -73,6 +78,21 @@ fanova <- function(data,
            contrasts = contrastFunction);
       res$intermediate$secondaryObject <-
         car::Anova(res$intermediate$primaryObject, type=3);
+      if (plot) {
+        if (is.null(covar) && (length(between) == 2)) {
+          res$output$plot <- dlvPlot(data,
+                                     y=y,
+                                     x=between[1],
+                                     z=between[2])$plot +
+            ggtitle(paste0(between[1], ", ",
+                           between[2], " and ",
+                           y));
+        } else {
+          warning("Sorry, I can only generate a plot for oneway or ",
+                  "two-way anovas (not for ancovas or anovas with ",
+                  "more than two factors).");
+        }
+      }
     }
   } else {
     ### We need to do a repeated measures anova, so first convert the
@@ -152,12 +172,17 @@ fanova <- function(data,
 print.fanova <- function(x, ...) {
   cat(x$output$msg);
   cat("\n");
+  grid.newpage();
+  grid.draw(x$output$plot);
   print(x$intermediate$secondaryObject);
 }
 
 # require(lme4);
 # require(userfriendlyscience);
 # require(car);
+# require(ggplot2);
+# require(grid);
+# require(gridExtra);
 ### see https://stats.stackexchange.com/questions/26810/why-isnt-the-anova-function-in-the-car-package-returning-an-f-statistic
 
 # CBM <- read.csv("http://userfriendlyscience.com/files/cbm.csv",
@@ -169,10 +194,10 @@ print.fanova <- function(x, ...) {
 # fanova(dat=Orange, y='circumference', between='Tree')
 # 
 # fanova(data=CBM, y="rt_parallel_boven_v1",
-#        between=c('Sekse', 'BekendheidCBM'));
+#        between=c('Sekse', 'StatistiekofSPSS'));
 # 
 # fanova(data=CBM, y="rt_parallel_boven_v1",
-#        between=c('BekendheidCBM'),
+#        between=c('StatistiekofSPSS'),
 #        covar="Leeftijd");
 # 
 # fanova(data=CBM,
