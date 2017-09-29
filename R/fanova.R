@@ -1,10 +1,17 @@
+### Optional Levene's test
+
+### Add plot
+
+### 
+
 fanova <- function(data,
                    y,
                    between = NULL,
                    covar = NULL,
                    contrast = NULL,
+                   plot = FALSE,
                    ...) {
-  
+
   res <- list(input = as.list(environment()),
               intermediate = list(),
               output = list());
@@ -65,7 +72,7 @@ fanova <- function(data,
            data = data,
            contrasts = contrastFunction);
       res$intermediate$secondaryObject <-
-        Anova(res$intermediate$primaryObject, type=3);
+        car::Anova(res$intermediate$primaryObject, type=3);
     }
   } else {
     ### We need to do a repeated measures anova, so first convert the
@@ -81,32 +88,61 @@ fanova <- function(data,
       longDat[, currentVar] <- as.numeric(rep(data[, currentVar],
                                               length(y)));
     }
-    # ### Then build the lmer formula
+    ### Then build the lmer formula: y is predicted by all
+    ### interactions and main effects for all factors ('between')
+    ### and covariates ('covar'), all interactions between all
+    ### factors and the time variable (called 'time'), and
+    ### the random slope for time (the final term).
+
     res$intermediate$formula <-
       formula(paste("y ~", paste(c(between, covar), collapse=" * "),
+                    "+", paste(c(between, "time"), collapse=" * "),
                     "+ (1|time)"));
+    
+    ### Run the mixed model
     res$intermediate$primaryObject <-
       lmer(formula=res$intermediate$formula,
            data = longDat,
            contrasts = contrastFunction);
-    # suppressMessages(res$intermediate$secondaryObject <-
-    #   Anova(res$intermediate$primaryObject,
-    #         type=3, test.statistic="F"));
-    ### Then build the idata and idesign objects
-    idata <- longDat; #[, 'time', drop=FALSE];
-    print(names(longDat))
+    
+    ### Run the analysis of variance
+    suppressMessages(res$intermediate$secondaryObject <-
+      car::Anova(res$intermediate$primaryObject,
+                 type=3, test.statistic="F"));
+    
+    ### Approach using lm (and the idata and idesign objects for Anova)
+    # idata <- longDat; #[, 'time', drop=FALSE];
+    # print(names(longDat))
     # res$intermediate$formula <- formula(paste0("cbind(", paste(y, collapse=", "), ") ~",
     #                                            paste(c(between, covar), collapse=" * ")));
     # res$intermediate$primaryObject <- lm(res$intermediate$formula,
     #                                      data = data);
-    print(res$intermediate$primaryObject);
-    print(idata);
-    res$intermediate$secondaryObject <- Anova(res$intermediate$primaryObject,
-                                              idata=idata,
-                                              idesign=~subject*time,
-                                              type=3,
-                                              test.statistic='F');
+    # print(res$intermediate$primaryObject);
+    # print(idata);
+    # res$intermediate$secondaryObject <- Anova(res$intermediate$primaryObject,
+    #                                           idata=idata,
+    #                                           idesign=~1*time,
+    #                                           type=3,
+    #                                           test.statistic='F');
   }
+  
+  if (plot) {
+    if (length(y) == 1)
+    
+    
+    res$intermediate$plotDat <- ifelseObj(length(y) == 1,
+                                          dat,
+                                          
+                                      
+      data.frame(x, y);
+    names(res$intermediate$dat) <- c(res$input$x.name, res$input$y.name);
+    res$output$plot <- dlvPlot(res$intermediate$dat,
+                               x=res$input$x.name,
+                               y=res$input$y.name)$plot +
+      ggtitle(paste0(res$input$x.name, " and ",
+                     res$input$y.name));
+  }
+  
 
   class(res) <- 'fanova';
   return(res);
@@ -119,28 +155,27 @@ print.fanova <- function(x, ...) {
   print(x$intermediate$secondaryObject);
 }
 
-require(lme4);
-require(userfriendlyscience);
-require(car);
+# require(lme4);
+# require(userfriendlyscience);
+# require(car);
 ### see https://stats.stackexchange.com/questions/26810/why-isnt-the-anova-function-in-the-car-package-returning-an-f-statistic
 
 # CBM <- read.csv("http://userfriendlyscience.com/files/cbm.csv",
 #                 sep=";", dec=",");
 
-CBM <- read.csv("B:/Data/teaching/OU/workshops/R/R for beginners/cbm.csv",
-                sep=";", dec=",");
-
-fanova(dat=Orange, y='circumference', between='Tree')
-
-fanova(data=CBM, y="rt_parallel_boven_v1",
-       between=c('Sekse', 'BekendheidCBM'));
-
-fanova(data=CBM, y="rt_parallel_boven_v1",
-       between=c('BekendheidCBM'),
-       covar="Leeftijd");
-
-a <- fanova(data=CBM, y=c("rt_parallel_boven_v1", "rt_parallel_boven_v2", "rt_parallel_boven_v3"),
-            between='Sekse');
-
-a;
+# CBM <- read.csv("B:/Data/teaching/OU/workshops/R/R for beginners/cbm.csv",
+#                 sep=";", dec=",");
+# 
+# fanova(dat=Orange, y='circumference', between='Tree')
+# 
+# fanova(data=CBM, y="rt_parallel_boven_v1",
+#        between=c('Sekse', 'BekendheidCBM'));
+# 
+# fanova(data=CBM, y="rt_parallel_boven_v1",
+#        between=c('BekendheidCBM'),
+#        covar="Leeftijd");
+# 
+# fanova(data=CBM,
+#        y=c("rt_parallel_boven_v1", "rt_parallel_boven_v2", "rt_parallel_boven_v3"),
+#        between='Sekse');
 
