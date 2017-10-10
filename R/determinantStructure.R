@@ -24,7 +24,7 @@ determinantStructure <-
     if (length(list(...)) > 0) {
       res <- c(res, list(...));
     }
-    
+
     if (type == 'determinantStructure') {
       res <- as.Node(res);
       ### Arrows from children to parents
@@ -54,5 +54,6 @@ print.determinantStructure <- function(x, ...) {
   # }
   class(x) <- c('Node', 'R6');
   print(x, ...);
+  class(x) <- c('determinantStructure', 'Node', 'R6');
   # if (plot) invisible(y);
 }

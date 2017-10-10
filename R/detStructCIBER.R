@@ -33,6 +33,7 @@ detStructCIBER <- function(determinantStructure,
                                      filterFun=function(x)
                                      return(x$type=='determinantVar'));
     targets <- ifelseObj(is.null(scaleVarNames), varNames, scaleVarNames);
+
     currentSubQuestions <- ifelseObj(is.null(currentNode$subQuestions),
                                      subQuestions,
                                      currentNode$subQuestions);

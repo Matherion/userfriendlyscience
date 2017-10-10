@@ -46,7 +46,7 @@ detStructComputeScales <- function(determinantStructure,
                            });
 
   dat <- makeScales(dat, scalables);
-  
+
   if (append) {
     return(dat);
   } else {
