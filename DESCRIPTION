@@ -17,7 +17,7 @@ Description: Contains a number of functions that serve
   perspectives, for example towards reasoning based on sampling
   distributions as opposed to on point estimates.
 URL: http://userfriendlyscience.com
-imports: DiagrammeR, GGally, ,GPArotation, MASS, MBESS, RColorBrewer,
+Imports: DiagrammeR, GGally, GPArotation, MASS, MBESS, RColorBrewer,
          SCRT, SuppDists, XML, car, data.tree, diptest, fBasics,
          ggplot2, ggrepel, gridExtra, gtable, knitr, lavaan, lme4,
          mosaic, pander, plyr, psych, pwr, rio, scales, viridis,
