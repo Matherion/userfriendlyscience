@@ -2,6 +2,15 @@ userfriendlyscience NEWS
 ------------------------
 
 0.6-2 2017-
+* Added logRegr for logistic analysis
+* Added fanova as flexible anova wrapper for simple anova's
+* Added collinearity diagnostic to regr and logRegr
+* Added userfriendly plotting to regr, fanova and logRegr
+* Added sharedSubString to find the longest shared substring is a character vector
+* Added findShortestInterval to find the shortest interval in a numeric vector
+* Improved nnc to compute confidence intervals using formula from 
+* Added confIntProp for easily computing confidence intervals for proportions
+* Added ggProportionPlot to generate a plot for proportions acknowledging inaccuracy of sample estimates
 * At the request of Dorota Reis (through Twitter, @dororeis), made it easy to change the colors in dlvPlot()
 * In CIBER, it's now possible to number the subquestions
 
