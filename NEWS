@@ -8,6 +8,7 @@ userfriendlyscience NEWS
 * Added userfriendly plotting to regr, fanova and logRegr
 * Added sharedSubString to find the longest shared substring is a character vector
 * Added findShortestInterval to find the shortest interval in a numeric vector
+* Added checkDataIntegrity for easy checking of data integrity
 * Improved nnc to compute confidence intervals using formula from 
 * Added confIntProp for easily computing confidence intervals for proportions
 * Added ggProportionPlot to generate a plot for proportions acknowledging inaccuracy of sample estimates
