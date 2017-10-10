@@ -1,6 +1,8 @@
-nnc <- function(d = NULL, cer = NULL, r = 1,
+nnc <- function(d = NULL, cer = NULL, r = 1, n = NULL,
                 threshold = NULL, mean = 0, sd = 1,
+                poweredFor = NULL, thresholdSensitivity = NULL,
                 eventDesirable = TRUE, eventIfHigher = TRUE,
+                conf.level=.95,
                 d.ci = NULL, cer.ci = NULL, r.ci=NULL,
                 d.n = NULL, cer.n = NULL, r.n = NULL, plot = TRUE,
                 returnPlot = TRUE, silent=FALSE) {
@@ -10,6 +12,16 @@ nnc <- function(d = NULL, cer = NULL, r = 1,
          "a Cohen's d estimate, instead use convert.d.to.t (see ?convert.d.to.t for the ",
          "manual), e.g. provide:\n\n  nnc(d=convert.t.to.d(t = 3.2, df=98));\n\n",
          "Of course, replace '3.2' and '98' with your t value and the degrees of freedom.");
+  }
+
+  if (!is.null(poweredFor) && !is.null(threshold)) {
+    warning("You specified a value for both 'powerFor' and 'threshold'. Only using the latter!");
+  } else if (!is.null(poweredFor) && (is.null(mean) || is.null(sd))) {
+    stop("You specified 'powerFor', but to use that expected Cohen's d value to compute the ",
+         "threshold, which then in turn is used to compute the CER, I also need the mean and ",
+         "the standard deviation, but you didn't specify both of those.");
+  } else if (!is.null(poweredFor) && !is.null(mean) && !is.null(sd)) {
+    threshold <- mean + poweredFor * sd;
   }
 
   if (is.null(cer) && is.null(threshold)) {
@@ -40,6 +52,18 @@ nnc <- function(d = NULL, cer = NULL, r = 1,
                                    sd = sd);
   }
   
+  if (!is.null(thresholdSensitivity)) {
+    cer.sensitivity <- convert.threshold.to.er(threshold = thresholdSensitivity,
+                                               mean = mean,
+                                               sd = sd);
+    nnc.sensitivity <-
+      convert.d.to.nnc(d=d, cer=cer.sensitivity, r=r,
+                       eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
+    sensitivityDf <- data.frame(threshold = thresholdSensitivity,
+                                cer = cer.sensitivity,
+                                nnc = nnc.sensitivity);
+  }
+
   ### Compute confidence intervals if we can
   if (is.null(d.ci) && !is.null(d.n))
     d.ci <- cohensdCI(d=d, n = sum(d.n));
@@ -66,11 +90,14 @@ nnc <- function(d = NULL, cer = NULL, r = 1,
   ### Values closer to .5 are more conservative
   if (cer.ci[2] - .5 == min(abs(cer.ci - .5))) cer.ci <- rev(cer.ci);
 
+  nnc.est <- convert.d.to.nnc(d=d, cer=cer, r=r,
+                              eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
   nnc.lb <- convert.d.to.nnc(d=d.ci[1], cer=cer.ci[1], r=r.ci[1],
                              eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
   nnc.ub <- convert.d.to.nnc(d=d.ci[2], cer=cer.ci[2], r=r.ci[2],
                              eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
 
+  eer.est <- attr(nnc.est, 'eer');
   eer.ci <- c(attr(nnc.lb, 'eer'),
               attr(nnc.ub, 'eer'));
 
@@ -106,6 +133,44 @@ nnc <- function(d = NULL, cer = NULL, r = 1,
     attr(res, 'd.ci') <- d.ci;
   } else {
     attr(res, 'd') <- d.ci[1]
+  }
+
+  ### Compute confidence intervals
+  
+  if (!is.null(n)) {
+    if (length(n) > 2) {
+      stop("For n, please provide either a total sample size, or a vector with respectively the control and experimental sample sizes.");
+    } else if (length(n) == 1) {
+      n <- c(trunc(n/2),ceiling(n/2)); 
+    }
+    dataMatrix <- matrix(c(eer.est * n[1], (1-eer.est) * n[1],
+                           cer * n[2], (1-cer) * n[2]),
+                         byrow=TRUE, ncol=2);
+    epiResult <- from_epiR_epi.2by2(dat = dataMatrix, method = "cohort.count", 
+                                    conf.level = conf.level, units = 1);
+    
+    ### Lifted from https://cran.r-project.org/web/packages/RcmdrPlugin.EBM/
+    #.ARR.est <- 0-epiResult$rval$AR$est
+    #.ARR1 <- 0-epiResult$rval$AR$lower
+    #.ARR2 <- 0-epiResult$rval$AR$upper
+    .ARR.est <- epiResult$res$ARisk.conf$est
+    .ARR1 <- epiResult$res$ARisk.conf$lower
+    .ARR2 <- epiResult$res$ARisk.conf$upper
+    .ARR.lower <- min(.ARR1, .ARR2)
+    .ARR.upper <- max(.ARR1, .ARR2)
+    .NNT.est <- 1/.ARR.est
+    .NNT1 <- 1/.ARR.lower
+    .NNT2 <- 1/.ARR.upper
+    .NNT.lower <- min(.NNT1, .NNT2)
+    .NNT.upper <- max(.NNT1, .NNT2)
+    if (.ARR.lower < 0) {
+      .NNT.lower <- .NNT.upper
+      .NNT.upper <- 1/0
+    }
+    
+    ### Store CI
+    attr(res, 'NNC.ci') <- c(.NNT.lower, .NNT.upper);
+    
   }
 
   if (plot) {
@@ -203,4 +268,9 @@ print.nnc <- function(x, ...) {
        "Numbers Needed for Change: ", nnc, "\n\n",
        "(Based on ", cerStatement,
        eerStatement, dStatement, rStatement, ".)\n");
+  
+  if (exists(sensitivityDf)) {
+    print(sensitivityDf);
+  }
+    
 }

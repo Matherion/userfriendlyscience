@@ -1,5 +1,5 @@
 ### Necessary to be able to set knitr hooks. Apparently.
-utils::globalVariables(c("before"))
+#utils::globalVariables(c("before"))
 
 setCaptionNumbering <- function(captionName = 'tab.cap',
                                 prefix = ":Table %s: ",
@@ -24,7 +24,7 @@ setCaptionNumbering <- function(captionName = 'tab.cap',
       }
     });
   } else {
-    hookFunction <- list(captionName = function(after, options, envir) {
+    hookFunction <- list(captionName = function(before, options, envir) {
       if (!before) {
         cntr <- getOption(optionName, 1);
         if (!is.numeric(cntr)) cntr <- 1;

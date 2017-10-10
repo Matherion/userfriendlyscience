@@ -1,27 +1,44 @@
 factorLoadingDiamondCIplot <- function(fa,
                                        xlab='Factor Loading',
-                                       colors = brewer.pal(max(3, fa$factors), "Set1"),
+                                       colors = viridis_pal()(max(2, fa$factors)),
+                                       labels=NULL,
+                                       theme=theme_bw(),
                                        ...) {
   
-  ### Combine both confidence intervals and factor loadings, using
-  ### the code from the 'psych:::print.psych.fa.ci' function 
-  lc <- data.frame(unclass(fa$loadings), fa$ci$ci);
   ### Create list for CIs per factor
   CIs <- faConfInt(fa);
 
+  dotsList <- as.list(substitute(list(...)));
+  
+  if ('alpha' %in% names(dotsList)) {
+    alpha <- dotsList$alpha;
+  } else {
+    alpha <- 1;
+  }
+  
   ### Create empty
-  res <- ggplot();
+  res <- ggplot(data.frame(Factor=as.factor(1:length(CIs))),
+                aes_string(x=-Inf, ymin=-Inf, ymax=-Inf,
+                           color='Factor', fill='Factor')) +
+    geom_ribbon() +
+    geom_vline(xintercept=0) +
+    scale_color_manual(values=colors) +
+    scale_fill_manual(values=alpha(colors, alpha));
   
   for (currentFactor in 1:length(CIs)) {
-    
     res <- res + ggDiamondLayer(CIs[[currentFactor]],
                                 color = colors[currentFactor],
                                 ...);
   }
   
-  res <- res + scale_y_continuous(breaks=1:nrow(unclass(fa$loadings)),
-                          labels=rownames(unclass(fa$loadings))) +
-    ylab(NULL) + xlab(xlab) + theme_bw() + geom_vline(xintercept=0);
+  if (is.null(labels)) {
+    labels <- rownames(unclass(fa$loadings));
+  }
+  
+  res <- res +
+    scale_y_continuous(breaks=1:nrow(unclass(fa$loadings)),
+                       labels=labels) +
+    ylab(NULL) + xlab(xlab) + theme;
 
   return(res);
 }

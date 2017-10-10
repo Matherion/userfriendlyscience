@@ -1,7 +1,9 @@
 regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
                  pvalueDigits = 3, coefficients=c("raw", "scaled"),
                  plot=FALSE, ci.method = c("widest", "r.con", "olkinfinn"),
-                 ci.method.note = FALSE, env=parent.frame()) {
+                 collinearity = FALSE, influential = FALSE,
+                 ci.method.note = FALSE, env=parent.frame(),
+                 pointAlpha = .5) {
 
   ### Generate object to store input, intermediate outcomes, and results
   res <- list(input = as.list(environment()),
@@ -50,8 +52,10 @@ regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
   res$intermediate$formula <- formula(res$intermediate$formula.as.character,
                                       env = environment());
   
-  ### Standardize variables
-  res$intermediate$dat.scaled <- as.data.frame(scale(res$intermediate$dat.raw));
+  ### Standardize numeric variables
+  res$intermediate$dat.scaled <- res$intermediate$dat.raw;
+  res$intermediate$dat.scaled[, sapply(res$intermediate$dat.scaled, is.numeric)] <-
+    as.data.frame(scale(res$intermediate$dat.scaled[, sapply(res$intermediate$dat.scaled, is.numeric)]));
 
   ### Run and store lm objects
   res$intermediate$lm.raw <-
@@ -77,7 +81,7 @@ regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
   res$output$rsq.ci.olkinfinn <- ifelse(res$output$rsq.ci.olkinfinn < 0,
                                         0, res$output$rsq.ci.olkinfinn);
 
-  res$output$rsq.ci.r.con <- r.con(sqrt(rsq), n);
+  res$output$rsq.ci.r.con <- psych::r.con(sqrt(rsq), n);
   res$output$rsq.ci.r.con <- ifelse(res$output$rsq.ci.r.con < 0,
                                     0, res$output$rsq.ci.r.con) ^ 2;
 
@@ -104,7 +108,17 @@ regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
     lm.influence(res$intermediate$lm.raw);
   res$intermediate$lm.influence.scaled <-
     lm.influence(res$intermediate$lm.scaled);
-
+  
+  ### Get variance inflation factors and compute tolerances
+  if (collinearity && (length(res$intermediate$variables) > 2)) {
+    res$intermediate$vif.raw <- car::vif(res$intermediate$lm.raw);
+    res$intermediate$vif.scaled <- car::vif(res$intermediate$lm.scaled);
+    if (is.vector(res$intermediate$vif.raw)) {
+      res$intermediate$tolerance.raw <- 1/res$intermediate$vif.raw;
+      res$intermediate$tolerance.scaled <- 1/res$intermediate$vif.scaled;
+    }
+  }
+  
   ### get summary for lm objects
   res$intermediate$summary.raw <- summary(res$intermediate$lm.raw);
   res$intermediate$summary.scaled <- summary(res$intermediate$lm.scaled);
@@ -127,9 +141,109 @@ regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
       res$output$plot <- ggplot(res$intermediate$dat.raw,
                                 aes_string(y=res$intermediate$variables_namesOnly[1],
                                         x=res$intermediate$variables_namesOnly[2])) +
-        geom_point() + geom_smooth(method='lm') + theme_bw();
+        geom_point(alpha = pointAlpha) + geom_smooth(method='lm') + theme_bw();
+    } else if (length(res$intermediate$variables_namesOnly) == 3) {
+      
+      if (is.numeric(res$intermediate$dat.raw[, res$intermediate$variables_namesOnly[2]]) &&
+          is.numeric(res$intermediate$dat.raw[, res$intermediate$variables_namesOnly[3]])) {
+        ### Both numeric, so we treat the second one as moderator and compute the line
+        
+        predictorName <- res$intermediate$variables_namesOnly[2];
+        moderatorName <- res$intermediate$variables_namesOnly[3];
+        
+        predictorMean <- mean(res$intermediate$dat.raw[, predictorName],
+                              na.rm=TRUE);
+        predictorSD <- sd(res$intermediate$dat.raw[, predictorName],
+                          na.rm=TRUE);
+        # loPredictorValue <- predictorMean - predictorSD;
+        # hiPredictorValue <- predictorMean + predictorSD;
+        loPredictorValue <- min(res$intermediate$dat.raw[, predictorName],
+                                na.rm=TRUE);
+        hiPredictorValue <- max(res$intermediate$dat.raw[, predictorName],
+                                na.rm=TRUE);
+        
+        moderatorMean <- mean(res$intermediate$dat.raw[, moderatorName],
+                              na.rm=TRUE);
+        moderatorSD <- sd(res$intermediate$dat.raw[, moderatorName],
+                          na.rm=TRUE);
+        loModeratorValue <- moderatorMean - moderatorSD;
+        hiModeratorValue <- moderatorMean + moderatorSD;
+        
+        intercept <- res$output$coef.raw['(Intercept)', 'estimate'];
+        predictorSlope <- res$output$coef.raw[predictorName, 'estimate'];
+        moderatorSlope <- res$output$coef.raw[moderatorName, 'estimate'];
+        interactionSlope <- res$output$coef.raw[paste0(predictorName,
+                                                       ":",
+                                                       moderatorName),
+                                                'estimate'];
+
+        depVarValue_loPred_loMod <- intercept +
+          loPredictorValue * predictorSlope +
+          loModeratorValue * moderatorSlope +
+          loPredictorValue * loModeratorValue * interactionSlope;
+        depVarValue_loPred_hiMod <- intercept +
+          loPredictorValue * predictorSlope +
+          hiModeratorValue * moderatorSlope +
+          loPredictorValue * hiModeratorValue * interactionSlope;
+        depVarValue_hiPred_loMod <- intercept +
+          hiPredictorValue * predictorSlope +
+          loModeratorValue * moderatorSlope +
+          hiPredictorValue * loModeratorValue * interactionSlope;
+        depVarValue_hiPred_hiMod <- intercept +
+          hiPredictorValue * predictorSlope +
+          hiModeratorValue * moderatorSlope +
+          hiPredictorValue * hiModeratorValue * interactionSlope;
+
+        moderatorDat <- data.frame(x = c(loPredictorValue, loPredictorValue),
+                                   xend = c(hiPredictorValue, hiPredictorValue),
+                                   y = c(depVarValue_loPred_loMod, depVarValue_loPred_hiMod),
+                                   yend = c(depVarValue_hiPred_loMod, depVarValue_hiPred_hiMod),
+                                   modVal = c("Low", "High"));
+        names(moderatorDat)[5] <- res$intermediate$variables_namesOnly[3];
+        
+        res$output$plot <- ggplot(res$intermediate$dat.raw,
+                                  aes_string(y=res$intermediate$variables_namesOnly[1],
+                                             x=res$intermediate$variables_namesOnly[2])) +
+          geom_point(alpha = pointAlpha) +
+          geom_smooth(method='lm') +
+          theme_bw() +
+          geom_segment(data = moderatorDat,
+                       aes_string(x = 'x', xend = 'xend',
+                                  y = 'y', yend = 'yend',
+                                  group = res$intermediate$variables_namesOnly[3],
+                                  color = res$intermediate$variables_namesOnly[3]),
+                       size=1) +
+          scale_color_viridis(discrete = TRUE);
+
+      } else if ((is.numeric(res$intermediate$dat.raw[, res$intermediate$variables_namesOnly[2]]) &&
+                 (is.factor(res$intermediate$dat.raw[, res$intermediate$variables_namesOnly[3]]))) ||
+                 (is.numeric(res$intermediate$dat.raw[, res$intermediate$variables_namesOnly[3]]) &&
+                 (is.factor(res$intermediate$dat.raw[, res$intermediate$variables_namesOnly[2]])))) {
+        ### One of the predictors is a factor, so we jsut plot lines for each value
+        if (is.numeric(res$intermediate$dat.raw[, res$intermediate$variables_namesOnly[2]])) {
+          predictor <- res$intermediate$variables_namesOnly[2];
+          moderator <- res$intermediate$variables_namesOnly[3];
+        } else {
+          predictor <- res$intermediate$variables_namesOnly[3];
+          moderator <- res$intermediate$variables_namesOnly[2];
+        }
+        res$output$plot <- ggplot(res$intermediate$dat.raw,
+                                  aes_string(y=res$intermediate$variables_namesOnly[1],
+                                             x=predictor)) +
+          geom_point(alpha = pointAlpha) +
+          geom_smooth(method='lm') +
+          theme_bw() +
+          geom_smooth(aes_string(y=res$intermediate$variables_namesOnly[1],
+                                 x=predictor,
+                                 group=moderator,
+                                 color=moderator),
+                      method="lm",
+                      se = FALSE) +
+          scale_color_viridis(discrete = TRUE);        
+      }
     } else {
-      warning("You requested a plot, but for now plots are only available for regression analyses with one predictor.");
+      warning("You requested a plot, but for now plots are ",
+              "only available for regression analyses with one predictor.");
     }
   }
   
@@ -186,6 +300,22 @@ print.regr <- function(x, digits=x$input$digits,
                              digits=pvalueDigits,
                              includeP=FALSE);
     print(tmpDat, ...);
+  }
+  
+  if (x$input$collinearity && (!is.null(x$intermediate$vif.raw))) {
+    cat0("\nCollinearity diagnostics:\n\n");
+    if (is.vector(x$intermediate$vif.raw)) {
+      cat0("  For the raw regression coefficients:\n\n");
+      collinearityDat <- data.frame(VIF = x$intermediate$vif.raw,
+                                    Tolerance = x$intermediate$tolerance.raw);
+      row.names(collinearityDat) <- paste0(repStr(4), names(x$intermediate$vif.raw));
+      print(collinearityDat);
+      cat0("\n  For the standardized regression coefficients:\n\n");
+      collinearityDat <- data.frame(VIF = x$intermediate$vif.scaled,
+                                    Tolerance = x$intermediate$tolerance.scaled);
+      row.names(collinearityDat) <- paste0(repStr(4), names(x$intermediate$vif.raw));
+      print(collinearityDat);
+    }
   }
   
   ciMsg <- "\n* Note that the confidence interval for R^2 is based on ";

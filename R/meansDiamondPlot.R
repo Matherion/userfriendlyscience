@@ -63,9 +63,14 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
   if (!is.null(xbreaks) &&
       length(xbreaks) == 1 &&
       tolower(xbreaks) == "auto") {
-    plot <- plot + scale_x_continuous(breaks=sort(unique(unlist(dat[, items]))));
+    ### If we only have a few values, set these as xbreaks. If we have
+    ### more than 10, don't set any breaks manually
+    potentialBreaks <- sort(unique(unlist(dat[, items])));
+    if (length(potentialBreaks) <= 10) {
+      plot <- plot + scale_x_continuous(breaks=potentialBreaks);
+    }
   } else if (is.numeric(xbreaks)) {
-    plot <- plot + scale_x_continuous(breaks=xbreaks);
+    plot <- plot + scale_x_continuous(breaks=xbreaks, labels=xbreaks);
   }
   
   if (!is.null(outputFile)) {
