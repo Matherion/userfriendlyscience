@@ -341,6 +341,9 @@ print.logRegr <- function(x, digits=x$input$digits,
   if (!is.null(x$output$plot)) {
     print(x$output$plot);
   }
+  
+  cat("\n");
+  
   invisible();
   
 }
