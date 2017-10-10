@@ -25,7 +25,10 @@ CIBER <- function(data, determinants, targets,
 
   if (!all(c(determinants, targets) %in% names(data))) {
     stop("Not all variables names you passed in arguments ",
-         "'determinants' or 'targets' are in your dataset!");
+         "'determinants' or 'targets' are in the dataset!\n",
+         "Specifically, ",
+         vecTxtQ(c(determinants, targets)[!(c(determinants, targets) %in% names(data))]),
+         " is or are not in the provided dataset.");
   }
 
   res <- list(input = as.list(environment()),
