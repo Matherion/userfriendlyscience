@@ -9,10 +9,10 @@ This function uses the \code{\link{diamondPlot}} to visualise the results of a f
 \usage{
 factorLoadingDiamondCIplot(fa,
                            xlab="Factor Loading",
-                           colors =
-                             brewer.pal(max(3,
-                                            fa$factors),
-                                        "Set1"),
+                           colors = 
+                             viridis_pal()(max(2, fa$factors)),
+                           labels=NULL,
+                           theme=theme_bw(),
                            ...)
 }
 \arguments{
@@ -23,7 +23,13 @@ factorLoadingDiamondCIplot(fa,
   The label for the x axis.
 }
   \item{colors}{
-  The colors used for the factors. The default uses the 'Set1' palette from colorbrewer using the \code{\link{RColorBrewer}} package. A vector can also be supplied; the colors must be valid arguments to \code{\link{colorRamp}} (and therefore, to \code{\link{col2rgb}}).
+  The colors used for the factors. The default uses the discrete \code{\link{viridis}} palette, which is optimized for perceptual uniformity, maintaining its properties when printed in grayscale, and designed for colourblind readers. A vector can also be supplied; the colors must be valid arguments to \code{\link{colorRamp}} (and therefore, to \code{\link{col2rgb}}).
+}
+  \item{labels}{
+  The labels to use for the items (on the Y axis).
+}
+  \item{theme}{
+  The ggplot2 theme to use.
 }
   \item{\dots}{
   Additional arguments will be passed to \code{\link{ggDiamondLayer}}. This can be used to set, for example, the transparency (alpha value) of the diamonds to a lower value using e.g. \code{alpha=.5}.
@@ -42,17 +48,24 @@ Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \examples{
 \dontrun{
-### Not run because it takes too long and may generate
-### warnings because of the bootstrapping of the confidence
-### intervals
-factorLoadingDiamondCIplot(fa(Thurstone.33, 2,
-                              n.iter=100, n.obs=100));
+### (Not run during testing because it takes too long and
+###  may generate warnings because of the bootstrapping of
+###  the confidence intervals)
+
+factorLoadingDiamondCIplot(fa(Bechtoldt,
+                              nfactors=2,
+                              n.iter=50,
+                              n.obs=200));
 
 ### And using a lower alpha value for the diamonds to
 ### make them more transparent
-factorLoadingDiamondCIplot(fa(Thurstone.33, 2,
-                              n.iter=100, n.obs=100),
-                           alpha = .5);
+
+factorLoadingDiamondCIplot(fa(Bechtoldt,
+                              nfactors=2,
+                              n.iter=50,
+                              n.obs=200),
+                           alpha=.5,
+                           size=1);
 }
 }
 \keyword{ hplot }
