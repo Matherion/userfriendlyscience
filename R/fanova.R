@@ -108,6 +108,9 @@ fanova <- function(data,
       longDat[, currentVar] <- as.numeric(rep(data[, currentVar],
                                               length(y)));
     }
+    
+    res$intermediate$longDat <- longDat;
+    
     ### Then build the lmer formula: y is predicted by all
     ### interactions and main effects for all factors ('between')
     ### and covariates ('covar'), all interactions between all
@@ -144,6 +147,16 @@ fanova <- function(data,
     #                                           idesign=~1*time,
     #                                           type=3,
     #                                           test.statistic='F');
+    
+    if (plot) {
+      res$output$plot <-
+        dlvPlot(longDat,
+                x='time',
+                y='y',
+                z=between)$plot +
+        labs(x='Time', y=res$intermediate$yVarName);
+    }
+
   }
   
   # if (plot) {
@@ -172,8 +185,10 @@ fanova <- function(data,
 print.fanova <- function(x, ...) {
   cat(x$output$msg);
   cat("\n");
-  grid.newpage();
-  grid.draw(x$output$plot);
+  if (!is.null(x$output$plot)) {
+    grid.newpage();
+    grid.draw(x$output$plot);
+  }
   print(x$intermediate$secondaryObject);
 }
 
@@ -191,16 +206,16 @@ print.fanova <- function(x, ...) {
 # CBM <- read.csv("B:/Data/teaching/OU/workshops/R/R for beginners/cbm.csv",
 #                 sep=";", dec=",");
 # 
-# fanova(dat=Orange, y='circumference', between='Tree')
+# fanova(dat=Orange, y='circumference', between='Tree', plot=TRUE)
 # 
 # fanova(data=CBM, y="rt_parallel_boven_v1",
-#        between=c('Sekse', 'StatistiekofSPSS'));
+#        between=c('Sekse', 'StatistiekofSPSS'), plot=TRUE);
 # 
 # fanova(data=CBM, y="rt_parallel_boven_v1",
 #        between=c('StatistiekofSPSS'),
-#        covar="Leeftijd");
+#        covar="Leeftijd", plot=TRUE);
 # 
 # fanova(data=CBM,
 #        y=c("rt_parallel_boven_v1", "rt_parallel_boven_v2", "rt_parallel_boven_v3"),
-#        between='Sekse');
+#        between='Sekse', plot=TRUE);
 
