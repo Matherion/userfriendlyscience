@@ -64,9 +64,9 @@ ggProportionPlot <- function(dat,
   ### number of intervals to draw the rectangles.
   conf.steps.adjusted <- c(0, conf.steps/2, rev(1-(conf.steps/2)));
   ### Get the beginning and end positions for the rectangles
-  percentages.x1 <- rbind(c(0,0), 100*confidences);
-  percentages.x2 <- rbind(100*confidences, c(100,100));
-
+  percentages.x1 <- rbind(0, 100*confidences);
+  percentages.x2 <- rbind(100*confidences, 100);
+  
   longDat <- data.frame(Confidence=rep(conf.steps.adjusted, length(items)),
                         PercentageMin=as.vector(percentages.x1),
                         PercentageMax=as.vector(percentages.x2),
@@ -157,11 +157,3 @@ ggProportionPlot <- function(dat,
   grid.newpage();
   grid.draw(fullPlot);
 }
-
-# confIntProp(sum(mtcars$vs), nrow(mtcars));
-# confIntProp(sum(mtcars$am), nrow(mtcars));
-bigmtcars <- mtcars[sample(1:nrow(mtcars), 800, replace = TRUE), ];
-
-ggProportionPlot(mtcars, items=c('vs', 'am'), showDiamonds = FALSE);
-
-#ggProportionPlot(bigmtcars, items=c('vs', 'am'), showDiamonds = FALSE);

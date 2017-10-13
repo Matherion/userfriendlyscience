@@ -72,7 +72,7 @@ oneway <- function(y, x, posthoc=NULL, means=FALSE, fullDescribe=FALSE,
   }
   
   if (levene) {
-    res$intermediate$leveneTest <- leveneTest(y, group=x, center=mean);
+    res$intermediate$leveneTest <- car::leveneTest(y, group=x, center=mean);
   }
 
   res$intermediate$etasq <- computeEffectSize_etasq(var1=x, var2=y,

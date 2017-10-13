@@ -1,16 +1,12 @@
-### Optional Levene's test
-
-### Add plot
-
-### 
 
 fanova <- function(data,
                    y,
                    between = NULL,
                    covar = NULL,
-                   contrast = NULL,
                    plot = FALSE,
-                   ...) {
+                   levene = FALSE,
+                   digits = 2,
+                   contrast = NULL) {
 
   res <- list(input = as.list(environment()),
               intermediate = list(),
@@ -63,21 +59,30 @@ fanova <- function(data,
       res$intermediate$secondaryObject <-
         userfriendlyscience::oneway(y = y,
                                     x = x,
-                                    plot=plot);
+                                    plot=plot,
+                                    levene=levene);
       ### Get plot and store it here
       if (plot)
         res$output$plot <-
           res$intermediate$secondaryObject$output$plot;
     } else {
       ### Factorial anova or ancova
+      
+      ### Generate formula
       res$intermediate$formula <-
         formula(paste(y, "~", paste(c(between, covar), collapse="*")));
+      
+      ### Run linear model
       res$intermediate$primaryObject <-
         lm(formula=res$intermediate$formula,
            data = data,
            contrasts = contrastFunction);
+      
+      ### Get Anova results using car's Anova
       res$intermediate$secondaryObject <-
         car::Anova(res$intermediate$primaryObject, type=3);
+      
+      ### Make a plot if we want one
       if (plot) {
         if (is.null(covar) && (length(between) == 2)) {
           res$output$plot <- dlvPlot(data,
@@ -93,6 +98,16 @@ fanova <- function(data,
                   "more than two factors).");
         }
       }
+      
+      ### Optional Levene's test
+      if (levene) {
+        leveneY <- data[, y];
+        leveneGroups <-
+          as.factor(apply(data[, between], 1, function(x) return(paste0(x, collapse="-"))));
+        res$intermediate$leveneTest <-
+          car::leveneTest(leveneY, group=leveneGroups, center=mean);
+      }
+      
     }
   } else {
     ### We need to do a repeated measures anova, so first convert the
@@ -149,40 +164,28 @@ fanova <- function(data,
     #                                           test.statistic='F');
     
     if (plot) {
-      res$output$plot <-
-        dlvPlot(longDat,
-                x='time',
-                y='y',
-                z=between)$plot +
-        labs(x='Time', y=res$intermediate$yVarName);
+      if (length(between) > 1) {
+        warning("Sorry, I can only generate a plot for ",
+                "oneway repeated measures anovas.");
+      } else {
+        res$output$plot <-
+          dlvPlot(longDat,
+                  x='time',
+                  y='y',
+                  z=between)$plot +
+          labs(x='Time', y=res$intermediate$yVarName);
+      }
     }
 
   }
-  
-  # if (plot) {
-  #   if (length(y) == 1)
-  #   
-  #   
-  #   res$intermediate$plotDat <- ifelseObj(length(y) == 1,
-  #                                         dat,
-  #                                         
-  #                                     
-  #     data.frame(x, y);
-  #   names(res$intermediate$dat) <- c(res$input$x.name, res$input$y.name);
-  #   res$output$plot <- dlvPlot(res$intermediate$dat,
-  #                              x=res$input$x.name,
-  #                              y=res$input$y.name)$plot +
-  #     ggtitle(paste0(res$input$x.name, " and ",
-  #                    res$input$y.name));
-  # }
-  
+
 
   class(res) <- 'fanova';
   return(res);
   
 }
 
-print.fanova <- function(x, ...) {
+print.fanova <- function(x, digits=x$input$digits, ...) {
   cat(x$output$msg);
   cat("\n");
   if (!is.null(x$output$plot)) {
@@ -190,32 +193,14 @@ print.fanova <- function(x, ...) {
     grid.draw(x$output$plot);
   }
   print(x$intermediate$secondaryObject);
+  
+  if(!is.null(x$intermediate$leveneTest)) {
+    cat0("\n### Levene's test for homogeneity of variance:\n\n",
+         "F[", x$intermediate$leveneTest[1, 1],
+         ", ", x$intermediate$leveneTest[2, 1],
+         "] = ", round(x$intermediate$leveneTest[1, 2], digits),
+         ", ", formatPvalue(x$intermediate$leveneTest[1, 3], digits=digits+1),
+         ".\n");
+  }
+  
 }
-
-# require(lme4);
-# require(userfriendlyscience);
-# require(car);
-# require(ggplot2);
-# require(grid);
-# require(gridExtra);
-### see https://stats.stackexchange.com/questions/26810/why-isnt-the-anova-function-in-the-car-package-returning-an-f-statistic
-
-# CBM <- read.csv("http://userfriendlyscience.com/files/cbm.csv",
-#                 sep=";", dec=",");
-
-# CBM <- read.csv("B:/Data/teaching/OU/workshops/R/R for beginners/cbm.csv",
-#                 sep=";", dec=",");
-# 
-# fanova(dat=Orange, y='circumference', between='Tree', plot=TRUE)
-# 
-# fanova(data=CBM, y="rt_parallel_boven_v1",
-#        between=c('Sekse', 'StatistiekofSPSS'), plot=TRUE);
-# 
-# fanova(data=CBM, y="rt_parallel_boven_v1",
-#        between=c('StatistiekofSPSS'),
-#        covar="Leeftijd", plot=TRUE);
-# 
-# fanova(data=CBM,
-#        y=c("rt_parallel_boven_v1", "rt_parallel_boven_v2", "rt_parallel_boven_v3"),
-#        between='Sekse', plot=TRUE);
-

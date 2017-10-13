@@ -16,11 +16,14 @@ ggProportionPlot(dat, items,
                  compareHiToLo = TRUE,
                  showDiamonds = FALSE,
                  diamonds.conf.level=.95,
+                 diamonds.alpha=1,
                  na.rm = TRUE,
                  barHeight = 0.4,
-                 scale_color = scale_color_viridis(option = "D",
-                                                   begin = 0.25,
-                                                   end = 1),
+                 conf.steps = seq(from=0.0001, to=.9999, by=.0001),
+                 scale_color = scale_color_viridis(option="magma",
+                                                   begin=0, end=.5),
+                 scale_fill = scale_fill_viridis(option="magma",
+                                                 begin=0, end=.5),
                  theme = theme_bw())
 }
 %- maybe also 'usage' for other objects documented here.
@@ -55,14 +58,20 @@ ggProportionPlot(dat, items,
   \item{diamonds.conf.level}{
   The confidence level of the diamonds' confidence intervals.
 }
+  \item{diamonds.alpha}{
+  The alpha channel (i.e. transparency, or rather 'obliqueness') of the diamonds.
+}
   \item{na.rm}{
   Whether to remove missing values.
 }
   \item{barHeight}{
   The height of the bars, or rather, half the height. Use .5 to completely fill the space.
 }
-  \item{scale_color}{
-  The function for the colors for the gradient.
+  \item{conf.steps}{
+  The number of steps to use to generate the confidence levels for the proportion.
+}
+  \item{scale_color, scale_fill}{
+  The functions for the colors and fill for the gradient; this should normally be the same value, but if you feel adventurous, you can play around with the number of \code{conf.steps} and this.
 }
   \item{theme}{
   The theme to use.
@@ -93,6 +102,9 @@ ggProportionPlot(mtcars, items=c('vs', 'am'));
 ### Number of cylinders, by default comparing lowest value
 ### (4) to highest (8):
 ggProportionPlot(mtcars, items=c('cyl'));
+
+\dontrun{
+### Not running these to save time during package building/checking
 
 ### We can also compare 4 to 6:
 ggProportionPlot(mtcars, items=c('cyl'),
@@ -127,6 +139,16 @@ ggProportionPlot(mtcars, items=c('cyl'),
                  rightAnchors="Four\nor\nsix",
                  compareHiToLo=FALSE,
                  showDiamonds=TRUE);
+}
+
+### Using less steps for the confidence levels and changing
+### the fill colours
+ggProportionPlot(mtcars,
+                 items=c('vs', 'am'),
+                 showDiamonds = TRUE,
+                 scale_fill = scale_fill_viridis(option="magma",
+                                                 begin=0.5, end=1),
+                 conf.steps=seq(from=0.0001, to=.9999, by=.2));
 
 }
 \keyword{ hplot }

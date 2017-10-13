@@ -1,6 +1,12 @@
 processLimeSurveyDropouts <- function(lastpage, pagenames = NULL,
                                       relevantPagenames = NULL) {
 
+  if (!is.numeric(lastpage)) {
+    stop("Argument 'lastpage' is not a numeric vector but has class ",
+         class(lastpage), ". The first nonmissing values are: ",
+         vecTxtQ(head(complete.cases(lastpage))), ".");
+  }
+  
   res <- list();
   res$specificDropout <- data.frame(lastpage = 0:max(lastpage));
 
