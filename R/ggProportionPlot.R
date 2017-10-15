@@ -11,9 +11,10 @@ ggProportionPlot <- function(dat,
                              diamonds.alpha=1,
                              na.rm = TRUE,
                              barHeight = .4,
-                             conf.steps = seq(from=0.0001, to=.9999, by=.0001),
-                             scale_color = scale_color_viridis(option="magma", begin=0, end=.5),
-                             scale_fill = scale_fill_viridis(option="magma", begin=0, end=.5),
+                             conf.steps = seq(from=0.001, to=.999, by=.001),
+                             scale_color = viridis(option="magma", 2),
+                             scale_fill = viridis(option="magma", 2),
+                             linetype = 1,
                              theme = theme_bw()) {
 
   tmpDat <- dat[, items, drop=FALSE];
@@ -84,20 +85,19 @@ ggProportionPlot <- function(dat,
                          ymax='itemValueMax',
                          color='Confidence',
                          fill='Confidence'),
-                 show.legend=FALSE) +
-    # geom_segment(aes_string(x='Percentage',
-    #                         xend='Percentage',
-    #                         y='itemValueMin',
-    #                         yend='itemValueMax',
-    #                         color='Confidence'),
-    #              show.legend=FALSE) +
+              linetype=linetype,
+              show.legend=FALSE) +
     scale_y_continuous(breaks=sort(unique(longDat$itemValue)),
                        minor_breaks = NULL,
                        labels=leftAnchors,
                        name=NULL,
                        sec.axis = dup_axis(labels=rightAnchors)) +
     coord_cartesian(xlim=c(0, 100)) +
-    theme + scale_color + scale_fill;
+    theme +
+    scale_color_gradient(low=scale_color[1],
+                         high=scale_color[2]) +
+    scale_fill_gradient(low=scale_fill[1],
+                        high=scale_fill[2]);
 
   if (showDiamonds) {
     confInts <- t(apply(freqs, 1, function(x) {
@@ -154,6 +154,18 @@ ggProportionPlot <- function(dat,
                               t=index$t, l=1, b=index$b, r=1,
                               name = "subquestions");
 
+  res <- list(plot = fullPlot,
+              confidences = confidences,
+              longDat = longDat);
+  
+  class(res) <- c('ggProportionPlot');
+  
+  return(res);
+}
+
+print.ggProportionPlot <- function(x, ...) {
+  ### Empty canvas
   grid.newpage();
-  grid.draw(fullPlot);
+  ### Draw plot
+  grid.draw(x$plot);
 }
