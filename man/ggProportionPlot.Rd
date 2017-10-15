@@ -4,7 +4,7 @@
 Sample distribution based plotting of proportions
 }
 \description{
-This function visualises percentages, but avoids a clear cut for the sample point estimate, instead using the confidence (as in confidence interval) to create a gradient. This effectively hinders drawing conclusions on the basis of point estimates, thereby urging caution consistent with what the data allows.
+This function visualises percentages, but avoids a clear cut for the sample point estimate, instead using the confidence (as in confidence interval) to create a gradient. This effectively hinders drawing conclusions on the basis of point estimates, thereby urging a level of caution that is consistent with what the data allows.
 }
 \usage{
 ggProportionPlot(dat, items,
@@ -19,11 +19,10 @@ ggProportionPlot(dat, items,
                  diamonds.alpha=1,
                  na.rm = TRUE,
                  barHeight = 0.4,
-                 conf.steps = seq(from=0.0001, to=.9999, by=.0001),
-                 scale_color = scale_color_viridis(option="magma",
-                                                   begin=0, end=.5),
-                 scale_fill = scale_fill_viridis(option="magma",
-                                                 begin=0, end=.5),
+                 conf.steps = seq(from=0.001, to=.999, by=.001),
+                 scale_color = viridis(option="magma", 2, begin=0, end=.5),
+                 scale_fill = viridis(option="magma", 2, begin=0, end=.5),
+                 linetype=linetype,
                  theme = theme_bw())
 }
 %- maybe also 'usage' for other objects documented here.
@@ -71,20 +70,21 @@ ggProportionPlot(dat, items,
   The number of steps to use to generate the confidence levels for the proportion.
 }
   \item{scale_color, scale_fill}{
-  The functions for the colors and fill for the gradient; this should normally be the same value, but if you feel adventurous, you can play around with the number of \code{conf.steps} and this.
+  A vector with two values (valid colors), that are used for the colors (stroke) and fill for the gradient; both vectors should normally be the same, but if you feel adventurous, you can play around with the number of \code{conf.steps} and this. If you specify only one color, no gradient is used but a single color (i.e. specifying the same single color for both \code{scale_color} and \code{scale_fill} simply draws bars of that color).}
+  \item{linetype}{
+  The \code{\link{linetype}} to use (0 = blank, 1 = solid, 2 = dashed, 3 = dotted, 4 = dotdash, 5 = longdash, 6 = twodash).
 }
   \item{theme}{
   The theme to use.
 }
 }
 \details{
-This function uses \code{\link{pbeta}}, with some lines of code taken from the \code{\link{binom.test}} source. Specifically, the count for the low category is specified as first 'shape argument' to \code{\link{pbeta}}, and the total count (either the sum of the count for the low category and the count for the high category, or the total number of cases if \code{compareHiToLo} is \code{FALSE}) minus the count for the low category as the second 'shape argument'.
+This function used \code{\link{confIntProp}} to compute confidence intervals for proportions at different levels of confidence. The confidence interval bounds at those levels of confidence are then used to draw rectangles with colors in a gradient that corresponds to the confidence level.
+
+Note that percentually, the gradient may not look continuous because at the borders between lighter and darker rectangles, the shade of the lighter rectangle is perceived as even lighter than it is, and the shade of the darker rectangle is perceived as even darker. This makes it seem as if each rectange is coloured with a gradient in the opposite direction.
 }
 \value{
 A \code{\link{ggplot2}} object.
-}
-\references{
-%% ~put references to the literature/web site here ~
 }
 \author{
 Gjalt-Jorn Peters
@@ -92,7 +92,7 @@ Gjalt-Jorn Peters
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \seealso{
-\code{\link{binom.test}}
+\code{\link{confIntProp}} and \code{\link{binom.test}}
 }
 \examples{
 ### V/S (no idea what this is: ?mtcars only mentions 'V/S' :-))
@@ -146,8 +146,7 @@ ggProportionPlot(mtcars, items=c('cyl'),
 ggProportionPlot(mtcars,
                  items=c('vs', 'am'),
                  showDiamonds = TRUE,
-                 scale_fill = scale_fill_viridis(option="magma",
-                                                 begin=0.5, end=1),
+                 scale_fill = c("#B63679FF", "#FCFDBFFF"),
                  conf.steps=seq(from=0.0001, to=.9999, by=.2));
 
 }

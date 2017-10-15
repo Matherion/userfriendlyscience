@@ -1,4 +1,3 @@
-
 fanova <- function(data,
                    y,
                    between = NULL,

@@ -13,7 +13,8 @@ fanova(data,
        covar = NULL,
        contrast = NULL,
        plot = FALSE,
-       ...)
+       levene = FALSE,
+       digits = 2)
 }
 \arguments{
   \item{data}{
@@ -33,6 +34,12 @@ fanova(data,
 }
   \item{plot}{
   Whether to produce a plot. Note that a plot is only produced for oneway and twoway anova and oneway repeated measures designs: if covariates or more than two between-subjects factors are specified, not plot is produced. For twoway anova designs, the second predictor is plotted as moderator (and the first predictor is plotted on the x axis).
+}
+  \item{levene}{
+Whether to show Levene's test for equality of variances (using \code{\link{car}}'s \code{\link{leveneTest}} function but specifying \code{\link{mean}} as function to compute the center of each group).
+}
+  \item{digits}{
+  Number of digits (actually: decimals) to use when printing results. The p-value is printed with one extra digit.
 }
 }
 \details{
