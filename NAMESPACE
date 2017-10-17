@@ -287,6 +287,7 @@ importFrom('XML', 'htmlParse', 'xpathSApply', 'xmlValue');
 importFrom('car', 'Anova', 'leveneTest');
 
 importFrom('SCRT', 'pvalue.systematic');
+importFrom('minpack.lm', 'nlsLM');
 
 importFrom('diptest', 'dip.test');
 
@@ -317,7 +318,7 @@ importFrom('gridExtra', 'arrangeGrob', 'grid.arrange');
 importFrom('ggrepel', 'geom_text_repel')
 importFrom('RColorBrewer', 'brewer.pal');
 importFrom('DiagrammeR', 'add_global_graph_attrs', 'render_graph');
-importFrom('viridis', 'scale_color_viridis', 'scale_fill_viridis');
+importFrom('viridis', 'scale_color_viridis', 'scale_fill_viridis', 'viridis');
 
 importFrom('lavaan', 'sem');
 importFrom('lme4', 'lmer');

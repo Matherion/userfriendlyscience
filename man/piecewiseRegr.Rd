@@ -1,0 +1,121 @@
+\name{piecewiseRegr}
+\alias{piecewiseRegr}
+\title{
+Piecewise regression analysis
+}
+\description{
+This function conducts a piecewise regression analysis and shows a plot illustrating the results. The function enables easy customization of the main plot elements and easy saving of the plot with anti-aliasing.
+}
+\usage{
+piecewiseRegr(dat,
+              timeVar = 1,
+              yVar = 2,
+              phaseVar = NULL,
+              baselineMeasurements = NULL,
+              robust = FALSE,
+              digits = 2,
+              colors = list(pre = viridis(4)[1],
+                            post = viridis(4)[4],
+                            diff = viridis(4)[3],
+                            intervention = viridis(4)[2],
+                            points = "black"),
+              theme = theme_minimal(),
+              pointSize = 2,
+              pointAlpha = 1,
+              lineSize = 1,
+              showPlot = TRUE,
+              outputFile = NULL,
+              outputWidth = 16,
+              outputHeight = 16,
+              ggsaveParams = list(units = "cm",
+                                  dpi = 300,
+                                  type = "cairo"))
+}
+\arguments{
+  \item{dat}{
+  The dataframe containing the variables for the analysis.
+}
+  \item{timeVar}{
+  The name of the variable containing the measurement moments (or an index of measurement moments). An index can also be specified, and assumed to be 1 if omitted.
+}
+  \item{yVar}{
+  The name of the dependent variable. An index can also be specified, and assumed to be 2 if omitted.
+}
+  \item{phaseVar}{
+  The variable containing the phase of each measurement. Note that this normally should only have two possible values.
+}
+  \item{baselineMeasurements}{
+  If no phaseVar is specified, \code{baselineMeasurements} can be used to specify the number of baseline measurements, which is then used to construct the \code{phaseVar} dummy variable.
+}
+  \item{robust}{
+  Whether to use normal or robust linear regression.
+}
+  \item{digits}{
+  The number of digits to show in the results.
+}
+  \item{colors}{
+  The colors to use for the different plot elements.
+}
+  \item{theme}{
+  The theme to use in the plot.
+}
+  \item{pointSize,lineSize }{
+  The sizes of points and lines in the plot.
+}
+  \item{pointAlpha}{
+  The alpha channel (transparency, or rather, 'opaqueness') of the points.
+}
+  \item{showPlot}{
+  Whether to show the plot or not.
+}
+  \item{outputFile}{
+  If not \code{NULL}, the path and filename specifying where to save the plot.
+}
+  \item{outputWidth, outputHeight}{
+  The dimensions of the plot when saving it (in units specified in \code{ggsaveParams}).
+}
+  \item{ggsaveParams}{
+  The parameters to use when saving the plot, passed on to \code{\link{ggsave}}.
+}
+}
+\value{
+Mainly, this function prints its results, but it also returns them in an object containing three lists:
+  \item{input}{The arguments specified when calling the function}
+  \item{intermediate}{Intermediat objects and values}
+  \item{output}{The results such as the plot.}
+}
+\references{
+Verboon, P. & Peters, G.-J. Y. (2017) Applying the generalised logistic model in SCD to deal with ceiling effects. \emph{PsyArXiv} http://INSERTLINK
+}
+\author{
+Peter Verboon & Gjalt-Jorn Peters (both at the Open University of the Netherlands)
+
+Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
+}
+\seealso{
+\code{\link{genlog}}
+}
+\examples{
+### Load dataset
+data(Singh);
+
+### Extract Jason
+dat <- Singh[Singh$tier==1, ];
+
+### Conduct piecewise regression analysis
+piecewiseRegr(dat,
+              timeVar='time',
+              yVar='score_physical',
+              phaseVar='phase');
+
+### Pretend treatment started between measurements
+### 5 and 6
+piecewiseRegr(dat,
+              timeVar='time',
+              yVar='score_physical',
+              baselineMeasurements=5);
+
+}
+\keyword{ regression }
+\keyword{ htest }
+\keyword{ hplot }

@@ -43,7 +43,7 @@ Whether to show Levene's test for equality of variances (using \code{\link{car}}
 }
 }
 \details{
-This wrapper uses \code{\link{oneway}} and \code{\link{lm}} and \code{\link{lmer}} in combination with \code{\link{car}}\s \code{\link{Anova}} function to conduct the analysis of variance.
+This wrapper uses \code{\link{oneway}} and \code{\link{lm}} and \code{\link{lmer}} in combination with \code{\link{car}}'s \code{\link{Anova}} function to conduct the analysis of variance.
 }
 \value{
 Mainly, this function prints its results, but it also returns them in an object containing three lists:
