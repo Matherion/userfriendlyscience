@@ -20,7 +20,7 @@ This is a dataset originally described in Singh et al. (2007), and digitized by 
   }
 }
 \source{
-https://www.dropbox.com/s/95ptt7atf45jfvb/SinghData.xlsx?dl=0 (also see https://www.dropbox.com/s/bocsaj8yvnrlyvq/Tutorial.pdf?dl=0 for the accompanying tutorial)
+See Rumen Manolov's Open Science Framework repository at \url{https://osf.io/t6ws6} for the tutorial and the original dataset.
 }
 \references{
 Singh, N. N., Lancioni, G. E., Winton, A. S., Adkins, A. D., Wahler, R. G., Sabaawi, M., & Singh, J. (2007). Individuals with mental illness can control their aggressive behavior through mindfulness training. \emph{Behavior Modification, 31}(3), 313-328. http://doi.org/10.1177/0145445506293585

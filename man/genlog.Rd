@@ -60,43 +60,13 @@ genlog(data,
   If no phaseVar is specified, \code{baselineMeasurements} can be used to specify the number of baseline measurements, which is then used to construct the \code{phaseVar} dummy variable.
 }
   \item{yRange}{
-%%     ~~Describe \code{yRange} here~~
+  This can be used to manually specify the possible values that the dependent variable can take. If no \code{startBase} and \code{startTop} are specified, the range of the dependent variable is used instead.
 }
-  \item{startX}{
-%%     ~~Describe \code{startX} here~~
+  \item{startX, startBase, startTop, startGrowthRate, startV}{
+  The starting values used when estimating the sigmoid using \code{\link{minpack.lm}}'s \code{\link{nlsLM}} function. \code{startX} specifies the starting value to use for the measurement moment when the change is fastest (i.e. the slope of the sigmoid has the largest value); \code{startBase} and \code{startTop} specify the starting values to use for the base (floor) and top (ceiling), the plateaus of relative stability between which the sigmoid described the shift; \code{startGrowthRate} specifies the starting value for the growth rate; and \code{startV} specifies the starting value for the \emph{v} parameter.
 }
-  \item{startBase}{
-%%     ~~Describe \code{startBase} here~~
-}
-  \item{startTop}{
-%%     ~~Describe \code{startTop} here~~
-}
-  \item{startGrowthRate}{
-%%     ~~Describe \code{startGrowthRate} here~~
-}
-  \item{startV}{
-%%     ~~Describe \code{startV} here~~
-}
-  \item{changeInitiationBounds}{
-%%     ~~Describe \code{changeInitiationBounds} here~~
-}
-  \item{growthRateBounds}{
-%%     ~~Describe \code{growthRateBounds} here~~
-}
-  \item{baseMargin}{
-%%     ~~Describe \code{baseMargin} here~~
-}
-  \item{topMargin}{
-%%     ~~Describe \code{topMargin} here~~
-}
-  \item{baseBounds}{
-%%     ~~Describe \code{baseBounds} here~~
-}
-  \item{topBounds}{
-%%     ~~Describe \code{topBounds} here~~
-}
-  \item{vBounds}{
-%%     ~~Describe \code{vBounds} here~~
+  \item{changeInitiationBounds, growthRateBounds, baseMargin, topMargin, baseBounds, topBounds, vBounds}{
+  These values specify constraints to respect when estimating the parameters of the sigmoid function using \code{\link{minpack.lm}}'s \code{\link{nlsLM}}. \code{changeInitiationBounds} specifies between which values the initiation of the shift must occur; \code{growthRateBounds} describes the bounds constraining the possible values for the growth rate; \code{baseBounds} and \code{topBounds} specify the constraints for possible values for the base (floor) and top (ceiling), the plateaus of relative stability between which the sigmoid described the shift; and if these are not specified, \code{baseMargin} and \code{topMargin} are used in combination with the range of the dependent variable to set these bounds (also see \code{yRange}); and finally, \code{vBounds} specifies the possible values that constrain the \emph{v} parameter.
 }
   \item{colors}{
   The colors to use for the different plot elements.
