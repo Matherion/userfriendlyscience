@@ -7,6 +7,7 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
                                append=TRUE,
                                replace=TRUE,
                                silent=FALSE,
+                               rmarkdownOutput=FALSE,
                                callingSelf=FALSE) {
   dataIntegrityLog <- "";
   if (callingSelf && removeCases) {
@@ -147,9 +148,9 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
         }
       }
       if (!removeCases && !is.null(totalVarName)) {
-        dat[, totalVarName] <- ifelse(totalVarName %in% names(dat),
-                                      dat[, totalVarName] + totalInvalidValues,
-                                      totalInvalidValues);
+        dat[, totalVarName] <- ifelseObj(totalVarName %in% names(dat),
+                                         dat[, totalVarName] + totalInvalidValues,
+                                         totalInvalidValues);
       }
     }
     ### Set attributes and return result
@@ -193,6 +194,19 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
     ### Remove empty lines from log string
     attr(dat, 'checkDataIntegrity_log') <-
       gsub("\n\n", "\n", attr(dat, 'checkDataIntegrity_log'));
+    
+    if (rmarkdownOutput) {
+      ### Add bullets
+      attr(dat, 'checkDataIntegrity_log') <- gsub("Matching cases to criterion",
+                                                 "* Matching cases to criterion",
+                                                 attr(dat, 'checkDataIntegrity_log'),
+                                                 fixed=TRUE);
+      
+      attr(dat, 'checkDataIntegrity_log') <- gsub("In ([0-9]+) rows,",
+                                                  "    * In \\1 rows,",
+                                                  attr(dat, 'checkDataIntegrity_log'));    
+    }
+    
     return(dat);
   }
 }
