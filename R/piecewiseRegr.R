@@ -128,7 +128,7 @@ piecewiseRegr <- function(dat,
                             yend = 'yend'),
                  color = colors$pre,
                  size=lineSize,
-                 linetype = 'dashed') +
+                 linetype = 'dotted') +
     geom_segment(data = predictionDf2,
                  aes_string(x = 'x',
                             xend = 'xend',
