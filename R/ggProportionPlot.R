@@ -12,8 +12,8 @@ ggProportionPlot <- function(dat,
                              na.rm = TRUE,
                              barHeight = .4,
                              conf.steps = seq(from=0.001, to=.999, by=.001),
-                             scale_color = viridis(option="magma", 2),
-                             scale_fill = viridis(option="magma", 2),
+                             scale_color = viridis(option="magma", 2, begin=0, end=.5),
+                             scale_fill = viridis(option="magma", 2, begin=0, end=.5),
                              linetype = 1,
                              theme = theme_bw()) {
 

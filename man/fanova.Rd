@@ -11,10 +11,10 @@ fanova(data,
        y,
        between = NULL,
        covar = NULL,
-       contrast = NULL,
        plot = FALSE,
        levene = FALSE,
-       digits = 2)
+       digits = 2,
+       contrast = NULL)
 }
 \arguments{
   \item{data}{
@@ -29,9 +29,6 @@ fanova(data,
   \item{covar}{
   A vector with the variables name(s) of the covariate(s).
 }
-  \item{contrast}{
-  This functionality has not been implemented yet.
-}
   \item{plot}{
   Whether to produce a plot. Note that a plot is only produced for oneway and twoway anova and oneway repeated measures designs: if covariates or more than two between-subjects factors are specified, not plot is produced. For twoway anova designs, the second predictor is plotted as moderator (and the first predictor is plotted on the x axis).
 }
@@ -40,6 +37,9 @@ Whether to show Levene's test for equality of variances (using \code{\link{car}}
 }
   \item{digits}{
   Number of digits (actually: decimals) to use when printing results. The p-value is printed with one extra digit.
+}
+  \item{contrast}{
+  This functionality has not been implemented yet.
 }
 }
 \details{

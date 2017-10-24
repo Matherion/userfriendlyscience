@@ -1,3 +1,5 @@
+### vecTxtQ(ls('package:userfriendlyscience'));
+
 exportPattern("^[[:alpha:]]+");
 
 export("%IN%");
@@ -218,6 +220,11 @@ S3method(print, therapyMonitor.multi);
 S3method(print, cohensdCI);
 S3method(print, determinantStructure);
 S3method(print, nnc);
+S3method(print, fanova);
+S3method(print, genlog);
+S3method(print, ggProportionPlot);
+S3method(print, logRegr);
+S3method(print, piecewiseRegr);
 
 S3method(pander, crossTab);
 S3method(pander, dataShape);
@@ -232,15 +239,19 @@ S3method(pander, regr);
 S3method(sort, associationMatrix)
 
 S3method(plot, determinantStructure)
+
 importFrom("grDevices", "dev.off", "png", "svg", "rgb", "colorRamp",
            "col2rgb")
+
 importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
            "chisq.test", "complete.cases", "confint", "cor",
            "cor.test", "cov", "dchisq", "density",
-           "formula", "ks.test", "lm", "lm.influence", "median",
+           "formula", "as.formula", "ks.test", "lm", "lm.influence",
+           "glm", "median", "binomial", "influence", "predict",
            "na.omit", "p.adjust", "pairwise.t.test", "pchisq",
            "qnorm", "dnorm", "pnorm", "rnorm",
            "dbeta", "pbeta", "qbeta", "rbeta",
+           "qbinom",
            "pt", "rt", "qt", "dt",
            "df", "qf", "rf", "pf",
            "qtukey",
@@ -248,7 +259,10 @@ importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
            "quantile", "reshape", "sd", "shapiro.test", "t.test",
            "terms", "var", "var.test", "runif",
            "ppoints", "IQR", "oneway.test",
-           "influence.measures", "prop.test")
+           "influence.measures", "prop.test",
+           "coef", "coefficients", "deviance", "uniroot",
+           "fisher.test", "addmargins", "mantelhaen.test")
+
 importFrom("utils", "capture.output", "chooseCRANmirror", "combn",
            "head", "install.packages", "installed.packages",
            "packageVersion", "read.csv", "read.delim", "tail",
@@ -271,7 +285,7 @@ importFrom('SuppDists', 'pPearson', 'dPearson', "qPearson");
 ### with default 'oblimin' rotation (default of 'omega', not of 'principal').
 importFrom('GPArotation', 'oblimin');
 
-importFrom('MASS', 'mvrnorm');
+importFrom('MASS', 'mvrnorm', "rlm");
 importFrom('mosaic', 'do', 'resample');
 
 ### Rio supersedes this
@@ -293,21 +307,23 @@ importFrom('diptest', 'dip.test');
 
 importFrom('rio', 'import', 'export');
 
-importFrom('ggplot2', 'ggplot', 'theme_grey', 'theme', '%+replace%', 'aes', 'aes_string',
+importFrom('ggplot2', 'ggplot', '%+replace%', 'aes', 'aes_string',
            'geom_line', 'geom_point', 'geom_violin', 'geom_jitter', 'geom_dotplot',
            'geom_pointrange', 'geom_errorbar', 'geom_histogram', 'geom_density', 'geom_bar',
            'element_line', 'element_rect', 'element_text', 'element_blank',
            'position_jitter', 'position_dodge', 'geom_smooth', 'geom_rug', 'xlim',
-           'stat_summary', 'labs', 'xlab', 'ylab', 'rel', 'theme_bw', 'scale_y_reverse',
+           'stat_summary', 'labs', 'xlab', 'ylab', 'rel', 'scale_y_reverse',
            'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'coord_flip', 'coord_cartesian', 'guides',
            'guide_legend', 'geom_polygon',
            'geom_boxplot', 'geom_ribbon', 'geom_abline',
            'geom_segment', 'geom_rect', 'geom_tile',
            'geom_text', 'aes_q', 'qplot',
            'scale_fill_manual', 'scale_fill_brewer', 'scale_fill_gradient2',
-           'scale_colour_gradient', 'scale_color_manual',
+           'scale_colour_gradient', 'scale_color_manual', 'scale_color_gradient',
+           'scale_fill_gradient',
            'scale_x_continuous', 'scale_y_continuous', 'geom_vline', 'geom_hline',
-           'ggplot_gtable', 'ggplotGrob', 'sec_axis', 'dup_axis');
+           'ggplot_gtable', 'ggplotGrob', 'sec_axis', 'dup_axis',
+           'theme', 'theme_minimal', 'theme_bw', 'theme_grey');
 importFrom('GGally', 'ggpairs', 'getPlot', 'putPlot', 'wrap');
 importFrom('gtable', 'gtable_add_grob', 'gtable_add_cols',
            'gtable_filter', 'gtable_add_rows');
@@ -318,7 +334,8 @@ importFrom('gridExtra', 'arrangeGrob', 'grid.arrange');
 importFrom('ggrepel', 'geom_text_repel')
 importFrom('RColorBrewer', 'brewer.pal');
 importFrom('DiagrammeR', 'add_global_graph_attrs', 'render_graph');
-importFrom('viridis', 'scale_color_viridis', 'scale_fill_viridis', 'viridis');
+importFrom('viridis', 'scale_color_viridis', 'scale_fill_viridis',
+           'viridis', 'viridis_pal');
 
 importFrom('lavaan', 'sem');
 importFrom('lme4', 'lmer');

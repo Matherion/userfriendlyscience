@@ -1,11 +1,10 @@
 \name{confIntProp}
 \alias{confIntProp}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Confidence intervals for proportions, vectorized over all arguments
 }
 \description{
-
+This function simply computes confidence intervals for proportions.
 }
 \usage{
 confIntProp(x, n, conf.level = 0.95)
@@ -30,12 +29,12 @@ This function is the adapted source code of \code{\link{binom.test}}. Ir uses \c
 The confidence interval bounds in a twodimensional matrix, with the first column containing the lower bound and the second column containing the upper bound.
 }
 \author{
-Gjalt-Jorn Peters
+Unknown (see \code{\link{binom.test}}; adapted by Gjalt-Jorn Peters)
 
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \seealso{
-\code{\link{binom.test}} and \code{\link{ggPorportionPlot}, the function for which this was written.}
+\code{\link{binom.test}} and \code{\link{ggProportionPlot}, the function for which this was written.}
 }
 \examples{
   ### Simple case

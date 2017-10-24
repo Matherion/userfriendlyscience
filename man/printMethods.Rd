@@ -42,6 +42,11 @@
 \alias{print.power.htest.ufs}
 \alias{print.regrInfluential}
 \alias{print.nnc}
+\alias{print.fanova}
+\alias{print.genlog}
+\alias{print.ggProportionPlot}
+\alias{print.logRegr}
+\alias{print.piecewiseRegr}
 \title{
 userfriendlyscience print methods
 }
@@ -105,6 +110,13 @@ colNames = x$colNames, ...)
 \method{print}{power.htest.ufs}(x, digits = x$digits, ...)
 \method{print}{regrInfluential}(x, ...)
 \method{print}{nnc}(x, ...)
+\method{print}{fanova}(x, digits = x$input$digits, ...) 
+\method{print}{genlog}(x, digits = 3, ...)
+\method{print}{ggProportionPlot}(x, ...)
+\method{print}{logRegr}(x, digits = x$input$digits,
+                        pvalueDigits = x$input$pvalueDigits, 
+                        ...)
+\method{print}{piecewiseRegr}(x, digits = x$input$digits, ...) 
 }
 \arguments{
   \item{x}{

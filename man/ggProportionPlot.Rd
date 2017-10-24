@@ -22,7 +22,7 @@ ggProportionPlot(dat, items,
                  conf.steps = seq(from=0.001, to=.999, by=.001),
                  scale_color = viridis(option="magma", 2, begin=0, end=.5),
                  scale_fill = viridis(option="magma", 2, begin=0, end=.5),
-                 linetype=linetype,
+                 linetype=1,
                  theme = theme_bw())
 }
 %- maybe also 'usage' for other objects documented here.

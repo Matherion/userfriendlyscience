@@ -1,11 +1,11 @@
-nnc <- function(d = NULL, cer = NULL, r = 1, n = NULL,
-                threshold = NULL, mean = 0, sd = 1,
-                poweredFor = NULL, thresholdSensitivity = NULL,
-                eventDesirable = TRUE, eventIfHigher = TRUE,
-                conf.level=.95,
-                d.ci = NULL, cer.ci = NULL, r.ci=NULL,
-                d.n = NULL, cer.n = NULL, r.n = NULL, plot = TRUE,
-                returnPlot = TRUE, silent=FALSE) {
+nnc <- nnt <- function(d = NULL, cer = NULL, r = 1, n = NULL,
+                       threshold = NULL, mean = 0, sd = 1,
+                       poweredFor = NULL, thresholdSensitivity = NULL,
+                       eventDesirable = TRUE, eventIfHigher = TRUE,
+                       conf.level=.95,
+                       d.ci = NULL, cer.ci = NULL, r.ci=NULL,
+                       d.n = NULL, cer.n = NULL, r.n = NULL, plot = TRUE,
+                       returnPlot = TRUE, silent=FALSE) {
 
   if (is.null(d)) {
     stop("You have to provide an estimate for Cohen's d (argument 'd'). If you do not have ",
@@ -56,11 +56,15 @@ nnc <- function(d = NULL, cer = NULL, r = 1, n = NULL,
     cer.sensitivity <- convert.threshold.to.er(threshold = thresholdSensitivity,
                                                mean = mean,
                                                sd = sd);
+    eer.sensitivity <-
+      convert.d.to.eer(d=d, cer=cer.sensitivity,
+                       eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
     nnc.sensitivity <-
       convert.d.to.nnc(d=d, cer=cer.sensitivity, r=r,
                        eventDesirable=eventDesirable, eventIfHigher=eventIfHigher);
     sensitivityDf <- data.frame(threshold = thresholdSensitivity,
                                 cer = cer.sensitivity,
+                                eer = eer.sensitivity,
                                 nnc = nnc.sensitivity);
   }
 
@@ -110,6 +114,9 @@ nnc <- function(d = NULL, cer = NULL, r = 1, n = NULL,
 
   attr(res, 'nnc.raw') <- nnc;
   attr(res, 'eventDesirable') <- eventDesirable;
+  if (!is.null(thresholdSensitivity)) {
+    attr(res, 'sensitivityDf') <- sensitivityDf;
+  }
 
   if (diff(range(cer.ci))) {
     attr(res, 'cer.ci') <- cer.ci;
@@ -210,7 +217,7 @@ nnc <- function(d = NULL, cer = NULL, r = 1, n = NULL,
 
 }
 
-print.nnc <- function(x, ...) {
+print.nnc <- function(x, digits=2, ...) {
   if (!is.null(attr(x, 'plot'))) {
     grid.newpage();
     grid.draw(attr(x, 'plot'));
@@ -269,8 +276,10 @@ print.nnc <- function(x, ...) {
        "(Based on ", cerStatement,
        eerStatement, dStatement, rStatement, ".)\n");
   
-  if (exists(sensitivityDf)) {
-    print(sensitivityDf);
+  if (!is.null(attr(x, 'sensitivityDf'))) {
+    cat("\nSensitivity analysis to easily compare the effect of choosing ",
+        "different thresholds:\n\n");
+    print(attr(x, 'sensitivityDf'), digits=digits);
   }
     
 }

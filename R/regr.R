@@ -1,9 +1,9 @@
 regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
                  pvalueDigits = 3, coefficients=c("raw", "scaled"),
-                 plot=FALSE, ci.method = c("widest", "r.con", "olkinfinn"),
+                 plot=FALSE, pointAlpha = .5,
                  collinearity = FALSE, influential = FALSE,
-                 ci.method.note = FALSE, env=parent.frame(),
-                 pointAlpha = .5) {
+                 ci.method = c("widest", "r.con", "olkinfinn"),
+                 ci.method.note = FALSE, env=parent.frame()) {
 
   ### Generate object to store input, intermediate outcomes, and results
   res <- list(input = as.list(environment()),

@@ -1,18 +1,19 @@
 \name{nnc}
 \alias{nnc}
+\alias{nnt}
 \title{
 Numbers Needed for Change
 }
 \description{
 This function computes the Numbers Needed for Change, and shows a
-visualisation to illustrate them.
+visualisation to illustrate them. \code{nnt} is an alias for \code{nnc}.
 }
 \usage{
 nnc(d = NULL, cer = NULL, r = 1, n = NULL,
     threshold = NULL, mean = 0, sd = 1,
     poweredFor = NULL, thresholdSensitivity = NULL,
     eventDesirable = TRUE, eventIfHigher = TRUE,
-    conf.level=.95, 
+    conf.level=.95,
     d.ci = NULL, cer.ci = NULL, r.ci = NULL,
     d.n = NULL, cer.n = NULL, r.n = NULL,
     plot = TRUE, returnPlot = TRUE, silent = FALSE)
@@ -62,6 +63,9 @@ nnc(d = NULL, cer = NULL, r = 1, n = NULL,
 }
   \item{eventIfHigher}{
   Whether scores above or below the threshold are considered 'an event'.
+}
+  \item{conf.level}{
+  The confidence level of the confidence interval.
 }
   \item{d.ci}{
   Instead of providing a point estimate for Cohen's \emph{d}, a
