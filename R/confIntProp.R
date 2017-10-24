@@ -49,16 +49,25 @@ confIntProp <- function(x, n, conf.level = .95) {
       }));
     }));
   });
+
   if (ncol(res) > 1) {
     res <- lapply(1:ncol(res), function(confI) {
       rslt <- matrix(res[, confI], ncol=3, byrow=TRUE);
       rownames(rslt) <- paste0(rslt[, 1], ", ",
                                rep(100*conf.level[confI], each=nrow(rslt)), "%");
       rslt <- rslt[, -1];
-      colnames(rslt) <- c('ci.lo', 'ci.hi');
+
+      if (is.null(ncol(a))) {
+        names(rslt) <- c('ci.lo', 'ci.hi');
+      } else {
+        colnames(rslt) <- c('ci.lo', 'ci.hi');
+      }
       return(rslt);
     });
     res <- do.call(rbind, res);
+    if (is.null(row.names(res))) {
+      row.names(res) <- paste0(x/n, ", ", 100*conf.level, "%");
+    }
   } else {
     res <- matrix(res, ncol=3, byrow=TRUE);
     rownames(res) <- paste0(res[, 1], ", ",
