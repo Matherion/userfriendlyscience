@@ -1,9 +1,9 @@
-functionList <- ls('package:userfriendlyscience');
-functionList <- functionList[!grepl("^print\\.", functionList)];
-functionList <- functionList[!grepl("^plot\\.", functionList)];
-functionList <- functionList[!grepl("^pander\\.", functionList)];
-functionList <- functionList[!grepl("^sort\\.", functionList)];
-cat(paste0('export("', functionList, '");\n'), sep="");
+#functionList <- ls('package:userfriendlyscience');
+#functionList <- functionList[!grepl("^print\\.", functionList)];
+#functionList <- functionList[!grepl("^plot\\.", functionList)];
+#functionList <- functionList[!grepl("^pander\\.", functionList)];
+#functionList <- functionList[!grepl("^sort\\.", functionList)];
+#cat(paste0('export("', functionList, '");\n'), sep="");
 
 #exportPattern("^[[:alpha:]]+");
 
