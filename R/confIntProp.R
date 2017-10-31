@@ -57,7 +57,7 @@ confIntProp <- function(x, n, conf.level = .95) {
                                rep(100*conf.level[confI], each=nrow(rslt)), "%");
       rslt <- rslt[, -1];
 
-      if (is.null(ncol(a))) {
+      if (is.null(ncol(rslt))) {
         names(rslt) <- c('ci.lo', 'ci.hi');
       } else {
         colnames(rslt) <- c('ci.lo', 'ci.hi');
