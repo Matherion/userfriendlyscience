@@ -71,16 +71,23 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
     }
     dataIntegrityLog <- addToLog(fullLog=dataIntegrityLog,
                                  showLog=!silent,
-                                 paste0("Matching cases to criterion '", x[2],
+                                 paste0(ifelse(rmarkdownOutput, "* ", ""),
+                                        "Matching cases to criterion '", x[2],
                                         "' for all variables matching regular expression '",
-                                        x[1], "'.\n"));
+                                        ifelse(rmarkdownOutput, "`", ""),
+                                        x[1],
+                                        ifelse(rmarkdownOutput, "`", ""),
+                                        "'.\n"));
     ### If we're not provided with a list, we're provided with a vector
     varNames <- grep(x[1], names(dat), value=TRUE);
     if (length(varNames) == 0) {
       dataIntegrityLog <- addToLog(fullLog=dataIntegrityLog,
                                    showLog=!silent,
                                    paste0("No variables in the dataframe match regular expression '",
-                                          x[1], "'.\n"));
+                                          ifelse(rmarkdownOutput, "`", ""),
+                                          x[1],
+                                          ifelse(rmarkdownOutput, "`", ""),
+                                          "'.\n"));
       totalInvalidValues <- rep(NA, nrow(dat));
     } else {
       validValueVectors <- as.data.frame(lapply(varNames,
@@ -119,7 +126,8 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
       } else {
         dataIntegrityLog <- addToLog(fullLog=dataIntegrityLog,
                                      showLog=!silent,
-                                     paste0("In ", affectedRows$nrOfRows,
+                                     paste0(ifelse(rmarkdownOutput, "    * ", ""),
+                                            "In ", affectedRows$nrOfRows,
                                             " rows, for variable '",
                                             affectedRows$varNames,
                                             "', replacing values that do not satisfy criterion '",
@@ -195,17 +203,23 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
     attr(dat, 'checkDataIntegrity_log') <-
       gsub("\n\n", "\n", attr(dat, 'checkDataIntegrity_log'));
     
-    if (rmarkdownOutput) {
-      ### Add bullets
-      attr(dat, 'checkDataIntegrity_log') <- gsub("Matching cases to criterion",
-                                                 "* Matching cases to criterion",
-                                                 attr(dat, 'checkDataIntegrity_log'),
-                                                 fixed=TRUE);
-      
-      attr(dat, 'checkDataIntegrity_log') <- gsub("In ([0-9]+) rows,",
-                                                  "    * In \\1 rows,",
-                                                  attr(dat, 'checkDataIntegrity_log'));    
-    }
+    # if (rmarkdownOutput) {
+    #   ### Add bullets
+    #   attr(dat, 'checkDataIntegrity_log') <- gsub("Matching cases to criterion",
+    #                                              "\n* Matching cases to criterion",
+    #                                              attr(dat, 'checkDataIntegrity_log'),
+    #                                              fixed=TRUE);
+    #   
+    #   attr(dat, 'checkDataIntegrity_log') <- gsub("In ([0-9]+) rows,",
+    #                                               "\n    * In \\1 rows,",
+    #                                               attr(dat, 'checkDataIntegrity_log'));
+    #   
+    #   ### Escape dollar signs
+    #   attr(dat, 'checkDataIntegrity_log') <- gsub("regular expression '(.*)'.",
+    #                                               "regular expression '`\\1`'.",
+    #                                               attr(dat, 'checkDataIntegrity_log'));
+    #   
+    # }
     
     return(dat);
   }

@@ -397,3 +397,6 @@ importFrom('viridis', 'scale_color_viridis', 'scale_fill_viridis',
 
 importFrom('lavaan', 'sem');
 importFrom('lme4', 'lmer');
+
+### For from_epiR_epi.2by2
+importFrom('BiasedUrn', 'dFNCHypergeo');
