@@ -51,7 +51,7 @@ Peters, G.-J. Y. & Crutzen, R. (2017). Knowing exactly how effective an interven
 
 Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2017). How to Select Relevant Social-Cognitive Determinants and Use them in the Development of Behaviour Change Interventions? Confidence Interval-Based Estimation of Relevance. Frontiers in Public Health 5:165. http://dx.doi.org/10.3389/fpubh.2017.00165
 
-Crutzen, R. (2014). Time is a jailer : what do alpha and its alternatives tell us about reliability? \emph{The European Health Psychologist}, 1(2), 70–74.
+Crutzen, R. (2014). Time is a jailer : what do alpha and its alternatives tell us about reliability? \emph{The European Health Psychologist}, 1(2), 70-74.
 
 Crutzen, R., & Peters, G.-J. Y. (2015). Scale quality: alpha is an inadequate estimate and factor-analytic evidence is needed first of all. \emph{Health Psychology Review}. http://dx.doi.org/10.1080/17437199.2015.1124240
 

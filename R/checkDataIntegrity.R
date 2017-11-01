@@ -74,9 +74,9 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
                                  paste0(ifelse(rmarkdownOutput, "* ", ""),
                                         "Matching cases to criterion '", x[2],
                                         "' for all variables matching regular expression '",
-                                        ifelse(rmarkdownOutput, "`", ""),
+                                        ifelse(rmarkdownOutput, "<pre>", ""),
                                         x[1],
-                                        ifelse(rmarkdownOutput, "`", ""),
+                                        ifelse(rmarkdownOutput, "</pre>", ""),
                                         "'.\n"));
     ### If we're not provided with a list, we're provided with a vector
     varNames <- grep(x[1], names(dat), value=TRUE);
@@ -84,9 +84,9 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
       dataIntegrityLog <- addToLog(fullLog=dataIntegrityLog,
                                    showLog=!silent,
                                    paste0("No variables in the dataframe match regular expression '",
-                                          ifelse(rmarkdownOutput, "`", ""),
+                                          ifelse(rmarkdownOutput, "<pre>", ""),
                                           x[1],
-                                          ifelse(rmarkdownOutput, "`", ""),
+                                          ifelse(rmarkdownOutput, "</pre>", ""),
                                           "'.\n"));
       totalInvalidValues <- rep(NA, nrow(dat));
     } else {
@@ -202,24 +202,6 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
     ### Remove empty lines from log string
     attr(dat, 'checkDataIntegrity_log') <-
       gsub("\n\n", "\n", attr(dat, 'checkDataIntegrity_log'));
-    
-    # if (rmarkdownOutput) {
-    #   ### Add bullets
-    #   attr(dat, 'checkDataIntegrity_log') <- gsub("Matching cases to criterion",
-    #                                              "\n* Matching cases to criterion",
-    #                                              attr(dat, 'checkDataIntegrity_log'),
-    #                                              fixed=TRUE);
-    #   
-    #   attr(dat, 'checkDataIntegrity_log') <- gsub("In ([0-9]+) rows,",
-    #                                               "\n    * In \\1 rows,",
-    #                                               attr(dat, 'checkDataIntegrity_log'));
-    #   
-    #   ### Escape dollar signs
-    #   attr(dat, 'checkDataIntegrity_log') <- gsub("regular expression '(.*)'.",
-    #                                               "regular expression '`\\1`'.",
-    #                                               attr(dat, 'checkDataIntegrity_log'));
-    #   
-    # }
     
     return(dat);
   }
