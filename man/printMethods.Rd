@@ -176,7 +176,7 @@ Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 
 \examples{
 
-print.sdConfInt(sdConfInt(sd=4, n=20));
+print(sdConfInt(sd=4, n=20));
 
 print(oneway(y=ChickWeight$weight, x=ChickWeight$Diet), na.print="[NO VALUE]");
 
