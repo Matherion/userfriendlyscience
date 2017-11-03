@@ -6,6 +6,12 @@ multiResponse = function(data, items=NULL, regex = NULL, endorsedOption = 1) {
   } else if (is.null(items)) {
     items <- grep(regex, names(data), value=TRUE)
   }
+  
+  if (!all(items %in% names(data))) {
+    stop("You specified items that do not exist in the data you provided (specifically, ",
+         vecTxtQ(items[!items %in% names(data)]), ").");
+  }
+  
   data = data[, items];
   nrOfEndorsements = sum(data == endorsedOption, na.rm=TRUE);
   endorsementsPerItem = colSums(data == endorsedOption, na.rm=TRUE);

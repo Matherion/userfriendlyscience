@@ -9,6 +9,11 @@ ggEasyBar <- function(data, items = NULL,
     items <- names(data);
   }
   
+  if (!all(items %in% names(data))) {
+    stop("You specified items that do not exist in the data you provided (specifically, ",
+         vecTxtQ(items[!items %in% names(data)]), ").");
+  }
+  
   if (sortByMean && length(items) > 1) {
     tmpVarOrder <- order(colMeans(data[, items],
                                   na.rm=TRUE),

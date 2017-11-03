@@ -8,8 +8,8 @@ This function visualises percentages, but avoids a clear cut for the sample poin
 }
 \usage{
 ggProportionPlot(dat, items = NULL,
-                 loCategory = min(dat[, items], na.rm = TRUE),
-                 hiCategory = max(dat[, items], na.rm = TRUE),
+                 loCategory = NULL,
+                 hiCategory = NULL,
                  subQuestions = NULL,
                  leftAnchors = NULL,
                  rightAnchors = NULL,
@@ -23,7 +23,8 @@ ggProportionPlot(dat, items = NULL,
                  scale_color = viridis(option="magma", 2, begin=0, end=.5),
                  scale_fill = viridis(option="magma", 2, begin=0, end=.5),
                  linetype=1,
-                 theme = theme_bw())
+                 theme = theme_bw(),
+                 returnPlotOnly = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -77,6 +78,9 @@ ggProportionPlot(dat, items = NULL,
   \item{theme}{
   The theme to use.
 }
+  \item{returnPlotOnly}{
+  Whether to only return the \code{\link{ggplot2}} plot or the full object including intermediate values and objects.
+}
 }
 \details{
 This function used \code{\link{confIntProp}} to compute confidence intervals for proportions at different levels of confidence. The confidence interval bounds at those levels of confidence are then used to draw rectangles with colors in a gradient that corresponds to the confidence level.
@@ -84,7 +88,7 @@ This function used \code{\link{confIntProp}} to compute confidence intervals for
 Note that percentually, the gradient may not look continuous because at the borders between lighter and darker rectangles, the shade of the lighter rectangle is perceived as even lighter than it is, and the shade of the darker rectangle is perceived as even darker. This makes it seem as if each rectange is coloured with a gradient in the opposite direction.
 }
 \value{
-A \code{\link{ggplot2}} object.
+A \code{\link{ggplot2}} object (if \code{returnPlotOnly} is TRUE), or an object containing that \code{\link{ggplot2}} object and intermediate products.
 }
 \author{
 Gjalt-Jorn Peters

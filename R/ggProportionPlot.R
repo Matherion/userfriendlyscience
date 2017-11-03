@@ -1,7 +1,7 @@
 ggProportionPlot <- function(dat,
                              items=NULL,
-                             loCategory = min(dat[, items], na.rm=TRUE),
-                             hiCategory = max(dat[, items], na.rm=TRUE),
+                             loCategory = NULL,
+                             hiCategory = NULL,
                              subQuestions = NULL,
                              leftAnchors = NULL,
                              rightAnchors = NULL,
@@ -15,19 +15,48 @@ ggProportionPlot <- function(dat,
                              scale_color = viridis(option="magma", 2, begin=0, end=.5),
                              scale_fill = viridis(option="magma", 2, begin=0, end=.5),
                              linetype = 1,
-                             theme = theme_bw()) {
+                             theme = theme_bw(),
+                             returnPlotOnly = TRUE) {
 
-  if (is.vector(dat)) {
+  if (is.vector(dat) || is.factor(dat)) {
+    if (is.character(dat)) {
+      if (all(grepl('\\d+', colnames(dat)))) {
+        dat <- as.numeric(dat);
+      } else {
+        dat <- as.factor(dat);
+      }
+    }
     tmpDat <- data.frame(dat);
     items <- deparse(substitute(dat));
     colnames(tmpDat) <- items;
-    loCategory <- min(tmpDat[, ]);
-    hiCategory <- max(tmpDat[, ]);
+    if (is.factor(dat)) {
+      loCategory <- levels(dat)[1];
+      hiCategory <- levels(dat)[length(levels(dat))];
+    } else {
+      loCategory <- min(tmpDat[, ]);
+      hiCategory <- max(tmpDat[, ]);
+    }
   } else if (is.data.frame(dat)) {
     if (is.null(items)) {
       items <- names(dat);
     }
+    
+    if (!all(items %in% names(dat))) {
+      stop("You specified items that do not exist in the data you provided (specifically, ",
+           vecTxtQ(items[!items %in% names(dat)]), ").");
+    }
+    
     tmpDat <- dat[, items, drop=FALSE];
+    if (!all(unlist(lapply(tmpDat, is.numeric)))) {
+      warning("You provided one or more factors; this may be problematic ");
+    } else {
+      if (is.null(loCategory)) {
+        loCategory <- min(dat[, items], na.rm=TRUE);
+      }
+      if (is.null(hiCategory)) {
+        hiCategory <- max(dat[, items], na.rm=TRUE);
+      }
+    }
   }
   if (na.rm) {
     tmpDat <- tmpDat[complete.cases(tmpDat), , drop=FALSE];
@@ -165,13 +194,15 @@ ggProportionPlot <- function(dat,
                               t=index$t, l=1, b=index$b, r=1,
                               name = "subquestions");
 
-  res <- list(plot = fullPlot,
-              confidences = confidences,
-              longDat = longDat);
-  
-  class(res) <- c('ggProportionPlot');
-  
-  return(res);
+  if (returnPlotOnly) {
+    return(fullPlot);
+  } else {
+    res <- list(plot = fullPlot,
+                confidences = confidences,
+                longDat = longDat);
+    class(res) <- c('ggProportionPlot');
+    return(res);
+  }
 }
 
 print.ggProportionPlot <- function(x, ...) {
