@@ -7,7 +7,7 @@ Sample distribution based plotting of proportions
 This function visualises percentages, but avoids a clear cut for the sample point estimate, instead using the confidence (as in confidence interval) to create a gradient. This effectively hinders drawing conclusions on the basis of point estimates, thereby urging a level of caution that is consistent with what the data allows.
 }
 \usage{
-ggProportionPlot(dat, items,
+ggProportionPlot(dat, items = NULL,
                  loCategory = min(dat[, items], na.rm = TRUE),
                  hiCategory = max(dat[, items], na.rm = TRUE),
                  subQuestions = NULL,
@@ -28,10 +28,10 @@ ggProportionPlot(dat, items,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
-  The dataframe containing the items (variables).
+  The dataframe containing the items (variables), or a vector.
 }
   \item{items}{
-  The names of the items (variables).
+  The names of the items (variables). If none are specified, all variables in the dataframe are used.
 }
   \item{loCategory}{
   The value of the low category (usually 0). If not provided, the minimum value is used.

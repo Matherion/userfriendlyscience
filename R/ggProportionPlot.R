@@ -1,5 +1,5 @@
 ggProportionPlot <- function(dat,
-                             items,
+                             items=NULL,
                              loCategory = min(dat[, items], na.rm=TRUE),
                              hiCategory = max(dat[, items], na.rm=TRUE),
                              subQuestions = NULL,
@@ -17,7 +17,18 @@ ggProportionPlot <- function(dat,
                              linetype = 1,
                              theme = theme_bw()) {
 
-  tmpDat <- dat[, items, drop=FALSE];
+  if (is.vector(dat)) {
+    tmpDat <- data.frame(dat);
+    items <- deparse(substitute(dat));
+    colnames(tmpDat) <- items;
+    loCategory <- min(tmpDat[, ]);
+    hiCategory <- max(tmpDat[, ]);
+  } else if (is.data.frame(dat)) {
+    if (is.null(items)) {
+      items <- names(dat);
+    }
+    tmpDat <- dat[, items, drop=FALSE];
+  }
   if (na.rm) {
     tmpDat <- tmpDat[complete.cases(tmpDat), , drop=FALSE];
   }
