@@ -131,6 +131,8 @@ export("ggBarChart");
 export("ggBoxplot");
 export("ggConfidenceCurve");
 export("ggDiamondLayer");
+export("ggEasyBar");
+export("ggEasyRidge");
 export("ggNNC");
 export("ggPie");
 export("ggProportionPlot");
@@ -146,6 +148,7 @@ export("is.nr");
 export("is.odd");
 export("isTrue");
 export("itemInspection");
+export("knitFig");
 export("logRegr");
 export("makeScales");
 export("massConvertToNumeric");
@@ -157,6 +160,8 @@ export("meansDiamondPlot");
 export("meanSDtoDiamondPlot");
 export("mediaan");
 export("modus");
+export("multiVarFreq");
+export("multiResponse");
 export("nnc");
 export("normalityAssessment");
 export("noZero");
@@ -298,6 +303,8 @@ S3method(sort, associationMatrix)
 
 S3method(plot, determinantStructure)
 
+S3method(grid.draw, ggProportionPlot)
+
 ####################################################  Imported functions
 
 importFrom("grDevices", "dev.off", "png", "svg", "rgb", "colorRamp",
@@ -351,7 +358,7 @@ importFrom('mosaic', 'do', 'resample');
 ### Rio supersedes this
 #importFrom('foreign', 'read.spss');
 
-importFrom('knitr', 'knit', 'knit_hooks', 'opts_knit');
+importFrom('knitr', 'knit', 'knit_hooks', 'opts_knit', 'knit_expand');
 importFrom('pander', 'pander', 'pandoc.p');
 
 importFrom('xtable', 'xtable');
@@ -391,7 +398,8 @@ importFrom('grid', 'unit', 'grid.newpage', 'pushViewport', 'viewport', 'grid.lay
            'textGrob', 'grid.rect', 'gpar', 'grid.draw', 'arrow',
            'convertUnit', 'grobWidth', 'grobTree');
 importFrom('gridExtra', 'arrangeGrob', 'grid.arrange');
-importFrom('ggrepel', 'geom_text_repel')
+importFrom('ggrepel', 'geom_text_repel');
+importFrom('ggridges', 'geom_density_ridges');
 importFrom('RColorBrewer', 'brewer.pal');
 importFrom('DiagrammeR', 'add_global_graph_attrs', 'render_graph');
 importFrom('viridis', 'scale_color_viridis', 'scale_fill_viridis',
@@ -399,6 +407,8 @@ importFrom('viridis', 'scale_color_viridis', 'scale_fill_viridis',
 
 importFrom('lavaan', 'sem');
 importFrom('lme4', 'lmer');
+
+importFrom('digest', 'digest');
 
 ### For from_epiR_epi.2by2
 importFrom('BiasedUrn', 'dFNCHypergeo');

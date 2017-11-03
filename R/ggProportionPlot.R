@@ -180,3 +180,8 @@ print.ggProportionPlot <- function(x, ...) {
   ### Draw plot
   grid.draw(x$plot);
 }
+
+grid.draw.ggProportionPlot <- function(x, ...) {
+  ### Draw plot
+  grid.draw(x$plot);
+}
