@@ -1,4 +1,5 @@
 \name{ggEasyPlots}
+\alias{ggEasyPlots}
 \alias{ggEasyRidge}
 \alias{ggEasyBar}
 \title{

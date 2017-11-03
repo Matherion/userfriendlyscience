@@ -336,7 +336,8 @@ importFrom("utils", "capture.output", "chooseCRANmirror", "combn",
            "write.table", "write.csv", "as.roman")
 importFrom("scales", "rescale");
 
-importFrom('plyr', 'ddply', 'raply', 'dlply', 'progress_text', 'as.quoted');
+importFrom('plyr', 'ddply', 'raply', 'dlply', 'rbind.fill',
+           'progress_text', 'as.quoted');
 
 importFrom('data.tree', 'SetGraphStyle', 'as.Node', 'Get', 'Do',
            'SetEdgeStyle', 'ToDiagrammeRGraph');
@@ -378,7 +379,8 @@ importFrom('ggplot2', 'ggplot', '%+replace%', 'aes', 'aes_string',
            'geom_line', 'geom_point', 'geom_violin', 'geom_jitter', 'geom_dotplot',
            'geom_pointrange', 'geom_errorbar', 'geom_histogram', 'geom_density', 'geom_bar',
            'element_line', 'element_rect', 'element_text', 'element_blank',
-           'position_jitter', 'position_dodge', 'geom_smooth', 'geom_rug', 'xlim',
+           'position_jitter', 'position_dodge', 'position_stack',
+           'geom_smooth', 'geom_rug', 'geom_col', 'xlim',
            'stat_summary', 'labs', 'xlab', 'ylab', 'rel', 'scale_y_reverse',
            'ggplot_build', 'ggsave', 'ggtitle', 'coord_polar', 'coord_flip', 'coord_cartesian', 'guides',
            'guide_legend', 'geom_polygon',
