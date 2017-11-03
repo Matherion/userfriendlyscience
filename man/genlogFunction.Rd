@@ -29,13 +29,6 @@ genlogFunction(x, x0, Ab, At, B, v)
 \details{
 For details, see Verboon & Peters (2017).
 }
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
 \references{
 Verboon, P. & Peters, G.-J. Y. (2017) Applying the generalised logistic model in SCD to deal with ceiling effects. \emph{PsyArXiv} http://INSERTLINK
 }
