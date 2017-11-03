@@ -7,7 +7,7 @@
 
 #exportPattern("^[[:alpha:]]+");
 
-#######################################  Exports
+###############################################################  Exports
 
 export("%IN%");
 export("addToLog");
@@ -233,7 +233,7 @@ export("varsToDiamondPlotDf");
 export("vecTxt");
 export("vecTxtQ");
 
-#######################################  Method registrations
+##################################################  Method registrations
 
 S3method(print, associationMatrix);
 S3method(print, asymmetricalScatterMatrix);
@@ -297,6 +297,8 @@ S3method(pander, regr);
 S3method(sort, associationMatrix)
 
 S3method(plot, determinantStructure)
+
+####################################################  Imported functions
 
 importFrom("grDevices", "dev.off", "png", "svg", "rgb", "colorRamp",
            "col2rgb")
