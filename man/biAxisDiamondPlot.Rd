@@ -158,6 +158,6 @@ biAxisDiamondPlot(dat=mtcars,
                   subQuestions=c('cylinders', 'weight'),
                   leftAnchors=c('few', 'light'),
                   rightAnchors=c('many', 'heavy'),
-                  xBreaks=0:8);
+                  xbreaks=0:8);
 }
 \keyword{ hplot }
