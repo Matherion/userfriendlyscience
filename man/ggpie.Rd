@@ -7,11 +7,15 @@ A ggplot pie chart
 THis function creates a pie chart. Note that these are generally quite strongly advised against, as people are not good at interpreting relative frequencies on the basis of pie charts.
 }
 \usage{
-ggPie(vector)
+ggPie(vector,
+      scale_fill = scale_fill_viridis(discrete=TRUE))
 }
 \arguments{
   \item{vector}{
   The vector (best to pass a factor).
+}
+  \item{scale_fill}{
+  The ggplot scale fill function to use for the colors.
 }
 }
 \value{
