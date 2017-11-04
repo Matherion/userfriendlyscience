@@ -9,6 +9,13 @@ Convenience functions for ggplots based on multiple variables
 These are convenience functions to quickly generate plots for multiple variables, with the variables in the y axis.
 }
 \usage{
+ggEasyRidge(data,
+            items = NULL,
+            labels = NULL,
+            sortByMean = TRUE,
+            xlab = NULL,
+            ylab = NULL)
+
 ggEasyBar(data,
           items = NULL,
           labels = NULL,
@@ -21,14 +28,8 @@ ggEasyBar(data,
                                                     nrow=1)),
           fontColor = "white",
           fontSize = 2,
-          labelMinPercentage = 1)
-          
-ggEasyRidge(data,
-            items = NULL,
-            labels = NULL,
-            sortByMean = TRUE,
-            xlab = NULL,
-            ylab = NULL)
+          labelMinPercentage = 1,
+          showinLegend = "both")
 }
 \arguments{
   \item{data}{
@@ -54,6 +55,9 @@ ggEasyRidge(data,
 }
   \item{labelMinPercentage}{
   The minimum percentage that a category must reach before the label is printed (in whole percentages, i.e., on a scale from 0 to 100).
+}
+  \item{showinLegend}{
+  What to show in the legend in addition to the values; nothing ("\code{none}"), the frequencies ("\code{freq}"), the percentages ("\code{perc}"), or both ("\code{both}").
 }
 }
 \value{

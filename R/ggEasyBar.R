@@ -6,7 +6,8 @@ ggEasyBar <- function(data, items = NULL,
                                                                                     nrow=1)),
                       fontColor = "white",
                       fontSize = 2,
-                      labelMinPercentage = 1) {
+                      labelMinPercentage = 1,
+                      showinLegend = "both") {
   
   if (is.null(items)) {
     items <- names(data);
@@ -59,6 +60,14 @@ ggEasyBar <- function(data, items = NULL,
                       levels=items[tmpVarOrder],
                       labels=labels[tmpVarOrder],
                       ordered=TRUE);
+
+  if (showInLegend == "both") {
+    tmpDf$val <- paste0(tmpDf$val, " (", tmpDf$abs, "; ", round(tmpDf$rel), "%)");
+  } else if (showInLegend == "perc") {
+    tmpDf$val <- paste0(tmpDf$val, " (", round(tmpDf$rel), "%)");
+  } else if (showInLegend == "freq") {
+    tmpDf$val <- paste0(tmpDf$val, " (", tmpDf$abs, ")");
+  }
 
   tmpDf$label <- ifelse(round(tmpDf$rel) >= labelMinPercentage,
                         paste0(tmpDf$abs,
