@@ -18,7 +18,10 @@ ggEasyBar(data,
           scale_fill_function =
             scale_fill_viridis(discrete = TRUE,
                                guide = guide_legend(title = NULL,
-                                                    nrow=1)))
+                                                    nrow=1)),
+          fontColor = "white",
+          fontSize = 2,
+          labelMinPercentage = 1)
           
 ggEasyRidge(data,
             items = NULL,
@@ -45,6 +48,12 @@ ggEasyRidge(data,
 }
   \item{scale_fill_function}{
   The function to pass to \code{\link{ggplot}} to provide the colors of the bars.
+}
+  \item{fontColor, fontSize}{
+  The color and size of the font used to display the labels
+}
+  \item{labelMinPercentage}{
+  The minimum percentage that a category must reach before the label is printed (in whole percentages, i.e., on a scale from 0 to 100).
 }
 }
 \value{

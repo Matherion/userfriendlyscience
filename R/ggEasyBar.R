@@ -3,7 +3,10 @@ ggEasyBar <- function(data, items = NULL,
                       xlab = NULL, ylab = NULL,
                       scale_fill_function = scale_fill_viridis(discrete = TRUE,
                                                                guide = guide_legend(title = NULL,
-                                                                                    nrow=1))) {
+                                                                                    nrow=1)),
+                      fontColor = "white",
+                      fontSize = 2,
+                      labelMinPercentage = 1) {
   
   if (is.null(items)) {
     items <- names(data);
@@ -57,20 +60,26 @@ ggEasyBar <- function(data, items = NULL,
                       labels=labels[tmpVarOrder],
                       ordered=TRUE);
 
-  tmpDf$label <- paste0(tmpDf$abs, "\n(", round(tmpDf$rel), "%)");
-    
+  tmpDf$label <- ifelse(round(tmpDf$rel) >= labelMinPercentage,
+                        paste0(tmpDf$abs,
+                               "\n(",
+                               round(tmpDf$rel),
+                               "%)"),
+                        "");
+
   ### Actual plot
   res <- ggplot(data = tmpDf,
                 mapping = aes_string(x = 'var',
                                      y = 'rel',
-                                     fill = 'val')) +
-                                     #label = 'label')) +
-    geom_col(na.rm=TRUE, position = position_stack(reverse = TRUE)) +
+                                     fill = 'val',
+                                     label = 'label')) +
+    geom_bar(na.rm=TRUE, stat = 'identity',
+             position = position_stack(reverse = TRUE)) +
     theme_minimal() +
     coord_flip() +
     scale_fill_function +
-    #geom_text(color='white', size = 2,
-    #          position = position_stack(reverse=TRUE, vjust = 0.5)) +
+    geom_text(color=fontColor, size = fontSize,
+              position = position_stack(reverse=TRUE, vjust = 0.5)) +
     labs(x=xlab, y=ylab) +
     theme(legend.position="bottom");
   
