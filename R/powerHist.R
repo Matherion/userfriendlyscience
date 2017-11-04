@@ -70,17 +70,19 @@ powerHist <- function(vector,
   res$plot <- ggplot(data=res$dat, aes(x=distribution)) + 
     xlab(xLabel) +
     ylab(yLabel) +
-    geom_histogram(color=NA, fill=histColor,
+    geom_histogram(color=NA, fill=histColor, na.rm = TRUE,
                    alpha=histAlpha, binwidth=res$intermediate$tempBinWidth);
   if (distCurve) {
     res$plot <- res$plot +
     geom_line(aes_q(y=bquote(..scaled.. * .(scalingFactor))),
               stat = 'density',
-              color=distributionColor, size=distributionLineSize);
+              color=distributionColor, size=distributionLineSize,
+              na.rm = TRUE);
   }
   if (normalCurve) {
     res$plot <- res$plot +
-      geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize);
+      geom_line(aes(x=normalX, y=normalY), color=normalColor, size=normalLineSize,
+                na.rm = TRUE);
   }
   res$plot <- res$plot + theme;
 
@@ -96,10 +98,12 @@ powerHist <- function(vector,
     if (jitteredRug) {
       res$plot <- res$plot + geom_rug(color=distributionColor, sides=rugSides,
                                       aes(y=0), position="jitter",
-                                      alpha=rugAlpha);
+                                      alpha=rugAlpha,
+                                      na.rm = TRUE);
     } else {
       res$plot <- res$plot + geom_rug(color=distributionColor, sides=rugSides,
-                                      alpha=rugAlpha);
+                                      alpha=rugAlpha,
+                                      na.rm = TRUE);
     }
   }
   
