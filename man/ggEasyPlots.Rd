@@ -29,7 +29,7 @@ ggEasyBar(data,
           fontColor = "white",
           fontSize = 2,
           labelMinPercentage = 1,
-          showinLegend = "both")
+          showInLegend = "both")
 }
 \arguments{
   \item{data}{
@@ -56,7 +56,7 @@ ggEasyBar(data,
   \item{labelMinPercentage}{
   The minimum percentage that a category must reach before the label is printed (in whole percentages, i.e., on a scale from 0 to 100).
 }
-  \item{showinLegend}{
+  \item{showInLegend}{
   What to show in the legend in addition to the values; nothing ("\code{none}"), the frequencies ("\code{freq}"), the percentages ("\code{perc}"), or both ("\code{both}").
 }
 }

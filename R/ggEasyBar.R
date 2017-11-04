@@ -7,7 +7,7 @@ ggEasyBar <- function(data, items = NULL,
                       fontColor = "white",
                       fontSize = 2,
                       labelMinPercentage = 1,
-                      showinLegend = "both") {
+                      showInLegend = "both") {
   
   if (is.null(items)) {
     items <- names(data);
