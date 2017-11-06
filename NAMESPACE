@@ -356,7 +356,8 @@ importFrom('SuppDists', 'pPearson', 'dPearson', "qPearson");
 importFrom('GPArotation', 'oblimin');
 
 importFrom('MASS', 'mvrnorm', "rlm");
-importFrom('mosaic', 'do', 'resample');
+### No longer needed I think (rewrote a bit of confIntV)
+#importFrom('mosaic', 'do', 'resample');
 
 ### Rio supersedes this
 #importFrom('foreign', 'read.spss');
