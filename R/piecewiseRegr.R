@@ -1,4 +1,4 @@
-piecewiseRegr <- function(dat,
+piecewiseRegr <- function(data,
                           timeVar = 1,
                           yVar = 2,
                           phaseVar = NULL,
@@ -26,6 +26,8 @@ piecewiseRegr <- function(dat,
               intermediate = list(),
               output = list());
 
+  dat <- data;
+  
   if (is.null(phaseVar)) {
     if (is.null(baselineMeasurements)) {
       stop("You did not specify a 'phaseVar' and you also did ",
@@ -40,9 +42,22 @@ piecewiseRegr <- function(dat,
   }
   
   dat <- dat[, c(timeVar, yVar, phaseVar)];
-  
+
   ### Remove cases with missing values
   dat <- dat[complete.cases(dat), ];
+  
+  ### If the time variable is actually provided as time instead of as
+  ### indices/ranks, convert to numeric first.
+  if (class(dat[, timeVar]) != 'numeric') {
+    if (class(dat[, timeVar]) %in% c('Date', 'POSIXct', 'POSIXt', 'POSIXt')) {
+      res$intermediate$day0 <- min(dat[, timeVar]);
+      res$intermediate$day0.formatted <- as.character(res$intermediate$day0);
+      dat[, timeVar] <- as.numeric(dat[, timeVar] - min(dat[, timeVar]));
+    } else {
+      stop("The timeVar variable does not have a class I can work with (numeric or date): instead it has class '",
+           dat[, timeVar], "'.");
+    }
+  }
   
   ### Tc is adjusted to start with 0
   dat[, timeVar] <- dat[, timeVar] - min(dat[, timeVar]);
@@ -52,13 +67,15 @@ piecewiseRegr <- function(dat,
   
   ### Get baselineMeasurements in case we didn't have it yet
   res$intermediate$baselineMeasurements <- nA <-
-    sum(dat[, phaseVar] == 0);
+    sum(dat[, phaseVar] == min(dat[, phaseVar]));
   
   ### Store sample size
   res$intermediate$n <- n <- nrow(dat);
   
   ### Trend term for phase B  (see Huitema & Kean, 2000)
-  dat$trendTerm <- dat[, phaseVar] * (dat[, timeVar] - nA);
+  dat$trendTerm <- ifelse(dat[, phaseVar] == max(dat[, phaseVar]),
+                          dat[, timeVar] - dat[nA + 1, timeVar],
+                          0);
   
   ## Construct formula
   lmFormula <-
@@ -140,7 +157,9 @@ piecewiseRegr <- function(dat,
                alpha = pointAlpha,
                color = colors$points) +
     theme +
-    labs(x = "Time",
+    labs(x = ifelse(is.null(res$intermediate$day0.formatted),
+                    "Measurements",
+                    paste0("Days since ", res$intermediate$day0.formatted)),
          y = yVar);
 
   if (!is.null(outputFile)) {

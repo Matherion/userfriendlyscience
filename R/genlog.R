@@ -53,11 +53,24 @@ genlog <- function(data,
            ifelse(is.numeric(timeVar),
                   names(data)[phaseVar],
                   phaseVar));
-  
+
   ### The definition of the generalized logistic function
   result$intermediate$GLF <- GLF <-
-    paste(yVar, "~ Ab + (At - Ab)/ (1 + exp(-B*(", timeVar, "- x0))) ^ (1/v)");
+    paste0(yVar, "~ Ab + (At - Ab)/ (1 + exp(-B*(", timeVar, " - x0))) ^ (1/v)");
   ### "y ~ Ab + (At - Ab)/ (1 + exp(-B*(x-x0)))**(1/v)";
+  
+  ### If the time variable is actually provided as time instead of as
+  ### indices/ranks, convert to numeric first.
+  if (class(data[, timeVar]) != 'numeric') {
+    if (class(data[, timeVar]) %in% c('Date', 'POSIXct', 'POSIXt', 'POSIXt')) {
+      result$intermediate$day0 <- min(data[, timeVar]);
+      result$intermediate$day0.formatted <- as.character(result$intermediate$day0);
+      data[, timeVar] <- as.numeric(data[, timeVar] - min(data[, timeVar]));
+    } else {
+      stop("The timeVar variable does not have a class I can work with (numeric or date): instead it has class '",
+           data[, timeVar], "'.");
+    }
+  }
   
   ### Number of measurements in pre-intervention phase
   if (is.null(baselineMeasurements) && is.null(phaseVar)) {
@@ -71,7 +84,7 @@ genlog <- function(data,
              sum(data[, phaseVar] == min(data[, phaseVar])),
              baselineMeasurements);
   }
-  
+
   ### Starting values for starting to estimate the sigmoid parameters
   result$intermediate$startX <-
     startX <-
@@ -177,8 +190,13 @@ genlog <- function(data,
                base = Ab,
                top = At);
   
-  yfit = Ab + ((At - Ab)/ (1 + exp(-B*(data[, timeVar] - x0))) ^ (1/v));
-  
+  yfit <- genlogFunction(x = data[, timeVar],
+                         x0 = x0,
+                         Ab = Ab,
+                         At = At,
+                         B = B,
+                         v = v);
+
   interventionMoment <- mean(data[c(baselineMeasurements,
                                     baselineMeasurements+1), timeVar]);
   
@@ -204,7 +222,10 @@ genlog <- function(data,
               colour=colors$curve,
               size = lineSize * curveSizeMultiplier) +
     theme +
-    labs(x = "Measurements", y = "Score");
+    labs(x = ifelse(is.null(result$intermediate$day0.formatted),
+                    "Measurements",
+                    paste0("Days since ", result$intermediate$day0.formatted)),
+         y = "Score");
   
   if (!is.null(outputFile)) {
     ggsaveParameters <- c(list(filename = outputFile,
