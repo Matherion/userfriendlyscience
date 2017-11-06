@@ -258,6 +258,7 @@ S3method(print, fullFact);
 S3method(print, meanConfInt);
 S3method(print, meanDiff);
 S3method(print, meanDiff.multi);
+S3method(print, multiVarFreq);
 S3method(print, normalityAssessment);
 S3method(print, oddsratio);
 S3method(print, oneway);
@@ -296,6 +297,7 @@ S3method(pander, examine);
 S3method(pander, examineBy);
 S3method(pander, freq);
 S3method(pander, frequencies);
+S3method(pander, multiVarFreq);
 S3method(pander, oneway);
 S3method(pander, regr);
 
