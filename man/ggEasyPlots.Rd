@@ -57,7 +57,7 @@ ggEasyBar(data,
   The minimum percentage that a category must reach before the label is printed (in whole percentages, i.e., on a scale from 0 to 100).
 }
   \item{showInLegend}{
-  What to show in the legend in addition to the values; nothing ("\code{none}"), the frequencies ("\code{freq}"), the percentages ("\code{perc}"), or both ("\code{both}").
+  What to show in the legend in addition to the values; nothing ("\code{none}"), the frequencies ("\code{freq}"), the percentages ("\code{perc}"), or both ("\code{both}"). This is only used if only one variable is shown in the plot; afterwise, after all, the absolute frequencies and percentages differ for each variable.
 }
 }
 \value{

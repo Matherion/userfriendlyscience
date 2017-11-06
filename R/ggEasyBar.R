@@ -61,11 +61,11 @@ ggEasyBar <- function(data, items = NULL,
                       labels=labels[tmpVarOrder],
                       ordered=TRUE);
 
-  if (showInLegend == "both") {
+  if ((nrow(tmpDf) == 1) && (showInLegend == "both")) {
     tmpDf$val <- paste0(tmpDf$val, " (", tmpDf$abs, "; ", round(tmpDf$rel), "%)");
-  } else if (showInLegend == "perc") {
+  } else if ((nrow(tmpDf) == 1) && (showInLegend == "perc")) {
     tmpDf$val <- paste0(tmpDf$val, " (", round(tmpDf$rel), "%)");
-  } else if (showInLegend == "freq") {
+  } else if ((nrow(tmpDf) == 1) && (showInLegend == "freq")) {
     tmpDf$val <- paste0(tmpDf$val, " (", tmpDf$abs, ")");
   }
 
