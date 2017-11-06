@@ -63,9 +63,11 @@ just a wrapper around confIntV.
 }
 \examples{
 
+crossTab(infert$education, infert$induced, samples=50);
+
 ### Get confidence interval for Cramer's V
-### Note that removing the 'table', and so providing raw data, would enable
-### bootstrapping, which can take a while.
+### Note that by using 'table', and so removing the raw data, inhibits
+### bootstrapping, which could otherwise take a while.
 confIntV(table(infert$education, infert$induced));
 
 }

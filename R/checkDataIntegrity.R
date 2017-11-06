@@ -35,6 +35,7 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
                               append=TRUE,
                               replace=replace,
                               silent=silent,
+                              rmarkdownOutput=rmarkdownOutput,
                               callingSelf=TRUE);
     if (length(x) > 1) {
       ### Then, if necessary, more often.
@@ -49,6 +50,7 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
                              append=TRUE,
                              replace=replace,
                              silent=silent,
+                             rmarkdownOutput=rmarkdownOutput,
                              callingSelf=TRUE);
       }
     }
@@ -74,9 +76,9 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
                                  paste0(ifelse(rmarkdownOutput, "* ", ""),
                                         "Matching cases to criterion '", x[2],
                                         "' for all variables matching regular expression '",
-                                        ifelse(rmarkdownOutput, "<pre>", ""),
+                                        ifelse(rmarkdownOutput, "`", ""),
                                         x[1],
-                                        ifelse(rmarkdownOutput, "</pre>", ""),
+                                        ifelse(rmarkdownOutput, "`", ""),
                                         "'.\n"));
     ### If we're not provided with a list, we're provided with a vector
     varNames <- grep(x[1], names(dat), value=TRUE);
@@ -84,9 +86,9 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
       dataIntegrityLog <- addToLog(fullLog=dataIntegrityLog,
                                    showLog=!silent,
                                    paste0("No variables in the dataframe match regular expression '",
-                                          ifelse(rmarkdownOutput, "<pre>", ""),
+                                          ifelse(rmarkdownOutput, "<pre>--", ""),
                                           x[1],
-                                          ifelse(rmarkdownOutput, "</pre>", ""),
+                                          ifelse(rmarkdownOutput, "--</pre>", ""),
                                           "'.\n"));
       totalInvalidValues <- rep(NA, nrow(dat));
     } else {

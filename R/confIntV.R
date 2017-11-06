@@ -93,21 +93,17 @@ confIntV <- function(x, y = NULL, conf.level=.95,
     if ("bootstrap" %in% method) {
       
       res$intermediate$dat <- data.frame(x=res$input$x, y=res$input$y);
-      
-       # bootstrapFull <-
-       #   do(samples) * with(resample(res$intermediate$dat), cramersV(x, y));
-       bootstrapFull <-
-         do(samples) * function(dat=resample(res$intermediate$dat)) {
-           x <- dat$x;
-           y <- dat$y;
-           return(cramersV(x, y));
-         };
 
-      res$intermediate$bootstrapVs <-
-      unlist(lapply(bootstrapFull$output,
-                    function(x) { return(x$cramersV); }));
+      bootstrapFull <- unlist(lapply(1:samples,
+                              function(i, fullDat = res$intermediate$dat) {
+                                dat <- fullDat[sample(seq(1, nrow(fullDat)),
+                                                      replace=TRUE), ];
+                                return(cramersV(dat$x,
+                                                dat$y)$output$cramersV);
+                              }));
+
       res$output$confIntV.bootstrap <-
-        quantile(res$intermediate$bootstrapVs, res$intermediate$ps);
+        quantile(bootstrapFull, res$intermediate$ps);
       
       if (storeBootstrappingData) {
         res$intermediate$bootstrapFull <- bootstrapFull;
