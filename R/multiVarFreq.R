@@ -15,7 +15,7 @@ multiVarFreq <- function(data,
   if (sortByMean && length(items) > 1) {
     tmpVarOrder <- order(colMeans(data[, items],
                                   na.rm=TRUE),
-                         decreasing=TRUE);
+                         decreasing=FALSE);
   } else {
     tmpVarOrder <- 1:length(items);
   }
@@ -46,7 +46,8 @@ multiVarFreq <- function(data,
 
 print.multiVarFreq <- function(x, ...) {
   class(x) <- 'data.frame';
-  print(as.matrix(x), na.print="", ...);
+  x <- as.matrix(x);
+  print(x, na.print="", ...);
 }
 
 pander.multiVarFreq <- function(x, ...) {
