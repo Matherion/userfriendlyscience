@@ -7,7 +7,7 @@ Piecewise regression analysis
 This function conducts a piecewise regression analysis and shows a plot illustrating the results. The function enables easy customization of the main plot elements and easy saving of the plot with anti-aliasing.
 }
 \usage{
-piecewiseRegr(dat,
+piecewiseRegr(data,
               timeVar = 1,
               yVar = 2,
               phaseVar = NULL,
@@ -32,7 +32,7 @@ piecewiseRegr(dat,
                                   type = "cairo"))
 }
 \arguments{
-  \item{dat}{
+  \item{data}{
   The dataframe containing the variables for the analysis.
 }
   \item{timeVar}{

@@ -48,14 +48,14 @@ piecewiseRegr <- function(data,
   
   ### If the time variable is actually provided as time instead of as
   ### indices/ranks, convert to numeric first.
-  if (class(dat[, timeVar]) != 'numeric') {
+  if (!is.numeric(dat[, timeVar])) {
     if (class(dat[, timeVar]) %in% c('Date', 'POSIXct', 'POSIXt', 'POSIXt')) {
       res$intermediate$day0 <- min(dat[, timeVar]);
       res$intermediate$day0.formatted <- as.character(res$intermediate$day0);
       dat[, timeVar] <- as.numeric(dat[, timeVar] - min(dat[, timeVar]));
     } else {
-      stop("The timeVar variable does not have a class I can work with (numeric or date): instead it has class '",
-           dat[, timeVar], "'.");
+      stop("The timeVar variable does not have a class I can work with (numeric or date): instead it has class ",
+           vecTxtQ(class(dat[, timeVar])), ".");
     }
   }
   
