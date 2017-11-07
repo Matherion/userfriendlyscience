@@ -10,11 +10,11 @@ These functions have been written as equivalents of SPSS' \code{MEAN.x} and \cod
 }
 \usage{
 validMeans(...,
-           requiredValidValues = .8,
+           requiredValidValues = 0,
            returnIfInvalid = NA,
            silent = FALSE)
 validSums(...,
-          requiredValidValues = .8,
+          requiredValidValues = 0,
           returnIfInvalid = NA,
           silent = FALSE)
 }
@@ -24,7 +24,7 @@ validSums(...,
   Either a dataframe or vectors for which to compute the mean or sum.
 }
   \item{requiredValidValues}{
-  How many values must be valid (i.e. nonmissing) to compute the mean or sum. If a number lower than 1 is provided, it is interpreted as proportion, and the number of variables is computed. For example is \code{requiredValidValues=.8}, 80\% of the variables must have valid values.
+  How many values must be valid (i.e. nonmissing) to compute the mean or sum. If a number lower than 1 is provided, it is interpreted as proportion, and the number of variables is computed. For example, if \code{requiredValidValues=.8}, 80\% of the variables must have valid values. If 'all' is specified, all values must be valid (in which case the functions are equal to \code{\link{rowMeans}} and \code{\link{rowSums}}).
 }
   \item{returnIfInvalid}{
   Wat to return for cases that don't have enough valid values.
@@ -46,7 +46,7 @@ Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 }
 \examples{
 validMeans(mtcars$cyl, mtcars$disp);
-validSums(mtcars$cyl, mtcars$disp);
+validSums(mtcars$cyl, mtcars$disp, requiredValidValues = .8);
 
 ### Or specifying a dataframe
 validSums(mtcars);

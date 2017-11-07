@@ -234,6 +234,8 @@ export("therapyMonitor");
 export("therapyMonitor.multi");
 export("trim");
 export("useAll");
+export("validMeans");
+export("validSums");
 export("varsToDiamondPlotDf");
 export("vecTxt");
 export("vecTxtQ");
