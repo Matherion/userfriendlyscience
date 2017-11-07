@@ -69,7 +69,7 @@ scaleStructure <- scaleReliability <- function (dat=NULL, items = 'all', digits 
     res$intermediate$cor.pos / res$intermediate$cor.total;
   
   ### Cronbach's alpha
-  res$intermediate$alpha <- alpha(res$input$dat, check.keys=FALSE);
+  theVoid <- capture.output(suppressMessages(suppressWarnings(res$intermediate$alpha <- psych::alpha(res$input$dat, check.keys=FALSE))));
   res$output$cronbach.alpha <- res$intermediate$alpha$total$raw_alpha;
   res$output$dat$cronbach.alpha <- res$output$cronbach.alpha;
   
@@ -108,7 +108,7 @@ scaleStructure <- scaleReliability <- function (dat=NULL, items = 'all', digits 
     res$intermediate$omega <- ci.reliability(res$input$dat, type="omega");
     res$output$omega <- res$intermediate$omega$est;
     res$output$dat$omega <- res$intermediate$omega$est;
-    suppressWarnings(res$intermediate$omega.psych <- omega(res$input$dat, plot=FALSE));
+    theVoid <- capture.output(suppressMessages(suppressWarnings(res$intermediate$omega.psych <- omega(res$input$dat, plot=FALSE))));
     res$output$omega.psych <- res$intermediate$omega.psych$omega.tot;
     res$output$dat$omega.psych.tot <- res$output$omega.psych;
     res$output$dat$omega.psych.h <- res$intermediate$omega.psych$omega_h;

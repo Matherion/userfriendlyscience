@@ -1,7 +1,8 @@
 userfriendlyscience NEWS
 ------------------------
 
-0.7-0 2017-
+0.7-0 2017-11-
+* Added 'reliability' function
 * Added validMeans and validSums
 * Improved ggPie by correcting label positioning and adding argument to set colors
 * Added multiResponse
