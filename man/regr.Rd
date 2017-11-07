@@ -11,7 +11,7 @@ standardized coefficients. Note that this function is meant for teaching
 purposes, and therefore it's only for very basic regression analyses.
 }
 \usage{
-regr(formula, dat = NULL, conf.level = .95,
+regr(formula, data = NULL, conf.level = .95,
      digits = 2, pvalueDigits = 3,
      coefficients = c("raw", "scaled"),
      plot = FALSE, pointAlpha = .5,
@@ -24,7 +24,7 @@ regr(formula, dat = NULL, conf.level = .95,
 The formula of the regression analysis, of the form \code{y ~ x1 + x2}, where
 y is the dependent variable and x1 and x2 are the predictors.
 }
-  \item{dat}{
+  \item{data}{
 If the terms in the formula aren't vectors but variable names, this should
 be the dataframe where those variables are stored.
 }

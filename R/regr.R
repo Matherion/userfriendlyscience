@@ -1,10 +1,12 @@
-regr <- function(formula, dat=NULL, conf.level=.95, digits=2,
+regr <- function(formula, data=NULL, conf.level=.95, digits=2,
                  pvalueDigits = 3, coefficients=c("raw", "scaled"),
                  plot=FALSE, pointAlpha = .5,
                  collinearity = FALSE, influential = FALSE,
                  ci.method = c("widest", "r.con", "olkinfinn"),
                  ci.method.note = FALSE, env=parent.frame()) {
 
+  dat <- data;
+  
   ### Generate object to store input, intermediate outcomes, and results
   res <- list(input = as.list(environment()),
               intermediate = list(),
