@@ -1,8 +1,8 @@
 Package: userfriendlyscience
 Type: Package
 Title: Quantitative Analysis Made Accessible
-Version: 0.6-2
-Date: 2017-
+Version: 0.7-0
+Date: 2017-11-
 Author: Gjalt-Jorn Peters
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 License: GPL (>= 2)
@@ -20,6 +20,6 @@ URL: http://userfriendlyscience.com
 Imports: DiagrammeR, GGally, GPArotation, MASS, MBESS, RColorBrewer,
          SCRT, SuppDists, XML, car, data.tree, diptest, fBasics,
          ggplot2, ggrepel, ggridges, gridExtra, gtable, knitr,
-         lavaan, lme4, mosaic, pander, plyr, psych, pwr, rio,
+         lavaan, lme4, pander, plyr, psych, pwr, rio,
          scales, viridis, xtable, minpack.lm, BiasedUrn, digest,
          
