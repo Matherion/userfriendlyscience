@@ -21,5 +21,5 @@ Imports: DiagrammeR, GGally, GPArotation, MASS, MBESS, RColorBrewer,
          SCRT, SuppDists, XML, car, data.tree, diptest, fBasics,
          ggplot2, ggrepel, ggridges, gridExtra, gtable, knitr,
          lavaan, lme4, pander, plyr, psych, pwr, rio,
-         scales, viridis, xtable, minpack.lm, BiasedUrn, digest,
+         scales, viridis, xtable, minpack.lm, BiasedUrn, digest
          

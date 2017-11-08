@@ -39,21 +39,24 @@ genlog <- function(data,
                   output = list());
   
   ### Store names for easy access later on
-  result$intermediate$yVarName <-
+  result$intermediate$yVarName <- yVar <-
     ifelse(is.numeric(yVar),
            names(data)[yVar],
            yVar);
-  result$intermediate$timeVarName <-
+  result$intermediate$timeVarName <- timeVar <-
     ifelse(is.numeric(timeVar),
            names(data)[timeVar],
            timeVar);
-  result$intermediate$phaseVarName <-
+  result$intermediate$phaseVarName <- phaseVar <-
     ifelse(is.null(phaseVar),
            "none",
            ifelse(is.numeric(timeVar),
                   names(data)[phaseVar],
                   phaseVar));
-
+  
+  ### Argument 'data' used to be called 'dat'
+  dat <- data;
+  
   ### The definition of the generalized logistic function
   result$intermediate$GLF <- GLF <-
     paste0(yVar, "~ Ab + (At - Ab)/ (1 + exp(-B*(", timeVar, " - x0))) ^ (1/v)");
@@ -175,6 +178,8 @@ genlog <- function(data,
   Dev <- deviance(out);
   SSQtot <- sum((data[, yVar] - mean(data[, yVar])) ^ 2);
   
+  result$output$deviance <- Dev;
+  
   result$output$Rsq <-
     Rsq <- (SSQtot - Dev) / SSQtot;
   result$output$ES1 <-
@@ -182,7 +187,8 @@ genlog <- function(data,
   result$output$ES2 <-
     ES2 <- (At -Ab) / diff(yRange);
   result$output$dat <-
-    data.frame(Rsq = Rsq,
+    data.frame(deviance = Dev,
+               Rsq = Rsq,
                ES1 = ES1,
                ES2 = ES2,
                growthRate = B,
@@ -251,7 +257,8 @@ print.genlog <- function(x, digits=3, ...) {
        "Estimated sigmoid association between ",
        x$intermediate$timeVarName, " and ",
        x$intermediate$yVarName, ".\n\n");
-  cat0("R squared:         ", round(x$output$Rsq, digits=digits), "\n",
+  cat0("Deviance:          ", round(x$output$deviance, digits=digits), "\n",
+       "R squared:         ", round(x$output$Rsq, digits=digits), "\n",
        "Effect Size 1:     ", round(x$output$ES1, digits=digits), "\n",
        "Effect Size 2:     ", round(x$output$ES2, digits=digits), "\n",
        "Growth rate:       ", round(x$output$growthRate, digits=digits), "\n",

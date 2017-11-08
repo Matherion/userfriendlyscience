@@ -108,6 +108,12 @@ piecewiseRegr <- function(data,
   ### Extract coefficients
   res$output$coef <- coefficients(res$intermediate$lm.model);
   
+  ### Add confidence intervals
+  res$output$confint <- confint(res$intermediate$lm.model);
+  
+  ### Add deviance
+  res$output$deviance <- deviance(res$intermediate$lm.model);
+  
   ### Generate plot; first dataframes for the 'custom lines'
   ypre <- res$output$coef[1] + res$output$coef[3] * dat[, timeVar];
   ypost <- res$intermediate$lm.model$fitted.values;
@@ -182,16 +188,27 @@ print.piecewiseRegr <- function(x,
   if (x$input$showPlot) {
     grid.newpage();
     grid.draw(x$output$plot);
-  }  
+  }
+  
+  confIntervals <- c(formatCI(x$output$confint[1, ]),
+                     formatCI(x$output$confint[2, ]),
+                     formatCI(x$output$confint[3, ]),
+                     formatCI(x$output$confint[4, ]));
+  
+  maxConfIntLength <- max(nchar(confIntervals));
+  
+  confIntervals <- paste0(sapply(maxConfIntLength - nchar(confIntervals), repStr), confIntervals);
+  
   cat0("Piecewise Regression Analysis\n",
        "\nModel statistics:\n",
+       "\n  Model deviance:              ", round(x$output$deviance, digits),
        "\n  R squared for null model:    ", formatR(x$output$Rsq.null, digits),
        "\n  R squared for test model:    ", formatR(x$output$Rsq.model, digits),
        "\n  R squared based effect size: ", formatR(x$output$ES, digits),
        "\n\nRegression coefficients:\n",
-       "\n  Intercept:       ", round(x$output$coef[1], digits),
-       "\n  Level change:    ", round(x$output$coef[2], digits),
-       "\n  Trend phase 1:   ", round(x$output$coef[3], digits),
-       "\n  Change in trend: ", round(x$output$coef[4], digits));
+       "\n  Intercept:       ", confIntervals[1], " (point estimate = ", round(x$output$coef[1], digits), ")",
+       "\n  Level change:    ", confIntervals[2], " (point estimate = ", round(x$output$coef[2], digits), ")",
+       "\n  Trend phase 1:   ", confIntervals[3], " (point estimate = ", round(x$output$coef[3], digits), ")",
+       "\n  Change in trend: ", confIntervals[4], " (point estimate = ", round(x$output$coef[4], digits), ")");
 }
 
