@@ -36,7 +36,7 @@ regrInfluential <- function(formula, data) {
     sort(unique(res$intermediate$dat$indexOfInfluentiality), decreasing=TRUE)>0]) {
     res$output$regrObjects[[levelOfInfluentiality]] <-
       regr(formula=formula,
-           dat=res$intermediate$dat[res$intermediate$dat$indexOfInfluentiality <= levelOfInfluentiality, ]);
+           data=res$intermediate$dat[res$intermediate$dat$indexOfInfluentiality <= levelOfInfluentiality, ]);
   }
   ### Store dataframe with influential cases
   res$output$dat.diagnostics <-

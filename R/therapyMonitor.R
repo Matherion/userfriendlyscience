@@ -429,7 +429,7 @@ therapyMonitor <- function(dat = NULL,
              0, var(res$intermediate$separateDat[[1]][, variableColumn])) > 0) {
     res$output[[1]] <- list(regr =
                               regr(formula(paste0(variableColumn, " ~ ", timeColumn.regr)),
-                                   dat=res$intermediate$separateDat[[1]]));
+                                   data=res$intermediate$separateDat[[1]]));
   }
 
   res$output[[2]] <- list();
@@ -437,7 +437,7 @@ therapyMonitor <- function(dat = NULL,
              0, var(res$intermediate$separateDat[[2]][, variableColumn])) > 0) {
     res$output[[2]] <- list(regr =
                               regr(formula(paste0(variableColumn, " ~ ", timeColumn.regr)),
-                                   dat=res$intermediate$separateDat[[2]]));
+                                   data=res$intermediate$separateDat[[2]]));
   }
  
  ### Compute means for each condition

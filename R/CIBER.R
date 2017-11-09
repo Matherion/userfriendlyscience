@@ -108,7 +108,7 @@ CIBER <- function(data, determinants, targets,
   ### Get R squared values
   res$intermediate$Rsq <- lapply(targets, function(currentTarget) {
     return(regr(formula(paste(currentTarget, '~', paste(determinants, collapse=" + "))),
-                dat=res$intermediate$dat,
+                data=res$intermediate$dat,
                 conf.level=conf.level$associations));
   });
 
