@@ -4,7 +4,7 @@
 Generate a table for multiple response questions
 }
 \description{
-This function is based on the excellent and extensive Stack Exchange answer by Ananda Mahto at https://stackoverflow.com/questions/9265003/analysis-of-multiple-response. The function basically mimics the behavior of the table produced by SPSS for multiple response questions.
+The \code{multiResponse} function mimics the behavior of the table produced by SPSS for multiple response questions.
 }
 \usage{
 multiResponse(data,
@@ -25,6 +25,9 @@ multiResponse(data,
 }
 \value{
 A dataframe with columns \code{Option}, \code{Frequency}, \code{Percentage}, and \code{Percentage of (X) cases}, where X is the number of cases.
+}
+\references{
+This function is based on the excellent and extensive Stack Exchange answer by Ananda Mahto at https://stackoverflow.com/questions/9265003/analysis-of-multiple-response.
 }
 \author{
 Ananda Mahto; implemented in this package (and tweaked a bit) by Gjalt-Jorn Peters.

@@ -2,15 +2,15 @@ userfriendlyscience NEWS
 ------------------------
 
 0.7-0 2017-11-
-* Added facComAnalysis function
-* Added 'reliability' function
-* Added validMeans and validSums
+* Added facComAnalysis function, to approximate SPSS' FACTOR function
+* Added 'reliability' function, to approximate SPSS' RELIABILITY function
+* Added validMeans and validSums, to only compute aggregates when there are enough valid values
 * Improved ggPie by correcting label positioning and adding argument to set colors
-* Added multiResponse
-* Added ggEasyRidge
-* Added ggEasyBar
-* Added knitFig
-* Added multiVarFreq
+* Added multiResponse, to generate a table for multiple response questions
+* Added ggEasyRidge, to easily generate ridgeline plots for multiple variables
+* Added ggEasyBar, to easily visualise multiple categorical variables with the same categories
+* Added knitFig, to generate separate chunks (with separate sizes) for figures in e.g. R Markdown
+* Added multiVarFreq, the tabular equivalent of ggEasyBar
 * Added logRegr for logistic analysis
 * Added fanova as flexible anova wrapper for simple anova's
 * Added collinearity diagnostic to regr and logRegr
