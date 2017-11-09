@@ -3,7 +3,13 @@ Type: Package
 Title: Quantitative Analysis Made Accessible
 Version: 0.7-0
 Date: 2017-11-
-Author: Gjalt-Jorn Peters
+Authors@R: c(person("Gjalt-Jorn", "Peters",
+                    email = "gjalt-jorn@userfriendlyscience.com",
+                    role = c("aut", "cre")),
+             person("Verboon", "Peter",
+                    role = c("ctb")),
+             person("Green", "James",
+                    role = c("ctb")))
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 License: GPL (>= 2)
 Description: Contains a number of functions that serve
@@ -18,9 +24,36 @@ Description: Contains a number of functions that serve
     for example towards reasoning based on sampling distributions as
     opposed to on point estimates.
 URL: http://userfriendlyscience.com
-Imports: DiagrammeR, GGally, GPArotation, MASS, MBESS, RColorBrewer,
-         SCRT, SuppDists, XML, car, data.tree, diptest, fBasics,
-         ggplot2, ggrepel, ggridges, gridExtra, gtable, knitr,
-         lavaan, lme4, pander, plyr, psych, pwr, rio,
-         scales, viridis, xtable, minpack.lm, BiasedUrn, digest
-         
+BugReports: https://github.com/matherion/userfriendlyscience/issues
+Imports: BiasedUrn,
+         car,
+         data.tree,
+         DiagrammeR,
+         diptest,
+         digest,
+         fBasics,
+         GGally,
+         ggplot2,
+         ggrepel,
+         ggridges,
+         gridExtra,
+         GPArotation,
+         gtable,
+         knitr,
+         lavaan,
+         lme4,
+         MASS,
+         MBESS,
+         minpack.lm,
+         pander,
+         plyr,
+         psych,
+         pwr,
+         RColorBrewer,
+         rio,
+         scales,
+         SCRT,
+         SuppDists,
+         viridis,
+         XML,
+         xtable
