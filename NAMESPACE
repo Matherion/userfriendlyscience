@@ -7,6 +7,16 @@
 
 #exportPattern("^[[:alpha:]]+");
 
+### To check for methods, use e.g.
+# sort(grep('^pander\\.', names(asNamespace('userfriendlyscience')), value=TRUE));
+
+### To generate the list of methods to register:
+#cat0(paste0('S3method(print, ',
+#            sort(gsub('^print\\.', '',
+#                      grep('^print\\.',
+#                           names(asNamespace('userfriendlyscience')),
+#                           value=TRUE))), ');\n'));
+
 ###############################################################  Exports
 
 export("%IN%");
@@ -246,27 +256,36 @@ export("vecTxtQ");
 
 S3method(print, associationMatrix);
 S3method(print, asymmetricalScatterMatrix);
+S3method(print, cohensdCI);
 S3method(print, confIntOmegaSq);
 S3method(print, confIntV);
 S3method(print, CramersV);
 S3method(print, crossTab);
 S3method(print, dataShape);
 S3method(print, descr);
+S3method(print, determinantStructure);
 S3method(print, didacticPlot);
 S3method(print, dlvPlot);
 S3method(print, examine);
 S3method(print, examineBy);
+S3method(print, facComAnalysis);
+S3method(print, fanova);
 S3method(print, freq);
 S3method(print, frequencies);
 S3method(print, fullFact);
+S3method(print, genlog);
+S3method(print, ggProportionPlot);
+S3method(print, logRegr);
 S3method(print, meanConfInt);
 S3method(print, meanDiff);
 S3method(print, meanDiff.multi);
 S3method(print, multiVarFreq);
+S3method(print, nnc);
 S3method(print, normalityAssessment);
 S3method(print, oddsratio);
 S3method(print, oneway);
 S3method(print, parallelSubscales);
+S3method(print, piecewiseRegr);
 S3method(print, posthocTGH);
 S3method(print, power.htest.ufs);
 S3method(print, powerHist);
@@ -285,15 +304,8 @@ S3method(print, testRetestCES);
 S3method(print, testRetestReliability);
 S3method(print, therapyMonitor);
 S3method(print, therapyMonitor.multi);
-S3method(print, cohensdCI);
-S3method(print, determinantStructure);
-S3method(print, nnc);
-S3method(print, fanova);
-S3method(print, genlog);
-S3method(print, ggProportionPlot);
-S3method(print, logRegr);
-S3method(print, piecewiseRegr);
 
+S3method(pander, associationMatrix);
 S3method(pander, crossTab);
 S3method(pander, dataShape);
 S3method(pander, descr);
@@ -301,7 +313,9 @@ S3method(pander, examine);
 S3method(pander, examineBy);
 S3method(pander, freq);
 S3method(pander, frequencies);
+S3method(pander, meanDiff);
 S3method(pander, multiVarFreq);
+S3method(pander, normalityAssessment);
 S3method(pander, oneway);
 S3method(pander, regr);
 
@@ -327,8 +341,7 @@ importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
            "qbinom",
            "pt", "rt", "qt", "dt",
            "df", "qf", "rf", "pf",
-           "qtukey",
-           "ptukey", "qchisq",
+           "qtukey", "ptukey", "qchisq",
            "quantile", "reshape", "sd", "shapiro.test", "t.test",
            "terms", "var", "var.test", "runif",
            "ppoints", "IQR", "oneway.test",

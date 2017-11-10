@@ -1,7 +1,7 @@
 Package: userfriendlyscience
 Type: Package
 Title: Quantitative Analysis Made Accessible
-Version: 0.7-0
+Version: 0.7.0
 Date: 2017-11-
 Authors@R: c(person("Gjalt-Jorn", "Peters",
                     email = "gjalt-jorn@userfriendlyscience.com",
@@ -11,7 +11,7 @@ Authors@R: c(person("Gjalt-Jorn", "Peters",
              person("Green", "James",
                     role = c("ctb")))
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
-License: GPL (>= 2)
+License: GPL (>= 3)
 Description: Contains a number of functions that serve
     two goals.  First, to make R more accessible to people migrating
     from SPSS by adding a number of functions that behave roughly like
