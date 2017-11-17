@@ -1,14 +1,14 @@
 userfriendlyscience (UFS)
 =========================
 
-[![CRAN version badge](https://www.r-pkg.org/badges/version/userfriendlyscience?color=brightgreen)](https://cran.rstudio.com/web/packages/userfriendlyscience/index.html)
-[![Monthly downloads badge](https://cranlogs.r-pkg.org/badges/last-month/userfriendlyscience?color=brightgreen)](https://cran.rstudio.com/web/packages/userfriendlyscience/index.html)
-[![Total downloads badge](https://cranlogs.r-pkg.org/badges/grand-total/userfriendlyscience?color=brightgreen)](https://cran.rstudio.com/web/packages/userfriendlyscience/index.html)
+[![CRAN version badge](https://www.r-pkg.org/badges/version/userfriendlyscience?color=brightgreen)](https://CRAN.R-project.org/package=userfriendlyscience )
+[![Monthly downloads badge](https://cranlogs.r-pkg.org/badges/last-month/userfriendlyscience?color=brightgreen)](https://CRAN.R-project.org/package=userfriendlyscience )
+[![Total downloads badge](https://cranlogs.r-pkg.org/badges/grand-total/userfriendlyscience?color=brightgreen)](https://CRAN.R-project.org/package=userfriendlyscience )
 [![Documentation badge](https://www.rdocumentation.org/badges/version/userfriendlyscience)](https://www.rdocumentation.org/badges/version/userfriendlyscience)
 [![Travis-CI Build Status](https://travis-ci.org/Matherion/userfriendlyscience.svg?branch=master)](https://travis-ci.org/Matherion/userfriendlyscience)
 [![codecov](https://codecov.io/gh/Matherion/userfriendlyscience/branch/master/graph/badge.svg)](https://codecov.io/gh/Matherion/userfriendlyscience)
 
-Userfriendlyscience contains a number of functions that serve two goals.  First, to make R more accessible to people migrating from SPSS by adding a number of functions that behave roughly like their SPSS equivalents. Second, to make a number of slightly more advanced functions more user friendly to relatively novice users. The package also conveniently houses a number of additional functions that are intended to increase the quality of methodology and statistics in psychology, not by offering technical solutions, but by shifting perspectives, for example towards reasoning based on sampling distributions as opposed to on point estimates.
+Userfriendlyscience contains a number of functions that serve two goals.  First, to make R more accessible to people migrating from SPSS by adding a number of functions that behave roughly like their SPSS equivalents (also see http://rosettastats.com). Second, to make a number of slightly more advanced functions more user friendly to relatively novice users. The package also conveniently houses a number of additional functions that are intended to increase the quality of methodology and statistics in psychology, not by offering technical solutions, but by shifting perspectives, for example towards reasoning based on sampling distributions as opposed to on point estimates.
 
 The package imports functions from many other packages, which is in line with its function as a 'wrapper package': UFS aims to make many existing functions easier for users coming from SPSS, so sometimes a function is added when it saves the user just some data preparing.
 
