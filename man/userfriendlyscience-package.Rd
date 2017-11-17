@@ -1,24 +1,32 @@
 \name{userfriendlyscience-package}
 \alias{userfriendlyscience-package}
 \alias{userfriendlyscience}
+\alias{ufs}
+\alias{UFS}
 \docType{package}
 \title{
 Userfriendlyscience (UFS)
 }
 \description{
 This package contains a number of functions that serve
-  two goals: first, make R more accessible to people migrating from
-  SPSS by adding a number of functions that behave roughly like their
-  SPSS equivalents; and second, make a number of slightly more
-  advanced functions more user friendly to relatively novice users.
+    two goals. First, to make R more accessible to people migrating
+    from SPSS by adding a number of functions that behave roughly like
+    their SPSS equivalents (also see \url{http://rosettastats.com}). Second,
+    to make a number of slightly more advanced functions more user
+    friendly to relatively novice users. The package also conveniently
+    houses a number of additional functions that are intended to
+    increase the quality of methodology and statistics in psychology,
+    not by offering technical solutions, but by shifting perspectives,
+    for example towards reasoning based on sampling distributions as
+    opposed to on point estimates.
 }
 \details{
 \tabular{ll}{
 Package: \tab userfriendlyscience\cr
 Type: \tab Package\cr
 Version: \tab 0.7-0\cr
-Date: \tab 2017-11-\cr
-License: \tab GPL (>= 2)\cr
+Date: \tab 2017-11-17\cr
+License: \tab GPL (>= 3)\cr
 }
 
 Userfriendlyscience (UFS) contains a number of functions that serve two goals.  First, to make R more accessible to people migrating from SPSS by adding a number of functions that behave roughly like their SPSS equivalents (also see \url{http://rosettastats.com} for a tool that helps with this). Second, to make a number of slightly more advanced functions more user friendly to relatively novice users. The package also conveniently houses a number of additional functions that are intended to increase the quality of methodology and statistics in psychology, not by offering technical solutions, but by shifting perspectives, for example towards reasoning based on sampling distributions as opposed to on point estimates.
