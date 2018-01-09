@@ -6,10 +6,10 @@ knitFig <- function(plotToDraw,
                     chunkName = NULL,
                     ...) {
   if (is.null(template)) {
-    template <- "\n\n```{r {{chunkName}}, fig.height={{figHeight}}, fig.width={{figWidth}}, fig.cap='{{figCaption}}', echo=FALSE, cache=FALSE, message=FALSE, results='asis'}
-    grid.newpage();
-    grid.draw(tmpPlotStorage);
-    ```\n\n";
+    template <- "\n\n```{r {{chunkName}}, fig.height={{figHeight}}, fig.width={{figWidth}}, fig.cap='{{figCaption}}', echo=FALSE, cache=FALSE, message=FALSE, results='asis' }
+  grid.newpage();
+  grid.draw(tmpPlotStorage);
+```\n\n";
   }
   assign('tmpPlotStorage', plotToDraw);
   if (is.null(chunkName)) {
