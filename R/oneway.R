@@ -141,8 +141,8 @@ oneway <- function(y, x, posthoc=NULL, means=FALSE, fullDescribe=FALSE,
       stop(paste0("You need to install the 'multcompView' package to obtain the ",
                   "letters illustrating which groups differ on post hoc tests."));
     } else {
-      res$intermediatet$posthocLetters.pValues <-
-        res$intermediate$posthoc;
+      res$intermediate$posthocLetters.pValues <-
+        res$intermediate$posthoc$p;
       res$intermediate$posthocLetters.logical <-
         res$intermediate$posthocLetters.pValues > posthocLetterAlpha;
       names(res$intermediate$posthocLetters.logical) <-
@@ -245,8 +245,9 @@ print.oneway <- function(x, digits=x$input$digits,
       print(x$intermediate$posthoc$p.value, quote=FALSE, na.print="");
     }
     
-    if (!is.null(res$output$posthocLetters)) {
-      print(res$output$posthocLetters);
+    if (!is.null(x$output$posthocLetters)) {
+      cat("\n\n");
+      print(x$output$posthocLetters);
     }
   }
   
@@ -362,8 +363,9 @@ pander.oneway <- function(x, digits=x$input$digits,
       pander(x$intermediate$posthoc$p.value, missing="");
     }
     
-    if (!is.null(res$output$posthocLetters)) {
-      pander(res$output$posthocLetters);
+    if (!is.null(x$output$posthocLetters)) {
+      cat("\n\n");
+      pander(x$output$posthocLetters$Letters);
     }
   }
 
