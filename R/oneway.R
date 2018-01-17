@@ -4,6 +4,7 @@ oneway <- function(y, x, posthoc=NULL, means=FALSE, fullDescribe=FALSE,
                    etasq = TRUE,
                    corrections = FALSE,
                    pvalueDigits=3, t=FALSE, conf.level=.95,
+                   posthocLetters = FALSE, posthocLetterAlpha = .05,
                    silent=FALSE) {
   
   res <- list(input = as.list(environment()));
@@ -135,6 +136,22 @@ oneway <- function(y, x, posthoc=NULL, means=FALSE, fullDescribe=FALSE,
                      res$input$y.name));
   }
   
+  if (posthocLetters) {
+    if (!requireNamespace("multcompView", quietly = TRUE)) {
+      stop(paste0("You need to install the 'multcompView' package to obtain the ",
+                  "letters illustrating which groups differ on post hoc tests."));
+    } else {
+      res$intermediatet$posthocLetters.pValues <-
+        res$intermediate$posthoc;
+      res$intermediate$posthocLetters.logical <-
+        res$intermediate$posthocLetters.pValues > posthocLetterAlpha;
+      names(res$intermediate$posthocLetters.logical) <-
+        row.names(res$intermediate$posthoc);
+      res$output$posthocLetters <- 
+        multcompView::multcompLetters(res$intermediate$posthocLetters.logical);
+    }
+  }
+  
   class(res) <- 'oneway';
   return(res);
 }
@@ -226,6 +243,10 @@ print.oneway <- function(x, digits=x$input$digits,
     else {
       x$intermediate$posthoc$p.value <- formatPvalue(x$intermediate$posthoc$p.value, digits=pvalueDigits, includeP=FALSE);
       print(x$intermediate$posthoc$p.value, quote=FALSE, na.print="");
+    }
+    
+    if (!is.null(res$output$posthocLetters)) {
+      print(res$output$posthocLetters);
     }
   }
   
@@ -339,6 +360,10 @@ pander.oneway <- function(x, digits=x$input$digits,
     else {
       x$intermediate$posthoc$p.value <- formatPvalue(x$intermediate$posthoc$p.value, digits=pvalueDigits, includeP=FALSE);
       pander(x$intermediate$posthoc$p.value, missing="");
+    }
+    
+    if (!is.null(res$output$posthocLetters)) {
+      pander(res$output$posthocLetters);
     }
   }
 
