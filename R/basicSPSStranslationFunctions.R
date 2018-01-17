@@ -193,7 +193,7 @@ getDat <- function(..., dfName="dat", backup=TRUE) {
   cat("The data has been stored in a dataframe called '",
       dfName, "'. That means that if you want to repeat this command and ",
       "store the dataframe with the same name, you have to use:\n\n",
-      dfName, " <- ", attributes(dat)$getDataCall, ";\n\n",      
+      dfName, " <- getData('", attributes(dat)$getDataCall, "');\n\n",      
       sep="");
 }
 
