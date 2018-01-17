@@ -6,9 +6,9 @@ Date: 2017-11-17
 Authors@R: c(person("Gjalt-Jorn", "Peters",
                     email = "gjalt-jorn@userfriendlyscience.com",
                     role = c("aut", "cre")),
-             person("Verboon", "Peter",
+             person("Peter", "Verboon",
                     role = c("ctb")),
-             person("Green", "James",
+             person("James", "Green",
                     role = c("ctb")))
 Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 License: GPL (>= 3)
