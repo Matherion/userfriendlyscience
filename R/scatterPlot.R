@@ -5,8 +5,8 @@ scatterPlot <- function(x, y, pointsize=3,
                         regrLineCol = "blue",
                         regrCIcol = regrLineCol,
                         regrCIalpha = .25,
-                        width = 0,
-                        height = 0,
+                        width = NULL,
+                        height = NULL,
                         position='identity',
                         xVarName=NULL,
                         yVarName=NULL,
@@ -24,15 +24,16 @@ scatterPlot <- function(x, y, pointsize=3,
     theme;
   if (regrLine && regrCI) {
     plot <- plot + geom_smooth(method='lm', color = regrLineCol,
-                               fill = regrCIcol, alpha = regrCIalpha);
+                               fill = regrCIcol, alpha = regrCIalpha,
+                               na.rm=TRUE);
   } else if (regrLine) {
     plot <- plot + geom_smooth(method='lm', color = regrLineCol,
-                               se=FALSE);
+                               se=FALSE, na.rm=TRUE);
   }
-  if ((tolower(position)=='jitter') && (width == 0) && (height == 0)) {
-    plot <- plot + geom_jitter(na.rm=TRUE,
-                               size=pointsize,
-                               ...);
+  if ((tolower(position)=='identity') && (width == 0) && (height == 0)) {
+    plot <- plot + geom_point(na.rm=TRUE,
+                              size=pointsize,
+                              ...);
   } else {
     plot <- plot + geom_jitter(na.rm=TRUE,
                                size=pointsize,
