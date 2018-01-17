@@ -57,3 +57,4 @@ Imports: BiasedUrn,
          viridis,
          XML,
          xtable
+Suggests: multcompView
