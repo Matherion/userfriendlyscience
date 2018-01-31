@@ -21,6 +21,7 @@ CIBER <- function(data, determinants, targets,
                   dotSize = 2.5 * baseSize,
                   baseFontSize=10*baseSize,
                   theme=theme_bw(base_size=baseFontSize),
+                  xbreaks=NULL,
                   ...) {
 
   if (!all(c(determinants, targets) %in% names(data))) {
@@ -142,6 +143,7 @@ CIBER <- function(data, determinants, targets,
                       baseFontSize = baseFontSize,
                       theme = theme,
                       jitterHeight = .3,
+                      xbreaks=xbreaks,
                       ...);
 
   res$intermediate$meansPlot <- res$intermediate$biAxisDiamondPlot$output$plot;

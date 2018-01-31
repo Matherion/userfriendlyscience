@@ -30,7 +30,8 @@ CIBER(data, determinants, targets,
       returnPlotOnly = TRUE, drawPlot = TRUE,
       baseSize = 0.8, dotSize = 2.5 * baseSize,
       baseFontSize = 10 * baseSize,
-      theme = theme_bw(base_size = baseFontSize), ...)
+      theme = theme_bw(base_size = baseFontSize),
+      xbreaks=NULL, ...)
 
 detStructCIBER(determinantStructure, dat,
                conf.level = list(means = 0.9999,
@@ -172,6 +173,10 @@ detStructCIBER(determinantStructure, dat,
 }
   \item{theme}{
   This is the theme that is used for the plots.
+}
+  \item{xbreaks}{
+  Which breaks to use on the X axis (can be useful to override
+  \code{\link{ggplot}}'s defaults).
 }
   \item{\dots}{
   These arguments are passed on to \code{\link{biAxisDiamondPlot}} (for
