@@ -5,8 +5,8 @@ scatterPlot <- function(x, y, pointsize=3,
                         regrLineCol = "blue",
                         regrCIcol = regrLineCol,
                         regrCIalpha = .25,
-                        width = NULL,
-                        height = NULL,
+                        width = 0,
+                        height = 0,
                         position="identity",
                         xVarName=NULL,
                         yVarName=NULL,
@@ -30,7 +30,7 @@ scatterPlot <- function(x, y, pointsize=3,
     plot <- plot + geom_smooth(method='lm', color = regrLineCol,
                                se=FALSE, na.rm=TRUE);
   }
-  if (!is.null(position) && (tolower(position)=='identity') && is.null(width) && is.null(height)) {
+  if (!is.null(position) && (tolower(position)=='identity') && (width==0) && (height==0)) {
     plot <- plot + geom_point(na.rm=TRUE,
                               size=pointsize,
                               ...);
