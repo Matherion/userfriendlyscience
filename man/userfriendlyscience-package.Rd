@@ -24,8 +24,8 @@ This package contains a number of functions that serve
 \tabular{ll}{
 Package: \tab userfriendlyscience\cr
 Type: \tab Package\cr
-Version: \tab 0.7-0\cr
-Date: \tab 2017-11-17\cr
+Version: \tab 0.7-1\cr
+Date: \tab 2018- - \cr
 License: \tab GPL (>= 3)\cr
 }
 

@@ -1,8 +1,8 @@
 Package: userfriendlyscience
 Type: Package
 Title: Quantitative Analysis Made Accessible
-Version: 0.7.0
-Date: 2017-11-17
+Version: 0.7.1
+Date: 2017-00-00
 Authors@R: c(person("Gjalt-Jorn", "Peters",
                     email = "gjalt-jorn@userfriendlyscience.com",
                     role = c("aut", "cre")),

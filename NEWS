@@ -1,7 +1,10 @@
 userfriendlyscience NEWS
 ------------------------
 
-0.7-0 2017-11-
+0.7.1 2018-
+* 
+
+0.7-0 2017-11-17
 * Added facComAnalysis function, to approximate SPSS' FACTOR function
 * Added 'reliability' function, to approximate SPSS' RELIABILITY function
 * Added validMeans and validSums, to only compute aggregates when there are enough valid values
