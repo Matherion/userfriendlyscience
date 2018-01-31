@@ -29,7 +29,8 @@ ggEasyBar(data,
           fontColor = "white",
           fontSize = 2,
           labelMinPercentage = 1,
-          showInLegend = "both")
+          showInLegend = "both",
+          biAxisLabels = NULL)
 }
 \arguments{
   \item{data}{
@@ -59,6 +60,9 @@ ggEasyBar(data,
   \item{showInLegend}{
   What to show in the legend in addition to the values; nothing ("\code{none}"), the frequencies ("\code{freq}"), the percentages ("\code{perc}"), or both ("\code{both}"). This is only used if only one variable is shown in the plot; afterwise, after all, the absolute frequencies and percentages differ for each variable.
 }
+  \item{biAxisLabels}{
+  This can be used to specify labels to use if you want to use labels on both the left and right side. This is mostly useful when plotting single questions or semantic differentials. This must be a list with two character vectors, \code{leftAnchors} and \code{rightAnchors}, which must each have the same length as the number of items specified in \code{items}. See the examples for, well, examples.
+}
 }
 \value{
 A \code{\link{ggplot}} plot is returned.
@@ -74,5 +78,15 @@ Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
 \examples{
 ggEasyBar(mtcars, c('gear', 'carb'));
 ggEasyRidge(mtcars, c('disp', 'hp'));
+
+### When plotting single questions, if you want to show the anchors:
+ggEasyBar(mtcars, c('gear'),
+          biAxisLabels=list(leftAnchors="Fewer",
+                            rightAnchors="More"));
+
+### Or for multiple questions (for e.g. semantic differentials):
+ggEasyBar(mtcars, c('gear', 'carb'),
+          biAxisLabels=list(leftAnchors=c("Fewer", "Lesser"),
+                            rightAnchors=c("More", "Greater")));
 }
 \keyword{ hplot }

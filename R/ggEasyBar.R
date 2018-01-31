@@ -7,7 +7,8 @@ ggEasyBar <- function(data, items = NULL,
                       fontColor = "white",
                       fontSize = 2,
                       labelMinPercentage = 1,
-                      showInLegend = "both") {
+                      showInLegend = "both",
+                      biAxisLabels = NULL) {
   
   if (is.null(items)) {
     items <- names(data);
@@ -77,11 +78,27 @@ ggEasyBar <- function(data, items = NULL,
                         "");
 
   ### Actual plot
-  res <- ggplot(data = tmpDf,
-                mapping = aes_string(x = 'var',
-                                     y = 'rel',
-                                     fill = 'val',
-                                     label = 'label')) +
+  if (!is.null(biAxisLabels) &&
+      (length(biAxisLabels$leftAnchors) == length(items)) &&
+      (length(biAxisLabels$rightAnchors) == length(items))) {
+    res <- ggplot(data = tmpDf,
+                  mapping = aes_string(x = rep(1:length(items),
+                                               table(tmpDf$var)),
+                                       y = 'rel',
+                                       fill = 'val',
+                                       label = 'label')) +
+      scale_x_continuous(breaks=1:length(items),
+                         labels = biAxisLabels$leftAnchors,
+                         sec.axis=dup_axis(labels=biAxisLabels$rightAnchors));
+  } else {
+    res <- ggplot(data = tmpDf,
+                  mapping = aes_string(x = 'var',
+                                       y = 'rel',
+                                       fill = 'val',
+                                       label = 'label'));
+  }
+  
+  res <- res +
     geom_bar(na.rm=TRUE, stat = 'identity',
              position = position_stack(reverse = TRUE)) +
     theme_minimal() +
@@ -91,6 +108,6 @@ ggEasyBar <- function(data, items = NULL,
               position = position_stack(reverse=TRUE, vjust = 0.5)) +
     labs(x=xlab, y=ylab) +
     theme(legend.position="bottom");
-  
+
   return(res);
 }
