@@ -45,6 +45,13 @@ CIBER <- function(data, determinants, targets,
   res$output$determinantsN <- sum(complete.cases(res$intermediate$determinantsDat));
   res$output$associationsN <- sum(complete.cases(res$intermediate$dat));
 
+  if (!all(sapply(res$intermediate$determinantsDat, is.numeric))) {
+    notNumericVars <-
+      names(res$intermediate$determinantsDat)[!sapply(res$intermediate$determinantsDat, is.numeric)];
+    stop("Not all determinants are numeric! Specifically, ",
+         vecTxtQ(notNumericVars), " are not numeric variables.");
+  }
+  
   ### For the scores, the max and min need to be determined from the data
   res$intermediate$fullColorRange <- ifelseObj(is.null(fullColorRange),
                                                range(res$intermediate$determinantsDat, na.rm = TRUE),
