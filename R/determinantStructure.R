@@ -40,12 +40,17 @@ determinantStructure <-
     }
   }
 
-plot.determinantStructure <- function(x, ...) {
-  xGraph <- ToDiagrammeRGraph(x, direction = "descend");
-  xGraph <- add_global_graph_attrs(xGraph, "layout", "dot", "graph");
-  xGraph <- add_global_graph_attrs(xGraph, "rankdir", "RL", "graph");
-  render_graph(xGraph);
-  invisible(xGraph);
+plot.determinantStructure <- function(x, useDiagrammeR = FALSE, ...) {
+  if (useDiagrammeR) {
+    xGraph <- ToDiagrammeRGraph(x, direction = "descend");
+    xGraph <- add_global_graph_attrs(xGraph, "layout", "dot", "graph");
+    xGraph <- add_global_graph_attrs(xGraph, "rankdir", "RL", "graph");
+    render_graph(xGraph);
+    invisible(xGraph);
+  } else {
+    class(x) <- 'Node';
+    print(plot(x));
+  }
 }
 
 print.determinantStructure <- function(x, ...) {

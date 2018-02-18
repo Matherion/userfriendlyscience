@@ -76,6 +76,9 @@ detStructCIBER <- function(determinantStructure,
             theme=theme,
             ...);
   }, traversal = 'level', filterFun = function(x)
-    return((x$type=="subdeterminants" || x$type=="subdeterminantProducts")));
+    return(#(!is.null(x$scaleVarName)) ||
+           (x$type=="subdeterminants") ||
+           (x$type=="subdeterminantProducts"))
+  );
 
 }
