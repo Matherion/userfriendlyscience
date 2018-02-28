@@ -119,10 +119,17 @@ simDataSet <- function(n, varNames,
         df[, currentRescaling] <- scales::rescale(df[, currentRescaling], to=ranges[[currentRescaling]]);
       }
     }
-  } else if (length(range) == 2) {
+  } else if (length(ranges) == 2) {
+    fromRange <- c(min(sapply(df[, setdiff(varNames, factors)], min)),
+                   max(sapply(df[, setdiff(varNames, factors)], max)));
+    if (!silent) {
+      cat0("Rescaling all variable from ",
+           vecTxt(round(fromRange, 2)), " to ",
+           vecTxt(ranges), ".\n");
+    }
     df[, setdiff(varNames, factors)] <-
       lapply(df[, setdiff(varNames, factors)],
-             scales::rescale, range=ranges);
+             scales::rescale, to=ranges, from=fromRange);
   } else {
     cat("\nInvalid input for 'range' argument (neither a list nor a vector of length 2), ignoring it!\n");
   }
