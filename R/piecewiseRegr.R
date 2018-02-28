@@ -41,8 +41,40 @@ piecewiseRegr <- function(data,
     }
   }
   
+  ### In case people specify one or more indices
+  if (is.numeric(timeVar)) timeVar <- names(dat)[timeVar];
+  if (is.numeric(yVar)) yVar <- names(dat)[yVar];
+  if (is.numeric(phaseVar)) phaseVar <- names(dat)[phaseVar];
+  
   dat <- dat[, c(timeVar, yVar, phaseVar)];
 
+  ### Check data types of all variables
+  if (!('numeric' %in% class(dat[, timeVar]))) {
+    warning("Time variable is not a numeric variable (but instead has class ",
+            vecTxtQ(class(dat[, timeVar])),
+            ")! However, since the time variable will be the ",
+            "predictor in a regression analysis, it *must* be ",
+            "numeric. I'm trying to covert it myself now.");
+    dat[, timeVar] <- as.numeric(dat[, timeVar]);
+  }
+  if (!('numeric' %in% class(dat[, yVar]))) {
+    warning("The y variable is not a numeric variable (but instead has class ",
+            vecTxtQ(class(dat[, yVar])),
+            ")! However, since the y variable will be the ",
+            "dependent variable in a regression analysis, it *must* be ",
+            "numeric. I'm trying to covert it myself now.");
+    dat[, yVar] <- as.numeric(dat[, yVar]);
+  }
+  if (!('numeric' %in% class(dat[, phaseVar])) && !('factor' %in% class(dat[, phaseVar]))) {
+    warning("The phase variable is not a numeric variable or a ",
+            "factor (but instead has class ",
+            vecTxtQ(class(dat[, phaseVar])),
+            ")! However, since I must be able to determine what the first ",
+            "phase is, it must have one of those two classes. ",
+            "I'm trying to covert it to a factor myself now.");
+    dat[, phaseVar] <- factor(dat[, phaseVar]);
+  }
+  
   ### Remove cases with missing values
   dat <- dat[complete.cases(dat), ];
   
@@ -66,16 +98,27 @@ piecewiseRegr <- function(data,
   res$intermediate$dat <- dat;
   
   ### Get baselineMeasurements in case we didn't have it yet
-  res$intermediate$baselineMeasurements <- nA <-
-    sum(dat[, phaseVar] == min(dat[, phaseVar]));
+  if (is.factor(dat[, phaseVar])) {
+    res$intermediate$baselineMeasurements <- nA <-
+      sum(dat[, phaseVar] == min(levels(dat[, phaseVar])));
+  } else {
+    res$intermediate$baselineMeasurements <- nA <-
+      sum(dat[, phaseVar] == min(dat[, phaseVar]));
+  }
   
   ### Store sample size
   res$intermediate$n <- n <- nrow(dat);
   
   ### Trend term for phase B  (see Huitema & Kean, 2000)
-  dat$trendTerm <- ifelse(dat[, phaseVar] == max(dat[, phaseVar]),
-                          dat[, timeVar] - dat[nA + 1, timeVar],
-                          0);
+  if (is.factor(dat[, phaseVar])) {
+    dat$trendTerm <- ifelse(dat[, phaseVar] == max(levels(dat[, phaseVar])),
+                            dat[, timeVar] - dat[nA + 1, timeVar],
+                            0);
+  } else {
+    dat$trendTerm <- ifelse(dat[, phaseVar] == max(dat[, phaseVar]),
+                            dat[, timeVar] - dat[nA + 1, timeVar],
+                            0);
+  }
   
   ## Construct formula
   lmFormula <-
