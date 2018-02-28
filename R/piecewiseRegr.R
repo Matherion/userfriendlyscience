@@ -49,7 +49,7 @@ piecewiseRegr <- function(data,
   dat <- dat[, c(timeVar, yVar, phaseVar)];
 
   ### Check data types of all variables
-  if (!('numeric' %in% class(dat[, timeVar]))) {
+  if (!(is.numeric(dat[, timeVar]))) {
     warning("Time variable is not a numeric variable (but instead has class ",
             vecTxtQ(class(dat[, timeVar])),
             ")! However, since the time variable will be the ",
@@ -57,7 +57,7 @@ piecewiseRegr <- function(data,
             "numeric. I'm trying to covert it myself now.");
     dat[, timeVar] <- as.numeric(dat[, timeVar]);
   }
-  if (!('numeric' %in% class(dat[, yVar]))) {
+  if (!(is.numeric(dat[, yVar]))) {
     warning("The y variable is not a numeric variable (but instead has class ",
             vecTxtQ(class(dat[, yVar])),
             ")! However, since the y variable will be the ",
@@ -65,7 +65,7 @@ piecewiseRegr <- function(data,
             "numeric. I'm trying to covert it myself now.");
     dat[, yVar] <- as.numeric(dat[, yVar]);
   }
-  if (!('numeric' %in% class(dat[, phaseVar])) && !('factor' %in% class(dat[, phaseVar]))) {
+  if (!(is.numeric(dat[, phaseVar])) && !(is.factor(dat[, phaseVar]))) {
     warning("The phase variable is not a numeric variable or a ",
             "factor (but instead has class ",
             vecTxtQ(class(dat[, phaseVar])),
@@ -97,29 +97,27 @@ piecewiseRegr <- function(data,
   ### Store in result object
   res$intermediate$dat <- dat;
   
-  ### Get baselineMeasurements in case we didn't have it yet
+  ### Get minimum and maximum of phase variable
   if (is.factor(dat[, phaseVar])) {
-    res$intermediate$baselineMeasurements <- nA <-
-      sum(dat[, phaseVar] == min(levels(dat[, phaseVar])));
+    phaseVarMin <- min(levels(dat[, phaseVar]));
+    phaseVarMax <- max(levels(dat[, phaseVar]));
   } else {
-    res$intermediate$baselineMeasurements <- nA <-
-      sum(dat[, phaseVar] == min(dat[, phaseVar]));
+    phaseVarMin <- min(dat[, phaseVar]);
+    phaseVarMax <- max(dat[, phaseVar]);
   }
+  
+  ### Get baselineMeasurements in case we didn't have it yet
+  res$intermediate$baselineMeasurements <- nA <-
+    sum(dat[, phaseVar] == phaseVarMin);
   
   ### Store sample size
   res$intermediate$n <- n <- nrow(dat);
   
   ### Trend term for phase B  (see Huitema & Kean, 2000)
-  if (is.factor(dat[, phaseVar])) {
-    dat$trendTerm <- ifelse(dat[, phaseVar] == max(levels(dat[, phaseVar])),
-                            dat[, timeVar] - dat[nA + 1, timeVar],
-                            0);
-  } else {
-    dat$trendTerm <- ifelse(dat[, phaseVar] == max(dat[, phaseVar]),
-                            dat[, timeVar] - dat[nA + 1, timeVar],
-                            0);
-  }
-  
+  dat$trendTerm <- ifelse(dat[, phaseVar] == phaseVarMax,
+                          dat[, timeVar] - dat[nA + 1, timeVar],
+                          0);
+
   ## Construct formula
   lmFormula <-
     as.formula(paste(yVar, "~", phaseVar, "+", timeVar, "+ trendTerm"));
@@ -177,12 +175,12 @@ piecewiseRegr <- function(data,
                                    dat[nA+1, timeVar])),
                colour = colors$intervention,
                size=lineSize) +
-    geom_smooth(data = dat[dat[, phaseVar] == min(dat[, phaseVar]), ],
+    geom_smooth(data = dat[dat[, phaseVar] == phaseVarMin, ],
                 method='lm',
                 color = colors$pre,
                 fill = colors$pre,
                 size=lineSize) +
-    geom_smooth(data = dat[dat[, phaseVar] == max(dat[, phaseVar]), ],
+    geom_smooth(data = dat[dat[, phaseVar] == phaseVarMax, ],
                 method='lm',
                 color = colors$post,
                 fill = colors$post,
