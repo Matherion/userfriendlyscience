@@ -328,7 +328,9 @@ S3method(grid.draw, ggProportionPlot)
 ####################################################  Imported functions
 
 importFrom("grDevices", "dev.off", "png", "svg", "rgb", "colorRamp",
-           "col2rgb")
+           "col2rgb");
+
+importFrom("graphics", "plot");
 
 importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
            "chisq.test", "complete.cases", "confint", "cor",
@@ -347,7 +349,7 @@ importFrom("stats", "TukeyHSD", "aggregate", "aov", "approx",
            "ppoints", "IQR", "oneway.test",
            "influence.measures", "prop.test",
            "coef", "coefficients", "deviance", "uniroot",
-           "fisher.test", "addmargins", "mantelhaen.test")
+           "fisher.test", "addmargins", "mantelhaen.test");
 
 importFrom("utils", "capture.output", "chooseCRANmirror", "combn",
            "head", "install.packages", "installed.packages",

@@ -26,7 +26,7 @@ subdeterminants(name, selection = NULL, ...)
 subdeterminantProducts(name, selection = NULL, ...)
 
 \method{print}{determinantStructure}(x, ...)
-\method{plot}{determinantStructure}(x, ...)
+\method{plot}{determinantStructure}(x, useDiagrammeR = FALSE, ...)
 
 }
 \arguments{
@@ -42,6 +42,9 @@ subdeterminantProducts(name, selection = NULL, ...)
 }
   \item{x}{
   The \code{determinantStructure} object to print or plot.
+}
+  \item{useDiagrammeR}{
+  Whether to simply use \code{print(plot(x))} (if \code{FALSE}) or whether to use \code{\link{ToDiagrammeRGraph}}, tweak it a bit, by setting global graph attributes, and then using \code{\link{render_graph}} (if \code{TRUE}).
 }
   \item{\dots}{
   Any additional arguments are other determinant structure building
