@@ -25,7 +25,8 @@ ggGenLogPlot <- function(data,
                                        outsideRange = "black"),
                          alphas = list(outsideRange = .2,
                                        bounds = .2,
-                                       points = .5),
+                                       points = .5,
+                                       mid = .2),
                          theme = theme_minimal(),
                          pointSize = 2,
                          lineSize = .5,
@@ -107,6 +108,7 @@ ggGenLogPlot <- function(data,
                               vBounds = vBounds,
                               returnFullObject = TRUE);
 
+  ### Get values for convenient use later on
   x0 <-
     res$intermediate$completeStartValues$intermediate$startX;
   baselineMeasurements <-
@@ -117,6 +119,8 @@ ggGenLogPlot <- function(data,
     res$intermediate$completeStartValues$intermediate$baseBounds;
   topBounds <-
     res$intermediate$completeStartValues$intermediate$topBounds;
+  changeInitiationBounds <-
+    res$intermediate$completeStartValues$intermediate$changeInitiationBounds;
   startBase <-
     res$intermediate$completeStartValues$intermediate$startBase;
   startTop <-
@@ -131,7 +135,12 @@ ggGenLogPlot <- function(data,
     data[, timeVar] <-
       as.POSIXct(data[, timeVar], origin = res$intermediate$day0);
     x0 <- as.POSIXct(x0, origin = res$intermediate$day0);
-    interventionMoment <- as.POSIXct(interventionMoment, origin = res$intermediate$day0);
+    interventionMoment <- as.POSIXct(interventionMoment,
+                                     origin = res$intermediate$day0);
+    changeInitiationBounds <- as.POSIXct(changeInitiationBounds,
+                                         origin = res$intermediate$day0);
+    x0 <- as.POSIXct(x0,
+                     origin = res$intermediate$day0);
   }
   
   if (is.null(plotLabs)) {
@@ -141,7 +150,7 @@ ggGenLogPlot <- function(data,
                      #paste0("Days since ", res$intermediate$day0.formatted)),
                      y = yVar);
   }
-  
+
   res$output$plot <-
     ggplot(data, aes_string(x=timeVar, y=yVar)) +
     
@@ -173,15 +182,29 @@ ggGenLogPlot <- function(data,
               fill=colors$topBound,
               color=NA,
               alpha=alphas$bounds) +
+
+    ### Constraints and boundary for change initiation
+    geom_rect(data=data[1, ],
+              ymin=-Inf, ymax=Inf,
+              xmin=min(changeInitiationBounds), xmax=max(changeInitiationBounds),
+              fill=colors$mid,
+              color=NA,
+              alpha=alphas$mid) +
+    
+    ### Specified intervention moment
+    geom_vline(xintercept=x0,
+               color=colors$mid,
+               size=lineSize,
+               linetype=initialValuesLineType) +
     
     ### Starting points for floor and ceiling
     geom_hline(yintercept=startTop,
                color = colors$topBound,
-               size=1,
+               size=lineSize,
                linetype=initialValuesLineType) +
     geom_hline(yintercept=startBase,
                color = colors$bottomBound,
-               size=1,
+               size=lineSize,
                linetype=initialValuesLineType) +
     
     ### Specified intervention moment
