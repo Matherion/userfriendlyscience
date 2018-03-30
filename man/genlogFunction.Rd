@@ -45,7 +45,4 @@ time <- 1:20;
 yVar <- genlogFunction(1:20, 10, 1, 7, 1, 1);
 plot(time, yVar, type='l', xlab='time', ylab='y');
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ utilities }

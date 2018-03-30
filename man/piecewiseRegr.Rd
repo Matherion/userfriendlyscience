@@ -24,6 +24,7 @@ piecewiseRegr(data,
               pointAlpha = 1,
               lineSize = 1,
               showPlot = TRUE,
+              plotLabs = NULL,
               outputFile = NULL,
               outputWidth = 16,
               outputHeight = 16,
@@ -68,6 +69,9 @@ piecewiseRegr(data,
   \item{showPlot}{
   Whether to show the plot or not.
 }
+  \item{plotLabs}{
+  A list with arguments to the \code{\link{ggplot2}} \code{\link{labs}} function, which can be used to conveniently set plot labels.
+}
   \item{outputFile}{
   If not \code{NULL}, the path and filename specifying where to save the plot.
 }
@@ -85,8 +89,7 @@ Mainly, this function prints its results, but it also returns them in an object 
   \item{output}{The results such as the plot.}
 }
 \references{
-Verboon, P. & Peters, G.-J. Y. (2017) Applying the generalised logistic model in SCD to deal with ceiling effects. \emph{PsyArXiv} http://INSERTLINK
-}
+Verboon, P. & Peters, G.-J. Y. (2018) Applying the generalised logistic model in single case designs: modelling treatment-induced shifts. \emph{PsyArXiv} \url{https://doi.org/10.17605/osf.io/ad5eh}}
 \author{
 Peter Verboon & Gjalt-Jorn Peters (both at the Open University of the Netherlands)
 
