@@ -20,14 +20,17 @@ descr <- descriptives <- function(x, digits=4, errorOnFactor = FALSE,
   } else {
     nrNA <- sum(is.na(x));
     x <- na.omit(x);
+
     mode <- modus(x);
     if (is.numeric(maxModes)) {
-      mode <- ifelse(length(mode) > maxModes, "(multi)", mode);
+      mode <- ifelseObj(length(mode) > maxModes, "(multi)", mode);
     }
-    meanCi <- formatCI(meanConfInt(x, conf.level=conf.level)$output$ci);
     if (length(mode) > 1) {
       mode <- vecTxt(mode);
     }
+    
+    meanCi <- formatCI(meanConfInt(x, conf.level=conf.level)$output$ci);
+
     res <- list("central tendency" = data.frame(mean = mean(x),
                                      median = median(x),
                                      mode = mode,
