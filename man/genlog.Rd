@@ -1,10 +1,12 @@
 \name{genlog}
 \alias{genlog}
+\alias{genlogCompleteStartValues}
+\alias{ggGenLogPlot}
 \title{
 Generalized Logistic Analysis
 }
 \description{
-This function implements the generalized logistic analysis introduced in Verboon & Peters (2017). This analysis fits a logistic function (i.e. a sigmoid) to a data series. This is useful when analysing single case designs. The function enables easy customization of the main plot elements and easy saving of the plot with anti-aliasing.
+This function implements the generalized logistic analysis introduced in Verboon & Peters (2017). This analysis fits a logistic function (i.e. a sigmoid) to a data series. This is useful when analysing single case designs. The function enables easy customization of the main plot elements and easy saving of the plot with anti-aliasing. \code{ggGenLogPlot} does most of the plotting, and can be useful when trying to figure out sensible starting and boundary/constraint values. \code{genlogCompleteStartValues} tries to compute sensible starting and boundary/constraint values based on the data.
 }
 \usage{
 genlog(data,
@@ -30,10 +32,15 @@ genlog(data,
                      mid = viridis(4)[2],
                      intervention = viridis(4)[1],
                      points = "black"),
+       alphas = list(outsideRange = .2,
+                     bounds = 0,
+                     points = .5,
+                     mid = 0),
        theme = theme_minimal(),
        pointSize = 2,
        pointAlpha = 0.5,
        lineSize = 0.5,
+       initialValuesLineType = "blank",
        curveSizeMultiplier = 2,
        showPlot = TRUE,
        plotLabs = NULL,
@@ -72,6 +79,9 @@ genlog(data,
   \item{colors}{
   The colors to use for the different plot elements.
 }
+  \item{alpha}{
+  The alpha values (transparency, or rather, 'obliqueness', with 0 indicating full transparency and 1 indicating full visibility) to use for the different plot elements.
+}
   \item{theme}{
   The theme to use in the plot.
 }
@@ -80,6 +90,9 @@ genlog(data,
 }
   \item{pointAlpha}{
   The alpha channel (transparency, or rather, 'opaqueness') of the points.
+}
+  \item{initialValuesLineType}{
+  The line type to use for the initial values; by default set to \code{"blank"} for \code{genlog}, to hide them, and to \code{"dashed"} for ggGenLogPlot.
 }
   \item{curveSizeMultiplier}{
   A multiplyer for the curve size compared to the other lines (e.g. specify '2' to have a curve of twice the size).

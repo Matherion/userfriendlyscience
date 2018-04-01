@@ -40,11 +40,11 @@ genlog <- function(data,
                    ggsaveParams = list(units='cm',
                                        dpi=300,
                                        type="cairo")) {
-  
+
   res  <- list(input = as.list(environment()),
                intermediate = list(),
                output = list());
-  
+
   ### Store names for easy access later on
   res$intermediate$yVarName <- yVar <-
     ifelse(is.numeric(yVar),
@@ -156,8 +156,9 @@ genlog <- function(data,
         as.character(as.POSIXct(res$intermediate$changeInitiationBounds[2],
                                 origin = res$intermediate$day0));
     }
+
     stop(paste0("\n\nWhile running genlog, an error in optimization ",
-                "function nlsLM caught. This may ",
+                "function nlsLM was caught. This may ",
                 "imply that the initial values you supplied are wrong, ",
                 "or that too few data points are available to estimate ",
                 "the parameters. The error was:\n\n",
@@ -170,7 +171,9 @@ genlog <- function(data,
                               res$intermediate$startingValues, " [",
                               res$intermediate$lowerBounds, "; ",
                               res$intermediate$upperBounds,
-                              "]"), collapse="\n  ")));
+                              "]"), collapse="\n  "),
+                "\n\nTo visualise the data with these starting values and constraints, use the ",
+                "ggGenLogPlot() function with exactly the same arguments."));
   });
 
   ### Extract coefficients
