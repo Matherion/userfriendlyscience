@@ -38,7 +38,6 @@ genlog(data,
                      mid = 0),
        theme = theme_minimal(),
        pointSize = 2,
-       pointAlpha = 0.5,
        lineSize = 0.5,
        initialValuesLineType = "blank",
        curveSizeMultiplier = 2,
@@ -79,7 +78,7 @@ genlog(data,
   \item{colors}{
   The colors to use for the different plot elements.
 }
-  \item{alpha}{
+  \item{alphas}{
   The alpha values (transparency, or rather, 'obliqueness', with 0 indicating full transparency and 1 indicating full visibility) to use for the different plot elements.
 }
   \item{theme}{
@@ -87,9 +86,6 @@ genlog(data,
 }
   \item{pointSize,lineSize }{
   The sizes of points and lines in the plot.
-}
-  \item{pointAlpha}{
-  The alpha channel (transparency, or rather, 'opaqueness') of the points.
 }
   \item{initialValuesLineType}{
   The line type to use for the initial values; by default set to \code{"blank"} for \code{genlog}, to hide them, and to \code{"dashed"} for ggGenLogPlot.
