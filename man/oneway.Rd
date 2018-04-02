@@ -39,7 +39,7 @@ determined by the x variable.
   the 'describe' function in the 'psych' package are shown.
 }
   \item{levene}{
-Whether to show Levene's test for equality of variances (using \code{\link[car]{car}}'s \code{\link{leveneTest}} function but specifying \code{\link{mean}} as function to compute the center of each group).
+Whether to show Levene's test for equality of variances (using \code{car}'s \code{\link{leveneTest}} function but specifying \code{\link{mean}} as function to compute the center of each group).
 }
   \item{plot}{
 Whether to show a plot of the means of the y variable in each of the

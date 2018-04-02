@@ -56,7 +56,7 @@ ggqq(x, distribution = "norm", ...,
 }
 }
 \details{
-This is strongly based on the answer by user Floo0 to a Stack Overflow question at Stack Exchange (see \url{http://stackoverflow.com/questions/4357031/qqnorm-and-qqline-in-ggplot2/27191036#27191036}), also posted at GitHub (see \url{https://gist.github.com/rentrop/d39a8406ad8af2a1066c}). That code is in turn based on the \code{\link{qqPlot}} function from the \code{\link[car]{car}} package.
+This is strongly based on the answer by user Floo0 to a Stack Overflow question at Stack Exchange (see \url{http://stackoverflow.com/questions/4357031/qqnorm-and-qqline-in-ggplot2/27191036#27191036}), also posted at GitHub (see \url{https://gist.github.com/rentrop/d39a8406ad8af2a1066c}). That code is in turn based on the \code{\link{qqPlot}} function from the \code{car} package.
 }
 \value{
 A \code{\link{ggplot}} plot is returned.
