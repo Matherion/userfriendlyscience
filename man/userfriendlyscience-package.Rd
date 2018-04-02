@@ -40,7 +40,7 @@ Author: Gjalt-Jorn Peters (Open University of the Netherlands, Greater Good, and
 
 Contributors: Peter Verboon (\code{\link{convert.omegasq.to.cohensf}}, \code{\link{genlog}}, and \code{\link{piecewiseRegr}}, Open University of the Netherlands), Amy Chan (\code{\link{ggPie}}), Jeff Baggett (\code{\link{posthocTGH}}, University of Wisconsin - La Crosse), Daniel McNeish (\code{\link{scaleStructure}}, University of North Carolina), Nick Sabbe (\code{\link{curfnfinder}}, Arteveldehogeschool), Douglas Bonett (\code{\link{confIntR}}, \code{\link{pwr.confIntR}}, UC Santa Cruz, United States), Murray Moinester (\code{\link{confIntR}}, \code{\link{pwr.confIntR}}, Tel Aviv University, Israel), Stefan Gruijters (\code{\link{nnc}}, \code{\link{ggNNC}}, \code{\link{convert.d.to.eer}}, \code{\link{convert.d.to.nnc}}, \code{\link{erDataSeq}}, Maastricht University), Ron Pat-El (\code{\link{logRegr}}, Open University of the Netherlands), Ananda Mahto (\code{\link{multiResponse}}).
 
-A number of functions in this package use code fragments that were used without explicit communicating with the author (because I've been unable to find contact details of the authors, or because I haven't gotten around to contacting them yet). The authors of these fragments are John Fox (\code{\link{car}} code in \code{\link{ggqq}}), Floo0 (\code{\link{ggqq}}), Jason Aizkalns (\code{\link{ggBoxplot}}), Luke Tierney (in \code{\link{pwr.cohensdCI}}, its alias \code{\link{pwr.confIntd}}, and \code{\link{cohensdCI}}).
+A number of functions in this package use code fragments that were used without explicit communicating with the author (because I've been unable to find contact details of the authors, or because I haven't gotten around to contacting them yet). The authors of these fragments are John Fox (\code{\link[car]{car}} code in \code{\link{ggqq}}), Floo0 (\code{\link{ggqq}}), Jason Aizkalns (\code{\link{ggBoxplot}}), Luke Tierney (in \code{\link{pwr.cohensdCI}}, its alias \code{\link{pwr.confIntd}}, and \code{\link{cohensdCI}}).
 
 In addition, the function \code{escapeRegEx} from package \code{Hmisc} is included and used internally to avoid importing that entire package just for that function. This function was written by Charles Dupont (Department of Biostatistics, Vanderbilt University). The help page was also taken from that package.
 
@@ -51,17 +51,19 @@ Maintainer: Gjalt-Jorn Peters <gjalt-jorn@userfriendlyscience.com>
   for researchers in psychology.
 }
 \references{
-Peters, G.-J. Y. (2014). The alpha and the omega of scale reliability and validity: why and how to abandon Cronbach's alpha and the route towards more comprehensive assessment of scale quality. \emph{European Health Psychologist}, 16(2), 56-69.
+Peters, G.-J. Y. (2014). \href{https://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p56/1}{The alpha and the omega of scale reliability and validity: why and how to abandon Cronbach's alpha and the route towards more comprehensive assessment of scale quality.} \emph{European Health Psychologist}, 16(2), 56-69.
 
-Peters, G.-J. Y. (2017). Diamond Plots: a tutorial to introduce a visualisation tool that facilitates interpretation and comparison of multiple sample estimates while respecting their inaccuracy. \emph{PsyArXiv; under review at Health Psychology Bulletin}, https://doi.org/10.17605/OSF.IO/9W8YV
+Peters, G.-J. Y. (2018). Diamond Plots: a tutorial to introduce a visualisation tool that facilitates interpretation and comparison of multiple sample estimates while respecting their inaccuracy. \emph{PsyArXiv; under review at Health Psychology Bulletin}. Preprint doi: \href{https://doi.org/10.17605/osf.io/9w8yv}{10.17605/osf.io/9w8yv}
 
-Peters, G.-J. Y. & Crutzen, R. (2017). Knowing exactly how effective an intervention, treatment, or manipulation is and ensuring that a study replicates: accuracy in parameter estimation as a partial solution to the replication crisis. \emph{PsyArXiv; under review at Psychology & Health} http://osf.io/cjsk2/
+Peters, G.-J. Y. & Crutzen, R. (2018). Knowing exactly how effective an intervention, treatment, or manipulation is and ensuring that a study replicates: accuracy in parameter estimation as a partial solution to the replication crisis. \emph{PsyArXiv; under review at Psychology & Health}. Preprint doi: \href{https://doi.org/10.17605/osf.io/cjsk2}{10.17605/osf.io/cjsk2}
 
-Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2017). How to Select Relevant Social-Cognitive Determinants and Use them in the Development of Behaviour Change Interventions? Confidence Interval-Based Estimation of Relevance. Frontiers in Public Health 5:165. http://dx.doi.org/10.3389/fpubh.2017.00165
+Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2018). Using Confidence Interval-Based Estimation of Relevance to Select Social-Cognitive Determinants for Behavior Change Interventions. Frontiers in Public Health 5:165. http://dx.doi.org/10.3389/fpubh.2017.00165
 
-Crutzen, R. (2014). Time is a jailer : what do alpha and its alternatives tell us about reliability? \emph{The European Health Psychologist}, 1(2), 70-74.
+Crutzen, R. (2014). \href{https://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p70/25}{Time is a jailer: what do alpha and its alternatives tell us about reliability?} \emph{The European Health Psychologist}, 1(2), 70-74.
 
-Crutzen, R., & Peters, G.-J. Y. (2015). Scale quality: alpha is an inadequate estimate and factor-analytic evidence is needed first of all. \emph{Health Psychology Review}. http://dx.doi.org/10.1080/17437199.2015.1124240
+Crutzen, R., & Peters, G.-J. Y. (2015). Scale quality: alpha is an inadequate estimate and factor-analytic evidence is needed first of all. \emph{Health Psychology Review}. doi: \href{http://dx.doi.org/10.1080/17437199.2015.1124240}{10.1080/17437199.2015.1124240}
+
+Verboon, P. & Peters, G.-J. Y. (2018). Applying the generalized logistic model in single case designs. \emph{PsyArXiv}. Preprint doi: \href{https://doi.org/10.17605/osf.io/ad5eh}{10.17605/osf.io/ad5eh}
 
 }
 
