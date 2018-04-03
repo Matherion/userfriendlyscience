@@ -2,7 +2,7 @@ Package: userfriendlyscience
 Type: Package
 Title: Quantitative Analysis Made Accessible
 Version: 0.7.1
-Date: 2017-00-00
+Date: 2018-00-00
 Authors@R: c(person("Gjalt-Jorn", "Peters",
                     email = "gjalt-jorn@userfriendlyscience.com",
                     role = c("aut", "cre")),
@@ -25,6 +25,7 @@ Description: Contains a number of functions that serve
     opposed to on point estimates.
 URL: http://userfriendlyscience.com
 BugReports: https://github.com/matherion/userfriendlyscience/issues
+LazyData: true
 Imports: BiasedUrn,
          car,
          data.tree,

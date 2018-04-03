@@ -85,7 +85,7 @@ genlog <- function(data,
     if (any(class(data[, timeVar]) %in% c('Date', 'POSIXct', 'POSIXt', 'POSIXt'))) {
       res$intermediate$day0 <- min(data[, timeVar], na.rm=TRUE);
       res$intermediate$day0.formatted <- as.character(res$intermediate$day0);
-      data[, timeVar] <- as.numeric(data[, timeVar]) - as.numeric(min(data[, timeVar]));
+      data[, timeVar] <- as.numeric(data[, timeVar]) - as.numeric(res$intermediate$day0);
     } else {
       stop("The timeVar variable does not have a class I can work with (numeric or date): instead it has class ",
            vecTxtQ(class(data[, timeVar])), ".");
