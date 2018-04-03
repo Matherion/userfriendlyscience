@@ -29,8 +29,7 @@ This dataset was originally published along with a Dutch language article that d
 This dataset is an n-of-1 dataset collected during a series of therapy sessions.
 }
 \source{
-van Lankveld, J., Leusink, P., & Peters, G.-J. Y. (2017). Therapie-monitoring in een blended online en face-to-face behandeling van een jonge man met situatieve erectieproblemen. \emph{Tijdschrift voor Seksuologie, 41}, 15–22.
-
+van Lankveld, J., Leusink, P., & Peters, G.-J. Y. (2017). Therapie-monitoring in een blended online en face-to-face behandeling van een jonge man met situatieve erectieproblemen. \emph{Tijdschrift voor Seksuologie, 41}, 15-22.
 }
 \examples{
 data(therapyMonitorData)
