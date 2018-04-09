@@ -4,18 +4,19 @@ ggGenLogPlot <- function(data,
                          phaseVar = NULL,
                          baselineMeasurements = NULL, ### Was nA
                          yRange = NULL,
-                         startX = NULL,               ### Was Xs
+                         startInflection = NULL,      ### Was Xs
                          startBase = NULL,            ### Was ABs
                          startTop = NULL,             ### Was ATs
                          startGrowthRate = NULL,      ### Was Bs
                          startV = 1,
-                         changeInitiationBounds = NULL,
+                         inflectionPointBounds = NULL,
                          growthRateBounds = c(-2, 2),
                          baseMargin = c(0, 3),
                          topMargin = c(-3, 0),
                          baseBounds = NULL,
                          topBounds = NULL,
                          vBounds = c(1, 1),
+                         changeDelay = 4,
                          colors = list(bottomBound = viridis(4)[4],
                                        topBound = viridis(40)[37],
                                        curve = viridis(4)[3],
@@ -30,6 +31,7 @@ ggGenLogPlot <- function(data,
                          theme = theme_minimal(),
                          pointSize = 2,
                          lineSize = .5,
+                         yBreaks = 1,
                          initialValuesLineType = "dashed",
                          curveSizeMultiplier = 2,
                          plotLabs = NULL,
@@ -79,7 +81,8 @@ ggGenLogPlot <- function(data,
     if (any(class(data[, timeVar]) %in% c('Date', 'POSIXct', 'POSIXt', 'POSIXt'))) {
       res$intermediate$day0 <- min(data[, timeVar], na.rm=TRUE);
       res$intermediate$day0.formatted <- as.character(res$intermediate$day0);
-      data[, timeVar] <- as.numeric(data[, timeVar]) - as.numeric(min(data[, timeVar]));
+      ### Compute number of days since first measurement
+      data[, timeVar] <- (as.numeric(data[, timeVar]) - as.numeric(res$intermediate$day0)) / 86400;
     } else {
       stop("The timeVar variable does not have a class I can work with (numeric or date): instead it has class ",
            vecTxtQ(class(data[, timeVar])), ".");
@@ -94,12 +97,13 @@ ggGenLogPlot <- function(data,
                               phaseVar = phaseVar,
                               baselineMeasurements = baselineMeasurements,
                               yRange = yRange,
-                              startX = startX,
+                              startInflection = startInflection,
                               startBase = startBase,
                               startTop = startTop,
                               startGrowthRate = startGrowthRate,
                               startV = startV,
-                              changeInitiationBounds = changeInitiationBounds,
+                              changeDelay = changeDelay,
+                              inflectionPointBounds = inflectionPointBounds,
                               growthRateBounds = growthRateBounds,
                               baseMargin = baseMargin,
                               topMargin = topMargin,
@@ -109,8 +113,8 @@ ggGenLogPlot <- function(data,
                               returnFullObject = TRUE);
 
   ### Get values for convenient use later on
-  x0 <-
-    res$intermediate$completeStartValues$intermediate$startX;
+  startInflection <-
+    res$intermediate$completeStartValues$intermediate$startInflection;
   baselineMeasurements <-
     res$intermediate$completeStartValues$intermediate$baselineMeasurements;
   yRange <-
@@ -119,8 +123,8 @@ ggGenLogPlot <- function(data,
     res$intermediate$completeStartValues$intermediate$baseBounds;
   topBounds <-
     res$intermediate$completeStartValues$intermediate$topBounds;
-  changeInitiationBounds <-
-    res$intermediate$completeStartValues$intermediate$changeInitiationBounds;
+  inflectionPointBounds <-
+    res$intermediate$completeStartValues$intermediate$inflectionPointBounds;
   startBase <-
     res$intermediate$completeStartValues$intermediate$startBase;
   startTop <-
@@ -133,14 +137,14 @@ ggGenLogPlot <- function(data,
   if (!is.null(res$intermediate$day0) |
       any(class(data[, timeVar]) %in% c('Date', 'POSIXct', 'POSIXt', 'POSIXt'))) {
     data[, timeVar] <-
-      as.POSIXct(data[, timeVar], origin = res$intermediate$day0);
-    x0 <- as.POSIXct(x0, origin = res$intermediate$day0);
-    interventionMoment <- as.POSIXct(interventionMoment,
+      as.POSIXct(86400*data[, timeVar],
+                 origin = res$intermediate$day0);
+    startInflection <- as.POSIXct(86400*startInflection,
+                                  origin = res$intermediate$day0);
+    interventionMoment <- as.POSIXct(86400*interventionMoment,
                                      origin = res$intermediate$day0);
-    changeInitiationBounds <- as.POSIXct(changeInitiationBounds,
-                                         origin = res$intermediate$day0);
-    x0 <- as.POSIXct(x0,
-                     origin = res$intermediate$day0);
+    inflectionPointBounds <- as.POSIXct(86400*inflectionPointBounds,
+                                        origin = res$intermediate$day0);
   }
   
   if (is.null(plotLabs)) {
@@ -186,13 +190,13 @@ ggGenLogPlot <- function(data,
     ### Constraints and boundary for change initiation
     geom_rect(data=data[1, ],
               ymin=-Inf, ymax=Inf,
-              xmin=min(changeInitiationBounds), xmax=max(changeInitiationBounds),
+              xmin=min(inflectionPointBounds), xmax=max(inflectionPointBounds),
               fill=colors$mid,
               color=NA,
               alpha=alphas$mid) +
     
     ### Specified intervention moment
-    geom_vline(xintercept=x0,
+    geom_vline(xintercept=startInflection,
                color=colors$mid,
                size=lineSize,
                linetype=initialValuesLineType) +
@@ -221,7 +225,7 @@ ggGenLogPlot <- function(data,
     coord_cartesian(ylim=yRange) +
     scale_y_continuous(breaks=seq(from = min(yRange),
                                   to = max(yRange),
-                                  by=1));
+                                  by= yBreaks));
   
   if (!is.null(res$intermediate$day0)) {
     res$output$plot <-

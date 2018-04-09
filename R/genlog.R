@@ -4,18 +4,19 @@ genlog <- function(data,
                    phaseVar = NULL,
                    baselineMeasurements = NULL, ### Was nA
                    yRange = NULL,
-                   startX = NULL,               ### Was Xs
+                   startInflection = NULL,      ### Was Xs
                    startBase = NULL,            ### Was ABs
                    startTop = NULL,             ### Was ATs
                    startGrowthRate = NULL,      ### Was Bs
                    startV = 1,
-                   changeInitiationBounds = NULL,
+                   inflectionPointBounds = NULL,
                    growthRateBounds = c(-2, 2),
                    baseMargin = c(0, 3),
                    topMargin = c(-3, 0),
                    baseBounds = NULL,
                    topBounds = NULL,
                    vBounds = c(1, 1),
+                   changeDelay = 4,
                    colors = list(bottomBound = viridis(4)[4],
                                  topBound = viridis(40)[37],
                                  curve = viridis(4)[3],
@@ -30,6 +31,7 @@ genlog <- function(data,
                    theme = theme_minimal(),
                    pointSize = 2,
                    lineSize = .5,
+                   yBreaks = 1,
                    initialValuesLineType = "blank",
                    curveSizeMultiplier = 2,
                    showPlot = TRUE,
@@ -39,7 +41,8 @@ genlog <- function(data,
                    outputHeight = 16,
                    ggsaveParams = list(units='cm',
                                        dpi=300,
-                                       type="cairo")) {
+                                       type="cairo"),
+                   maxiter = NULL) {
 
   res  <- list(input = as.list(environment()),
                intermediate = list(),
@@ -76,7 +79,8 @@ genlog <- function(data,
   
   ### The definition of the generalized logistic function
   res$intermediate$GLF <- GLF <-
-    paste0(yVar, " ~ Ab + (At - Ab)/ (1 + exp(-B*(", timeVar, " - x0))) ^ (1/v)");
+    paste0(yVar, " ~ base + (top - base)/ (1 + exp(-growthRate*(", timeVar, " - inflectionPoint))) ^ (1/v)");
+  ### paste0(yVar, " ~ Ab + (At - Ab)/ (1 + exp(-B*(", timeVar, " - x0))) ^ (1/v)");
   ### "y ~ Ab + (At - Ab)/ (1 + exp(-B*(x-x0)))**(1/v)";
 
   ### If the time variable is actually provided as time instead of as
@@ -85,7 +89,8 @@ genlog <- function(data,
     if (any(class(data[, timeVar]) %in% c('Date', 'POSIXct', 'POSIXt', 'POSIXt'))) {
       res$intermediate$day0 <- min(data[, timeVar], na.rm=TRUE);
       res$intermediate$day0.formatted <- as.character(res$intermediate$day0);
-      data[, timeVar] <- as.numeric(data[, timeVar]) - as.numeric(res$intermediate$day0);
+      ### Compute number of days since first measurement
+      data[, timeVar] <- (as.numeric(data[, timeVar]) - as.numeric(res$intermediate$day0)) / 86400;
     } else {
       stop("The timeVar variable does not have a class I can work with (numeric or date): instead it has class ",
            vecTxtQ(class(data[, timeVar])), ".");
@@ -113,12 +118,13 @@ genlog <- function(data,
                               phaseVar = phaseVar,
                               baselineMeasurements = baselineMeasurements,
                               yRange = yRange,
-                              startX = startX,
+                              startInflection = startInflection,
                               startBase = startBase,
                               startTop = startTop,
                               startGrowthRate = startGrowthRate,
                               startV = startV,
-                              changeInitiationBounds = changeInitiationBounds,
+                              changeDelay = changeDelay,
+                              inflectionPointBounds = inflectionPointBounds,
                               growthRateBounds = growthRateBounds,
                               baseMargin = baseMargin,
                               topMargin = topMargin,
@@ -136,24 +142,31 @@ genlog <- function(data,
   
   yRange <- res$intermediate$yRange;
 
+  if (!is.null(maxiter)) {
+    nlsControl <- nls.control(maxiter=maxiter);
+  } else {
+    nlsControl <- nls.control();
+  }
+  
   ### Optimizing function
   tryCatch({
     out <- res$intermediate$nlsLM <-
-      nlsLM(GLF,
+      nlsLM(formula=GLF,
             data  = data,
             start = res$intermediate$startingValues,
             lower = res$intermediate$lowerBounds,
-            upper = res$intermediate$upperBounds);
+            upper = res$intermediate$upperBounds,
+            control=nlsControl);
   }, error = function(e) {
     if (!is.null(res$intermediate$day0)) {
       res$intermediate$startingValues[1]  <-
-        as.character(as.POSIXct(res$intermediate$startX,
+        as.character(as.POSIXct(86400*res$intermediate$startInflection,
                                 origin = res$intermediate$day0));
       res$intermediate$lowerBounds[1] <-
-        as.character(as.POSIXct(res$intermediate$changeInitiationBounds[1],
+        as.character(as.POSIXct(86400*res$intermediate$inflectionPointBounds[1],
                                 origin = res$intermediate$day0));
       res$intermediate$upperBounds[1] <-
-        as.character(as.POSIXct(res$intermediate$changeInitiationBounds[2],
+        as.character(as.POSIXct(86400*res$intermediate$inflectionPointBounds[2],
                                 origin = res$intermediate$day0));
     }
 
@@ -177,7 +190,7 @@ genlog <- function(data,
   });
 
   ### Extract coefficients
-  res$output$maxChangeMoment <-
+  res$output$inflectionPoint <- inflectionPoint <-
     x0 <- as.numeric(coef(out)[1]);
   res$output$growthRate <-
     B <-  as.numeric(coef(out)[2]);
@@ -207,7 +220,7 @@ genlog <- function(data,
                ES1 = ES1,
                ES2 = ES2,
                growthRate = B,
-               maxChangeMoment = x0,
+               inflectionPoint = inflectionPoint,
                base = Ab,
                top = At);
   
@@ -222,7 +235,7 @@ genlog <- function(data,
   }
   
   yfit <- genlogFunction(x = data[, timeVar],
-                         x0 = x0,
+                         x0 = inflectionPoint,
                          Ab = Ab,
                          At = At,
                          B = B,
@@ -234,9 +247,11 @@ genlog <- function(data,
   
   if (!is.null(res$intermediate$day0)) {
     data[, timeVar] <-
-      as.POSIXct(data[, timeVar], origin = res$intermediate$day0);
-    x0 <- as.POSIXct(x0, origin = res$intermediate$day0);
-    interventionMoment <- as.POSIXct(interventionMoment, origin = res$intermediate$day0);
+      as.POSIXct(86400*data[, timeVar], origin = res$intermediate$day0);
+    inflectionPoint <- as.POSIXct(86400*inflectionPoint,
+                                  origin = res$intermediate$day0);
+    interventionMoment <- as.POSIXct(86400*interventionMoment,
+                                     origin = res$intermediate$day0);
   }
   
   if (is.null(plotLabs)) {
@@ -255,12 +270,13 @@ genlog <- function(data,
                  baselineMeasurements = baselineMeasurements,
                  ### These are all provided by genlogCompleteStartValues
                  yRange = res$intermediate$yRange,
-                 startX = res$intermediate$startX,
+                 startInflection = res$intermediate$startInflection,
                  startBase = res$intermediate$startBase,
                  startTop = res$intermediate$startTop,
                  startGrowthRate = res$intermediate$startGrowthRate,
                  startV = res$intermediate$startV,
-                 changeInitiationBounds = res$intermediate$changeInitiationBounds,
+                 changeDelay = changeDelay,
+                 inflectionPointBounds = res$intermediate$inflectionPointBounds,
                  growthRateBounds = res$intermediategrowthRateBounds,
                  baseBounds = res$intermediatebaseBounds,
                  topBounds = res$intermediatetopBounds,
@@ -272,6 +288,7 @@ genlog <- function(data,
                  pointSize = pointSize,
                  lineSize = lineSize,
                  initialValuesLineType = initialValuesLineType,
+                 yBreaks=yBreaks,
                  curveSizeMultiplier = curveSizeMultiplier,
                  plotLabs = plotLabs);
   
@@ -286,7 +303,7 @@ genlog <- function(data,
                colour=colors$topBound,
                size=lineSize) +
     ### Add moment of max change
-    geom_vline(xintercept=x0,
+    geom_vline(xintercept=inflectionPoint,
                colour=colors$mid,
                size=lineSize) +
     ### Add sigmoid
@@ -296,14 +313,11 @@ genlog <- function(data,
               size = lineSize * curveSizeMultiplier);
     
   if (!is.null(res$intermediate$day0)) {
-    res$output$maxChangeMoment.numeric <-
-      res$output$maxChangeMoment;
-    res$output$maxChangeMoment <-
-      as.POSIXct(res$output$maxChangeMoment,
+    res$output$inflectionPoint.numeric <-
+      res$output$inflectionPoint;
+    res$output$inflectionPoint <-
+      as.POSIXct(86400*res$output$inflectionPoint,
                  origin = res$intermediate$day0);
-    res$output$plot <-
-      res$output$plot + scale_x_datetime(date_breaks="2 months",
-                                         date_labels="%m-%Y");
   }
   
   if (!is.null(outputFile)) {
@@ -356,7 +370,7 @@ print.genlog <- function(x, digits=3, ...) {
     }
   }
   
-  startValueVars <- c('startX',
+  startValueVars <- c('startInflection',
                       'startBase',
                       'startGrowthRate',
                       'startTop');
@@ -366,7 +380,7 @@ print.genlog <- function(x, digits=3, ...) {
                         intermediate = x$intermediate);
   names(startValues) <- startValueVars;
   
-  boundValueVars <- c('changeInitiationBounds',
+  boundValueVars <- c('inflectionPointBounds',
                       'baseBounds',
                       'topBounds');
   boundValues <- lapply(boundValueVars,
@@ -376,33 +390,33 @@ print.genlog <- function(x, digits=3, ...) {
   names(boundValues) <- boundValueVars;
   
   ### If we worked with dates, overwrite numeric value with pretty date
-  if (!is.numeric(x$output$maxChangeMoment)) {
-    startValues$startX <-
-      as.character(as.POSIXct(x$intermediate$startX,
+  if (!is.numeric(x$output$inflectionPoint)) {
+    startValues$startInflection <-
+      as.character(as.POSIXct(86400*x$intermediate$startInflection,
                               origin = x$intermediate$day0));
-    boundValues$changeInitiationBounds <-
+    boundValues$inflectionPointBounds <-
       paste0("[",
-             paste0(as.character(as.POSIXct(x$intermediate$changeInitiationBounds,
+             paste0(as.character(as.POSIXct(86400*x$intermediate$inflectionPointBounds,
                                             origin = x$intermediate$day0)), collapse="; "),
              "]");
-    if (!isTRUE(x$input$startX == x$intermediate$startX)) {
-      startValues$startX <-
-        paste0(startValues$startX, "*");
-      boundValues$changeInitiationBounds <-
-        paste0(boundValues$changeInitiationBounds, "*");
+    if (!isTRUE(x$input$startInflection == x$intermediate$startInflection)) {
+      startValues$startInflection <-
+        paste0(startValues$startInflection, "*");
+      boundValues$inflectionPointBounds <-
+        paste0(boundValues$inflectionPointBounds, "*");
     }
   }
   
   cat0("Parameter starting values [and constraints]:\n",
-       "  Onset of change: ", startValues$startX,
-       " ", boundValues$changeInitiationBounds, "\n",
-       "  Curve base:      ", startValues$startBase,
+       "  Inflection point: ", startValues$startInflection,
+       " ", boundValues$inflectionPointBounds, "\n",
+       "  Curve base:       ", startValues$startBase,
        " ", boundValues$baseBounds, "\n",
-       "  Growth rate:     ", startValues$startGrowthRate,
+       "  Growth rate:      ", startValues$startGrowthRate,
        " ", formatCI(x$input$growthRateBounds), "\n",
-       "  Curve top:       ", startValues$startTop,
+       "  Curve top:        ", startValues$startTop,
        " ", boundValues$topBounds, "\n",
-       "  V parameter:     ", x$input$startV,
+       "  V parameter:      ", x$input$startV,
        " ", formatCI(x$input$vBounds), "\n",
        "\n",
        "Note: Asterisks (*) denote values that were not specified manually (but inferred by genlog).\n\n");
@@ -411,10 +425,10 @@ print.genlog <- function(x, digits=3, ...) {
        round(x$output$base, digits=digits), "\n",
        "  Growth rate:                        ",
        round(x$output$growthRate, digits=digits), "\n",
-       "  Change maximal at:                  ",
-       ifelse(is.numeric(x$output$maxChangeMoment),
-              round(x$output$maxChangeMoment, digits=digits),
-              as.character(x$output$maxChangeMoment)), "\n",
+       "  Inflection point:                   ",
+       ifelse(is.numeric(x$output$inflectionPoint),
+              round(x$output$inflectionPoint, digits=digits),
+              as.character(x$output$inflectionPoint)), "\n",
        "  Curve top (plateau after change):   ",
        round(x$output$top, digits=digits),
        "\n\n");

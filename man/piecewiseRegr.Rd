@@ -23,6 +23,8 @@ piecewiseRegr(data,
               pointSize = 2,
               pointAlpha = 1,
               lineSize = 1,
+              yRange=range(data[, yVar], na.rm=TRUE),
+              yBreaks = 1,
               showPlot = TRUE,
               plotLabs = NULL,
               outputFile = NULL,
@@ -62,6 +64,12 @@ piecewiseRegr(data,
 }
   \item{pointSize,lineSize }{
   The sizes of points and lines in the plot.
+}
+  \item{yRange}{
+  This can be used to manually specify the possible values that the dependent variable can take. If not provided, the observed range of the dependent variable values is used instead.
+}
+  \item{yBreaks}{
+  The argument passed to \code{\link{scale_y_continuous}}, e.g. the interval between breaks for the Y axis.
 }
   \item{pointAlpha}{
   The alpha channel (transparency, or rather, 'opaqueness') of the points.

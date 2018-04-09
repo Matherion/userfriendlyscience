@@ -15,18 +15,19 @@ genlog(data,
        phaseVar = NULL,
        baselineMeasurements = NULL,
        yRange = NULL,
-       startX = NULL,
+       startInflection = NULL,
        startBase = NULL,
        startTop = NULL,
        startGrowthRate = NULL,
        startV = 1,
-       changeInitiationBounds = NULL,
+       inflectionPointBounds = NULL,
        growthRateBounds = c(-2, 2),
        baseMargin = c(0, 3),
        topMargin = c(-3, 0),
        baseBounds = NULL,
        topBounds = NULL,
        vBounds = c(1, 1),
+       changeDelay = 4,
        colors = list(bottomBound = viridis(4)[4],
                      topBound = viridis(40)[37],
                      curve = viridis(4)[3],
@@ -41,6 +42,7 @@ genlog(data,
        theme = theme_minimal(),
        pointSize = 2,
        lineSize = 0.5,
+       yBreaks = 1,
        initialValuesLineType = "blank",
        curveSizeMultiplier = 2,
        showPlot = TRUE,
@@ -50,7 +52,8 @@ genlog(data,
        outputHeight = 16,
        ggsaveParams = list(units = "cm",
                            dpi = 300,
-                           type = "cairo"))
+                           type = "cairo"),
+       maxiter = NULL)
 }
 \arguments{
   \item{data}{
@@ -71,11 +74,14 @@ genlog(data,
   \item{yRange}{
   This can be used to manually specify the possible values that the dependent variable can take. If no \code{startBase} and \code{startTop} are specified, the range of the dependent variable is used instead.
 }
-  \item{startX, startBase, startTop, startGrowthRate, startV}{
+  \item{startInflection, startBase, startTop, startGrowthRate, startV}{
   The starting values used when estimating the sigmoid using \code{minpack.lm}'s \code{\link{nlsLM}} function. \code{startX} specifies the starting value to use for the measurement moment when the change is fastest (i.e. the slope of the sigmoid has the largest value); \code{startBase} and \code{startTop} specify the starting values to use for the base (floor) and top (ceiling), the plateaus of relative stability between which the sigmoid described the shift; \code{startGrowthRate} specifies the starting value for the growth rate; and \code{startV} specifies the starting value for the \emph{v} parameter.
 }
-  \item{changeInitiationBounds, growthRateBounds, baseMargin, topMargin, baseBounds, topBounds, vBounds}{
+  \item{inflectionPointBounds, growthRateBounds, baseMargin, topMargin, baseBounds, topBounds, vBounds}{
   These values specify constraints to respect when estimating the parameters of the sigmoid function using \code{minpack.lm}'s \code{\link{nlsLM}}. \code{changeInitiationBounds} specifies between which values the initiation of the shift must occur; \code{growthRateBounds} describes the bounds constraining the possible values for the growth rate; \code{baseBounds} and \code{topBounds} specify the constraints for possible values for the base (floor) and top (ceiling), the plateaus of relative stability between which the sigmoid described the shift; and if these are not specified, \code{baseMargin} and \code{topMargin} are used in combination with the range of the dependent variable to set these bounds (also see \code{yRange}); and finally, \code{vBounds} specifies the possible values that constrain the \emph{v} parameter.
+}
+  \item{changeDelay}{
+  The number of measurements to add to the intervention moment when setting the initial value for the inflection point.
 }
   \item{colors}{
   The colors to use for the different plot elements.
@@ -88,6 +94,9 @@ genlog(data,
 }
   \item{pointSize,lineSize }{
   The sizes of points and lines in the plot.
+}
+  \item{yBreaks}{
+  The argument passed to \code{\link{scale_y_continuous}}, e.g. the interval between breaks for the Y axis.
 }
   \item{initialValuesLineType}{
   The line type to use for the initial values; by default set to \code{"blank"} for \code{genlog}, to hide them, and to \code{"dashed"} for ggGenLogPlot.
@@ -109,6 +118,9 @@ genlog(data,
 }
   \item{ggsaveParams}{
   The parameters to use when saving the plot, passed on to \code{\link{ggsave}}.
+}
+  \item{maxiter}{
+  The maximum number of iterations used by \code{\link{nlsLM}}.
 }
 }
 \details{

@@ -4,19 +4,21 @@ genlogCompleteStartValues <- function(data,
                                       phaseVar = NULL,
                                       baselineMeasurements = NULL, ### Was nA
                                       yRange = NULL,
-                                      startX = NULL,               ### Was Xs
+                                      startInflection = NULL,      ### Was Xs
                                       startBase = NULL,            ### Was ABs
                                       startTop = NULL,             ### Was ATs
                                       startGrowthRate = NULL,      ### Was Bs
                                       startV = 1,
-                                      changeInitiationBounds = NULL,
+                                      inflectionPointBounds = NULL,
                                       growthRateBounds = c(-2, 2),
                                       baseMargin = c(0, 3),
                                       topMargin = c(-3, 0),
                                       baseBounds = NULL,
                                       topBounds = NULL,
                                       vBounds = c(1, 1),
-                                      returnFullObject = FALSE) {
+                                      changeDelay = 4,
+                                      returnFullObject = FALSE,
+                                      ...) {
 
   res  <- list(input = as.list(environment()),
                intermediate = list(),
@@ -57,7 +59,8 @@ genlogCompleteStartValues <- function(data,
     if (any(class(data[, timeVar]) %in% c('Date', 'POSIXct', 'POSIXt', 'POSIXt'))) {
       res$intermediate$day0 <- min(data[, timeVar], na.rm=TRUE);
       res$intermediate$day0.formatted <- as.character(res$intermediate$day0);
-      data[, timeVar] <- as.numeric(data[, timeVar]) - as.numeric(res$intermediate$day0);
+      ### Compute number of days since first measurement
+      data[, timeVar] <- (as.numeric(data[, timeVar]) - as.numeric(res$intermediate$day0)) / 86400;
     } else {
       stop("The timeVar variable does not have a class I can work with (numeric or date): instead it has class ",
            vecTxtQ(class(data[, timeVar])), ".");
@@ -78,13 +81,13 @@ genlogCompleteStartValues <- function(data,
   }
   
   ### Starting values for starting to estimate the sigmoid parameters
-  res$intermediate$startX <-
-    startX <-
-    ifelse(is.null(startX),
+  res$intermediate$startInflection <-
+    startInflection <-
+    ifelse(is.null(startInflection),
            data[order(data[, timeVar],
-                      decreasing=FALSE)[baselineMeasurements+4],
+                      decreasing=FALSE)[baselineMeasurements+changeDelay],
                 timeVar],
-           startX);
+           startInflection);
 
   res$intermediate$startGrowthRate <-
     startGrowthRate <-
@@ -109,12 +112,12 @@ genlogCompleteStartValues <- function(data,
   ### Get specified yRange or derive range from observations
   res$intermediate$yRange <-
     yRange <- ifelseObj(is.null(yRange),
-                        range(data[, yVar]),
+                        range(data[, yVar], na.rm=TRUE),
                         yRange);
   
   ### Same for the initiation of the change
-  res$intermediate$changeInitiationBounds <-
-    changeInitiationBounds <- ifelseObj(is.null(changeInitiationBounds),
+  res$intermediate$inflectionPointBounds <-
+    inflectionPointBounds <- ifelseObj(is.null(inflectionPointBounds),
                                         c(### Last-but-two baseline measurement
                                           data[order(data[, timeVar],
                                                      decreasing=FALSE)[baselineMeasurements-1],
@@ -123,7 +126,7 @@ genlogCompleteStartValues <- function(data,
                                           data[order(data[, timeVar],
                                                      decreasing=TRUE)[5],
                                                timeVar]),
-                                        changeInitiationBounds);
+                                        inflectionPointBounds);
   
   ### And the base (floor) and top (ceiling) bounds/constraints
   res$intermediate$baseBounds <-
@@ -139,22 +142,22 @@ genlogCompleteStartValues <- function(data,
   
   ### Store in lists for convenient passing to optimization function
   res$output$startingValues <-
-    startingValues <- c(x0 = startX,
-                        B = startGrowthRate,
-                        Ab = startBase,
-                        At = startTop,
+    startingValues <- c(inflectionPoint = startInflection,
+                        growthRate = startGrowthRate,
+                        base = startBase,
+                        top = startTop,
                         v = startV);
   
   res$output$lowerBounds <-
-    lowerBounds <- c(init = changeInitiationBounds[1],
-                     grow = growthRateBounds[1],
+    lowerBounds <- c(inflectionPoint = inflectionPointBounds[1],
+                     growthRate = growthRateBounds[1],
                      base = baseBounds[1],
                      top = topBounds[1],
                      v = vBounds[1]);
   
   res$output$upperBounds <-
-    upperBounds <- c(init = changeInitiationBounds[2],
-                     grow = growthRateBounds[2],
+    upperBounds <- c(inflectionPoint = inflectionPointBounds[2],
+                     growthRate = growthRateBounds[2],
                      base = baseBounds[2],
                      top = topBounds[2],
                      v = vBounds[2]);

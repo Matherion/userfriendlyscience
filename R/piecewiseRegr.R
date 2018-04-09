@@ -14,6 +14,8 @@ piecewiseRegr <- function(data,
                           pointSize = 2,
                           pointAlpha = 1,
                           lineSize = 1,
+                          yRange=range(data[, yVar], na.rm=TRUE),
+                          yBreaks = 1,
                           showPlot = TRUE,
                           plotLabs = NULL,
                           outputFile = NULL,
@@ -227,6 +229,10 @@ piecewiseRegr <- function(data,
     geom_point(size = pointSize,
                alpha = pointAlpha,
                color = colors$points) +
+    scale_y_continuous(breaks=seq(from = min(yRange),
+                                  to = max(yRange),
+                                  by= yBreaks)) +
+    coord_cartesian(ylim=yRange) +
     theme +
     do.call(labs, plotLabs);
   
