@@ -160,6 +160,10 @@ piecewiseRegr <- function(data,
   ### Add deviance
   res$output$deviance <- deviance(res$intermediate$lm.model);
   
+  ### Add "Cohen's D" (simply difference in means divided by standard deviation)
+  res$intermediate$meanDiff <- meanDiff(x=data[, phaseVar],
+                                        y=data[, yVar]);
+
   ### Generate plot; first dataframes for the 'custom lines'
   ypre <- res$output$coef[1] + res$output$coef[3] * data[, timeVar];
   ypost <- res$intermediate$lm.model$fitted.values;
