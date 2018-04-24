@@ -63,11 +63,21 @@ biAxisDiamondPlot <- function(dat, items = NULL,
 
   if (is.null(xbreaks)) {
     xbreaks <- sort(unique(na.omit(unlist(dat[, items]))));
+    if (length(xbreaks) > 10) {
+      xbreaks <- pretty(xbreaks, n=7);
+    }
   }
 
   if (length(xbreaks) > 1) {
     if (!is.na(xLabels[1])) {
-      suppressMessages(plot <- plot + scale_x_continuous(breaks=xbreaks, labels=xLabels));
+      if (length(xbreaks) == length(xLabels)) {
+        suppressMessages(plot <- plot + scale_x_continuous(breaks=xbreaks, labels=xLabels));
+      } else {
+        suppressMessages(plot <- plot + scale_x_continuous(breaks=xbreaks));
+        warning("Ignoring 'xLabels' (", vecTxtQ(xLabels),
+                "): it has a different length from 'xbreaks' (",
+                vecTxtQ(xbreaks), ").");
+      }
     } else {
       suppressMessages(plot <- plot + scale_x_continuous(breaks=xbreaks));
     }
