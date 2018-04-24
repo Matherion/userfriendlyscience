@@ -227,11 +227,11 @@ genlog <- function(data,
   if (res$output$Rsq < 0) {
     warning(paste0("The fit of the generalized logistic function is *worse* ",
                    "than simply estimating the grand mean as best prediction ",
-                   "for all observations. This suggests that the sigmoid ",
-                   "model that the generalized logistic function attempts ",
-                   "fit may not be appropriate for these data, or that the ",
-                   "initial or boundary values should be adjusted. Inspect ",
-                   "the data closely."));
+                   "for all observations (hence the negative R squared value). ",
+                   "This suggests that the sigmoid model that the generalized ",
+                   "logistic function attempts to fit may not be appropriate ",
+                   "for these data, or that the initial or boundary values ",
+                   "should be adjusted. Inspect the data closely."));
   }
   
   yfit <- genlogFunction(x = data[, timeVar],
@@ -362,7 +362,7 @@ print.genlog <- function(x, digits=3, ...) {
     if (length(intermediate[[name]]) == 1) {
       return(ifelse(isTRUE(input[[name]] == intermediate[[name]]),
                     intermediate[[name]],
-                    paste0(intermediate[[name]], "*")));
+                    paste0(round(intermediate[[name]], digits=digits), "*")));
     } else {
       return(ifelse(isTRUE(input[[name]] == intermediate[[name]]),
                     paste0(formatCI(intermediate[[name]], digits=digits)),
@@ -413,15 +413,24 @@ print.genlog <- function(x, digits=3, ...) {
        "  Curve base:       ", startValues$startBase,
        " ", boundValues$baseBounds, "\n",
        "  Growth rate:      ", startValues$startGrowthRate,
-       " ", formatCI(x$input$growthRateBounds), "\n",
+       " ", formatCI(x$input$growthRateBounds, digits=digits), "\n",
        "  Curve top:        ", startValues$startTop,
        " ", boundValues$topBounds, "\n",
        "  V parameter:      ", x$input$startV,
-       " ", formatCI(x$input$vBounds), "\n",
+       " ", formatCI(x$input$vBounds, digits=digits), "\n",
        "\n",
        "Note: Asterisks (*) denote values that were not specified manually (but inferred by genlog).\n\n");
+  
+  if (x$output$growthRate < 0) {
+    baseLabel <- "  Curve base (plateau after change):  ";
+    topLabel <- "  Curve top (plateau before change):  ";
+  } else {
+    baseLabel <- "  Curve base (plateau before change): ";
+    topLabel <- "  Curve top (plateau after change):   ";
+  }
+  
   cat0("Parameter estimates:\n\n",
-       "  Curve base (plateau before change): ",
+       baseLabel,
        round(x$output$base, digits=digits), "\n",
        "  Growth rate:                        ",
        round(x$output$growthRate, digits=digits), "\n",
@@ -429,7 +438,7 @@ print.genlog <- function(x, digits=3, ...) {
        ifelse(is.numeric(x$output$inflectionPoint),
               round(x$output$inflectionPoint, digits=digits),
               as.character(x$output$inflectionPoint)), "\n",
-       "  Curve top (plateau after change):   ",
+       topLabel,
        round(x$output$top, digits=digits),
        "\n\n");
   cat0("Model fit and effect sizes estimates:\n\n",
