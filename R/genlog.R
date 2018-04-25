@@ -209,16 +209,16 @@ genlog <- function(data,
   res$output$deviance <- Dev;
   res$output$Rsq <-
     Rsq <- (SSQtot - Dev) / SSQtot;
-  res$output$ES1 <-
+  res$output$ES1 <- res$output$ESc <-
     ES1 <- (At -Ab) / sd(data[, yVar]);
-  res$output$ES2 <-
+  res$output$ES2 <- res$output$ESr <-
     ES2 <- (At -Ab) / diff(yRange);
   
   res$output$dat <-
     data.frame(deviance = Dev,
                Rsq = Rsq,
-               ES1 = ES1,
-               ES2 = ES2,
+               ESc = ES1,
+               ESr = ES2,
                growthRate = B,
                inflectionPoint = inflectionPoint,
                base = Ab,
@@ -442,8 +442,8 @@ print.genlog <- function(x, digits=3, ...) {
        round(x$output$top, digits=digits),
        "\n\n");
   cat0("Model fit and effect sizes estimates:\n\n",
-       "  Deviance:                        ", round(x$output$deviance, digits=digits), "\n",
-       "  R squared:                       ", round(x$output$Rsq, digits=digits), "\n",
-       "  Effect Size 1 (Cohen's d-based): ", round(x$output$ES1, digits=digits), "\n",
-       "  Effect Size 2 (Range-based):     ", round(x$output$ES2, digits=digits), "\n");
+       "  Deviance:              ", round(x$output$deviance, digits=digits), "\n",
+       "  R squared:             ", round(x$output$Rsq, digits=digits), "\n",
+       "  ESc (Cohen's d-based): ", round(x$output$ESc, digits=digits), "\n",
+       "  ESr (Range-based):     ", round(x$output$ESr, digits=digits), "\n");
 }
