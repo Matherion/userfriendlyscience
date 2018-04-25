@@ -14,8 +14,8 @@ piecewiseRegr <- function(data,
                           pointSize = 2,
                           pointAlpha = 1,
                           lineSize = 1,
-                          yRange=range(data[, yVar], na.rm=TRUE),
-                          yBreaks = 1,
+                          yRange=NULL,
+                          yBreaks = NULL,
                           showPlot = TRUE,
                           plotLabs = NULL,
                           outputFile = NULL,
@@ -197,6 +197,19 @@ piecewiseRegr <- function(data,
                      y = yVar);
   }
 
+  if (is.null(yRange)) {
+    yRange <- range(data[, yVar], na.rm=TRUE);
+  }
+  
+  if (is.null(yBreaks)) {
+    yBreaks <- pretty(data[, yVar],
+                      n=(floor(max(yRange) - min(yRange))));
+  } else {
+    yBreaks <- seq(from = min(yRange),
+                   to = max(yRange),
+                   by = yBreaks)
+  }
+  
   res$output$plot <- plot <-
     ggplot(data = data,
            aes_string(x = timeVar,
@@ -233,9 +246,7 @@ piecewiseRegr <- function(data,
     geom_point(size = pointSize,
                alpha = pointAlpha,
                color = colors$points) +
-    scale_y_continuous(breaks=seq(from = min(yRange),
-                                  to = max(yRange),
-                                  by= yBreaks)) +
+    scale_y_continuous(breaks=yBreaks) +
     coord_cartesian(ylim=yRange) +
     theme +
     do.call(labs, plotLabs);
