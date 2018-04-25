@@ -205,8 +205,8 @@ piecewiseRegr <- function(data,
     yBreaks <- pretty(data[, yVar],
                       n=(floor(max(yRange) - min(yRange))));
   } else {
-    yBreaks <- seq(from = min(yRange),
-                   to = max(yRange),
+    yBreaks <- seq(from = floor(min(yRange)),
+                   to = ceiling(max(yRange)),
                    by = yBreaks)
   }
   

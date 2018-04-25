@@ -42,7 +42,7 @@ genlog(data,
        theme = theme_minimal(),
        pointSize = 2,
        lineSize = 0.5,
-       yBreaks = 1,
+       yBreaks = NULL,
        initialValuesLineType = "blank",
        curveSizeMultiplier = 2,
        showPlot = TRUE,
@@ -96,7 +96,7 @@ genlog(data,
   The sizes of points and lines in the plot.
 }
   \item{yBreaks}{
-  The argument passed to \code{\link{scale_y_continuous}}, e.g. the interval between breaks for the Y axis.
+  If \code{NULL}, the \code{\link{pretty}} function is used to estimate the best breaks for the Y axis. If a value is supplied, this value is used as the size of intervals between the (floored) minimum and (ceilinged) maximum of \code{yRange} (e.g. if \code{yBreaks} is 1, a break point every integer; if 2 and the minimum is 1 and the maximum is 7, breaks at 1, 3, 5 and 7; etc).
 }
   \item{initialValuesLineType}{
   The line type to use for the initial values; by default set to \code{"blank"} for \code{genlog}, to hide them, and to \code{"dashed"} for ggGenLogPlot.

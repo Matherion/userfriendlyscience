@@ -31,7 +31,7 @@ ggGenLogPlot <- function(data,
                          theme = theme_minimal(),
                          pointSize = 2,
                          lineSize = .5,
-                         yBreaks = 1,
+                         yBreaks = NULL,
                          initialValuesLineType = "dashed",
                          curveSizeMultiplier = 2,
                          plotLabs = NULL,
@@ -155,6 +155,19 @@ ggGenLogPlot <- function(data,
                      y = yVar);
   }
 
+  if (is.null(yRange)) {
+    yRange <- range(data[, yVar], na.rm=TRUE);
+  }
+  
+  if (is.null(yBreaks)) {
+    yBreaks <- pretty(data[, yVar],
+                      n=(floor(max(yRange) - min(yRange))));
+  } else {
+    yBreaks <- seq(from = floor(min(yRange)),
+                   to = ceiling(max(yRange)),
+                   by = yBreaks)
+  }
+  
   res$output$plot <-
     ggplot(data, aes_string(x=timeVar, y=yVar)) +
     
@@ -223,9 +236,7 @@ ggGenLogPlot <- function(data,
     theme +
     do.call(labs, plotLabs) +
     coord_cartesian(ylim=yRange) +
-    scale_y_continuous(breaks=seq(from = min(yRange),
-                                  to = max(yRange),
-                                  by= yBreaks));
+    scale_y_continuous(breaks=yBreaks);
   
   if (!is.null(res$intermediate$day0)) {
     res$output$plot <-

@@ -24,7 +24,7 @@ piecewiseRegr(data,
               pointAlpha = 1,
               lineSize = 1,
               yRange=range(data[, yVar], na.rm=TRUE),
-              yBreaks = 1,
+              yBreaks = NULL,
               showPlot = TRUE,
               plotLabs = NULL,
               outputFile = NULL,
@@ -69,7 +69,7 @@ piecewiseRegr(data,
   This can be used to manually specify the possible values that the dependent variable can take. If not provided, the observed range of the dependent variable values is used instead.
 }
   \item{yBreaks}{
-  The argument passed to \code{\link{scale_y_continuous}}, e.g. the interval between breaks for the Y axis.
+  If \code{NULL}, the \code{\link{pretty}} function is used to estimate the best breaks for the Y axis. If a value is supplied, this value is used as the size of intervals between the (floored) minimum and (ceilinged) maximum of \code{yRange} (e.g. if \code{yBreaks} is 1, a break point every integer; if 2 and the minimum is 1 and the maximum is 7, breaks at 1, 3, 5 and 7; etc).
 }
   \item{pointAlpha}{
   The alpha channel (transparency, or rather, 'opaqueness') of the points.
