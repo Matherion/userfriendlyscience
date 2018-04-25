@@ -442,8 +442,8 @@ print.genlog <- function(x, digits=3, ...) {
        round(x$output$top, digits=digits),
        "\n\n");
   cat0("Model fit and effect sizes estimates:\n\n",
-       "  Deviance:          ", round(x$output$deviance, digits=digits), "\n",
-       "  R squared:         ", round(x$output$Rsq, digits=digits), "\n",
-       "  Effect Size 1:     ", round(x$output$ES1, digits=digits), "\n",
-       "  Effect Size 2:     ", round(x$output$ES2, digits=digits), "\n");
+       "  Deviance:                        ", round(x$output$deviance, digits=digits), "\n",
+       "  R squared:                       ", round(x$output$Rsq, digits=digits), "\n",
+       "  Effect Size 1 (Cohen's d-based): ", round(x$output$ES1, digits=digits), "\n",
+       "  Effect Size 2 (Range-based):     ", round(x$output$ES2, digits=digits), "\n");
 }
