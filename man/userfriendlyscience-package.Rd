@@ -25,7 +25,7 @@ This package contains a number of functions that serve
 Package: \tab userfriendlyscience\cr
 Type: \tab Package\cr
 Version: \tab 0.7-1\cr
-Date: \tab 2018- - \cr
+Date: \tab 2018-05-01\cr
 License: \tab GPL (>= 3)\cr
 }
 

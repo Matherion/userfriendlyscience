@@ -1,12 +1,12 @@
 userfriendlyscience NEWS
 ------------------------
 
-0.7.1 2018-
+0.7.1 2018-05-01
 * Added dataset with aggregate scales originally published with therapy monitor
-* Added genlog, for generalized logistic analysis
+* Added genlog, for generalized logistic analysis, plus helper functions
 * Added separate functions for getting starting values and plotting starting values for genlog
 * Added 'lettering' of post hoc differences in oneway based on https://stackoverflow.com/questions/48280985
-* 
+* Fixed compatibility issue of manual with new version of `car` package
 
 0.7-0 2017-11-17
 * Added facComAnalysis function, to approximate SPSS' FACTOR function
