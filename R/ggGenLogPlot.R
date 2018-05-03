@@ -160,7 +160,7 @@ ggGenLogPlot <- function(data,
   }
   
   if (is.null(yBreaks)) {
-    yBreaks <- pretty(data[, yVar],
+    yBreaks <- pretty(c(yRange, data[, yVar]),
                       n=(floor(max(yRange) - min(yRange))));
   } else {
     yBreaks <- seq(from = floor(min(yRange)),

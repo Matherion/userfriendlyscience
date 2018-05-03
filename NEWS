@@ -1,6 +1,10 @@
 userfriendlyscience NEWS
 ------------------------
 
+0.7.2 2018-06-01
+* Fixed bug in plots for genlog and piecewiseRegr that caused odd Y axis labeling
+* 
+
 0.7.1 2018-05-01
 * Added dataset with aggregate scales originally published with therapy monitor
 * Added genlog, for generalized logistic analysis, plus helper functions
