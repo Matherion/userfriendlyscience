@@ -19,6 +19,7 @@ ggDiamondLayer(data, ciCols = 1:3,
                otherAxisCol = 1:nrow(data),
                autoSize = NULL,
                fixedSize = 0.15,
+               direction="horizontal",
                ...)
 diamondCoordinates(values,
                    otherAxisValue = 1,
