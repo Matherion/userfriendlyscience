@@ -370,7 +370,7 @@ importFrom('psych', 'describe', 'alpha', 'omega', 'glb',
            'fa', 'principal', 'polychoric', 'fisherz', 'fisherz2r',
            'fa.parallel', 'vss', 'r.con', 'describeBy');
 importFrom('pwr', 'pwr.t.test', 'pwr.r.test', 'pwr.anova.test');
-importFrom('fBasics', 'adTest');
+#importFrom('fBasics', 'adTest'); ### Now included in the package in an adaption
 importFrom('MBESS', 'ci.reliability', 'ci.pvaf', 'conf.limits.ncf');
 importFrom('SuppDists', 'pPearson', 'dPearson', "qPearson");
 ### For 'omega' in the psych package - calls 'principal' in the psych package,

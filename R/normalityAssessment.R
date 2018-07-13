@@ -99,8 +99,8 @@ normalityAssessment <- function(sampleVector, samples = 10000, digits=2,
                                 shapiro.test(res$samplingDistribution));
   
   ### Anderson-Darling test
-  res$ad.sampleDist <- adTest(res$sampleVector);
-  res$ad.samplingDist <- adTest(res$samplingDistribution);
+  res$ad.sampleDist <- adTest_adapted_from_Fbasics(res$sampleVector);
+  res$ad.samplingDist <- adTest_adapted_from_Fbasics(res$samplingDistribution);
   
   ### Kolomogorov-Smirnof test
   suppressWarnings(res$ks.sampleDist <-
@@ -159,8 +159,13 @@ print.normalityAssessment <- function (x, ...) {
              "\n\n"));
   print(x$dataShape.sampleDist, extraNotification=FALSE);
   cat(paste0("\n", sw.sampleDist, "\n",
-             "Anderson-Darling: p=", round(x$ad.sampleDist@test$p.value, x$digits),
-             " (A=", round(x$ad.sampleDist@test$statistic, x$digits), ")\n",
+             "Anderson-Darling: p=",
+             round(x$ad.sampleDist$p.value, x$digits),
+             # round(x$ad.sampleDist@test$p.value, x$digits),
+             " (A=",
+             round(x$ad.sampleDist$statistic, x$digits),
+             # round(x$ad.sampleDist@test$statistic, x$digits),
+             ")\n",
              "Kolmogorov-Smirnof: p=", round(x$ks.sampleDist$p.value, x$digits),
              " (D=", round(x$ks.sampleDist$statistic, x$digits), ")"));
   
@@ -172,8 +177,13 @@ print.normalityAssessment <- function (x, ...) {
              "\n\n"));
   print(x$dataShape.samplingDist, extraNotification=FALSE);
   cat(paste0("\n", sw.samplingDist, "\n",
-             "Anderson-Darling: p=", round(x$ad.samplingDist@test$p.value, x$digits),
-             " (A=", round(x$ad.samplingDist@test$statistic, x$digits), ")\n",
+             "Anderson-Darling: p=",
+             round(x$ad.samplingDist$p.value, x$digits),
+             # round(x$ad.samplingDist@test$p.value, x$digits),
+             " (A=",
+             round(x$ad.samplingDist$statistic, x$digits),
+             # round(x$ad.samplingDist@test$statistic, x$digits),
+             ")\n",
              "Kolmogorov-Smirnof: p=", round(x$ks.samplingDist$p.value, x$digits),
              " (D=", round(x$ks.samplingDist$statistic, x$digits), ")"));
 
@@ -226,8 +236,13 @@ pander.normalityAssessment <- function (x, headerPrefix = "#####",
              "\n\n"));
   pander(x$dataShape.sampleDist, extraNotification=FALSE);
   cat(paste0("\n\n", sw.sampleDist, "  \n",
-             "Anderson-Darling: ", formatPvalue(x$ad.sampleDist@test$p.value, x$digits + 1),
-             " (A=", round(x$ad.sampleDist@test$statistic, x$digits), ")  \n",
+             "Anderson-Darling: ",
+             formatPvalue(x$ad.sampleDist$p.value,x$digits + 1),
+             # formatPvalue(x$ad.sampleDist@test$p.value,x$digits + 1),
+             " (A=",
+             round(x$ad.sampleDist$statistic, x$digits),
+             # round(x$ad.sampleDist@test$statistic, x$digits),
+             ")  \n",
              "Kolmogorov-Smirnof: ", formatPvalue(x$ks.sampleDist$p.value, x$digits + 1),
              " (D=", round(x$ks.sampleDist$statistic, x$digits), ")"));
   
@@ -239,8 +254,13 @@ pander.normalityAssessment <- function (x, headerPrefix = "#####",
              "\n\n"));
   pander(x$dataShape.samplingDist, extraNotification=FALSE);
   cat(paste0("\n\n", sw.samplingDist, "  \n",
-             "Anderson-Darling: ", formatPvalue(x$ad.samplingDist@test$p.value, x$digits + 1),
-             " (A=", round(x$ad.samplingDist@test$statistic, x$digits), ")  \n",
+             "Anderson-Darling: ",
+             formatPvalue(x$ad.samplingDist$p.value, x$digits + 1),
+             # formatPvalue(x$ad.samplingDist@test$p.value, x$digits + 1),
+             " (A=",
+             round(x$ad.samplingDist$statistic, x$digits),
+             # round(x$ad.samplingDist@test$statistic, x$digits),
+             ")  \n",
              "Kolmogorov-Smirnof: ", formatPvalue(x$ks.samplingDist$p.value, x$digits + 1),
              " (D=", round(x$ks.samplingDist$statistic, x$digits), ")"));
   cat("\n\n\n");

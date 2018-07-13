@@ -8,6 +8,7 @@ ggDiamondLayer <- function(data,
                            otherAxisCol=1:nrow(data),
                            autoSize=NULL,
                            fixedSize=.15,
+                           direction="horizontal",
                            ...) {
 
   ### Set column with y axis values
@@ -44,7 +45,8 @@ ggDiamondLayer <- function(data,
     tmpDf <- data.frame(diamondCoordinates(as.numeric(unlist(x[ciCols])),
                                            otherAxisValue=as.numeric(x[[otherAxisCol]]),
                                            autoSize = aSize,
-                                           fixedSize = fSize));
+                                           fixedSize = fSize,
+                                           direction=direction));
 
     if (is.null(cCol)) {
       ### If no color column is passed, just use the general color
