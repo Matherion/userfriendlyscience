@@ -1,64 +1,6 @@
 ### See http://statistiki.eu/wiki/Converting_Effect_Sizes for some formulae
 
 ###########################################################################
-### Converting from: Pearson's r
-###########################################################################
-
-convert.r.to.t <- function(r, n) {
-  return(r * sqrt((n - 2) / (1-r^2)));
-}
-
-convert.r.to.d <- function(r) {
-  return( (r*2) / sqrt(1 - r^2));
-}
-
-convert.r.to.p <- function(r, n) {
-  t <- convert.r.to.t(r, n);
-  return(convert.t.to.p(t, n - 2));
-}
-
-convert.r.to.fisherz <- function(r) {
-  return(.5 * log((1+r) / (1-r)));
-}
-
-###########################################################################
-### Converting from: Student's t
-###########################################################################
-
-convert.t.to.r <- function(t, n) {
-  return(t / (sqrt(n-2+t^2)));
-}
-
-convert.t.to.p <- function(t, df) {
-  return(2*pt(-abs(t),df));
-}
-
-convert.t.to.d <- function(t, df=NULL, n1=NULL, n2=NULL, proportion=.5) {
- 
-  if (is.null(df) && !is.null(n1) && !is.null(n2)) {
-    groupSize1 <- n1;
-    groupSize2 <- n2;
-  }
-  else if (!is.null(df) && is.null(n1) && is.null(n2)) {
-    groupSize1 <-      proportion  * (df + 2);
-    groupSize2 <- (1 - proportion) * (df + 2);
-  }
-  else {
-    warning("Specify either df (and ideally proportion) or n1 and n2! Returning NA.");
-    return(NA);
-  }
-  
-  ### Updated to reflect http://journal.frontiersin.org/article/10.3389/fpsyg.2013.00863/full
-#   multiplier <- sqrt(((groupSize1 + groupSize2) / (groupSize1 * groupSize2)) *
-#                        ((groupSize1 + groupSize2) / (groupSize1 + groupSize2 - 2)));
-  multiplier <- sqrt((1 / groupSize1) + (1 / groupSize2));
-  
-  d <- t * multiplier;
-  
-  return(d);
-}
-
-###########################################################################
 ### Converting from: Cohen's d
 ###########################################################################
 
@@ -153,6 +95,65 @@ convert.percentage.to.se <- function(p, n) {
 }
 
 ###########################################################################
+### Converting from: Pearson's r
+###########################################################################
+
+convert.r.to.t <- function(r, n) {
+  return(r * sqrt((n - 2) / (1-r^2)));
+}
+
+convert.r.to.d <- function(r) {
+  return( (r*2) / sqrt(1 - r^2));
+}
+
+convert.r.to.p <- function(r, n) {
+  t <- convert.r.to.t(r, n);
+  return(convert.t.to.p(t, n - 2));
+}
+
+convert.r.to.fisherz <- function(r) {
+  return(.5 * log((1+r) / (1-r)));
+}
+
+###########################################################################
+### Converting from: Student's t
+###########################################################################
+
+convert.t.to.r <- function(t, n) {
+  return(t / (sqrt(n-2+t^2)));
+}
+
+convert.t.to.p <- function(t, df) {
+  return(2*pt(-abs(t),df));
+}
+
+convert.t.to.d <- function(t, df=NULL, n1=NULL, n2=NULL, proportion=.5) {
+ 
+  if (is.null(df) && !is.null(n1) && !is.null(n2)) {
+    groupSize1 <- n1;
+    groupSize2 <- n2;
+  }
+  else if (!is.null(df) && is.null(n1) && is.null(n2)) {
+    groupSize1 <-      proportion  * (df + 2);
+    groupSize2 <- (1 - proportion) * (df + 2);
+  }
+  else {
+    warning("Specify either df (and ideally proportion) or n1 and n2! Returning NA.");
+    return(NA);
+  }
+  
+  ### Updated to reflect http://journal.frontiersin.org/article/10.3389/fpsyg.2013.00863/full
+#   multiplier <- sqrt(((groupSize1 + groupSize2) / (groupSize1 * groupSize2)) *
+#                        ((groupSize1 + groupSize2) / (groupSize1 + groupSize2 - 2)));
+  multiplier <- sqrt((1 / groupSize1) + (1 / groupSize2));
+  
+  d <- t * multiplier;
+  
+  return(d);
+}
+
+
+###########################################################################
 ### Converting from: Chi Square
 ###########################################################################
 
@@ -172,6 +173,10 @@ convert.chisq.to.V <- function(chisq, n, minDim) {
 
 convert.chisq.to.p <- function(chisq, df, lower.tail=FALSE) {
   return(2*pchisq(chisq, df, lower.tail=lower.tail));
+}
+
+convert.V.to.r <- function(V) {
+  return(V);
 }
 
 ###########################################################################
@@ -222,6 +227,10 @@ convert.f.to.omegasq <- function(f, df1, df2) {
 
 convert.etasq.to.cohensf <- function(etasq) {
   return(sqrt(etasq / (1-etasq)));
+}
+
+convert.etasq.to.r <- function(etasq) {
+  return(sqrt(etasq));
 }
 
 ###########################################################################

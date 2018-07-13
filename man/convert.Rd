@@ -13,6 +13,7 @@
 \alias{convert.d.to.t}
 \alias{convert.d.to.variance}
 \alias{convert.etasq.to.cohensf}
+\alias{convert.etasq.to.r}
 \alias{convert.f.to.etasq}
 \alias{convert.f.to.omegasq}
 \alias{convert.fisherz.to.r}
@@ -24,6 +25,7 @@
 \alias{convert.r.to.fisherz}
 \alias{convert.r.to.p}
 \alias{convert.t.to.d}
+\alias{convert.V.to.r}
 \alias{convert.cohensf.to.omegasq}
 \alias{convert.cohensfsq.to.omegasq}
 \alias{convert.means.to.d}
