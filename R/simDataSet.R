@@ -123,7 +123,7 @@ simDataSet <- function(n, varNames,
     fromRange <- c(min(sapply(df[, setdiff(varNames, factors)], min)),
                    max(sapply(df[, setdiff(varNames, factors)], max)));
     if (!silent) {
-      cat0("Rescaling all variable from ",
+      cat0("Rescaling all variables from ",
            vecTxt(round(fromRange, 2)), " to ",
            vecTxt(ranges), ".\n");
     }
@@ -131,7 +131,7 @@ simDataSet <- function(n, varNames,
       lapply(df[, setdiff(varNames, factors)],
              scales::rescale, to=ranges, from=fromRange);
   } else {
-    cat("\nInvalid input for 'range' argument (neither a list nor a vector of length 2), ignoring it!\n");
+    cat("\nInvalid input for 'ranges' argument (neither a list nor a vector of length 2), ignoring it!\n");
   }
   
   if (!silent) {
