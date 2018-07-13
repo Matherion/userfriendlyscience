@@ -56,7 +56,8 @@ adTest_adapted_from_Fbasics <- function (x, title = NULL, description = NULL) {
     if (is.null(title)) 
         title = "Anderson - Darling Normality Test"
     if (is.null(description)) 
-        description = description()
+        description = paste(as.character(date()), "by user:", Sys.getenv("USERNAME"));
+                      #description()
 
 # Making it work as regular R function sans class    
 #    ans = new("fHTEST", call = call, data = list(x = x), test = test, 
