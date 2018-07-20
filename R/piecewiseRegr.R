@@ -29,6 +29,9 @@ piecewiseRegr <- function(data,
               intermediate = list(),
               output = list());
 
+  ### Sort data
+  data <- data[order(data[[timeVar]]), ];
+  
   if (is.null(phaseVar)) {
     if (is.null(baselineMeasurements)) {
       stop("You did not specify a 'phaseVar' and you also did ",
@@ -38,7 +41,7 @@ piecewiseRegr <- function(data,
     } else {
       phaseVar <- 'phaseVar';
       data[, phaseVar] <- c(rep(0, baselineMeasurements),
-                           rep(1, nrow(data) - baselineMeasurements));
+                            rep(1, nrow(data) - baselineMeasurements));
     }
   }
   
