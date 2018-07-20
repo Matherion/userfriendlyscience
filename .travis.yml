@@ -9,6 +9,7 @@ dist: trusty
 #    packages:
 #      - libxml2-dev
 r_binary_packages:
+  - r-cran-nmf
   - withr
   - httr
   - memoise
