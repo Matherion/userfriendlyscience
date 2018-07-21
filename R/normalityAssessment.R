@@ -99,8 +99,8 @@ normalityAssessment <- function(sampleVector, samples = 10000, digits=2,
                                 shapiro.test(res$samplingDistribution));
   
   ### Anderson-Darling test
-  res$ad.sampleDist <- adTest_adapted_from_Fbasics(res$sampleVector);
-  res$ad.samplingDist <- adTest_adapted_from_Fbasics(res$samplingDistribution);
+  res$ad.sampleDist <- ad.test_from_nortest(res$sampleVector);
+  res$ad.samplingDist <- ad.test_from_nortest(res$samplingDistribution);
   
   ### Kolomogorov-Smirnof test
   suppressWarnings(res$ks.sampleDist <-
