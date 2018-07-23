@@ -8,8 +8,8 @@ cache: packages
 #  apt:
 #    packages:
 #      - libxml2-dev
-#r_binary_packages:
-r_packages:
+r_binary_packages:
+#r_packages:
   - nmf
   - withr
   - httr
@@ -74,7 +74,7 @@ r_packages:
   - viridislite
   - visNetwork
   - diptest
-  - fBasics
+#  - fBasics
   - gss
   - stabledist
   - timedate
