@@ -1,3 +1,40 @@
+#' paginatedAsymmetricalScatterMatrix
+#' 
+#' A function that generates a series of asymmetricalScatterMatrices, so that
+#' they can be printed or included in PDFs.
+#' 
+#' 
+#' @param dat The dataframe containing the variables specified in \code{cols}
+#' and \code{rows}.
+#' @param cols The names of the variables to use for the columns.
+#' @param rows The names of the variables to use for the rows.
+#' @param maxRows The maximum number of rows on one 'page' (i.e. in one
+#' \code{\link{asymmetricalScatterMatrix}}).
+#' @param \dots Extra arguments to pass on to each
+#' \code{\link{asymmetricalScatterMatrix}} call.
+#' @return An object containing the asymmetricalScatterMatrices in a list:
+#' \item{input}{Input values.} \item{intermediate}{Some values/objects
+#' generated in the process.} \item{output}{A list containing the object
+#' 'scatterMatrices', which is a list of the generated scatterMatrices.}
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{asymmetricalScatterMatrix}}
+#' @keywords misc
+#' @examples
+#' 
+#' \dontrun{
+#' ### (Not run by default because it's quite timeconsuming.)
+#' tmp <- paginatedAsymmetricalScatterMatrix(infert, cols=c("parity"),
+#'                                           rows=c("induced", "case",
+#'                                                  "spontaneous", "age",
+#'                                                  "pooled.stratum"),
+#'                                           maxRows = 3,
+#'                                           showCorrelations="top-right");
+#' tmp$output$scatterMatrices[[1]];
+#' }
+#' 
+#' @export paginatedAsymmetricalScatterMatrix
 paginatedAsymmetricalScatterMatrix <- function(dat, cols, rows,
                                                maxRows = 5,
                                                ...) {

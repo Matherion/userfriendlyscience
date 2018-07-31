@@ -13,6 +13,112 @@
 
 ### This function generates a pdf file with a report
 ### describing the variables.
+
+
+#' scaleInspection and a number of useful helper functions
+#' 
+#' scaleInspection is a function to generate a PDF with information to diagnose
+#' and inspect scales (aggregate measures); makeScales actually generates the
+#' scales; and meanConfInt and sdConfInt provide confidence intervals for means
+#' and standard deviations.
+#' 
+#' 
+#' scaleInspection generates a PDF with useful diagnostics to assess a scale;
+#' those from scaleDiagnosis and an rMatrix.
+#' 
+#' makeScales generates the scales and stores them in the dataframe.
+#' 
+#' meanConfInt and sdConfInt just compute and return a confidence interval for
+#' a mean or standard deviation.
+#' 
+#' @aliases scaleInspection makeScales meanConfInt sdConfInt
+#' @param dat Dataframe containing the items of the relevant scale
+#' @param items Either a character vector with the itemnames, or, if the items
+#' are organised in scales, a list of character vectors with the items in each
+#' scale.
+#' @param scales A list of character vectors with the items in each scale,
+#' where each vectors' name is the name of the scale.
+#' @param docTitle Title to use when generating the PDF.
+#' @param docAuthor Author(s) to include when generating the PDF.
+#' @param pdfLaTexPath The path to PdfLaTex. This file is part of a LaTeX
+#' installation that creates a pdf out of a .tex file.
+#' 
+#' In Windows, you can download (portable) MikTex from
+#' http://miktex.org/portable. You then decide yourself where to install
+#' MikTex; pdflatex will end up in a subfolder 'miktex\bin', so if you
+#' installed MikTex in, for example, 'C:\Program Files\MikTex', the total path
+#' becomes 'C:\Program Files\MikTex\miktex\bin'. Note that R uses slashes
+#' instead of backslashes to separate folders, so in this example, pdfLaTexPath
+#' should be 'C:/Program Files/MikTex/miktex/bin'
+#' 
+#' In MacOS, you can install MacTex from http://tug.org/mactex/ By default,
+#' pdflatex ends up in folder '/user/texbin', which is what pdfLaTexPath should
+#' be in that default case.
+#' 
+#' In Ubuntu, you can install TexLive base by using your package manager to
+#' install texlive-latex-base, or using the terminal: 'sudo apt-get install
+#' texlive-latex-base' In ubuntu, by default pdflatex ends un in folder
+#' '/usr/bin', which is what pdfLaTexPath should be in that default case.
+#' @param rnwPath The path where the temporary files and the resulting PDF
+#' should be stored.
+#' @param filename The filename to use to save the pdf.
+#' @param convertFactors Whether to convert factors to numeric vectors for the
+#' analysis.
+#' @param scaleReliability.ci TRUE or FALSE: whether to compute confidence
+#' intervals for Cronbach's Alpha and Omega (uses bootstrapping function in
+#' MBESS, takes a while).
+#' @param conf.level Confidence of confidence intervals (for reliability
+#' estimates (if requested with scaleReliability.ci), meand, and sd, for
+#' respectively scaleInspection, meanConfInt and sdConfInt).
+#' @param digits The number of digits to use in the tables.
+#' @param rMatrixColsLandscape At how many columns (or rather, variables) or
+#' more should rMatrices be printed landscape?
+#' @param pboxWidthMultiplier Used for print.rMatrix; used to tweak the width
+#' of columns in the correlation matrix.
+#' @param scatterPlotBaseSize Size of one scatterplot in the scattermatrix in
+#' centimeters. If the total scattermatrix becomes larger than 18 cm, it's
+#' scaled down to 18 cm.
+#' @param pageMargins Margins of the page in millimeters.
+#' @param show Whether to show the results (or only write them to the PDF).
+#' @param pval Whether to print p-values as p-values in correlation matrix.
+#' @param append Whether to return the dataframe including the new variables
+#' (\code{TRUE}), or a dataframe with only those new variables (\code{FALSE}).
+#' @param vector Numeric vector to use when computing confidence intervals.
+#' @param mean Mean to use when computing confidence intervals (when no vector
+#' is provided).
+#' @param sd Standard deviaton to use when computing confidence intervals (when
+#' no vector is provided).
+#' @param n Number of datapoints to base confidence intervals on.
+#' @param se Standard errorto use when computing confidence intervals (when no
+#' standard deviation or vector is provided).
+#' @return
+#' 
+#' scaleInspection returns nothing; it just generates a PDF.
+#' 
+#' makeScales returns the provided dataframe, now including the new scale
+#' variables.
+#' 
+#' meanConfInt and sdConfInt return an object, with in its 'output' list, the
+#' confidence interval for a mean or standard deviation.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @keywords utilities
+#' @examples
+#' 
+#' 
+#' \dontrun{
+#' scaleInspection(mtcars, items=c('disp', 'hp', 'drat'), pdfLaTexPath="valid/path/here");
+#' }
+#' 
+#' newDataframe <- makeScales(mtcars, list(senselessScale = c('disp', 'hp', 'drat')));
+#' 
+#' sdConfInt(sd=4, n=30);
+#' 
+#' meanConfInt(mean=5, sd=4, n=30)
+#' 
+#' 
+#' @export scaleInspection
 scaleInspection <- function(dat, items=NULL,
                             docTitle = "Scale inspection", docAuthor = "Author",
                             pdfLaTexPath, rnwPath=getwd(),

@@ -62,6 +62,51 @@ print.CramersV <- function(x, digits=x$input$digits, ...) {
       signif(x$output$cramersV, digits=digits));
 }
 
+
+
+#' crossTab, confIntV and cramersV
+#' 
+#' These functions compute the point estimate and confidence interval for
+#' Cramer's V. The crossTab function also shows a crosstable.
+#' 
+#' 
+#' @aliases confIntV cramersV crossTab
+#' @param x Either a crosstable to analyse, or one of two vectors to use to
+#' generate that crosstable. The vector should be a factor, i.e. a categorical
+#' variable identified as such by the 'factor' class).
+#' @param y If x is a crosstable, y can (and should) be empty. If x is a
+#' vector, y must also be a vector.
+#' @param digits Minimum number of digits after the decimal point to show in
+#' the result.
+#' @param pValueDigits Minimum number of digits after the decimal point to show
+#' in the Chi Square p value in the result.
+#' @param conf.level Level of confidence for the confidence interval.
+#' @param samples Number of samples to generate when bootstrapping.
+#' @param method Whether to use Fisher's Z or bootstrapping to compute the
+#' confidence interval.
+#' @param storeBootstrappingData Whether to store (or discard) the data
+#' generating during the bootstrapping procedure.
+#' @param ...  Extra arguments to \code{crossTab} are passed on to
+#' \code{confIntV}.
+#' @return
+#' 
+#' The cramersV and confIntV functions return either a point estimate or a
+#' confidence interval for Cramer's V, an effect size to describe the
+#' association between two categorical variables. The crossTab function is just
+#' a wrapper around confIntV.
+#' @keywords bivar
+#' @examples
+#' 
+#' 
+#' crossTab(infert$education, infert$induced, samples=50);
+#' 
+#' ### Get confidence interval for Cramer's V
+#' ### Note that by using 'table', and so removing the raw data, inhibits
+#' ### bootstrapping, which could otherwise take a while.
+#' confIntV(table(infert$education, infert$induced));
+#' 
+#' 
+#' @export confIntV
 confIntV <- function(x, y = NULL, conf.level=.95,
                      samples = 500, digits=2,
                      method=c('bootstrap', 'fisher'),

@@ -1,3 +1,116 @@
+#' Generalized Logistic Analysis
+#' 
+#' This function implements the generalized logistic analysis introduced in
+#' Verboon & Peters (2017). This analysis fits a logistic function (i.e. a
+#' sigmoid) to a data series. This is useful when analysing single case
+#' designs. The function enables easy customization of the main plot elements
+#' and easy saving of the plot with anti-aliasing. \code{ggGenLogPlot} does
+#' most of the plotting, and can be useful when trying to figure out sensible
+#' starting and boundary/constraint values. \code{genlogCompleteStartValues}
+#' tries to compute sensible starting and boundary/constraint values based on
+#' the data.
+#' 
+#' For details, see Verboon & Peters (2017).
+#' 
+#' @aliases genlog genlogCompleteStartValues ggGenLogPlot
+#' @param data The dataframe containing the variables for the analysis.
+#' @param timeVar The name of the variable containing the measurement moments
+#' (or an index of measurement moments). An index can also be specified, and
+#' assumed to be 1 if omitted.
+#' @param yVar The name of the dependent variable. An index can also be
+#' specified, and assumed to be 2 if omitted.
+#' @param phaseVar The variable containing the phase of each measurement. Note
+#' that this normally should only have two possible values.
+#' @param baselineMeasurements If no phaseVar is specified,
+#' \code{baselineMeasurements} can be used to specify the number of baseline
+#' measurements, which is then used to construct the \code{phaseVar} dummy
+#' variable.
+#' @param yRange This can be used to manually specify the possible values that
+#' the dependent variable can take. If no \code{startBase} and \code{startTop}
+#' are specified, the range of the dependent variable is used instead.
+#' @param startInflection,startBase,startTop,startGrowthRate,startV The
+#' starting values used when estimating the sigmoid using \code{minpack.lm}'s
+#' \code{\link{nlsLM}} function. \code{startX} specifies the starting value to
+#' use for the measurement moment when the change is fastest (i.e. the slope of
+#' the sigmoid has the largest value); \code{startBase} and \code{startTop}
+#' specify the starting values to use for the base (floor) and top (ceiling),
+#' the plateaus of relative stability between which the sigmoid described the
+#' shift; \code{startGrowthRate} specifies the starting value for the growth
+#' rate; and \code{startV} specifies the starting value for the \emph{v}
+#' parameter.
+#' @param
+#' inflectionPointBounds,growthRateBounds,baseMargin,topMargin,baseBounds,topBounds,vBounds
+#' These values specify constraints to respect when estimating the parameters
+#' of the sigmoid function using \code{minpack.lm}'s \code{\link{nlsLM}}.
+#' \code{changeInitiationBounds} specifies between which values the initiation
+#' of the shift must occur; \code{growthRateBounds} describes the bounds
+#' constraining the possible values for the growth rate; \code{baseBounds} and
+#' \code{topBounds} specify the constraints for possible values for the base
+#' (floor) and top (ceiling), the plateaus of relative stability between which
+#' the sigmoid described the shift; and if these are not specified,
+#' \code{baseMargin} and \code{topMargin} are used in combination with the
+#' range of the dependent variable to set these bounds (also see
+#' \code{yRange}); and finally, \code{vBounds} specifies the possible values
+#' that constrain the \emph{v} parameter.
+#' @param changeDelay The number of measurements to add to the intervention
+#' moment when setting the initial value for the inflection point.
+#' @param colors The colors to use for the different plot elements.
+#' @param alphas The alpha values (transparency, or rather, 'obliqueness', with
+#' 0 indicating full transparency and 1 indicating full visibility) to use for
+#' the different plot elements.
+#' @param theme The theme to use in the plot.
+#' @param pointSize,lineSize The sizes of points and lines in the plot.
+#' @param yBreaks If \code{NULL}, the \code{\link{pretty}} function is used to
+#' estimate the best breaks for the Y axis. If a value is supplied, this value
+#' is used as the size of intervals between the (floored) minimum and
+#' (ceilinged) maximum of \code{yRange} (e.g. if \code{yBreaks} is 1, a break
+#' point every integer; if 2 and the minimum is 1 and the maximum is 7, breaks
+#' at 1, 3, 5 and 7; etc).
+#' @param initialValuesLineType The line type to use for the initial values; by
+#' default set to \code{"blank"} for \code{genlog}, to hide them, and to
+#' \code{"dashed"} for ggGenLogPlot.
+#' @param curveSizeMultiplier A multiplyer for the curve size compared to the
+#' other lines (e.g. specify '2' to have a curve of twice the size).
+#' @param showPlot Whether to show the plot or not.
+#' @param plotLabs A list with arguments to the \code{\link{ggplot2}}
+#' \code{\link{labs}} function, which can be used to conveniently set plot
+#' labels.
+#' @param outputFile If not \code{NULL}, the path and filename specifying where
+#' to save the plot.
+#' @param outputWidth,outputHeight The dimensions of the plot when saving it
+#' (in units specified in \code{ggsaveParams}).
+#' @param ggsaveParams The parameters to use when saving the plot, passed on to
+#' \code{\link{ggsave}}.
+#' @param maxiter The maximum number of iterations used by \code{\link{nlsLM}}.
+#' @return Mainly, this function prints its results, but it also returns them
+#' in an object containing three lists: \item{input}{The arguments specified
+#' when calling the function} \item{intermediate}{Intermediat objects and
+#' values} \item{output}{The results such as the plot.}
+#' @author Peter Verboon & Gjalt-Jorn Peters (both at the Open University of
+#' the Netherlands)
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{genlogFunction}}
+#' @references Verboon, P. & Peters, G.-J. Y. (2018) Applying the generalised
+#' logistic model in single case designs: modelling treatment-induced shifts.
+#' \emph{PsyArXiv} \url{https://doi.org/10.17605/osf.io/ad5eh}
+#' @keywords hplot models htest
+#' @examples
+#' 
+#' ### Load dataset
+#' data(Singh);
+#' 
+#' ### Extract Jason
+#' dat <- Singh[Singh$tier==1, ];
+#' 
+#' ### Conduct piecewise regression analysis
+#' genlog(dat,
+#'        timeVar='time',
+#'        yVar='score_physical',
+#'        phaseVar='phase');
+#' 
+#' 
+#' @export genlog
 genlog <- function(data,
                    timeVar = 1,
                    yVar = 2,

@@ -1,3 +1,25 @@
+#' invertItems
+#' 
+#' Inverts items (as in, in a questionnaire), by calling
+#' \code{\link{invertItem}} on all relevant items.
+#' 
+#' 
+#' @param dat The dataframe containing the variables to invert.
+#' @param items The names or indices of the variables to invert. If not
+#' supplied (i.e. NULL), all variables in the dataframe will be inverted.
+#' @param \dots Arguments (parameters) passed on to data.frame when recreating
+#' that after having used lapply.
+#' @return The dataframe with the specified items inverted.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{invertItem}}
+#' @keywords univariate
+#' @examples
+#' 
+#' invertItems(mtcars, c('cyl'));
+#' 
+#' @export invertItems
 invertItems <- function(dat, items = NULL, ...) {
   if (is.null(items)) {
     items <- names(dat);

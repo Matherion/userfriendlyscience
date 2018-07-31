@@ -1,4 +1,32 @@
 ### This function does a lot of stuff to detect influential cases
+
+
+#' Detecting influential cases in regression analyses
+#' 
+#' This function combines a number of criteria for determining whether a
+#' datapoint is an influential case in a regression analysis. It then sum the
+#' criteria to compute an index of influentiality. A list of cases with an
+#' index of influentiality of 1 or more is then displayed, after which the
+#' regression analysis is repeated without those influantial cases. A
+#' scattermatrix is also displayed, showing the density curves of each
+#' variable, and in the scattermatrix, points that are colored depending on how
+#' influential each case is.
+#' 
+#' 
+#' @param formula The formule of the regression analysis.
+#' @param data The data to use for the analysis.
+#' @return A \code{regrInfluential} object, which, if printed, shows the
+#' influential cases, the regression analyses repeated without those cases, and
+#' the scatter matrix.
+#' @author Gjalt-Jorn Peters & Marwin Snippe
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @keywords ~kwd1 ~kwd2
+#' @examples
+#' 
+#' regrInfluential(mpg ~ hp, mtcars);
+#' 
+#' @export regrInfluential
 regrInfluential <- function(formula, data) {
   ### Create object for results and store input
   res <- list(input = as.list(environment()), intermediate = list(), 

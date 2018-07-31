@@ -1,300 +1,125 @@
-CIBER <- function(data, determinants, targets,
-                  conf.level = list(means = .9999,
-                                    associations = .95),
-                  subQuestions = NULL,
-                  leftAnchors = rep("Lo", length(determinants)),
-                  rightAnchors = rep("Hi", length(determinants)),
-                  orderBy = NULL,
-                  decreasing = NULL,
-                  numberSubQuestions = FALSE,
-                  generateColors = list(means = c("red", "blue", "green"),
-                                        associations = c("red", "grey", "green")),
-                  strokeColors = brewer.pal(9, 'Set1'),
-                  titlePrefix = "Means and associations with",
-                  titleVarLabels = NULL,
-                  titleSuffix = "",
-                  fullColorRange = NULL,
-                  associationsAlpha = .5,
-                  returnPlotOnly = TRUE,
-                  drawPlot = TRUE,
-                  baseSize = .8,
-                  dotSize = 2.5 * baseSize,
-                  baseFontSize=10*baseSize,
-                  theme=theme_bw(base_size=baseFontSize),
-                  xbreaks=NULL,
-                  ...) {
-
-  if (!all(c(determinants, targets) %in% names(data))) {
-    stop("Not all variables names you passed in arguments ",
-         "'determinants' or 'targets' are in the dataset!\n",
-         "Specifically, ",
-         vecTxtQ(c(determinants, targets)[!(c(determinants, targets) %in% names(data))]),
-         " is or are not in the provided dataset.");
-  }
-
-  res <- list(input = as.list(environment()),
-              intermediate = list(),
-              output = list());
-
-  if (is.null(subQuestions)) subQuestions <- determinants;
-
-  ### Extract relevant subdatasets
-  res$intermediate$determinantsDat <- data[, determinants];
-  res$intermediate$dat <- data[, c(determinants, targets)];
-  
-  if (class(data) != 'data.frame') {
-    stop("After having extracted the determinants (",
-         vecTxtQ(determinants), ") and the targets (",
-         vecTxtQ(targets), ") from the provided data frame, '",
-         deparse(substitute(data)),
-         "', the class of the remaining object is no longer ",
-         "'data.frame', but instead '", class(data), "'.");
-  }
-
-  res$output$determinantsN <- sum(complete.cases(res$intermediate$determinantsDat));
-  res$output$associationsN <- sum(complete.cases(res$intermediate$dat));
-
-  if (!all(sapply(res$intermediate$determinantsDat, is.numeric))) {
-    notNumericVars <-
-      names(res$intermediate$determinantsDat)[!sapply(res$intermediate$determinantsDat, is.numeric)];
-    stop("Not all determinants are numeric! Specifically, ",
-         vecTxtQ(notNumericVars), " are not numeric variables.");
-  }
-  
-  ### For the scores, the max and min need to be determined from the data
-  res$intermediate$fullColorRange <- ifelseObj(is.null(fullColorRange),
-                                               range(res$intermediate$determinantsDat, na.rm = TRUE),
-                                               fullColorRange);
-
-  ### These will be used to determine the breaks in the plot with
-  ### the scores
-  res$intermediate$uniqueValues <-
-    sort(unique(na.omit(unlist(res$intermediate$determinantsDat))));
-
-  ### If only one of the sorting arguments is set, set the other
-  ### one on the basis of the defaults; otherwise, store the
-  ### passed arguments for use later on.
-  if (!is.null(orderBy) && is.null(decreasing)) {
-    res$intermediate$decreasing <- TRUE;
-  } else if (is.null(orderBy) && !is.null(decreasing)) {
-    res$intermediate$orderBy <- TRUE;
-  } else {
-    res$intermediate$decreasing <- decreasing;
-    res$intermediate$orderBy <- orderBy;
-  }
-
-  ### Turn 'decreasing' around, because ggplot places the 'first' values
-  ### at the bottom and the last ones at the top
-  if (!is.null(res$intermediate$decreasing)) {
-    decreasing <- res$intermediate$decreasing <- !res$intermediate$decreasing;
-  }
-
-  if (is.null(orderBy)) {
-    ### Invert order, because ggplot starts from the bottom on the y axis.
-    res$intermediate$sortOrder <- rev(1:length(determinants));
-  } else if (isTrue(orderBy)) {
-    res$intermediate$sortOrder <- order(colMeans(data[, determinants], na.rm=TRUE),
-                                        decreasing=res$intermediate$decreasing);
-  } else if (orderBy %IN% (targets)) {
-    tryCatch({
-      res$intermediate$sortOrder <- sort(associationMatrix(data,
-                                                           x=determinants,
-                                                           y=orderBy),
-                                         decreasing=res$intermediate$decreasing)$intermediate$sorting$order;
-    }, error = function(errorMsg) {
-      stop("When trying to call associationMatrix to get the sorting order, ",
-           "the data frame no longer has class 'numeric', but instead '",
-           class(data), "'.");
-    });
-  } else {
-    stop("In argument 'orderBy' either pass TRUE (to order by ",
-         "(sub)determinants), or the name of one of the target ",
-         "variables (e.g. determinants such as attitude, motivational ",
-         "constructs such as intention, behavioral proxies or ",
-         "behavioral measures).");
-  }
-
-  ### Get confidence intervals (we may re-sort later)
-  res$intermediate$meansDat <-
-    varsToDiamondPlotDf(data, items = determinants,
-                        conf.level=conf.level$means);
-
-  if (length(unique(c(targets, determinants))) < 2) {
-    stop("Something is wrong with the arguments provided ",
-         "as determinants (", vecTxtQ(determinants),
-         ") or targets (", vecTxtQ(targets),
-         "): together, they seem to contain less than ",
-         "two different elements (i.e. variable names).");
-  }
-  
-  if (getOption('ufs.debug', FALSE)) {
-    print(paste0("\nnames(res$intermediate$dat) = ",
-                 vecTxtQ(names(res$intermediate$dat)),
-                 "\ndeterminants = ", vecTxtQ(determinants),
-                 "\ntargets = ", vecTxtQ(targets),
-                 "\n"));
-  }
-  
-  ### Get confidence intervals for effect sizes
-  res$intermediate$assocDat <- sapply(targets, function(currentTarget) {
-    return(associationsToDiamondPlotDf(res$intermediate$dat,
-                                       determinants,
-                                       currentTarget,
-                                       esMetric = 'r'));
-  }, simplify=FALSE);
-  names(res$intermediate$assocDat) <- targets;
-
-  ### Get R squared values
-  res$intermediate$Rsq <- lapply(targets, function(currentTarget) {
-    return(regr(formula(paste(currentTarget, '~', paste(determinants, collapse=" + "))),
-                data=res$intermediate$dat,
-                conf.level=conf.level$associations));
-  });
-
-  res$intermediate$meansDat <-
-    res$intermediate$meansDat[res$intermediate$sortOrder, ];
-  res$intermediate$assocDat <-
-    sapply(res$intermediate$assocDat, function(x) {
-      return(x[res$intermediate$sortOrder, ]);
-    }, simplify=FALSE);
-
-  ### Sort determinant names
-  determinants <- determinants[res$intermediate$sortOrder];
-
-  sortedSubQuestions <- subQuestions[res$intermediate$sortOrder];
-
-  if (numberSubQuestions) {
-    sortedSubQuestions <- paste0(length(sortedSubQuestions):1, ". ", sortedSubQuestions);
-  }
-
-  res$intermediate$biAxisDiamondPlot <-
-    biAxisDiamondPlot(data, items = determinants,
-                      subQuestions = sortedSubQuestions,
-                      leftAnchors = leftAnchors[res$intermediate$sortOrder],
-                      rightAnchors = rightAnchors[res$intermediate$sortOrder],
-                      generateColors = generateColors$means,
-                      fullColorRange = res$intermediate$fullColorRange,
-                      conf.level = conf.level$means,
-                      drawPlot = FALSE,
-                      returnPlotOnly = FALSE,
-                      dotSize = dotSize,
-                      baseFontSize = baseFontSize,
-                      theme = theme,
-                      jitterHeight = .3,
-                      xbreaks=xbreaks,
-                      ...);
-
-  res$intermediate$meansPlot <- res$intermediate$biAxisDiamondPlot$output$plot;
-
-  builtMeansPlot <- ggplot_build(res$intermediate$biAxisDiamondPlot$intermediate$meansPlot);
-  yMajor <- builtMeansPlot$layout$panel_ranges[[1]]$y.major_source;
-  yRange <- range(builtMeansPlot$layout$panel_ranges[[1]]$y.range);
-
-  if (length(targets)==1) {
-    strokeColors <- "#000000";
-  } else {
-    ### brewer.pal(12, 'Set1')
-    strokeColors <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00",
-                      "#FFFF33", "#A65628", "#F781BF", "#999999")[1:length(targets)];
-  }
-  names(strokeColors) <- targets;
-
-  res$intermediate$assocLayers <-
-    sapply(names(res$intermediate$assocDat),
-           function(currentTarget) {
-             return(diamondPlot(res$intermediate$assocDat[[currentTarget]],
-                                ciCols=c('lo', 'es', 'hi'), yLabels = subQuestions[res$intermediate$sortOrder],
-                                generateColors=generateColors$associations,
-                                fullColorRange = c(-1, 1),
-                                alpha = associationsAlpha,
-                                lineColor=strokeColors[currentTarget],
-                                size=1, theme=theme,
-                                returnLayerOnly = TRUE, ...));
-           }, simplify=FALSE);
-
-  res$intermediate$assocPlot <- ggplot() +
-    res$intermediate$assocLayers +
-    theme +
-    xlab(paste0(round(100 * conf.level$associations, 2), '% CIs of associations')) +
-    scale_x_continuous(limits=c(-1,1)) +
-    scale_y_continuous(breaks=yMajor) +
-    theme(axis.ticks.y=element_blank(),
-          panel.grid.minor.y = element_blank(),
-          axis.text.y=element_blank(),
-          axis.title.y=element_blank());
-
-  builtAssocPlot <- ggplot_build(res$intermediate$assocPlot);
-  builtAssocPlot$layout$panel_ranges[[1]]$y.range <- yRange;
-  builtAssocPlot$layout$panel_ranges[[1]]$y.major <-
-    builtMeansPlot$layout$panel_ranges[[1]]$y.major;
-
-
-  if (is.null(titleVarLabels)) titleVarLabels <- targets;
-
-  titleGrobs <- list(textGrob(label = paste0(titlePrefix, " "),
-                              x = unit(0.2, "lines"),
-                              y = unit(0.8, "lines"),
-                              hjust = 0, vjust = 0));
-  currentXpos <- sum(unit(0.2, "lines"), grobWidth(titleGrobs[[1]]));
-  newGrob <- textGrob(label = paste0(titleVarLabels[1], " (R\U00B2 = ",
-                                     formatCI(res$intermediate$Rsq[[1]]$output$rsq.ci, noZero=TRUE), ")"),
-                      x = currentXpos,
-                      y = unit(.8, "lines"),
-                      hjust = 0, vjust = 0,
-                      gp = gpar(col = strokeColors[targets[1]]));
-  titleGrobs <- c(titleGrobs, list(newGrob));
-  currentXpos <- sum(currentXpos, grobWidth(titleGrobs[[2]]));
-
-  if (length(targets) > 1) {
-    for (i in 2:length(targets)) {
-      prefixGrob <- textGrob(label = ifelse(i == length(targets), " & ", ", "),
-                             x = currentXpos,
-                             y = unit(0.8, "lines"),
-                             hjust = 0, vjust = 0,
-                             gp = gpar(col = "#000000"));
-      currentXpos <- sum(currentXpos, grobWidth(prefixGrob));
-      newGrob <- textGrob(label = paste0(titleVarLabels[i], " (R\U00B2 = ",
-                                         formatCI(res$intermediate$Rsq[[i]]$output$rsq.ci, noZero=TRUE), ")"),
-                          x = currentXpos,
-                          y = unit(0.8, "lines"),
-                          hjust = 0, vjust = 0,
-                          gp = gpar(col = strokeColors[targets[i]]));
-      currentXpos <- sum(currentXpos, grobWidth(newGrob));
-      titleGrobs <- c(titleGrobs, list(prefixGrob, newGrob));
-    }
-  }
-  titleGrobs <- c(titleGrobs, list(textGrob(label = paste0(" ", titleSuffix),
-                                            x = currentXpos,
-                                            y = unit(0.8, "lines"),
-                                            hjust = 0, vjust = 0)));
-
-  titleGrob <- do.call(grobTree, c(list(gp = gpar(fontsize = 1.2*baseFontSize, fontface = "bold")),
-                                   titleGrobs));
-
-  res$output$plot <- gtable_add_cols(res$intermediate$meansPlot,
-                                     unit(1, "null"));
-
-  res$output$plot <- gtable_add_grob(res$output$plot,
-                                     ggplot_gtable(builtAssocPlot),
-                                     t=1,
-                                     b=length(res$output$plot$heights),
-                                     l=length(res$output$plot$widths));
-
-  res$output$plot <- arrangeGrob(res$output$plot,
-                                 top = titleGrob,
-                                 padding = unit(1.25, "line"));
-
-  ### Default sizes ; first compute in centimeters, then convert to inches
-  attr(res$output$plot, 'height') <- baseSize + 1.25 * baseSize * max(length(determinants), 1.5);
-  attr(res$output$plot, 'width') <- 21 - 3;
-  attr(res$output$plot, 'height') <- attr(res$output$plot, 'height') / 2.54;
-  attr(res$output$plot, 'width') <- attr(res$output$plot, 'width') / 2.54;
-
-  if (drawPlot) {
-    grid.newpage();
-    grid.draw(res$output$plot);
-  }
-
-  invisible(ifelseObj(returnPlotOnly, res$output$plot, res));
-
-}
+#' Confidence Interval-Based Estimation of Relevance (CIBER)
+#' 
+#' This function generates a high-level plot consisting of several diamond
+#' plots. This function is useful for estimating the relative relevance of a
+#' set of determinants of, for example, behavior. The plot in the left hand
+#' panel shows each determinant's distribution with a diamond representing the
+#' confidence interval. The right hand plot shows the determinants'
+#' associations to one or more 'target' variables, such as behavior or
+#' determinants of behavior.
+#' 
+#' Details are explained in Crutzen & Peters (2017).
+#' 
+#' @aliases CIBER detStructCIBER
+#' @param data,dat The dataframe containing the variables.
+#' @param determinants The 'determinants': the predictors (or 'covariates') of
+#' the target variables(s) (or 'criteria').
+#' @param targets The 'targets' or 'criteria' variables: the variables
+#' predicted by the determinants.
+#' @param determinantStructure When using \code{detStructCIBER}, the
+#' determinant structure as generated by \code{\link{determinantStructure}} is
+#' included here. \code{determinants}, \code{targets}, \code{subQuestions},
+#' \code{leftAnchors}, and \code{rightAnchors} are then read from the
+#' \code{\link{determinantStructure}} object. In other words: once a
+#' \code{\link{determinantStructure}} has been generated, only \code{dat} and
+#' \code{\link{determinantStructure}} have to be provided as argument to
+#' generate a CIBER diamond plot.
+#' @param conf.level The confidence levels for the confidence intervals: has to
+#' be a named list with two elements: \code{means} and \code{associations},
+#' specifying the desired confidence levels for the means and associations,
+#' respectively. The confidence level for the associations is also used for the
+#' intervals for the proportions of explained variance.
+#' @param subQuestions The subquestions used to measure each determinants. This
+#' can also be used to provide pretty names for the variables if the
+#' determinants were not measured by one question each. Must have the same
+#' length as \code{determinants}.
+#' @param leftAnchors The anchors to display on the left side of the left hand
+#' panel. If the determinants were measured with one variable each, this can be
+#' used to show the anchors that were used for the respective scales. Must have
+#' the same length as \code{determinants}.
+#' @param rightAnchors The anchors to display on the left side of the left hand
+#' panel. If the determinants were measured with one variable each, this can be
+#' used to show the anchors that were used for the respective scales. Must have
+#' the same length as \code{determinants}.
+#' @param orderBy Whether to sort the determinants. Set to \code{NULL} to not
+#' sort at all; specify the name or index of one of the \code{target}s to sort
+#' by the point estimates of the associations with that target variable. Use
+#' \code{decreasing} to determine whether to sort in ascending or descending
+#' order. For convenience, if \code{orderBy} is not \code{NULL}, but
+#' \code{decreasing} is, the determinants are sorted in descending (decreasing)
+#' order.
+#' @param decreasing Whether to sort the determinants. Specify \code{NULL} to
+#' not sort at all, \code{TRUE} to sort in descending order, and \code{FALSE}
+#' to sort in ascending order. If \code{decreasing} is nor \code{NULL}, but
+#' \code{orderBy} is \code{NULL}, the determinants are sorted by their means.
+#' For convenience, if \code{orderBy} is not \code{NULL}, but \code{decreasing}
+#' is, the determinants are sorted in descending (decreasing) order.
+#' @param numberSubQuestions Whether or not to number the subquestions. If they
+#' are numbered, they are numbered from the top to the bottom.
+#' @param generateColors The colors to use to generate the gradients for
+#' coloring the diamonds representing the confidence intervals. Has to be a
+#' named list with two elements: \code{means} and \code{associations},
+#' specifying the desired colors for the means and associations, respectively.
+#' @param strokeColors The palette to use to color the stroke of the confidence
+#' intervals for the associations between the determinants and the targets.
+#' Successive colors from this palette are used for the targets.
+#' @param titlePrefix Text to add before the list of target names and the
+#' proportions of explained variance for each target. This plot title also
+#' serves as legend to indicate which target 'gets' which each color.
+#' @param titleVarLabels Optionally, variable labels to use in the plot title.
+#' Has to be the exact same length as \code{targets}.
+#' @param titleSuffix Text to add after the list of target names and the
+#' proportions of explained variance for each target.
+#' @param fullColorRange If colors are specified, this can be used to specify
+#' which values, for the determinant confidence intervals in the left hand
+#' panel, are the minimum and maximum. This is useful if those scores are not
+#' actually in the data (e.g. for extremely skewed distributions). If
+#' \code{NULL}, the range of all individual scores on the determinants is used.
+#' For the associations, \code{c(-1, 1)} is always used as
+#' \code{fullColorRange}.
+#' @param associationsAlpha The alpha level (transparency) of the confidence
+#' interval diamonds in the right hand plot. Value between 0 and 1, where 0
+#' signifies complete transparency (i.e. invisibility) and 1 signifies complete
+#' 'opaqueness'.
+#' @param returnPlotOnly Whether to return the entire object that is generated
+#' (including all intermediate objects) or only the plot.
+#' @param drawPlot Whether the draw the plot, or only return it.
+#' @param baseSize This can be used to efficiently change the size of most plot
+#' elements.
+#' @param dotSize This is the size of the points used to show the individual
+#' data points in the left hand plot.
+#' @param baseFontSize This can be used to set the font size separately from
+#' the \code{baseSize}.
+#' @param theme This is the theme that is used for the plots.
+#' @param xbreaks Which breaks to use on the X axis (can be useful to override
+#' \code{\link{ggplot}}'s defaults).
+#' @param \dots These arguments are passed on to
+#' \code{\link{biAxisDiamondPlot}} (for the left panel) and
+#' \code{\link{diamondPlot}} (for the right panel).  Note that all argument are
+#' passed to both those functions.
+#' @return Depending on the value of \code{returnPlotOnly}, either the plot
+#' only (a \code{\link{gtable}} object) or an object containing most objects
+#' created along the way (in which case the plot is stored in
+#' \code{$output$bla}).
+#' 
+#' The plot has \code{width} and \code{height} attributes which can be used
+#' when saving the plot.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{biAxisDiamondPlot}},
+#' \code{\link{associationsDiamondPlot}}, \code{\link{determinantStructure}}
+#' @references Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2017). How to
+#' Select Relevant Social-Cognitive Determinants and Use them in the
+#' Development of Behaviour Change Interventions? Confidence Interval-Based
+#' Estimation of Relevance. http://dx.doi.org/
+#' @keywords hplot
+#' @examples
+#' 
+#' CIBER(data=mtcars,
+#'       determinants=c('drat', 'wt', 'am',
+#'                      'gear', 'vs', 'carb'),
+#'       targets=c('mpg', 'cyl'));
+#' 
+#' @export CIBER
+CIBER <- behaviorchange::CIBER;

@@ -1,3 +1,27 @@
+#' processLimeSurveyDropouts
+#' 
+#' This function makes it easy to parse the dropouts from a LimeSurvey
+#' questionnaire.
+#' 
+#' This will be described more in detail in a forthcoming publications.
+#' 
+#' @param lastpage A vector with the 'lastpage' variable as LimeSurvey stores
+#' it (an integer denoting the last page a participant visited, in other words,
+#' where they dropped out).
+#' @param pagenames Optional: names for each page.
+#' @param relevantPagenames Optional: the names of those pages that should be
+#' included.
+#' @return A list with information about the dropout, including
+#' \code{\link{ggplot}}s.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @keywords untilities
+#' @examples
+#' 
+#' processLimeSurveyDropouts(c(1,2,1,1,2,3,2,2,3,2,1));
+#' 
+#' @export processLimeSurveyDropouts
 processLimeSurveyDropouts <- function(lastpage, pagenames = NULL,
                                       relevantPagenames = NULL) {
 

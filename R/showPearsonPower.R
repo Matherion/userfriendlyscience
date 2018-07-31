@@ -1,3 +1,44 @@
+#' Visualisation of the power of a Pearson correlation test
+#' 
+#' This fuction is useful when conducting power analyses for a Pearson
+#' correlation. It draws the sampling distribution of Pearson's \emph{r}
+#' assuming a null hypothesis value of \emph{r} and assuming a the hypothetical
+#' population value. The probability of making a Type 1 error is also
+#' illustrated.
+#' 
+#' 
+#' @param n The number of participants.
+#' @param rho The value of the correlation coefficient in the population.
+#' @param rNull The value of the correlation coefficient according to the null
+#' hypothesis.
+#' @param distLabels Labels for the two distributions; the first one is the
+#' null hypothesis distribution, the second one the alternative distribution.
+#' @param rhoColor,rNullColor,type2Color The border colors of the distributions
+#' and the region used to illustrate the Type 2 error probability.
+#' @param rhoFill,rNullFill,type2Fill The fill colors of the distributions and
+#' the region used to illustrate the Type 2 error probability.
+#' @param rhoAlpha,rNullAlpha,type2Alpha The alpha (transparency) of the
+#' distributions and the region used to illustrate the Type 2 error
+#' probability.
+#' @param rhoLineSize,rNullLineSize,type2LineSize The line thicknesses of the
+#' distributions and the region used to illustrate the Type 2 error
+#' probability.
+#' @param theme The theme to use.
+#' @param alpha The significance level (alpha) of the null hypothesis test.
+#' @param digits The number of digits to round to.
+#' @return A \code{\link{ggplot}} plot is returned.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{didacticPlot}}
+#' @keywords hplot
+#' @examples
+#' 
+#' \dontrun{
+#' showPearsonPower();
+#' }
+#' 
+#' @export showPearsonPower
 showPearsonPower <- function(n = 100, rho=.3, rNull = 0,
                              distLabels = c("Null Hypothesis", "Population"),
                              rhoColor = 'green', rhoFill = 'green', rhoAlpha = .1, rhoLineSize=1,

@@ -1,3 +1,40 @@
+#' asymmetricalScatterMatrix
+#' 
+#' This function generates an asymmetrical \code{\link{scatterMatrix}} with
+#' histograms showing the distribution of each variable.
+#' 
+#' 
+#' @param dat The dataframe containing the items to show in the
+#' \code{\link{scatterMatrix}}.
+#' @param cols The variable names of the variables to place on the columns.
+#' @param rows The variable names of the variables to place on the rows.
+#' @param theme Which ggplot theme to use.
+#' @param autoSize Whether to resize the plot depending on the viewport (i.e.
+#' device that is being drawn to) or whether to use the four measurements
+#' specified below (\code{txtHeight}, \code{histHeight}, \code{scatterWidth},
+#' and \code{scatterHeight}) to size the plot.
+#' @param txtHeight,histHeight,scatterWidth,scatterHeight These numbers are
+#' used to determine the space used for displaying the scatterplots,
+#' histograms, and labels in the final scatterMatrix.
+#' @param unit The unit in which txtHeight, histHeight, scatterWidth, and
+#' scatterheight are provided.
+#' @param dpi The DPI of the final plot.
+#' @param showCorrelations Where to display correlation coefficients; set to
+#' NULL to display no correlation coefficients.
+#' @param correlationSize The size(s) of the correlation coefficient(s).
+#' @param correlationColor The color of the correlation coefficient(s).
+#' @param pointSize The size of the points in the scatterplots.
+#' @return A \code{\link{scatterMatrix}}, just not symmetrical.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @keywords misc
+#' @examples
+#' 
+#' asymmetricalScatterMatrix(infert, cols=c("parity", "age"),
+#'                           rows=c("induced", "case", "spontaneous"),
+#'                           showCorrelations="top-right");
+#' @export asymmetricalScatterMatrix
 asymmetricalScatterMatrix <- function(dat, cols, rows,
 #                                      scaleLimits = NULL,
 #                                      powerHist=TRUE,

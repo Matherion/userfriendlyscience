@@ -1,3 +1,82 @@
+#' Confidence Curves
+#' 
+#' Confidence curves are a way to show the confidence in an estimate computed
+#' from sample data. They are useful because they show all confidence levels
+#' simultaneously, thereby giving a good sense of the accuracy of the estimate,
+#' without forcing the researchers to make a more or less arbitrary choice for
+#' one confidence level.
+#' 
+#' 
+#' @param metric The metric, currently only 'd' (Cohen's \emph{d}) and 'r'
+#' (Pearson's \emph{r}) are implemented.
+#' @param value The value for which to create the confidence curve plot.
+#' @param n The sample size for which to create the confidence curve plot. If
+#' \code{n} is specified, the y axis shows confidence levels (i.e. a
+#' conventional confidence curve is generated). If \code{n} is set to
+#' \code{NULL}, the y axis shows sample sizes. Either \code{n} or
+#' \code{conf.level} must be \code{NULL}.
+#' @param conf.level The confidence level for which to create the confidence
+#' curve plot. If \code{conf.level} is specified, the y axis shows sample
+#' sizes. If \code{conf.level} is set to \code{NULL}, the y axis shows
+#' confidence levels (i.e. a conventional confidence curve is generated).
+#' Either \code{n} or \code{conf.level} must be \code{NULL}.
+#' @param wRange The range of 'half-widths', or margins of error, to plot in
+#' the confidence curve plot if no sample size is specified (if \code{n=NULL}).
+#' @param curveSize The line size of the confidence curve line.
+#' @param curveColor The color of the confidence curve line.
+#' @param confRange The range of confidence levels to plot.
+#' @param confLines,widthLines If a traditional confidence curve is generated,
+#' lines can be added to indicate the metric values corresponding to the lower
+#' and upper confidence interval bounds. For an inverse confidence curve, lines
+#' can be added to inficate the metric values and sample sizes corresponding to
+#' specific margins of error (or 'half-widths').
+#' @param lineColor If confidence or 'interval width lines' lines are added
+#' (see \code{confLines}), this is the color in which they are drawn. Specify a
+#' vector (e.g. \code{\link{brewer.pal}(9, 'Set1')}) to have the colors drawn
+#' in different colors for each confidence level or width.
+#' @param lineSize If confidence lines or 'interval width lines' are added (see
+#' \code{confLines} and \code{widthLines}), these arguments specify the color
+#' and size in which they are drawn.
+#' @param lineAlpha The alpha value (transparency) of the confidence lines or
+#' 'interval width lines'.
+#' @param xlab The label on the x axis.
+#' @param steps The number of steps to use when generating the data for the
+#' confidence curves' more steps yield prettier, smoother curves, but take more
+#' time.
+#' @param theme The \code{\link{ggplot}} theme to use.
+#' @param gradient Whether to use a gradient as background to make the
+#' confidence more explicit. This is experimental and pretty influential in
+#' terms of how the plot looks. The default gradient, used when passing
+#' \code{TRUE}, uses black as background color when the confidence is 0
+#' percent, and white for 100 percent. If two colors are specified, these are
+#' used instead.
+#' @param gradientWidth If using a gradient, the width of the
+#' \code{\link{geom_tile}} geoms used to create the gradient.
+#' @param outputFile A file to which to save the plot.
+#' @param outputWidth,outputHeight Width and height of saved plot (specified in
+#' centimeters by default, see \code{ggsaveParams}).
+#' @param ggsaveParams Parameters to pass to ggsave when saving the plot.
+#' @return A \code{\link{ggplot2}} plot.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{cohensdCI}}, \code{\link{pwr.cohensdCI}},
+#' \code{\link{confIntR}}, \code{\link{pwr.confIntR}}
+#' @references Bender, R., Berg, G., & Zeeb, H. (2005). Tutorial: Using
+#' confidence curves in medical research. \emph{Biometrical Journal}, 47(2),
+#' 237-247. http://doi.org/10.1002/bimj.200410104
+#' 
+#' Birnbaum, A. (1961). Confidence curves: An omnibus technique for estimation
+#' and testing statistical hypotheses. \emph{Journal of the American
+#' Statistical Association}, 56(294), 246-249.
+#' http://doi.org/10.1080/01621459.1961.10482107
+#' @keywords hplot
+#' @examples
+#' 
+#' ggConfidenceCurve(metric='d', value = .5, n = 128);
+#' ggConfidenceCurve(metric='d', value = .5, conf.level = .95);
+#' 
+#' @export ggConfidenceCurve
 ggConfidenceCurve <- function(metric = 'd', value = NULL, n = NULL,
                               conf.level=NULL,
                               wRange = c(.05, .8),

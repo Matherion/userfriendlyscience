@@ -1,3 +1,102 @@
+#' meansComparisonDiamondPlot and duoComparisonDiamondPlot
+#' 
+#' These are two diamond plot functions to conveniently make diamond plots to
+#' compare subgroups or different samples. They are both based on a univariate
+#' diamond plot where colors are used to distinguish the data points and
+#' diamonds of each subgroup or sample. The means comparison diamond plot
+#' produces only this plot, while the duo comparison diamond plot combines it
+#' with a diamond plot visualising the effect sizes of the associations. The
+#' latter currently only works for two subgroups or samples, while the simple
+#' meansComparisonDiamondPlot also works when comparing more than two sets of
+#' datapoints. These functions are explained more in detail in Peters (2017).
+#' 
+#' These functions are explained in Peters (2017).
+#' 
+#' @aliases meansComparisonDiamondPlot duoComparisonDiamondPlot
+#' @param dat The dataframe containing the relevant variables.
+#' @param items The variables to plot (on the y axis).
+#' @param compareBy The variable by which to compare (i.e. the variable
+#' indicating to which subgroup or sample a row in the dataframe belongs).
+#' @param labels The labels to use on the y axis; these values will replace the
+#' variable names in the dataframe (specified in \code{items}).
+#' @param compareByLabels The labels to use to replace the value labels of the
+#' \code{compareBy} variable.
+#' @param decreasing Whether to sort the variables by their mean values
+#' (\code{NULL} to not sort, \code{TRUE} to sort in descending order (i.e.
+#' items with lower means are plotted more to the bottom), and \code{FALSE} to
+#' sort in ascending order (i.e. items with lower means are plotted more to the
+#' top).
+#' @param sortBy If the variables should be sorted (see \code{decreasing}),
+#' this variable specified which subgroup should be sorted by. Therefore, the
+#' value specified here must be a value label ('level label') of the
+#' \code{comparisonBy} variable.
+#' @param conf.level The confidence level of the confidence intervals specified
+#' by the diamonds for the means (for \code{meansComparisonDiamondPlot}) and
+#' for both the means and effect sizes (for \code{duoComparisonDiamondPlot}).
+#' @param showData Whether to plot the data points.
+#' @param dataAlpha The transparency (alpha channel) value for the data points:
+#' a value between 0 and 1, where 0 denotes complete transparency and 1 denotes
+#' complete opacity.
+#' @param dataSize The size of the data points.
+#' @param comparisonColors The colors to use for the different subgroups or
+#' samples. This should be a vector of valid colors with at least as many
+#' elements as sets of data points that should be plotted.
+#' @param associationsColor For \code{duoComparisonDiamondPlot}, the color to
+#' use to plot the effect sizes in the right-hand plot.
+#' @param alpha The alpha channel (transparency) value for the diamonds: a
+#' value between 0 and 1, where 0 denotes complete transparency and 1 denotes
+#' complete opacity.
+#' @param jitterWidth,jitterHeight How much noise to add to the data points (to
+#' prevent overplotting) in the horizontal (x axis) and vertical (y axis)
+#' directions.
+#' @param xlab,ylab The label to use for the x and y axes (for
+#' \code{duoComparisonDiamondPlot}, must be vectors of two elements). Use
+#' \code{NULL} to not use a label.
+#' @param theme The theme to use for the plots.
+#' @param showLegend Whether to show the legend (which color represents which
+#' subgroup/sample).
+#' @param lineSize The thickness of the lines (the diamonds' strokes).
+#' @param drawPlot Whether to draw the plot, or only (invisibly) return it.
+#' @param xbreaks Where the breaks (major grid lines, ticks, and labels) on the
+#' x axis should be.
+#' @param outputFile A file to which to save the plot.
+#' @param outputWidth,outputHeight Width and height of saved plot (specified in
+#' centimeters by default, see \code{ggsaveParams}).
+#' @param ggsaveParams Parameters to pass to ggsave when saving the plot.
+#' @param \dots Any additional arguments are passed to
+#' \code{\link{diamondPlot}} by \code{meansComparisonDiamondPlot} and to both
+#' \code{meansComparisonDiamondPlot} and \code{\link{associationsDiamondPlot}}
+#' by \code{duoComparisonDiamondPlot}.
+#' @return Diamond plots: a \code{\link{ggplot}} by
+#' \code{meansComparisonDiamondPlot}, and a \code{\link{gtable}} by
+#' \code{duoComparisonDiamondPlot}.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{diamondPlot}}, \code{\link{meansDiamondPlot}},
+#' \code{\link{CIBER}}
+#' @references Peters, G.-J. Y. (2017). Diamond Plots: a tutorial to introduce
+#' a visualisation tool that facilitates interpretation and comparison of
+#' multiple sample estimates while respecting their inaccuracy.
+#' \emph{PsyArXiv.} http://doi.org/10.17605/OSF.IO/9W8YV
+#' @keywords ~kwd1 ~kwd2
+#' @examples
+#' 
+#' meansComparisonDiamondPlot(mtcars,
+#'                            items=c('disp', 'hp'),
+#'                            compareBy='vs',
+#'                            xbreaks=c(100,200, 300, 400));
+#' meansComparisonDiamondPlot(chickwts,
+#'                            items='weight',
+#'                            compareBy='feed',
+#'                            xbreaks=c(100,200,300,400),
+#'                            showData=FALSE);
+#' duoComparisonDiamondPlot(mtcars,
+#'                          items=c('disp', 'hp'),
+#'                          compareBy='vs',
+#'                          xbreaks=c(100,200, 300, 400));
+#' 
+#' @export meansComparisonDiamondPlot
 meansComparisonDiamondPlot <- function(dat, items = NULL,
                                        compareBy = NULL,
                                        labels = NULL,

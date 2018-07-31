@@ -1,3 +1,116 @@
+#' Visualising Numbers Needed for Change
+#' 
+#' These functions can be used to visualise Numbers Needed for Change.
+#' \code{erDataSeq} is a helper function to generate an Event Rate Data
+#' Sequence, and it uses \code{convert.threshold.to.er} and
+#' \code{convert.er.to.threshold} to convert thresholds to event rates and vice
+#' versa.
+#' 
+#' These functions are used by \code{\link{nnc}} to show the distributions, and
+#' event rates. They probably won't be used much on their own.
+#' 
+#' @aliases ggNNC erDataSeq convert.threshold.to.er convert.er.to.threshold
+#' @param er Event rate to visualise (or convert).
+#' @param threshold If the event rate is not available, a threshold value can
+#' be specified instead, which is then used in conjunction with the mean
+#' (\code{mean}) and standard deviation (\code{sd}) and assuming a normal
+#' distribution to compute the event rate.
+#' @param mean The mean of the control group distribution.
+#' @param sd The standard deviation (of the control distribution, but assumed
+#' to be the same for both distributions).
+#' @param eventIfHigher Whether scores above or below the threshold are
+#' considered 'an event'.
+#' @param pRange The range of probabilities for which to so the distribution.
+#' @param xStep Precision of the drawn distribution; higher values mean lower
+#' precision/granularity/resolution.
+#' @param cerDataSeq The \code{cerDataSeq} object.
+#' @param d The value of Cohen's \emph{d}.
+#' @param eventDesirable Whether an event is desirable or undesirable.
+#' @param r The correlation between the determinant and behavior (for mediated
+#' NNC's).
+#' @param xlab The label to display for the X axis.
+#' @param plotTitle The title of the plot; either one character value, this
+#' value if used; if two, they are considered a prefix and suffix to be
+#' pre/appended to the NNC value.
+#' @param theme The theme to use for the plot.
+#' @param lineSize The thickness of the lines in the plot.
+#' @param cerColor The color to use for the event rate portion of the control
+#' group distribution.
+#' @param eerColor The color to use for the event rate portion of the
+#' experimental group distribution.
+#' @param cerLineColor The line color to use for the control group
+#' distribution.
+#' @param eerLineColor The line color to use for the experimental group
+#' distribution.
+#' @param dArrowColor The color of the arrow to show the effect size.
+#' @param cerAlpha The alpha value (transparency) to use for the control group
+#' distribution.
+#' @param eerAlpha The alpha value (transparency) to use for the control group
+#' distribution.
+#' @param xLim This can be used to manually specify the limits for the X axis;
+#' if \code{NULL}, sensible limits will be derived using
+#' \code{xLimAutoDensityTolerance}.
+#' @param xLimAutoDensityTolerance If \code{xLim} is \code{NULL}, the limits
+#' will be set where the density falls below this proportion of its maximum
+#' value.
+#' @param showLegend Whether to show the legend (only if showing two
+#' distributions).
+#' @param verticalLineColor The color of the vertical line used to indicate the
+#' threshold.
+#' @param desirableColor The color for the desirable portion of the X axis.
+#' @param desirableAlpha The alpha for the desirable portion of the X axis.
+#' @param undesirableColor The color for the undesirable portion of the X axis.
+#' @param undesirableAlpha The color for the undesirable portion of the X axis.
+#' @param desirableTextColor The color for the text to indicate the desirable
+#' portion of the X axis.
+#' @param undesirableTextColor The color for the text to indicate the
+#' undesirable portion of the X axis.
+#' @param dArrowDistance The distance of the effect size arrow from the top of
+#' the distributions.
+#' @param dLabelDistance The distance of the effect size label from the top of
+#' the distributions.
+#' @param pdist,qdist Distributions to use when converting thresholds to event
+#' rates and vice versa; defaults to the normal distribution.
+#' @return \code{erDataSeq} returns a data sequence; \code{ggNNC} a
+#' \code{\link{ggplot}}.
+#' @author Gjalt-Jorn Peters & Stefan Gruijters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{nnc}}
+#' @references Gruijters, S. L. K., & Peters, G.-J. Y. (2017). Introducing the
+#' Numbers Needed for Change (NNC): A practical measure of effect size for
+#' intervention research.
+#' @keywords utilities
+#' @examples
+#' 
+#' ### Show distribution for an event rate value of 125
+#' ggNNC(erDataSeq(threshold=125, mean=90, sd=30));
+#' 
+#' ### If the event occurs under the threshold instead of
+#' ### above it
+#' ggNNC(erDataSeq(threshold=125, mean=90, sd=30,
+#'       eventIfHigher = FALSE));
+#' 
+#' ### ... And for undesirable events (note how
+#' ### desirability is an argument for ggNNC, whereas
+#' ### whether an event occurs 'above' or 'below' the
+#' ### threshold is an argument for erDataSeq):
+#' ggNNC(erDataSeq(threshold=125, mean=90, sd=30,
+#'                 eventIfHigher = FALSE),
+#'       eventDesirable = FALSE);
+#' 
+#' ### Show event rate for both experimental and
+#' ### control conditions, and show the numbers
+#' ### needed for change
+#' ggNNC(erDataSeq(threshold=125, mean=90, sd=30), d=.5);
+#' 
+#' ### Illustration of how even with very large effect
+#' ### sizes, if the control event rate is very high,
+#' ### you'll still need a high number of NNC
+#' ggNNC(erDataSeq(er=.9), d=1);
+#' 
+#' 
+#' @export ggNNC
 ggNNC <- function(cerDataSeq, d = NULL,
                   eventDesirable = TRUE,
                   r = 1,

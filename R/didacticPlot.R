@@ -1,4 +1,3 @@
-
 ### Note: this is necessary to prevent Rcmd CHECK from throwing a note;
 ### otherwise it think these variables weren't defined yet.
 utils::globalVariables(c("x", "y", "x.lo", "y.lo", "xintercept",
@@ -34,6 +33,48 @@ didacticPlotTheme <- function(base_size = 14, base_family = "") {
 ### The function itself
 ###########################################################
 
+
+
+#' didacticPlot
+#' 
+#' didacticPlot is useful for making ggplot2 plots of distributions of t, F,
+#' Chi^2, and Pearson r, showing a given value, and shading the arie covering
+#' the more extreme values. didacticPlotTheme is the basic theme.
+#' 
+#' 
+#' @aliases didacticPlot didacticPlotTheme
+#' @param foundValue The value to indicate (the 'found' value).
+#' @param statistic One of "r", "t", "f" or "chisq".
+#' @param df1,df2 The degrees of freedom; only use df1 for the r, t and chi^2
+#' test; for the F-test, use df1 for the degrees of freedom of the denominator
+#' and df2 for the degrees of freedom of the numerator.
+#' @param granularity Steps to use for x-axis.
+#' @param xLim Vector; minimum and maximum values on x axis.
+#' @param yLab Label on y axis.
+#' @param lineCol Colour of density line.
+#' @param lineSize Size of density line.
+#' @param surfaceCol Colour of coloured surface area.
+#' @param textMarginFactor Used to calculate how close to the vertical line
+#' text labels should appear.
+#' @param sided Whether to make a plot for a 2-sided or 1-sided test.
+#' @param base_size,base_family Passed on to the grey ggplot theme.
+#' @return didacticPlot returns an object that contains the plot in the $plot
+#' element.
+#' @keywords utilities
+#' @examples
+#' 
+#' didacticPlot(1, statistic='chisq', df1=2);
+#' 
+#' didacticPlot(1, statistic='t', df1=40);
+#' 
+#' didacticPlot(2.02, statistic='t', df1=40, textMarginFactor=25);
+#' 
+#' ### Two sample t-test for n1 = n2 = 250, showing
+#' ### p-value of 5%
+#' # a<-didacticPlot(1.96, statistic='t', df1=498);
+#' 
+#' 
+#' @export didacticPlot
 didacticPlot <- function(foundValue, statistic, df1, df2 = NULL,
                          granularity = 1000, xLim = NULL, yLab = NULL,
                          lineCol = "red", lineSize=1,

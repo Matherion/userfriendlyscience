@@ -4,6 +4,60 @@ utils::globalVariables(c('distribution', '..density..',
                          '..scaled', 'normalX', 'normalY'));
 
 ### Make a 'better' histogram using ggplot
+
+
+#' powerHist
+#' 
+#' powerHist generates a histogram with a density curve and a normal density
+#' curve.
+#' 
+#' 
+#' @param vector A numeric vector.
+#' @param histColor The colour to use for the histogram.
+#' @param distributionColor The colour to use for the density curve.
+#' @param normalColor The colour to use for the normal curve.
+#' @param distributionLineSize The line size to use for the distribution
+#' density curve.
+#' @param normalLineSize The line size to use for the normal curve.
+#' @param histAlpha Alpha value ('opaqueness', as in, versus transparency) of
+#' the histogram.
+#' @param xLabel Label to use on x axis.
+#' @param yLabel Label to use on y axis.
+#' @param normalCurve Whether to display the normal curve.
+#' @param distCurve Whether to display the curve showing the distribution of
+#' the observed data.
+#' @param breaks The number of breaks to use (this is equal to the number of
+#' bins minus one, or in other words, to the number of bars minus one).
+#' @param theme The theme to use.
+#' @param rug Whether to add a rug (i.e. lines at the bottom that correspond to
+#' individual datapoints.
+#' @param jitteredRug Whether to jitter the rug (useful for variables with
+#' several datapoints sharing the same value.
+#' @param rugSides This is useful when the histogram will be rotated; for
+#' example, this can be set to 'r' if the histogram is rotated 270 degrees.
+#' @param rugAlpha Alpha value to use for the rug. When there is a lot of
+#' overlap, this can help get an idea of the number of datapoints at 'popular'
+#' values.
+#' @param returnPlotOnly Whether to return the usual \code{powerHist} object
+#' that also contains all settings and intermediate objects, or whether to only
+#' return the \code{\link{ggplot}} plot.
+#' @return
+#' 
+#' An object, with the following elements: \item{input}{The input when the
+#' function was called.} \item{intermediate}{The intermediate numbers and
+#' distributions.} \item{dat}{The dataframe used to generate the plot.}
+#' \item{plot}{The histogram.}
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @keywords utilities
+#' @examples
+#' 
+#' 
+#' powerHist(mtcars$mpg)
+#' 
+#' 
+#' @export powerHist
 powerHist <- function(vector,
                       histColor = "#0000CC",
                       distributionColor = "#0000CC",

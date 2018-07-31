@@ -14,6 +14,64 @@
 ### Define functions
 ###########################################################
 
+
+
+#' rMatrix
+#' 
+#' rMatrix provides a correlation matrix with confidence intervals and a
+#' p-value adjusted for multiple testing.
+#' 
+#' 
+#' rMatrix provides a symmetric or asymmetric matrix of correlations their
+#' confidence intervals, and p-values. The p-values can be corrected for
+#' multiple testing.
+#' 
+#' @param dat A dataframe containing the relevant variables.
+#' @param x Vector of 1+ variable names.
+#' @param y Vector of 1+ variable names; if this is left empty, a symmetric
+#' matrix is created; if this is filled, the matrix will have the x variables
+#' defining the rows and the y variables defining the columns.
+#' @param conf.level The confidence of the confidence intervals.
+#' @param correction Correction for multiple testing: an element out of the
+#' vector c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr",
+#' "none"). NOTE: the p-values are corrected for multiple testing; The
+#' confidence intervals are not (yet :-)).
+#' @param digits With what precision do you want the results to print.
+#' @param pValueDigits Determines the number of digits to use when displaying p
+#' values. P-values that are too small will be shown as p<.001 or p<.00001 etc.
+#' @param colspace Number of spaces between columns (only for R output, ignored
+#' for LaTeX output)
+#' @param rowspace Number of rows between table rows (note: one table row is 2
+#' rows; only for R output, ignored for LaTeX output).
+#' @param colNames colNames can be "numbers" or "names". "Names" cause
+#' variables names to be printed in the heading; "numbers" causes the rows to
+#' become numbered and the numbers to be printed in the heading.
+#' @param output Can be "R" or "LaTeX"; if output is set to "LaTeX", the result
+#' is a LaTeX table (e.g. for use in knitr).
+#' @param env.LaTeX For LaTeX output, the environment can be set with
+#' env.LaTeX.
+#' @param pboxWidthMultiplier When using LaTeX, pboxWidthMultiplier can be used
+#' to make the cells narrower or wider (1 works for anything up until 4 or 5
+#' digits).
+#' @return
+#' 
+#' An object with the input and several output variables. Most notably a number
+#' of matrices: \item{r}{Pearson r values.} \item{parameter}{Degrees of
+#' freedom.} \item{ci.lo}{Lower bound of Pearson r confidence interval.}
+#' \item{ci.hi}{Upper bound of Pearson r confidence interval.}
+#' \item{p.raw}{Original p-values.} \item{p.adj}{p-values adjusted for multiple
+#' testing.}
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @keywords utilities
+#' @examples
+#' 
+#' 
+#' rMatrix(mtcars, x=c('disp', 'hp', 'drat'))
+#' 
+#' 
+#' @export rMatrix
 rMatrix <- function(dat, x, y=NULL, conf.level = .95, correction = "fdr",
                     digits = 2, pValueDigits=3, colspace=2, rowspace=0,
                     colNames ="numbers",

@@ -1,3 +1,84 @@
+#' Piecewise regression analysis
+#' 
+#' This function conducts a piecewise regression analysis and shows a plot
+#' illustrating the results. The function enables easy customization of the
+#' main plot elements and easy saving of the plot with anti-aliasing.
+#' 
+#' 
+#' @param data The dataframe containing the variables for the analysis.
+#' @param timeVar The name of the variable containing the measurement moments
+#' (or an index of measurement moments). An index can also be specified, and
+#' assumed to be 1 if omitted.
+#' @param yVar The name of the dependent variable. An index can also be
+#' specified, and assumed to be 2 if omitted.
+#' @param phaseVar The variable containing the phase of each measurement. Note
+#' that this normally should only have two possible values.
+#' @param baselineMeasurements If no phaseVar is specified,
+#' \code{baselineMeasurements} can be used to specify the number of baseline
+#' measurements, which is then used to construct the \code{phaseVar} dummy
+#' variable.
+#' @param robust Whether to use normal or robust linear regression.
+#' @param digits The number of digits to show in the results.
+#' @param colors The colors to use for the different plot elements.
+#' @param theme The theme to use in the plot.
+#' @param pointSize,lineSize The sizes of points and lines in the plot.
+#' @param yRange This can be used to manually specify the possible values that
+#' the dependent variable can take. If not provided, the observed range of the
+#' dependent variable values is used instead.
+#' @param yBreaks If \code{NULL}, the \code{\link{pretty}} function is used to
+#' estimate the best breaks for the Y axis. If a value is supplied, this value
+#' is used as the size of intervals between the (floored) minimum and
+#' (ceilinged) maximum of \code{yRange} (e.g. if \code{yBreaks} is 1, a break
+#' point every integer; if 2 and the minimum is 1 and the maximum is 7, breaks
+#' at 1, 3, 5 and 7; etc).
+#' @param pointAlpha The alpha channel (transparency, or rather, 'opaqueness')
+#' of the points.
+#' @param showPlot Whether to show the plot or not.
+#' @param plotLabs A list with arguments to the \code{\link{ggplot2}}
+#' \code{\link{labs}} function, which can be used to conveniently set plot
+#' labels.
+#' @param outputFile If not \code{NULL}, the path and filename specifying where
+#' to save the plot.
+#' @param outputWidth,outputHeight The dimensions of the plot when saving it
+#' (in units specified in \code{ggsaveParams}).
+#' @param ggsaveParams The parameters to use when saving the plot, passed on to
+#' \code{\link{ggsave}}.
+#' @return Mainly, this function prints its results, but it also returns them
+#' in an object containing three lists: \item{input}{The arguments specified
+#' when calling the function} \item{intermediate}{Intermediat objects and
+#' values} \item{output}{The results such as the plot.}
+#' @author Peter Verboon & Gjalt-Jorn Peters (both at the Open University of
+#' the Netherlands)
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{genlog}}
+#' @references Verboon, P. & Peters, G.-J. Y. (2018) Applying the generalised
+#' logistic model in single case designs: modelling treatment-induced shifts.
+#' \emph{PsyArXiv} \url{https://doi.org/10.17605/osf.io/ad5eh}
+#' @keywords regression htest hplot
+#' @examples
+#' 
+#' ### Load dataset
+#' data(Singh);
+#' 
+#' ### Extract Jason
+#' dat <- Singh[Singh$tier==1, ];
+#' 
+#' ### Conduct piecewise regression analysis
+#' piecewiseRegr(dat,
+#'               timeVar='time',
+#'               yVar='score_physical',
+#'               phaseVar='phase');
+#' 
+#' ### Pretend treatment started between measurements
+#' ### 5 and 6
+#' piecewiseRegr(dat,
+#'               timeVar='time',
+#'               yVar='score_physical',
+#'               baselineMeasurements=5);
+#' 
+#' 
+#' @export piecewiseRegr
 piecewiseRegr <- function(data,
                           timeVar = 1,
                           yVar = 2,

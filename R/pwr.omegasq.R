@@ -1,3 +1,40 @@
+#' Power calculations for Omega Squared.
+#' 
+#' This function uses \code{\link{pwr.anova.test}} from the \code{\link{pwr}}
+#' package in combination with \code{\link{convert.cohensf.to.omegasq}} and
+#' \code{\link{convert.omegasq.to.cohensf}} to provide power analyses for Omega
+#' Squared.
+#' 
+#' This function was written to work similarly to the power functions in the
+#' \code{\link{pwr}} package.
+#' 
+#' @param k The number of groups.
+#' @param n The sample size.
+#' @param omegasq The Omega Squared value.
+#' @param sig.level The significance level (alpha).
+#' @param power The power.
+#' @param digits The number of digits desired in the output (4, the default, is
+#' quite high; but omega squared value tend to be quite low).
+#' @return An \code{power.htest.ufs} object that contains a number of input and
+#' output values, most notably:
+#' 
+#' \item{power}{The (specified or computed) power} \item{n}{The (specified or
+#' computed) sample size in each group} \item{sig.level}{The (specified or
+#' computed) significance level (alpha)} \item{sig.level}{The (specified or
+#' computed) Omega Squared value} \item{cohensf}{The computed value for the
+#' Cohen's \emph{f} effect size measure}
+#' @author Gjalt-Jorn Peters & Peter Verboon
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{pwr.anova.test}},
+#' \code{\link{convert.cohensf.to.omegasq}},
+#' \code{\link{convert.omegasq.to.cohensf}}
+#' @keywords htest
+#' @examples
+#' 
+#' pwr.omegasq(omegasq=.06, k=3, power=.8)
+#' 
+#' @export pwr.omegasq
 pwr.omegasq <- function(k = NULL, n = NULL,
                         omegasq = NULL,
                         sig.level=.05,

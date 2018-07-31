@@ -2,7 +2,7 @@ Package: userfriendlyscience
 Type: Package
 Title: Quantitative Analysis Made Accessible
 Version: 0.7.2
-Date: 2018-06-01
+Date: 2018-08-01
 Authors@R: c(person("Gjalt-Jorn", "Peters",
                     email = "gjalt-jorn@userfriendlyscience.com",
                     role = c("aut", "cre", "ctb")),
@@ -26,7 +26,8 @@ Description: Contains a number of functions that serve
 URL: http://userfriendlyscience.com
 BugReports: https://github.com/matherion/userfriendlyscience/issues
 LazyData: true
-Imports: BiasedUrn,
+Imports: behaviorchange (>= 0.0.1),
+         BiasedUrn,
          car,
          data.tree,
          DiagrammeR,
@@ -54,6 +55,7 @@ Imports: BiasedUrn,
          scales,
          SCRT,
          SuppDists,
+         ufs (>= 0.0.1),
          viridis,
          XML,
          xtable

@@ -1,3 +1,33 @@
+#' Reliability function similar to the SPSS RELIABILITY command
+#' 
+#' This function was developed to offer a function that roughly works similar
+#' to the SPSS RELIABILITY command.
+#' 
+#' 
+#' @param data The dataframe containing the variables (items, questions) of
+#' interest.
+#' @param items Optionally, the variables (items, questions) of interest. If
+#' omitted, all variables (items, questions) in the dataframe will be used.
+#' @param itemDiagnostics Whether to also display the item diagnostics
+#' (specifically, the corrected item-total correlation, mean and variance
+#' excluding each item, and the reliability coefficients excluding each item).
+#' @param digits The number of digits to use when displaying the results.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{scaleStructure}}, the excellent \code{\link{psych}}
+#' package
+#' @keywords univar
+#' @examples
+#' 
+#' \dontrun{
+#' ## (Not run to test because it takes a long time.)
+#' 
+#' data(testRetestSimData);
+#' reliability(testRetestSimData[, 2:11], itemDiagnostics = TRUE);
+#' }
+#' 
+#' @export reliability
 reliability <- function(data,
                         items = NULL,
                         itemDiagnostics = FALSE,

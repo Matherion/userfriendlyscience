@@ -1,3 +1,81 @@
+#' Diamondplot with two Y axes
+#' 
+#' This is basically a \code{\link{meansDiamondPlot}}, but extended to allow
+#' specifying subquestions and anchors at the left and right side. This is
+#' convenient for psychological questionnaires when the anchors or dimensions
+#' were different from item to item. This function is used to function the left
+#' panel of the \code{\link{CIBER}} plot.
+#' 
+#' This is a diamondplot that can be used for items/questions where the anchors
+#' of the response scales could be different for every item. For the rest, it
+#' is very similar to \code{\link{meansDiamondPlot}}.
+#' 
+#' @param dat The dataframe containing the variables.
+#' @param items The variables to include.
+#' @param leftAnchors The anchors to display on the left side of the left hand
+#' panel. If the items were measured with one variable each, this can be used
+#' to show the anchors that were used for the respective scales. Must have the
+#' same length as \code{items}.
+#' @param rightAnchors The anchors to display on the left side of the left hand
+#' panel. If the items were measured with one variable each, this can be used
+#' to show the anchors that were used for the respective scales. Must have the
+#' same length as \code{items}.
+#' @param subQuestions The subquestions used to measure each item. This can
+#' also be used to provide pretty names for the variables if the items were not
+#' measured by one question each. Must have the same length as \code{items}.
+#' @param decreasing Whether to sort the items. Specify \code{NULL} to not sort
+#' at all, \code{TRUE} to sort in descending order, and \code{FALSE} to sort in
+#' ascending order.
+#' @param conf.level The confidence levels for the confidence intervals.
+#' @param showData Whether to show the individual datapoints.
+#' @param dataAlpha The alpha level (transparency) of the individual
+#' datapoints.  Value between 0 and 1, where 0 signifies complete transparency
+#' (i.e. invisibility) and 1 signifies complete 'opaqueness'.
+#' @param dataColor The color to use for the individual datapoints.
+#' @param diamondColors The colours to use for the diamonds. If NULL, the
+#' \code{generateColors} argument can be used which will then be passed to
+#' \code{\link{diamondPlot}}.
+#' @param jitterWidth How much to jitter the individual datapoints
+#' horizontally.
+#' @param jitterHeight How much to jitter the individual datapoints vertically.
+#' @param xbreaks Which breaks to use on the X axis (can be useful to override
+#' \code{\link{ggplot}}'s defaults).
+#' @param xLabels Which labels to use for those breaks (can be useful to
+#' override \code{\link{ggplot}}'s defaults; especially useful in combination
+#' with \code{xBreaks} of course).
+#' @param xAxisLab Axis label for the X axis.
+#' @param drawPlot Whether to draw the plot, or only return it.
+#' @param returnPlotOnly Whether to return the entire object that is generated
+#' (including all intermediate objects) or only the plot.
+#' @param baseSize This can be used to efficiently change the size of most plot
+#' elements.
+#' @param dotSize This is the size of the points used to show the individual
+#' data points in the left hand plot.
+#' @param baseFontSize This can be used to set the font size separately from
+#' the \code{baseSize}.
+#' @param theme This is the theme that is used for the plots.
+#' @param outputFile A file to which to save the plot.
+#' @param outputWidth,outputHeight Width and height of saved plot (specified in
+#' centimeters by default, see \code{ggsaveParams}).
+#' @param ggsaveParams Parameters to pass to ggsave when saving the plot.
+#' @param \dots These arguments are passed on to \code{\link{diamondPlot}}.
+#' @return Either just a plot (a \code{\link{gtable}} object) or an object with
+#' all produced objects and that plot.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @seealso \code{\link{CIBER}}, \code{\link{associationsDiamondPlot}}
+#' @keywords hplot
+#' @examples
+#' 
+#' biAxisDiamondPlot(dat=mtcars,
+#'                   items=c('cyl', 'wt'),
+#'                   subQuestions=c('cylinders', 'weight'),
+#'                   leftAnchors=c('few', 'light'),
+#'                   rightAnchors=c('many', 'heavy'),
+#'                   xbreaks=0:8);
+#' 
+#' @export biAxisDiamondPlot
 biAxisDiamondPlot <- function(dat, items = NULL,
                               leftAnchors=NULL, rightAnchors=NULL,
                               subQuestions=NULL,

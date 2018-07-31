@@ -1,3 +1,23 @@
+#' sharedSubString
+#' 
+#' A function to find the longest shared substring in a character vector.
+#' 
+#' 
+#' @param x The character vector to process.
+#' @param y Optionally, two single values can be specified. This is probably
+#' not useful to end users, but it's used by the function when it calls itself.
+#' @return A vector of length one with either the longest substring that occurs
+#' in all values of the character vector, or NA if no overlap an be found.
+#' @author Gjalt-Jorn Peters
+#' 
+#' Maintainer: Gjalt-Jorn Peters <gjalt-jorn@@userfriendlyscience.com>
+#' @keywords character
+#' @examples
+#' 
+#'   sharedSubString(c("t0_responseTime", "t1_responseTime", "t2_responseTime"));
+#'   ### Returns "_responseTime"
+#' 
+#' @export sharedSubString
 sharedSubString <- function(x, y=NULL) {
   if (!is.null(y)) {
     if (length(x) == 1 && length(y) == 1) {
