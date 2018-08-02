@@ -64,12 +64,12 @@
 #' \code{\link{confIntR}}, \code{\link{pwr.confIntR}}
 #' @references Bender, R., Berg, G., & Zeeb, H. (2005). Tutorial: Using
 #' confidence curves in medical research. \emph{Biometrical Journal}, 47(2),
-#' 237-247. http://doi.org/10.1002/bimj.200410104
+#' 237-247. https://doi.org/10.1002/bimj.200410104
 #' 
 #' Birnbaum, A. (1961). Confidence curves: An omnibus technique for estimation
 #' and testing statistical hypotheses. \emph{Journal of the American
 #' Statistical Association}, 56(294), 246-249.
-#' http://doi.org/10.1080/01621459.1961.10482107
+#' https://doi.org/10.1080/01621459.1961.10482107
 #' @keywords hplot
 #' @examples
 #' 

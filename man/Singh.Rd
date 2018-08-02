@@ -23,9 +23,9 @@ This is a dataset originally described in Singh et al. (2007), and digitized by 
 See Rumen Manolov's Open Science Framework repository at \url{https://osf.io/t6ws6} for the tutorial and the original dataset.
 }
 \references{
-Singh, N. N., Lancioni, G. E., Winton, A. S., Adkins, A. D., Wahler, R. G., Sabaawi, M., & Singh, J. (2007). Individuals with mental illness can control their aggressive behavior through mindfulness training. \emph{Behavior Modification, 31}(3), 313-328. http://doi.org/10.1177/0145445506293585
+Singh, N. N., Lancioni, G. E., Winton, A. S., Adkins, A. D., Wahler, R. G., Sabaawi, M., & Singh, J. (2007). Individuals with mental illness can control their aggressive behavior through mindfulness training. \emph{Behavior Modification, 31}(3), 313-328. https://doi.org/10.1177/0145445506293585
 
-Manolov, R., & Moeyaert, M. (2017). How Can Single-Case Data Be Analyzed? Software Resources, Tutorial, and Reflections on Analysis. \emph{Behavior Modification, 41}(2), 179-228. http://doi.org/10.1177/0145445516664307
+Manolov, R., & Moeyaert, M. (2017). How Can Single-Case Data Be Analyzed? Software Resources, Tutorial, and Reflections on Analysis. \emph{Behavior Modification, 41}(2), 179-228. https://doi.org/10.1177/0145445516664307
 
 Verboon, P. & Peters, G.-J. Y. (2017) Applying the generalised logistic model in SCD to deal with ceiling effects. \emph{PsyArXiv} http://INSERTLINK
 }

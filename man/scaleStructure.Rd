@@ -104,7 +104,7 @@ An object with the input and several output variables. Most notably:
   \code{\link{omega}}, \code{\link{alpha}}, and \code{\link{ci.reliability}}.
 }
 \references{
-Crutzen, R., & Peters, G.-J. Y. (2015). Scale quality: alpha is an inadequate estimate and factor-analytic evidence is needed first of all. \emph{Health Psychology Review.} http://dx.doi.org/10.1080/17437199.2015.1124240
+Crutzen, R., & Peters, G.-J. Y. (2015). Scale quality: alpha is an inadequate estimate and factor-analytic evidence is needed first of all. \emph{Health Psychology Review.} https://doi.org/10.1080/17437199.2015.1124240
 
 Dunn, T. J., Baguley, T., & Brunsden, V. (2014). From alpha to omega: A practical solution to the pervasive problem of internal consistency estimation. \emph{British Journal of Psychology}, 105(3), 399-412. doi:10.1111/bjop.12046
 

@@ -90,7 +90,7 @@
 #' @references Fried, E. I. (2017). What are psychological constructs? On the
 #' nature and statistical modeling of emotions, intelligence, personality
 #' traits and mental disorders. \emph{Health Psychology Review}, 11(2),
-#' 130-134. \url{http://doi.org/10.1080/17437199.2017.1306718}
+#' 130-134. \url{https://doi.org/10.1080/17437199.2017.1306718}
 #' 
 #' Peters, G.-J. Y. (2014). The alpha and the omega of scale reliability and
 #' validity: why and how to abandon Cronbach's alpha and the route towards more

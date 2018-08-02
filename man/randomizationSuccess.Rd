@@ -54,7 +54,7 @@ pwr.randomizationSuccess(dNonequivalence = 0.2,
   length > 1, a matrix, or an array.
 }
 \references{
-Peters, G. J.-Y. & Gruijters, S. Why your experiments fail: sample sizes required for randomization to generate equivalent groups as a partial solution to the replication crisis (2017). http://dx.doi.org/
+Peters, G. J.-Y. & Gruijters, S. Why your experiments fail: sample sizes required for randomization to generate equivalent groups as a partial solution to the replication crisis (2017). https://doi.org/
 }
 \author{
 Gjalt-Jorn Peters
