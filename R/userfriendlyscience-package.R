@@ -609,7 +609,7 @@ NULL
 #' @seealso \code{\link{dCohensd}}
 #' @references Peters, G. J.-Y. & Gruijters, S. Why your experiments fail:
 #' sample sizes required for randomization to generate equivalent groups as a
-#' partial solution to the replication crisis (2017). http://dx.doi.org/
+#' partial solution to the replication crisis (2017). https://doi.org/
 #' @keywords ~kwd1 ~kwd2
 #' @examples
 #' 
@@ -809,11 +809,11 @@ NULL
 #' Wahler, R. G., Sabaawi, M., & Singh, J. (2007). Individuals with mental
 #' illness can control their aggressive behavior through mindfulness training.
 #' \emph{Behavior Modification, 31}(3), 313-328.
-#' http://doi.org/10.1177/0145445506293585
+#' https://doi.org/10.1177/0145445506293585
 #' 
 #' Manolov, R., & Moeyaert, M. (2017). How Can Single-Case Data Be Analyzed?
 #' Software Resources, Tutorial, and Reflections on Analysis. \emph{Behavior
-#' Modification, 41}(2), 179-228. http://doi.org/10.1177/0145445516664307
+#' Modification, 41}(2), 179-228. https://doi.org/10.1177/0145445516664307
 #' 
 #' Verboon, P. & Peters, G.-J. Y. (2017) Applying the generalised logistic
 #' model in SCD to deal with ceiling effects. \emph{PsyArXiv} http://INSERTLINK
@@ -1023,7 +1023,7 @@ NULL
 #' Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2018). Using Confidence
 #' Interval-Based Estimation of Relevance to Select Social-Cognitive
 #' Determinants for Behavior Change Interventions. Frontiers in Public Health
-#' 5:165. http://dx.doi.org/10.3389/fpubh.2017.00165
+#' 5:165. https://doi.org/10.3389/fpubh.2017.00165
 #' 
 #' Crutzen, R. (2014).
 #' \href{https://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p70/25Time
@@ -1033,7 +1033,7 @@ NULL
 #' Crutzen, R., & Peters, G.-J. Y. (2015). Scale quality: alpha is an
 #' inadequate estimate and factor-analytic evidence is needed first of all.
 #' \emph{Health Psychology Review}. doi:
-#' \href{http://dx.doi.org/10.1080/17437199.2015.112424010.1080/17437199.2015.1124240}
+#' \href{https://doi.org/10.1080/17437199.2015.112424010.1080/17437199.2015.1124240}
 #' 
 #' Verboon, P. & Peters, G.-J. Y. (2018). Applying the generalized logistic
 #' model in single case designs. \emph{PsyArXiv}. Preprint doi:

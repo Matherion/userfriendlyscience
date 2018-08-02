@@ -78,7 +78,7 @@
 #' Peters, G. J. Y. & Crutzen, R. (2017) Knowing exactly how effective an
 #' intervention, treatment, or manipulation is and ensuring that a study
 #' replicates: accuracy in parameter estimation as a partial solution to the
-#' replication crisis. http://dx.doi.org/
+#' replication crisis. https://doi.org/
 #' 
 #' Maxwell, S. E., Kelley, K., & Rausch, J. R. (2008). Sample size planning for
 #' statistical power and accuracy in parameter estimation. Annual Review of

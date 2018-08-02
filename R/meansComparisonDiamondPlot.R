@@ -78,7 +78,7 @@
 #' @references Peters, G.-J. Y. (2017). Diamond Plots: a tutorial to introduce
 #' a visualisation tool that facilitates interpretation and comparison of
 #' multiple sample estimates while respecting their inaccuracy.
-#' \emph{PsyArXiv.} http://doi.org/10.17605/OSF.IO/9W8YV
+#' \emph{PsyArXiv.} https://doi.org/10.17605/OSF.IO/9W8YV
 #' @keywords ~kwd1 ~kwd2
 #' @examples
 #' 

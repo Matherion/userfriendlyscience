@@ -72,7 +72,7 @@
 #' @references Crutzen, R., & Peters, G.-J. Y. (2015). Scale quality: alpha is
 #' an inadequate estimate and factor-analytic evidence is needed first of all.
 #' \emph{Health Psychology Review.}
-#' http://dx.doi.org/10.1080/17437199.2015.1124240
+#' https://doi.org/10.1080/17437199.2015.1124240
 #' 
 #' Dunn, T. J., Baguley, T., & Brunsden, V. (2014). From alpha to omega: A
 #' practical solution to the pervasive problem of internal consistency

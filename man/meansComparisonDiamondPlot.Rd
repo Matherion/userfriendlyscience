@@ -146,7 +146,7 @@ The label to use for the x and y axes (for \code{duoComparisonDiamondPlot}, must
 Diamond plots: a \code{\link{ggplot}} by \code{meansComparisonDiamondPlot}, and a \code{\link{gtable}} by \code{duoComparisonDiamondPlot}.
 }
 \references{
-Peters, G.-J. Y. (2017). Diamond Plots: a tutorial to introduce a visualisation tool that facilitates interpretation and comparison of multiple sample estimates while respecting their inaccuracy. \emph{PsyArXiv.} http://doi.org/10.17605/OSF.IO/9W8YV
+Peters, G.-J. Y. (2017). Diamond Plots: a tutorial to introduce a visualisation tool that facilitates interpretation and comparison of multiple sample estimates while respecting their inaccuracy. \emph{PsyArXiv.} https://doi.org/10.17605/OSF.IO/9W8YV
 }
 \author{
 Gjalt-Jorn Peters

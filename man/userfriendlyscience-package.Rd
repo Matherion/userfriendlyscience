@@ -57,11 +57,11 @@ Peters, G.-J. Y. (2018). Diamond Plots: a tutorial to introduce a visualisation 
 
 Peters, G.-J. Y. & Crutzen, R. (2018). Knowing exactly how effective an intervention, treatment, or manipulation is and ensuring that a study replicates: accuracy in parameter estimation as a partial solution to the replication crisis. \emph{PsyArXiv; under review at Psychology & Health}. Preprint doi: \href{https://doi.org/10.17605/osf.io/cjsk2}{10.17605/osf.io/cjsk2}
 
-Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2018). Using Confidence Interval-Based Estimation of Relevance to Select Social-Cognitive Determinants for Behavior Change Interventions. Frontiers in Public Health 5:165. http://dx.doi.org/10.3389/fpubh.2017.00165
+Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2018). Using Confidence Interval-Based Estimation of Relevance to Select Social-Cognitive Determinants for Behavior Change Interventions. Frontiers in Public Health 5:165. https://doi.org/10.3389/fpubh.2017.00165
 
 Crutzen, R. (2014). \href{https://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p70/25}{Time is a jailer: what do alpha and its alternatives tell us about reliability?} \emph{The European Health Psychologist}, 1(2), 70-74.
 
-Crutzen, R., & Peters, G.-J. Y. (2015). Scale quality: alpha is an inadequate estimate and factor-analytic evidence is needed first of all. \emph{Health Psychology Review}. doi: \href{http://dx.doi.org/10.1080/17437199.2015.1124240}{10.1080/17437199.2015.1124240}
+Crutzen, R., & Peters, G.-J. Y. (2015). Scale quality: alpha is an inadequate estimate and factor-analytic evidence is needed first of all. \emph{Health Psychology Review}. doi: \href{https://doi.org/10.1080/17437199.2015.1124240}{10.1080/17437199.2015.1124240}
 
 Verboon, P. & Peters, G.-J. Y. (2018). Applying the generalized logistic model in single case designs. \emph{PsyArXiv}. Preprint doi: \href{https://doi.org/10.17605/osf.io/ad5eh}{10.17605/osf.io/ad5eh}
 

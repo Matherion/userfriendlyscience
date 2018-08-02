@@ -112,7 +112,7 @@
 #' @references Crutzen, R., Peters, G.-J. Y., & Noijen, J. (2017). How to
 #' Select Relevant Social-Cognitive Determinants and Use them in the
 #' Development of Behaviour Change Interventions? Confidence Interval-Based
-#' Estimation of Relevance. http://dx.doi.org/
+#' Estimation of Relevance. https://doi.org/
 #' @keywords hplot
 #' @examples
 #' 

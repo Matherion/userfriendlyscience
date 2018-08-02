@@ -62,7 +62,7 @@ Whether to show the factor correlations from \code{score.cor} ("The correlation 
 This function returns an object with the original \code{\link{psych}} function objects in the \code{intermediate} sub-object, and the primary results such as the factor loading and the plot in the \code{output} sub-object.
 }
 \references{
-Fried, E. I. (2017). What are psychological constructs? On the nature and statistical modeling of emotions, intelligence, personality traits and mental disorders. \emph{Health Psychology Review}, 11(2), 130-134. \url{http://doi.org/10.1080/17437199.2017.1306718}
+Fried, E. I. (2017). What are psychological constructs? On the nature and statistical modeling of emotions, intelligence, personality traits and mental disorders. \emph{Health Psychology Review}, 11(2), 130-134. \url{https://doi.org/10.1080/17437199.2017.1306718}
 
 Peters, G.-J. Y. (2014). The alpha and the omega of scale reliability and validity: why and how to abandon Cronbach's alpha and the route towards more comprehensive assessment of scale quality. \emph{European Health Psychologist}, 16(2), 56-69. \url{http://ehps.net/ehp/index.php/contents/article/download/ehp.v16.i2.p56/1}
 }
