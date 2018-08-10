@@ -75,7 +75,7 @@ determinantVar <- behaviorchange::determinantVar;
 subdeterminants <- behaviorchange::subdeterminants;
 subdeterminantProducts <- behaviorchange::subdeterminantProducts;
 
-plot.determinantStructure <- behaviorchange::plot.determinantStructure;
+plot.determinantStructure <- behaviorchange:::plot.determinantStructure;
 
-print.determinantStructure <- behaviorchange::print.determinantStructure;
+print.determinantStructure <- behaviorchange:::print.determinantStructure;
 

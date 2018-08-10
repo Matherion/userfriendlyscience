@@ -150,7 +150,7 @@ checkDataIntegrity <- function(x, dat, newValue = NA,
                                         ifelse(rmarkdownOutput, "`", ""),
                                         "'.\n"));
     ### If we're not provided with a list, we're provided with a vector
-    varNames <- grep(x[1], names(dat), value=TRUE);
+    varNames <- grep(x[1], names(dat), value=TRUE, perl=TRUE);
     if (length(varNames) == 0) {
       dataIntegrityLog <- addToLog(fullLog=dataIntegrityLog,
                                    showLog=!silent,

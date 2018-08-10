@@ -8,6 +8,7 @@
 #' @param r The observed correlation coefficient.
 #' @param N The sample size of the sample where the correlation was computed.
 #' @param conf.level The desired confidence level of the confidence interval.
+#' @param plot Whether to show a plot.
 #' @return The confidence interval(s) in a matrix with two columns. The left
 #' column contains the lower bound, the right column the upper bound. The
 #' \code{\link{rownames}} are the observed correlations, and the
