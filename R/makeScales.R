@@ -9,9 +9,13 @@ makeScales <- function(dat, scales, append=TRUE) {
         ifelse(is.nan(resDat[[names(scales[currentScale])]]),
                NA,
                resDat[[names(scales[currentScale])]]);
+      attributes(resDat[[names(scales[currentScale])]])$scale_item_names <-
+        unlist(scales[currentScale]);
     }
     else if (length(unlist(scales[currentScale])) == 1) {
       resDat[[names(scales[currentScale])]] <- dat[[unlist(scales[currentScale])]];
+      attributes(resDat[[names(scales[currentScale])]])$scale_item_names <-
+        unlist(scales[currentScale]);
     }
   }
   if (append) {
