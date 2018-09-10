@@ -25,7 +25,7 @@ didacticPlotTheme <- function(base_size = 14, base_family = "") {
       panel.border      = element_rect(fill = NA, colour = "grey50"),
       panel.grid.major  = element_line(colour = "grey90", size = 0.2),
       panel.grid.minor  = element_line(colour = "grey98", size = 0.5),
-      panel.margin      = unit(c(.5), "cm")
+      panel.spacing     = unit(.5, "cm")
     )
 }
 
