@@ -9,11 +9,32 @@ varsToDiamondPlotDf <- function(dat, items = NULL, labels = NULL,
   }
   if (is.null(labels)) labels <- items;
 
-  resDf <- data.frame(t(sapply(dat[, items, drop=FALSE], function(x) {
-    x <- na.omit(x);
-    ci <- meanConfInt(x, conf.level=conf.level)$output$ci;
-    return(data.frame(lo = ci[1], mean = mean(x), hi = ci[2]));
-  })));
+  # resDf <- data.frame(t(sapply(dat[, items, drop=FALSE],
+  #                              function(x) {
+  #   x <- na.omit(x);
+  #   ci <- meanConfInt(x, conf.level=conf.level)$output$ci;
+  #   return(data.frame(lo = ci[1], mean = mean(x), hi = ci[2]));
+  # })));
+
+  miniDat <- dat[, items, drop=FALSE];
+  notNumericVectors <-
+    items[which(!unlist(lapply(miniDat, is.numeric)))];
+  if (length(notNumericVectors) > 0) {
+    stop("Not all items are numeric (",
+         ufs::vecTxtQ(notNumericVectors),
+         " are not).");
+  }
+  ### To fix error with mean
+  resDf <-
+    matrix(unlist(lapply(miniDat,
+                         function(x) {
+                           x <- na.omit(x);
+                           ci <- meanConfInt(x, conf.level=conf.level)$output$ci;
+                           return(c(ci[1], mean(x), ci[2]));
+                         })),
+           byrow=TRUE, ncol=3);
+  resDf <- as.data.frame(resDf);
+  names(resDf) <- c('lo', 'mean', 'hi');
 
   resDf$label <- labels;
   resDf$rownr <- 1:nrow(resDf);

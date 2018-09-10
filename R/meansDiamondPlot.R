@@ -113,9 +113,10 @@ meansDiamondPlot <- function(dat, items = NULL, labels = NULL,
   ### Get labels from this dataframe, because they may have been sorted
   labels <- res$intermediate$dat$label;
 
-  diamondLayer <- diamondPlot(res$intermediate$dat, ciCols=c('lo', 'mean', 'hi'),
-                      yLabels = labels, colorCol=diamondColors,
-                      returnLayerOnly = TRUE, ...);
+  diamondLayer <-
+    diamondPlot(res$intermediate$dat, ciCols=c('lo', 'mean', 'hi'),
+                yLabels = labels, colorCol=diamondColors,
+                returnLayerOnly = TRUE, ...);
 
   if (returnLayerOnly) {
     return(diamondLayer);

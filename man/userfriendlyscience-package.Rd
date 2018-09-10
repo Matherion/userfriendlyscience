@@ -97,11 +97,11 @@ scaleStructure(dat=exampleData, ci=FALSE,
                omega.psych=FALSE, poly=FALSE);
 }
 
-### Create a dichotomous variable
-exampleData$group <- cut(exampleData$t0_item2, 2);
-
 ### Show item distributions and means
 meansDiamondPlot(exampleData);
+
+### Create a dichotomous variable
+exampleData$group <- cut(exampleData$t0_item2, 2);
 
 ### Show a dlvPlot
 dlvPlot(exampleData, x="group", y="t0_item1");
