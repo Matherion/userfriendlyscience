@@ -1,8 +1,10 @@
 userfriendlyscience NEWS
 ------------------------
 
-0.7.2 2018-06-01
+0.7.2 2018-09-11
 * Fixed bug in plots for genlog and piecewiseRegr that caused odd Y axis labeling
+* Added functionality to makeScales to play nice with Ruben Arslan's `codebook` package
+* Started migrating functions to `behaviorchange` and `ufs` packages
 * 
 
 0.7.1 2018-05-01
