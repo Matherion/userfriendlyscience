@@ -7,7 +7,7 @@ A function to compute a correlation's confidence interval
 This function computes the confidence interval for a given correlation and its sample size. This is useful to obtain confidence intervals for correlations reported in papers when informing power analyses.
 }
 \usage{
-confIntR(r, N, conf.level = 0.95)
+confIntR(r, N, conf.level = 0.95, plot = FALSE)
 }
 \arguments{
   \item{r}{
@@ -18,6 +18,11 @@ confIntR(r, N, conf.level = 0.95)
 }
   \item{conf.level}{
   The desired confidence level of the confidence interval.
+}
+  \item{plot}{
+  Whether to show a plot of the hypothesized sampling distribution
+  (assuming the sample value happens to be the population value) of
+  Pearson's \emph{r}.
 }
 }
 \value{

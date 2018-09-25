@@ -21,12 +21,16 @@ The distribution of Cohen's \emph{d}
 These functions use some conversion to and from the \emph{t} distribution to provide the Cohen's \emph{d} distribution. There are four versions that act similar to the standard distribution functions (the \code{d.}, \code{p.}, \code{q.}, and \code{r.} functions, and their longer aliases \code{.Cohensd}), three convenience functions (\code{pdExtreme}, \code{pdMild}, and \code{pdInterval}), a function to compute the confidence interval for a Cohen's \emph{d} estimate \code{cohensdCI}, and a function to compute the sample size required to obtain a confidence interval around a Cohen's \emph{d} estimate with a specified accuracy (\code{pwr.cohensdCI} and its alias \code{pwr.confIntd}).
 }
 \usage{
-dd(x, df, populationD = 0)
+dd(x, df=NULL, populationD = 0,
+   n=NULL, n1=NULL, n2=NULL,
+   silent=FALSE)
 pd(q, df, populationD = 0, lower.tail = TRUE)
 qd(p, df, populationD = 0, lower.tail = TRUE)
 rd(n, df, populationD = 0)
 
-dCohensd(x, df, populationD = 0)
+dCohensd(x, df=NULL, populationD = 0,
+         n=NULL, n1=NULL, n2=NULL,
+         silent=FALSE)
 pCohensd(q, df, populationD = 0, lower.tail = TRUE)
 qCohensd(p, df, populationD = 0, lower.tail = TRUE)
 rCohensd(n, df, populationD = 0)
@@ -55,11 +59,11 @@ pwr.confIntd(d, w = 0.1, conf.level = 0.95,
   \item{p}{
   Vector of probabilites (\emph{p}-values).
 }
-  \item{df}{
-  Degrees of freedom.
+  \item{df, n1, n2}{
+  Degrees of freedom or sample sizes for each group (\code{n1} and \code{n2}); also see explanation for \code{n} below.
 }
   \item{n}{
-  Desired number of Cohen's \emph{d} values for \code{rCohensd} and \code{rd}, and the number of participants/datapoints for \code{pdExtreme}, \code{pdMild}, \code{pdInterval}, and \code{cohensdCI}.
+  Total \code{n} (\code{df} + 2) for \code{dd} and \code{dCohensd}, desired number of Cohen's \emph{d} values for \code{rCohensd} and \code{rd}, and the number of participants/datapoints for \code{pdExtreme}, \code{pdMild}, \code{pdInterval}, and \code{cohensdCI}.
 }
   \item{populationD}{
   The value of Cohen's \emph{d} in the population; this determines the center of the Cohen's \emph{d} distribution. I suppose this is the noncentrality parameter.
